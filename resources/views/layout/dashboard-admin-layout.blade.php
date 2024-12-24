@@ -65,7 +65,7 @@
         <aside id="sidebar-wrapper">
           <div class="sidebar-brand">
             <a href="{{route('admin-dashboard')}}"> <img alt="image" src="{{asset('dashboard/assets/img/logo.png')}}" class="header-logo" /> <span
-                class="logo-name">E-Transcript</span>
+                class="logo-name">E-Result</span>
             </a>
           </div>
           <ul class="sidebar-menu">
