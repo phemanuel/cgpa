@@ -237,7 +237,7 @@
               <div class="col-12 col-md-6 col-lg-6">
                 <div class="card">
                   <div class="card-header">
-                    <h4>Add User | <a href="{{route('users')}}">Users List</a></h4>
+                    <h4>Add User | <a href="{{route('users')}}">Users List</a> | <a href="{{route('instructors')}}">Instructors List</a></h4>
                   </div>
                   @if(session('success'))
                     <div class="alert alert-success">

@@ -6,7 +6,7 @@
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-  <title>@yield('pageTitle')</title>
+  <title>E-Result :: Edit User</title>
   <!-- General CSS Files -->
   <link rel="stylesheet" href="{{asset('dashboard/assets/css/app.min.css')}}">
   <!-- Template CSS -->
@@ -237,7 +237,7 @@
               <div class="col-12 col-md-6 col-lg-6">
                 <div class="card">
                   <div class="card-header">
-                    <h4>Edit User | <a href="{{route('users')}}">Users List</a></h4>
+                  <h4>Edit User | <a href="{{route('users')}}">Users List</a> | <a href="{{route('instructors')}}">Instructors List</a></h4>
                   </div>
                   @if(session('success'))
                     <div class="alert alert-success">

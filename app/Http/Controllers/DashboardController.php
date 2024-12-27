@@ -11,6 +11,9 @@ use App\Models\TranscriptFee;
 use App\Models\PaymentTransaction;
 use App\Models\TranscriptUpload;
 use App\Models\UserYear;
+use App\Models\Registration;
+use App\Models\Department;
+use App\Models\CourseStudyAll;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
@@ -591,6 +594,21 @@ class DashboardController extends Controller
 
     }
 
+    public function students()
+    {
+        try {
+            $users = Registration::paginate(10);
+            $userCount = Registration::count();
+            return view('layout.students', compact('users','userCount'));
+        } catch (\Exception $e) {
+            // Handle any exceptions that may occur
+            // Log the error or redirect to a generic error page
+            return redirect('generic-error')->with('error', 'An unexpected error occurred');
+        }
+         
+
+    }
+
     public function addUser()
     {
         return view('auth.add-user');
@@ -655,8 +673,15 @@ class DashboardController extends Controller
 
             // Create the user with roles
             $user = User::create($userData);
-
-            return redirect()->route('users')->with('success', 'User has been created successfully.');
+            if($validatedData['userType'] == 'Superadmin'){
+                return redirect()->route('users')->with('success', 'User has been created successfully.');
+            }
+            elseif($validatedData['userType'] == 'Admin'){
+                return redirect()->route('users')->with('success', 'User has been created successfully.');
+            }
+            elseif($validatedData['userType'] == 'instructor'){
+                return redirect()->route('instructors')->with('success', 'User has been created successfully.');
+            }            
         } catch (ValidationException $e) {
             // Validation failed. Redirect back with validation errors.
             return redirect()->back()->withErrors($e->errors())->withInput();
@@ -673,6 +698,14 @@ class DashboardController extends Controller
         $user = User::findorFail($id);
 
         return view('auth.edit-user',compact('user'));
+    }
+
+    public function editStudent($id)
+    {
+        $user = Registration::findorFail($id);
+        $programmes = CourseStudyAll::all();
+
+        return view('layout.edit-student-layout',compact('user','programmes'));
     }
 
     public function editUserAction(Request $request, $id)
@@ -738,7 +771,16 @@ class DashboardController extends Controller
             // Update the user with new data (including roles)
             $user->update($userData);
 
-            return redirect()->route('users')->with('success', 'User has been updated successfully.');
+            if($validatedData['userType'] == 'Superadmin'){
+                return redirect()->route('users')->with('success', 'User has been updated successfully.');
+            }
+            elseif($validatedData['userType'] == 'Admin'){
+                return redirect()->route('users')->with('success', 'User has been updated successfully.');
+            }
+            elseif($validatedData['userType'] == 'instructor'){
+                return redirect()->route('instructors')->with('success', 'User has been updated successfully.');
+            }           
+            
         } catch (ValidationException $e) {
             // Validation failed. Redirect back with validation errors.
             Log::error('Error during user update: ' . $e->getMessage());
@@ -748,6 +790,33 @@ class DashboardController extends Controller
             Log::error('Error during user update: ' . $e->getMessage());
 
             return redirect()->back()->with('error', 'An error occurred during the update. Please try again.');
+        }
+    }
+
+    public function editStudentAction(Request $request, $id)
+    {
+        // Validate input data
+        $request->validate([
+            'studentFullName' => 'required|string|max:255',
+            'programme' => 'required|string',
+        ]);
+
+        try {
+            // Find the registration record by ID
+            $registration = Registration::findOrFail($id);
+
+            // Update the record with new data
+            $registration->update([
+                'student_full_name' => $request->input('studentFullName'),
+                'course' => $request->input('programme'),
+            ]);
+
+            // Redirect back with success message
+            return redirect()->route('student')->with('success', 'Student details updated successfully.');
+        } catch (\Exception $e) {
+            // Log the error and redirect back with an error message
+            Log::error('Error updating student details: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'An error occurred while updating the student details. Please try again.');
         }
     }
 

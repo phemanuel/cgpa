@@ -6,7 +6,7 @@
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-  <title>@yield('pageTitle')</title>
+  <title>E-Result :: Instructors</title>
   <!-- General CSS Files -->
   <link rel="stylesheet" href="{{asset('dashboard/assets/css/app.min.css')}}">
   <!-- Template CSS -->
@@ -277,7 +277,7 @@
                       </tr>
 
                       @if ($users->count() > 0)
-			@foreach ($users as $key => $rd)
+			            @foreach ($users as $key => $rd)
                       <tr> 
                         <td>{{$key + 1}}</td> 
                         <td>{{$rd->email}}</td>
