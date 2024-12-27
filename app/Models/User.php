@@ -26,7 +26,22 @@ class User extends Authenticatable
         'user_type',
         'email_verified_status',
         'login_attempts',
-
+        'class_list',
+        'course_setup',
+        'score_sheet',
+        'grading_system',
+        'access_setup',
+        'hod_setup',
+        'result',
+        'student',
+        'result_entry',
+        'student_registration',
+        'result_compute',
+        'student_migration',
+        'semester_result',
+        'semester_summary',
+        'cgpa_summary',
+        'student_transcript',
     ];
 
     /**

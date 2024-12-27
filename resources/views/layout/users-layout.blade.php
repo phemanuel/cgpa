@@ -70,17 +70,97 @@
           </div>
           <ul class="sidebar-menu">
             <li class="menu-header">Main</li>
-            <li class="dropdown">
-              <a href="{{route('admin-dashboard')}}" class="nav-link"><i data-feather="monitor"></i><span>Dashboard</span></a>
+            @if(auth()->user()->user_type_status == 1)
+            <li class="dropdown active">
+              <a href="{{ route('admin-dashboard') }}" class="nav-link"><i data-feather="home"></i><span>Dashboard</span></a>
             </li>
             <li class="dropdown">
-              <a href="{{route('transcript-request')}}" class="nav-link"><i data-feather="briefcase"></i><span>Transcript Requests</span></a>
+              <a href="#" class="nav-link"><i data-feather="list"></i><span>Class List</span></a>
             </li>
             <li class="dropdown">
-              <a href="{{ route('admin-account-setting', ['id' => auth()->user()->id]) }}" class="nav-link"><i data-feather="command"></i><span>Account Settings</span></a>
-            </li> <li class="dropdown active">
-              <a href="{{route('users')}}" class="nav-link"><i data-feather="mail"></i><span>Users</span></a>
-            </li>               
+              <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="user"></i><span>Student</span></a>
+              <ul class="dropdown-menu">
+                <li><a class="nav-link" href="#">Student Registration</a></li>
+                <li><a class="nav-link" href="#">Student Migration</a></li>                
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="nav-link menu-toggle nav-link has-dropdown"><i data-feather="clipboard"></i><span>Result</span></a>
+              <ul class="dropdown-menu">
+                <li><a class="nav-link" href="#">Result Entry</a></li>
+                <li><a class="nav-link" href="#">Result Computation</a></li>
+                <li><a class="nav-link" href="#">Semester Result</a></li>
+                <li><a class="nav-link" href="#">Semester Result Summary</a></li>
+                <li><a class="nav-link" href="#">CGPA Summary</a></li>
+                <li><a class="nav-link" href="#">Student Transcript</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="nav-link"><i data-feather="book"></i><span>Course Setup</span></a>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="nav-link"><i data-feather="briefcase"></i><span>HOD Setup</span></a>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="nav-link"><i data-feather="slack"></i><span>Grading System</span></a>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="nav-link"><i data-feather="file-text"></i><span>Score Sheet</span></a>
+            </li>
+            <li class="dropdown">
+              <a href="{{ route('transcript-request') }}" class="nav-link"><i data-feather="archive"></i><span>Transcript Requests</span></a>
+            </li>
+            <li class="dropdown">
+              <a href="{{ route('admin-account-setting', ['id' => auth()->user()->id]) }}" class="nav-link"><i data-feather="settings"></i><span>Account Settings</span></a>
+            </li>
+            <li class="dropdown">
+              <a href="{{ route('users') }}" class="nav-link"><i data-feather="users"></i><span>Users</span></a>
+            </li>
+
+            @elseif(auth()->user()->user_type_status == 2)  
+            <li class="dropdown active">
+              <a href="{{ route('admin-dashboard') }}" class="nav-link"><i data-feather="home"></i><span>Dashboard</span></a>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="nav-link"><i data-feather="list"></i><span>Class List</span></a>
+            </li>            
+            <li class="dropdown">
+              <a href="#" class="nav-link menu-toggle nav-link has-dropdown"><i data-feather="clipboard"></i><span>Result</span></a>
+              <ul class="dropdown-menu">
+                <li><a class="nav-link" href="#">Result Entry</a></li>
+                <li><a class="nav-link" href="#">Result Computation</a></li>
+                <li><a class="nav-link" href="#">Semester Result</a></li>
+                <li><a class="nav-link" href="#">Semester Result Summary</a></li>
+                <li><a class="nav-link" href="#">CGPA Summary</a></li>
+                <li><a class="nav-link" href="#">Student Transcript</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="nav-link"><i data-feather="book"></i><span>Course Setup</span></a>
+            </li>            
+            <li class="dropdown">
+              <a href="#" class="nav-link"><i data-feather="file-text"></i><span>Score Sheet</span></a>
+            </li>            
+            <li class="dropdown">
+              <a href="{{ route('admin-account-setting', ['id' => auth()->user()->id]) }}" class="nav-link"><i data-feather="settings"></i><span>Account Settings</span></a>
+            </li>            
+            @elseif(auth()->user()->user_type_status == 3)            
+            <li class="dropdown active">
+              <a href="{{ route('dashboard') }}" class="nav-link"><i data-feather="home"></i><span>Dashboard</span></a>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="nav-link"><i data-feather="clipboard"></i><span>Result</span></a>
+            </li>
+            <li class="dropdown">
+              <a href="{{ route('user-request') }}" class="nav-link"><i data-feather="archive"></i><span>Request Transcript</span></a>
+            </li>
+            <li class="dropdown">
+              <a href="{{ route('account-setting', ['id' => auth()->user()->id]) }}" class="nav-link"><i data-feather="settings"></i><span>Account Settings</span></a>
+            </li>
+            <li class="dropdown">
+              <a href="{{ route('contact-us') }}" class="nav-link"><i data-feather="mail"></i><span>Contact Us</span></a>
+            </li>
+            @endif             
             
           </ul>
         </aside>
@@ -138,23 +218,23 @@
                   <div class="table-responsive">
                     <table class="table table-striped">
                       <tr>           
-                      <th></th>             
+                      <th>#</th>             
                         <th>Email Address</th>
                         <th>Admin Name</th>
                         <th>Status</th>
-                        <th>Created On</th>
+                        <!-- <th>Created On</th> -->
                         <th>Action</th>
                       </tr>
 
                       @if ($users->count() > 0)
-			@foreach ($users as $rd)
+			@foreach ($users as $key => $rd)
                       <tr> 
-                        <td></td> 
+                        <td>{{$key + 1}}</td> 
                         <td>{{$rd->email}}</td>
                         <td>{{$rd->last_name . " " . $rd->first_name}}</td>
                         <td><div class="badge badge-info">{{$rd->user_type}}</div></td>
-                        <td>{{$rd->created_at}}</td>
-                        <td><a href="#" class="btn btn-outline-primary">Edit</a></td>
+                        <!-- <td>{{$rd->created_at}}</td> -->
+                        <td><a href="{{route('edit-user', ['id' => $rd->id])}}" class="btn btn-outline-primary">Edit</a></td>
                       </tr>  
                       @endforeach
 		@else

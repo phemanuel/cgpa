@@ -32,6 +32,14 @@
         border-radius: 5px; /* Rounded corners */
     }
 </style>
+<style type="text/css">
+.style2 {
+	color: #006600;
+	font-weight: bold;
+}
+.style3 {font-weight: bold}
+.style7 {color: #0000FF; font-weight: bold; }
+</style>
 </head>
 
 <body>
@@ -76,18 +84,93 @@
           </div>
           <ul class="sidebar-menu">
             <li class="menu-header">Main</li>
-            <li class="dropdown">
-              <a href="{{route('admin-dashboard')}}" class="nav-link"><i data-feather="monitor"></i><span>Dashboard</span></a>
+            @if(auth()->user()->user_type_status == 1)
+            <li class="dropdown active">
+              <a href="{{ route('admin-dashboard') }}" class="nav-link"><i data-feather="home"></i><span>Dashboard</span></a>
             </li>
             <li class="dropdown">
-              <a href="{{route('transcript-request')}}" class="nav-link"><i data-feather="briefcase"></i><span>Transcript Requests</span></a>
+              <a href="{{route('class-list')}}" class="nav-link"><i data-feather="list"></i><span>Class List</span></a>
             </li>
             <li class="dropdown">
-              <a href="{{ route('admin-account-setting', ['id' => auth()->user()->id]) }}" class="nav-link"><i data-feather="command"></i><span>Account Settings</span></a>
-            </li> <li class="dropdown active">
-              <a href="{{route('users')}}" class="nav-link"><i data-feather="mail"></i><span>Users</span></a>
+              <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="user"></i><span>Student</span></a>
+              <ul class="dropdown-menu">
+                <li><a class="nav-link" href="{{route('student-registration')}}">Student Registration</a></li>
+                <li><a class="nav-link" href="{{route('student-migration')}}">Student Migration</a></li>                
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="nav-link menu-toggle nav-link has-dropdown"><i data-feather="clipboard"></i><span>Result</span></a>
+              <ul class="dropdown-menu">
+                <li><a class="nav-link" href="{{route('result-entry')}}">Result Entry</a></li>
+                <li><a class="nav-link" href="{{route('result-compute')}}">Result Computation</a></li>
+                <li><a class="nav-link" href="{{route('semester-result')}}">Semester Result</a></li>
+                <li><a class="nav-link" href="{{route('semester-summary')}}">Semester Result Summary</a></li>
+                <li><a class="nav-link" href="{{route('cgpa-summary')}}">CGPA Summary</a></li>
+                <li><a class="nav-link" href="{{route('student-transcript')}}">Student Transcript</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="{{route('course-setup')}}" class="nav-link"><i data-feather="book"></i><span>Course Setup</span></a>
+            </li>
+            <li class="dropdown">
+              <a href="{{route('hod-setup')}}" class="nav-link"><i data-feather="briefcase"></i><span>HOD Setup</span></a>
+            </li>
+            <li class="dropdown">
+              <a href="{{route('grading')}}" class="nav-link"><i data-feather="slack"></i><span>Grading System</span></a>
+            </li>
+            <li class="dropdown">
+              <a href="{{route('score-sheet')}}" class="nav-link"><i data-feather="file-text"></i><span>Score Sheet</span></a>
+            </li>
+            <li class="dropdown">
+              <a href="{{ route('transcript-request') }}" class="nav-link"><i data-feather="archive"></i><span>Transcript Requests</span></a>
+            </li>
+            <li class="dropdown">
+              <a href="{{ route('admin-account-setting', ['id' => auth()->user()->id]) }}" class="nav-link"><i data-feather="settings"></i><span>Account Settings</span></a>
+            </li>
+            <li class="dropdown">
+              <a href="{{ route('users') }}" class="nav-link"><i data-feather="users"></i><span>Users</span></a>
+            </li>
+
+            @elseif(auth()->user()->user_type_status == 2)  
+            <li class="dropdown active">
+              <a href="{{ route('admin-dashboard') }}" class="nav-link"><i data-feather="home"></i><span>Dashboard</span></a>
+            </li>
+            <li class="dropdown">
+              <a href="{{route('class-list')}}" class="nav-link"><i data-feather="list"></i><span>Class List</span></a>
             </li>            
-            
+            <li class="dropdown">
+              <a href="#" class="nav-link menu-toggle nav-link has-dropdown"><i data-feather="clipboard"></i><span>Result</span></a>
+              <ul class="dropdown-menu">
+                <li><a class="nav-link" href="{{route('result-entry')}}">Result Entry</a></li>
+                <li><a class="nav-link" href="{{route('result-compute')}}">Result Computation</a></li>
+                <li><a class="nav-link" href="{{route('semester-result')}}">Semester Result</a></li>
+                <li><a class="nav-link" href="{{route('semester-summary')}}">Semester Result Summary</a></li>
+                <li><a class="nav-link" href="{{route('cgpa-summary')}}">CGPA Summary</a></li>                
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="{{route('course-setup')}}" class="nav-link"><i data-feather="book"></i><span>Course Setup</span></a>
+            </li>
+            <li class="dropdown">
+              <a href="{{ route('admin-account-setting', ['id' => auth()->user()->id]) }}" class="nav-link"><i data-feather="settings"></i><span>Account Settings</span></a>
+            </li>                 
+            @elseif(auth()->user()->user_type_status == 3)            
+            <li class="dropdown active">
+              <a href="{{ route('dashboard') }}" class="nav-link"><i data-feather="home"></i><span>Dashboard</span></a>
+            </li>
+            <li class="dropdown">
+              <a href="{{route('student-result')}}" class="nav-link"><i data-feather="clipboard"></i><span>Result</span></a>
+            </li>
+            <li class="dropdown">
+              <a href="{{ route('user-request') }}" class="nav-link"><i data-feather="archive"></i><span>Request Transcript</span></a>
+            </li>
+            <li class="dropdown">
+              <a href="{{ route('account-setting', ['id' => auth()->user()->id]) }}" class="nav-link"><i data-feather="settings"></i><span>Account Settings</span></a>
+            </li>
+            <li class="dropdown">
+              <a href="{{ route('contact-us') }}" class="nav-link"><i data-feather="mail"></i><span>Contact Us</span></a>
+            </li>
+            @endif
           </ul>
         </aside>
       </div>
@@ -99,7 +182,7 @@
               <div class="col-12 col-md-6 col-lg-6">
                 <div class="card">
                   <div class="card-header">
-                    <h4>Add User</h4>
+                    <h4>Add User | <a href="{{route('users')}}">Users List</h4>
                   </div>
                   @if(session('success'))
                     <div class="alert alert-success">
@@ -111,7 +194,7 @@
                     </div>
                     @endif	
                   <div class="card-body">
-                    <form action="{{route('add-user.action')}}" method="post">
+                <form action="{{route('add-user.action')}}" method="post">
                       @csrf                    
                     
                     <div class="form-group">
@@ -140,7 +223,7 @@
 
                 <div class="form-group">
                     <label>Password</label>
-                    <input type="password" class="form-control" name="password" value="{{ old('password') }}" required>
+                    <input type="password" class="form-control" name="password" value="" required>
                 </div>
                 @error('password')
                     <span class="invalid-feedback">{{ $message }}</span>
@@ -148,8 +231,74 @@
 
                 <div class="form-group">
                     <label>Confirm Password</label>
-                    <input type="password" class="form-control" name="password_confirmation" value="{{ old('password_confirmation') }}" required>
+                    <input type="password" class="form-control" name="password_confirmation" value="" required>
                 </div>
+                <hr>
+                <h5>User Roles</h5>
+                <span class="style2">Module</span> : <span class="style7">Sub-module</span>
+                <table width="516" border="1" cellpadding="3" cellspacing="3">
+                    <tr>
+                      <td width="31"><input type="checkbox" name="classList" id="classList" /></td>
+                      <td width="214"><span class="style2"><i class="fas fa-list"></i> ClassList</span></td>
+                      <td width="42"><input name="courseSetup" type="checkbox" class="style3" id="courseSetup" /></td>
+                      <td width="209"><span class="style2"><i class="fas fa-cogs"></i> Course Setup</span></td>
+                    </tr>
+                    <tr>
+                      <td><input type="checkbox" name="scoreSheet" id="scoreSheet" /></td>
+                      <td><span class="style2"><i class="fas fa-chart-bar"></i> Score Sheet</span></td>
+                      <td><input name="gradingSystem" type="checkbox" id="gradingSystem" /></td>
+                      <td><span class="style2"><i class="fas fa-ruler"></i> Grading System</span></td>
+                    </tr>
+                    <tr>
+                      <td><input type="checkbox" name="accessSetup" id="accessSetup" /></td>
+                      <td><span class="style2"><i class="fas fa-unlock"></i> Access Setup</span></td>
+                      <td><input name="hodSetup" type="checkbox" id="hodSetup" /></td>
+                      <td><span class="style2"><i class="fas fa-user-tie"></i> Hod Setup</span></td>
+                    </tr>
+                    <tr>
+                      <td><input type="checkbox" name="result" id="result" /></td>
+                      <td><span class="style2"><i class="fas fa-file-alt"></i> Result Module</span></td>
+                      <td><input name="student" type="checkbox" id="student" /></td>
+                      <td><span class="style2"><i class="fas fa-user-graduate"></i> Student Module</span></td>
+                    </tr>
+                    <tr>
+                      <td><input type="checkbox" name="resultEntry" id="resultEntry" /></td>
+                      <td><span class="style7"><i class="fas fa-keyboard"></i> Result Entry</span></td>
+                      <td><input name="studentRegistration" type="checkbox" id="studentRegistration" /></td>
+                      <td><span class="style7"><i class="fas fa-user-plus"></i> Student Registration</span></td>
+                    </tr>
+                    <tr>
+                      <td><input type="checkbox" name="resultCompute" id="resultCompute" /></td>
+                      <td><span class="style7"><i class="fas fa-calculator"></i> Result Compute</span></td>
+                      <td><input name="studentMigration" type="checkbox" id="studentMigration" /></td>
+                      <td><span class="style7"><i class="fas fa-exchange-alt"></i> Student Migration</span></td>
+                    </tr>
+                    <tr>
+                      <td><input type="checkbox" name="semesterResult" id="semesterResult" /></td>
+                      <td><span class="style7"><i class="fas fa-clipboard"></i> Semester Result</span></td>
+                      <td>&nbsp;</td>
+                      <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                      <td><input type="checkbox" name="semesterSummary" id="semesterSummary" /></td>
+                      <td><span class="style7"><i class="fas fa-chart-line"></i> Semester Result Summary</span></td>
+                      <td>&nbsp;</td>
+                      <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                      <td><input type="checkbox" name="cgpaSummary" id="cgpaSummary" /></td>
+                      <td><span class="style7"><i class="fas fa-graduation-cap"></i> CGPA Summary</span></td>
+                      <td>&nbsp;</td>
+                      <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                      <td><input type="checkbox" name="studentTranscript" id="studentTranscript" /></td>
+                      <td><span class="style7"><i class="fas fa-file-signature"></i> Student Transcript</span></td>
+                      <td>&nbsp;</td>
+                      <td>&nbsp;</td>
+                    </tr>
+                  </table>
+
 
                   </div>
                   <div class="card-footer text-right"> 

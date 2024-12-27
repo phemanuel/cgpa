@@ -73,6 +73,9 @@
             <li class="dropdown active">
               <a href="{{route('dashboard')}}" class="nav-link"><i data-feather="monitor"></i><span>Dashboard</span></a>
             </li>
+            <li class="dropdown active">
+              <a href="{{route('student-result')}}" class="nav-link"><i data-feather="monitor"></i><span>Result</span></a>
+            </li>
             <li class="dropdown">
               <a href="{{route('user-request')}}" class="nav-link"><i data-feather="briefcase"></i><span>Request Transcript</span></a>
             </li>

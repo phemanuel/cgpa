@@ -45,8 +45,8 @@ Route::post('/reset-password', [CustomForgotPasswordController::class, 'resetPas
     Route::post('signup', [AuthController::class, 'signupAction'])->name('signup.action');
 
     //----Auth routes--
-
-    Route::middleware('auth')->group(function () {       
+    //---Admin Routes
+    Route::middleware('auth')->prefix('admin')->group(function () {       
     
         // Logout route
         Route::get('logout', [AuthController::class, 'logout'])->name('logout');
@@ -55,31 +55,10 @@ Route::post('/reset-password', [CustomForgotPasswordController::class, 'resetPas
         Route::get('account-setting/{id}', [AuthController::class, 'profileUpdate'])->name('account-setting');
         Route::get('profile-picture', [AuthController::class, 'profilePicture'])->name('profile-picture');
         Route::post('profile-picture-update', [AuthController::class, 'profilePictureUpdate'])->name('profile-picture-update');
-
-        //-----User Dashboard-----
-        Route::get('user-dashboard', [DashboardController::class, 'index'])
-        ->name('dashboard');        
-        Route::get('user-request', [DashboardController::class, 'userRequest'])
-        ->name('user-request');
-        Route::post('user-request', [DashboardController::class, 'userRequestAction'])
-        ->name('user-request.action'); 
-        Route::get('contact-us', [DashboardController::class, 'contactUs'])
-        ->name('contact-us');
-        //--Payment routes--
-        Route::get('user-payment', [DashboardController::class, 'userPayment'])
-        ->name('user-payment');
-        Route::get('payment-check', [DashboardController::class, 'paymentCheck'])
-        ->name('payment-check');
-        Route::get('payment-error', [DashboardController::class, 'paymentError'])
-        ->name('payment-error');
-        Route::get('payment-report', [DashboardController::class, 'paymentReport'])
-        ->name('payment-report');    
-        Route::get('payment-status', [DashboardController::class, 'paymentStatus'])
-        ->name('payment-status');  
-        //Admin Dashboard----
-        Route::get('admin-dashboard', [DashboardController::class, 'indexAdmin'])
+        
+        Route::get('dashboard', [DashboardController::class, 'indexAdmin'])
         ->name('admin-dashboard');   
-        Route::get('admin-account-setting/{id}', [AuthController::class, 'profileUpdateAdmin'])
+        Route::get('account-setting/{id}', [AuthController::class, 'profileUpdateAdmin'])
         ->name('admin-account-setting'); 
         Route::get('transcript-request', [DashboardController::class, 'transcriptRequest'])
         ->name('transcript-request'); 
@@ -95,11 +74,44 @@ Route::post('/reset-password', [CustomForgotPasswordController::class, 'resetPas
         ->name('user-transcript-upload');
         Route::get('users', [DashboardController::class, 'Users'])
         ->name('users'); 
-        Route::get('add-user', [DashboardController::class, 'addUser'])
+        Route::get('user/add', [DashboardController::class, 'addUser'])
         ->name('add-user'); 
-        Route::post('add-user', [DashboardController::class, 'addUserAction'])
+        Route::post('user/add', [DashboardController::class, 'addUserAction'])
         ->name('add-user.action'); 
-        
+        Route::get('user/edit/{id}', [DashboardController::class, 'editUser'])
+        ->name('edit-user');
+        Route::put('user/edit/{id}', [DashboardController::class, 'editUserAction'])
+        ->name('edit-user.action');
+
+        Route::get('class-list', [DashboardController::class, 'classList'])
+        ->name('class-list'); 
+        //----Student
+        Route::get('student-registration', [StudentController::class, 'studentRegistration'])
+        ->name('student-registration'); 
+        Route::get('student-migration', [studentController::class, 'studentMigration'])
+        ->name('student-migration'); 
+        //---Result
+        Route::get('result/entry', [ResultController::class, 'resultEntry'])
+        ->name('result-entry');
+        Route::get('result/compute', [ResultController::class, 'resultCompute'])
+        ->name('result-compute');
+        Route::get('result/semester', [ResultController::class, 'semesterResult'])
+        ->name('semester-result');
+        Route::get('result/summary', [ResultController::class, 'semesterSummary'])
+        ->name('semester-summary');
+        Route::get('result/cgpa', [ResultController::class, 'cgpaSummary'])
+        ->name('cgpa-summary');
+        Route::get('result/transcript', [ResultController::class, 'studentTranscript'])
+        ->name('student-transcript');
+
+        Route::get('course', [ResultController::class, 'courseSetup'])
+        ->name('course-setup');
+        Route::get('hod', [ResultController::class, 'hodSetup'])
+        ->name('hod-setup');
+        Route::get('grading', [ResultController::class, 'gradingSystem'])
+        ->name('grading');
+        Route::get('score-sheet', [ResultController::class, 'scoreSheet'])
+        ->name('score-sheet');
 
         //--Send mail routes
         Route::get('send-mail-fail/{transaction_id}', [MailController::class, 'mailFailed'])
@@ -111,7 +123,33 @@ Route::post('/reset-password', [CustomForgotPasswordController::class, 'resetPas
             ->name('change-password');  
     });
 
-     
+    //---Student Routes
+    Route::middleware('auth')->prefix('student')->group(function () {  
+        Route::get('dashboard', [DashboardController::class, 'index'])
+        ->name('dashboard');        
+        Route::get('request', [DashboardController::class, 'userRequest'])
+        ->name('user-request');
+        Route::post('request', [DashboardController::class, 'userRequestAction'])
+        ->name('user-request.action'); 
+        //--Payment routes--
+        Route::get('payment', [DashboardController::class, 'userPayment'])
+        ->name('user-payment');
+        Route::get('payment-check', [DashboardController::class, 'paymentCheck'])
+        ->name('payment-check');
+        Route::get('payment-error', [DashboardController::class, 'paymentError'])
+        ->name('payment-error');
+        Route::get('payment-report', [DashboardController::class, 'paymentReport'])
+        ->name('payment-report');    
+        Route::get('payment-status', [DashboardController::class, 'paymentStatus'])
+        ->name('payment-status'); 
+        Route::get('contact-us', [DashboardController::class, 'contactUs'])
+        ->name('contact-us');
+
+    });
+    
+    Route::get('test-file', [DashboardController::class, 'testFile'])
+    ->name('test-file');
+    
         //===========Verify email address routes================================
     Route::get('email-verify', [MailController::class, 'emailVerify'])
     ->name('email-verify');
@@ -130,4 +168,5 @@ Route::post('/reset-password', [CustomForgotPasswordController::class, 'resetPas
 
     Route::get('user-check', [DashboardController::class, 'userCheck'])
         ->name('user-check');
+    
    

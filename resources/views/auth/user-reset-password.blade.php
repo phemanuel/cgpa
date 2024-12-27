@@ -1,5 +1,5 @@
 @extends('layout.reset-password-layout')
-@section('pageTitle', isset($pageTitle) ? $pageTitle : 'E-Transcript :: Reset Password')
+@section('pageTitle', isset($pageTitle) ? $pageTitle : 'E-Result :: Reset Password')
 @section('content')
     content here
 @endsection

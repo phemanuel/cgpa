@@ -584,6 +584,7 @@ class DashboardController extends Controller
     public function addUserAction(Request $request)
     {
         try {
+            // Validate the input data
             $validatedData = $request->validate([
                 'last_name' => 'required|string|max:255',
                 'first_name' => 'required|string|max:255',
@@ -591,29 +592,41 @@ class DashboardController extends Controller
                 'password' => 'required|string|min:8|confirmed',
             ]);
 
-            $email_token =Str::random(40);            
+            $email_token = Str::random(40);
 
-            $user = User::create([
-                'last_name' => $validatedData['last_name'],
-                'first_name' => $validatedData['first_name'],
-                'email' => $validatedData['email'],
-                'password' => Hash::make($validatedData['password']),                
+            // Prepare role data based on the checkboxes
+            $roles = [
+                'class_list' => $request->has('classList') ? 1 : 0,
+                'course_setup' => $request->has('courseSetup') ? 1 : 0,
+                'score_sheet' => $request->has('scoreSheet') ? 1 : 0,
+                'grading_system' => $request->has('gradingSystem') ? 1 : 0,
+                'access_setup' => $request->has('accessSetup') ? 1 : 0,
+                'hod_setup' => $request->has('hodSetup') ? 1 : 0,
+                'result' => $request->has('result') ? 1 : 0,
+                'student' => $request->has('student') ? 1 : 0,
+                'result_entry' => $request->has('resultEntry') ? 1 : 0,
+                'student_registration' => $request->has('studentRegistration') ? 1 : 0,
+                'result_compute' => $request->has('resultCompute') ? 1 : 0,
+                'student_migration' => $request->has('studentMigration') ? 1 : 0,
+                'semester_result' => $request->has('semesterResult') ? 1 : 0,
+                'semester_summary' => $request->has('semesterSummary') ? 1 : 0,
+                'cgpa_summary' => $request->has('cgpaSummary') ? 1 : 0,
+                'student_transcript' => $request->has('studentTranscript') ? 1 : 0,
+            ];
+
+            // Merge validated data with roles
+            $userData = array_merge($validatedData, $roles, [
+                'password' => Hash::make($validatedData['password']),
                 'email_verified_status' => 1,
                 'login_attempts' => 0,
                 'remember_token' => $email_token,
-                // 'user_picture' => 'profile_pictures/blank.jpg',
-                'user_type' => 'admin',                
+                'user_type' => 'Admin',
             ]);
 
-            // $email_message = "We have sent instructions to verify your email, kindly follow instructions to continue, 
-            // please check both your inbox and spam folder.";
-            // session(['email' => $validatedData['email']]);
-            // session(['full_name' => $validatedData['first_name']]);
-            // session(['email_token' => $email_token]);
-            // session(['email_message' => $email_message]);
+            // Create the user with roles
+            $user = User::create($userData);
 
-
-            return redirect()->route('admin-dashboard')->with('success', 'User has been created successfully.');
+            return redirect()->route('users')->with('success', 'User has been created successfully.');
         } catch (ValidationException $e) {
             // Validation failed. Redirect back with validation errors.
             return redirect()->back()->withErrors($e->errors())->withInput();
@@ -622,6 +635,74 @@ class DashboardController extends Controller
             Log::error('Error during user registration: ' . $e->getMessage());
 
             return redirect()->back()->with('error', 'An error occurred during registration. Please try again.');
+        }
+    }
+
+    public function editUser($id)
+    {
+        $user = User::findorFail($id);
+
+        return view('auth.edit-user',compact('user'));
+    }
+
+    public function editUserAction(Request $request, $id)
+    {
+        try {
+            // Validate the input data
+            $validatedData = $request->validate([
+                'last_name' => 'required|string|max:255',
+                'first_name' => 'required|string|max:255',
+                'email' => 'required|email|unique:users,email,' . $id, 
+                'password' => 'nullable|string|min:8|confirmed',  
+            ]);
+
+            // Find the user by ID
+            $user = User::findOrFail($id);
+
+            // If the password is provided, hash it before updating
+            if ($request->filled('password')) {
+                $validatedData['password'] = Hash::make($validatedData['password']);
+            } else {
+                // If password is not provided, retain the current password
+                unset($validatedData['password']);
+            }
+
+            // Prepare role data based on the checkboxes
+            $roles = [
+                'class_list' => $request->has('classList') ? 1 : 0,
+                'course_setup' => $request->has('courseSetup') ? 1 : 0,
+                'score_sheet' => $request->has('scoreSheet') ? 1 : 0,
+                'grading_system' => $request->has('gradingSystem') ? 1 : 0,
+                'access_setup' => $request->has('accessSetup') ? 1 : 0,
+                'hod_setup' => $request->has('hodSetup') ? 1 : 0,
+                'result' => $request->has('result') ? 1 : 0,
+                'student' => $request->has('student') ? 1 : 0,
+                'result_entry' => $request->has('resultEntry') ? 1 : 0,
+                'student_registration' => $request->has('studentRegistration') ? 1 : 0,
+                'result_compute' => $request->has('resultCompute') ? 1 : 0,
+                'student_migration' => $request->has('studentMigration') ? 1 : 0,
+                'semester_result' => $request->has('semesterResult') ? 1 : 0,
+                'semester_summary' => $request->has('semesterSummary') ? 1 : 0,
+                'cgpa_summary' => $request->has('cgpaSummary') ? 1 : 0,
+                'student_transcript' => $request->has('studentTranscript') ? 1 : 0,
+            ];
+
+            // Merge roles with the validated data
+            $userData = array_merge($validatedData, $roles);
+
+            // Update the user with new data (including roles)
+            $user->update($userData);
+
+            return redirect()->route('users')->with('success', 'User has been updated successfully.');
+        } catch (ValidationException $e) {
+            // Validation failed. Redirect back with validation errors.
+            Log::error('Error during user update: ' . $e->getMessage());
+            return redirect()->back()->withErrors($e->errors())->withInput();
+        } catch (Exception $e) {
+            // Log the error
+            Log::error('Error during user update: ' . $e->getMessage());
+
+            return redirect()->back()->with('error', 'An error occurred during the update. Please try again.');
         }
     }
 
@@ -763,6 +844,12 @@ class DashboardController extends Controller
             // Log the error or redirect to a generic error page
             return redirect('generic-error')->with('error', 'An unexpected error occurred');
         }
+        
+    }
+
+    public function testFile()
+    {
+        return view('layout.test-file');
         
     }
    

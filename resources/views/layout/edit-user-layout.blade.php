@@ -2,7 +2,7 @@
 <html lang="en">
 
 
-<!-- index.html  21 Nov 2019 03:44:50 GMT -->
+<!-- basic-form.html  21 Nov 2019 03:54:41 GMT -->
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
@@ -16,16 +16,30 @@
   <link rel="stylesheet" href="{{asset('dashboard/assets/css/custom.css')}}">
   <link rel='shortcut icon' type='image/x-icon' href="{{asset('dashboard/assets/img/favicon.png')}}" />
   <style>
-    .black-link {
-    color: black;
-    font-weight: bold;
+    /* Success Alert */
+    .alert.alert-success {
+        background-color: #28a745; /* Green background color */
+        color: #fff; /* White text color */
+        padding: 10px; /* Padding around the text */
+        border-radius: 5px; /* Rounded corners */
     }
 
-    .black-link:hover {
-        color: black;
-
+    /* Error Alert */
+    .alert.alert-danger {
+        background-color: #dc3545; /* Red background color */
+        color: #fff; /* White text color */
+        padding: 10px; /* Padding around the text */
+        border-radius: 5px; /* Rounded corners */
     }
-  </style>
+</style>
+<style type="text/css">
+.style2 {
+	color: #006600;
+	font-weight: bold;
+}
+.style3 {font-weight: bold}
+.style7 {color: #0000FF; font-weight: bold; }
+</style>
 </head>
 
 <body>
@@ -64,8 +78,8 @@
       <div class="main-sidebar sidebar-style-2">
         <aside id="sidebar-wrapper">
           <div class="sidebar-brand">
-            <a href="{{route('admin-dashboard')}}"> <img alt="image" src="{{asset('dashboard/assets/img/logo.png')}}" class="header-logo" /> <span
-                class="logo-name">E-Result</span>
+            <a href="{{route('dashboard')}}"> <img alt="image" src="{{asset('dashboard/assets/img/logo.png')}}" class="header-logo" /> <span
+                class="logo-name">E-Transcript</span>
             </a>
           </div>
           <ul class="sidebar-menu">
@@ -163,7 +177,14 @@
       <!-- Main Content -->
       <div class="main-content">
         <section class="section">
-        @if(session('success'))
+          <div class="section-body">
+            <div class="row">
+              <div class="col-12 col-md-6 col-lg-6">
+                <div class="card">
+                  <div class="card-header">
+                    <h4>Edit User | <a href="{{route('users')}}">Users List</a></h4>
+                  </div>
+                  @if(session('success'))
                     <div class="alert alert-success">
                       {{ session('success') }}
                     </div>
@@ -172,206 +193,189 @@
                       {{ session('error') }}
                     </div>
                     @endif	
-        <div class="row ">
+                  <div class="card-body">
+                  <form action="{{ route('edit-user.action', ['id' => $user->id]) }}" method="post">
+                    @csrf
+                    @method('PUT')
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" class="form-control" name="email" value="{{ old('email', $user->email) }}" required>
+                    </div>
+                    @error('email')
+                        <span class="invalid-feedback">{{ $message }}</span>
+                    @enderror
 
-        <div class="col-xl-3 col-lg-6">
-                <div class="card l-bg-cyan">
-                  <div class="card-statistic-3">
-                    <div class="card-icon card-icon-large"><i class="fa fa-briefcase"></i></div>
-                    <div class="card-content">
-                      <h4 class="card-title">Users - {{$users->count()}}</h4>
-                      <span><strong></strong></span>
-                      <div class="progress mt-1 mb-1" data-height="8">
-                        <div class="progress-bar l-bg-orange" role="progressbar" data-width="{{$users->count()}}" aria-valuenow="{{$users->count()}}"
-                          aria-valuemin="0" aria-valuemax="{{$users->count()}}"></div>
-                      </div>
-                      <div> <a href="{{route('users')}}" class="black-link">Check list of users</a></div>
+                    <div class="form-group">
+                        <label>Last Name</label>
+                        <input type="text" class="form-control" name="last_name" value="{{ old('last_name', $user->last_name) }}" required>
                     </div>
-                  </div>
-                </div>
-              </div>
+                    @error('last_name')
+                        <span class="invalid-feedback">{{ $message }}</span>
+                    @enderror
 
-              <div class="col-xl-3 col-lg-6">
-                <div class="card l-bg-green">
-                  <div class="card-statistic-3">
-                    <div class="card-icon card-icon-large"><i class="fa fa-award"></i></div>
-                    <div class="card-content">
-                      <h4 class="card-title">No of Request - {{$user_requests->count()}}</h4>
-                      <span><strong></strong></span>
-                      <div class="progress mt-1 mb-1" data-height="8">
-                        <div class="progress-bar l-bg-purple" role="progressbar" data-width="{{$user_requests->count()}}" aria-valuenow="{{$user_requests->count()}}"
-                          aria-valuemin="0" aria-valuemax="{{$user_requests->count()}}"></div>
-                      </div>
-                      <div> <a href="{{route('transcript-request')}}" class="black-link">Check list of transcript requests</a></div>
+                    <div class="form-group">
+                        <label>First Name</label>
+                        <input type="text" class="form-control" name="first_name" value="{{ old('first_name', $user->first_name) }}" required>
                     </div>
-                  </div>
-                </div>
-              </div>    
-              
-              <div class="col-xl-3 col-lg-6">
-                <div class="card l-bg-orange">
-                  <div class="card-statistic-3">
-                    <div class="card-icon card-icon-large"><i class="fa fa-money-bill-alt"></i></div>
-                    <div class="card-content">
-                      <h4 class="card-title">Transcript Uploads - {{$user_transcript->count()}}</h4>
-                      <span></span>
-                      <div class="progress mt-1 mb-1" data-height="8">
-                        <div class="progress-bar l-bg-green" role="progressbar" data-width="" aria-valuenow=""
-                          aria-valuemin="0" aria-valuemax="10000"></div>
-                      </div>
-                      <div> <a href="{{route('user-transcript-upload')}}" class="black-link">Check list of transcript uploads</a></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-            </div>
+                    @error('first_name')
+                        <span class="invalid-feedback">{{ $message }}</span>
+                    @enderror
 
-          <div class="row ">
-            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
-              <div class="card">
-                <div class="card-statistic-4">
-                  <div class="align-items-center justify-content-between">
-                    <div class="row ">
-                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
-                        <div class="card-content">
-                        <h2 class="mb-3 font-16"><strong><a href="{{route('admin-dashboard')}}" class="black-link">Dashboard</a></strong></h2>                                                 
-                        </div>
-                      </div>
-                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
-                        <div class="banner-img">
-                        <a href=""><img src="{{asset('dashboard/assets/img/d2.png')}}" alt=""></a>
-                        </div>
-                      </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" class="form-control" name="password" value="" autocomplete="new-password">
                     </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
-              <div class="card">
-                <div class="card-statistic-4">
-                  <div class="align-items-center justify-content-between">
-                    <div class="row ">
-                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
-                        <div class="card-content">
-                        <h2 class="mb-3 font-16"><strong><a href="{{route('transcript-request')}}" class="black-link">Transcript Requests</a></strong></h2>                        
-                        </div>
-                      </div>
-                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
-                        <div class="banner-img">
-                        <a href=""><img src="{{asset('dashboard/assets/img/d3.png')}}" alt=""></a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
-              <div class="card">
-                <div class="card-statistic-4">
-                  <div class="align-items-center justify-content-between">
-                    <div class="row ">
-                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3"><div class="card-content">
-                        <h2 class="mb-3 font-16"><strong><a href="{{ route('admin-account-setting', ['id' => auth()->user()->id]) }}" class="black-link">Account Settings</a></strong></h2>                         
-                        </div>
-                      </div>
-                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
-                        <div class="banner-img">
-                        <a href=""> <img src="{{asset('dashboard/assets/img/d4.png')}}" alt=""></a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
-              <div class="card">
-                <div class="card-statistic-4">
-                  <div class="align-items-center justify-content-between">
-                    <div class="row ">
-                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
-                        <div class="card-content">
-                        <h2 class="mb-3 font-16"><strong><a href="{{route('users')}}" class="black-link">Users</a></strong></h2>                          
-                        </div>
-                      </div>
-                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
-                        <div class="banner-img">
-                        <a href=""> <img src="{{asset('dashboard/assets/img/d5.png')}}" alt=""></a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <div class="row">
-            <div class="col-12">
-              <div class="card">
-                <div class="card-header">
-                  <h4>Transcript Requests</h4>
-                  <div class="card-header-form">
-                    <form>
-                      <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search">
-                        <div class="input-group-btn">
-                          <button class="btn btn-primary"><i class="fas fa-search"></i></button>
-                        </div>
-                      </div>
-                    </form>
-                  </div>
-                </div>
-                <div class="card-body p-0">
-                  <div class="table-responsive">
-                    <table class="table table-striped">
-                      <tr>           
-                      <th></th>             
-                        <th>Request ID</th>
-                        <th>Email Address</th>
-                        <th>Matric No</th>
-                        <th>Full Name</th>
-                        <th>Graduation Year</th>
-                        <th>Programme</th>
-                        <th>Clearance No</th>
-                        <th>Date</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                      </tr>
+                    @error('password')
+                        <span class="invalid-feedback">{{ $message }}</span>
+                    @enderror
 
-                      @if ($user_requests->count() > 0)
-			@foreach ($user_requests as $rd)
-                      <tr> 
-                        <td></td>                       
-                        <td>{{$rd->request_id}}</td>
-                        <td>{{$rd->email}}</td>
-                        <td>{{$rd->matric_no}}</td>
-                        <td>{{$rd->certificate_name}}</td>
-                        <td>{{$rd->graduation_year}}</td>
-                        <td>{{$rd->programme}}</td>
-                        <td>{{$rd->clearance_no}}</td>
-                        <td>{{$rd->created_at}}</td>
-                        <td>{{$rd->certificate_status}}</td>
-                        <td><a href="{{ route('transcript-request-view', ['id' => $rd->id]) }}" class="btn btn-outline-primary">View</a></td>
-                      </tr>  
-                      @endforeach
-		@else
-		<tr>
-			<td colspan="8">Transcript request not available.</td>
-		</tr>
-		@endif                                   
+                    <div class="form-group">
+                        <label>Confirm Password</label>
+                        <input type="password" class="form-control" name="password_confirmation" value="">
+                    </div>
+                    <hr>
+                    <h5>User Roles</h5>
+                    <span class="style2">Module</span> : <span class="style7">Sub-module</span>
+                    <table width="516" border="1" cellpadding="3" cellspacing="3">
+                        <tr>
+                            <td width="31">
+                                <input type="checkbox" name="classList" id="classList" {{ $user->class_list ? 'checked' : '' }} />
+                            </td>
+                            <td width="214">
+                                <span class="style2"><i class="fas fa-list"></i> ClassList</span>
+                            </td>
+                            <td width="42">
+                                <input name="courseSetup" type="checkbox" class="style3" id="courseSetup" {{ $user->course_setup ? 'checked' : '' }} />
+                            </td>
+                            <td width="209">
+                                <span class="style2"><i class="fas fa-cogs"></i> Course Setup</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="checkbox" name="scoreSheet" id="scoreSheet" {{ $user->score_sheet ? 'checked' : '' }} />
+                            </td>
+                            <td>
+                                <span class="style2"><i class="fas fa-chart-bar"></i> Score Sheet</span>
+                            </td>
+                            <td>
+                                <input name="gradingSystem" type="checkbox" id="gradingSystem" {{ $user->grading_system ? 'checked' : '' }} />
+                            </td>
+                            <td>
+                                <span class="style2"><i class="fas fa-ruler"></i> Grading System</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="checkbox" name="accessSetup" id="accessSetup" {{ $user->access_setup ? 'checked' : '' }} />
+                            </td>
+                            <td>
+                                <span class="style2"><i class="fas fa-unlock"></i> Access Setup</span>
+                            </td>
+                            <td>
+                                <input name="hodSetup" type="checkbox" id="hodSetup" {{ $user->hod_setup ? 'checked' : '' }} />
+                            </td>
+                            <td>
+                                <span class="style2"><i class="fas fa-user-tie"></i> Hod Setup</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="checkbox" name="result" id="result" {{ $user->result ? 'checked' : '' }} />
+                            </td>
+                            <td>
+                                <span class="style2"><i class="fas fa-file-alt"></i> Result Module</span>
+                            </td>
+                            <td>
+                                <input name="student" type="checkbox" id="student" {{ $user->student ? 'checked' : '' }} />
+                            </td>
+                            <td>
+                                <span class="style2"><i class="fas fa-user-graduate"></i> Student Module</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="checkbox" name="resultEntry" id="resultEntry" {{ $user->result_entry ? 'checked' : '' }} />
+                            </td>
+                            <td>
+                                <span class="style7"><i class="fas fa-keyboard"></i> Result Entry</span>
+                            </td>
+                            <td>
+                                <input name="studentRegistration" type="checkbox" id="studentRegistration" {{ $user->student_registration ? 'checked' : '' }} />
+                            </td>
+                            <td>
+                                <span class="style7"><i class="fas fa-user-plus"></i> Student Registration</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="checkbox" name="resultCompute" id="resultCompute" {{ $user->result_compute ? 'checked' : '' }} />
+                            </td>
+                            <td>
+                                <span class="style7"><i class="fas fa-calculator"></i> Result Compute</span>
+                            </td>
+                            <td>
+                                <input name="studentMigration" type="checkbox" id="studentMigration" {{ $user->student_migration ? 'checked' : '' }} />
+                            </td>
+                            <td>
+                                <span class="style7"><i class="fas fa-exchange-alt"></i> Student Migration</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="checkbox" name="semesterResult" id="semesterResult" {{ $user->semester_result ? 'checked' : '' }} />
+                            </td>
+                            <td>
+                                <span class="style7"><i class="fas fa-clipboard"></i> Semester Result</span>
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="checkbox" name="semesterSummary" id="semesterSummary" {{ $user->semester_summary ? 'checked' : '' }} />
+                            </td>
+                            <td>
+                                <span class="style7"><i class="fas fa-chart-line"></i> Semester Result Summary</span>
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="checkbox" name="cgpaSummary" id="cgpaSummary" {{ $user->cgpa_summary ? 'checked' : '' }} />
+                            </td>
+                            <td>
+                                <span class="style7"><i class="fas fa-graduation-cap"></i> CGPA Summary</span>
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="checkbox" name="studentTranscript" id="studentTranscript" {{ $user->student_transcript ? 'checked' : '' }} />
+                            </td>
+                            <td>
+                                <span class="style7"><i class="fas fa-file-signature"></i> Student Transcript</span>
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
                     </table>
-                    {{ $user_requests->links() }}
-                  </div>
-                </div>
+
+
+                    <div class="card-footer text-right">
+                        <input class="btn btn-primary mr-1" type="submit" value="Update" />
+                        <input class="btn btn-secondary" type="reset" value="Reset" />
+                    </div>
+                </form>
+
+                  
+                </div>               
+
               </div>
             </div>
           </div>
-          
-          
         </section>
         <div class="settingSidebar">
           <a href="javascript:void(0)" class="settingPanelToggle"> <i class="fa fa-spin fa-cog"></i>
@@ -474,8 +478,8 @@
       </footer>
     </div>
   </div>
-  <!-- General JS Scripts -->
-  <script src="{{asset('dashboard/assets/js/app.min.js')}}"></script>
+   <!-- General JS Scripts -->
+   <script src="{{asset('dashboard/assets/js/app.min.js')}}"></script>
   <!-- JS Libraies -->
   <script src="{{asset('dashboard/assets/bundles/apexcharts/apexcharts.min.js')}}"></script>
   <!-- Page Specific JS File -->
@@ -487,5 +491,5 @@
 </body>
 
 
-<!-- index.html  21 Nov 2019 03:47:04 GMT -->
+<!-- basic-form.html  21 Nov 2019 03:54:41 GMT -->
 </html>

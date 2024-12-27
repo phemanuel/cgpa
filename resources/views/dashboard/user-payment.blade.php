@@ -1,5 +1,5 @@
 @extends('layout.user-payment-layout')
-@section('pageTitle', isset($pageTitle) ? $pageTitle : 'E-Transcript :: Payment')
+@section('pageTitle', isset($pageTitle) ? $pageTitle : 'E-Result :: Payment')
 @section('content')
     content here
 @endsection
