@@ -21,6 +21,15 @@ class UserSeeder extends Seeder
                 'phone_no' => '23409073829919',
                 'email' => 'admin@gmail.com',
                 'password' => bcrypt('password'),
+                'user_type' => 'Superadmin',
+                'user_type_status' => 1,
+            ],
+            [
+                'last_name' => 'Markenz',
+                'first_name' => 'Paul',
+                'phone_no' => '23409073829919',
+                'email' => 'mark@gmail.com',
+                'password' => bcrypt('password'),
                 'user_type' => 'Admin',
                 'user_type_status' => 1,
             ],
@@ -31,7 +40,7 @@ class UserSeeder extends Seeder
                 'email' => 'instructor@gmail.com',
                 'password' => bcrypt('password'),
                 'user_type' => 'Instructor',
-                'user_type_status' => 2,
+                'user_type_status' => 3,
             ],
             [
                 'last_name' => 'Doe',
@@ -40,7 +49,7 @@ class UserSeeder extends Seeder
                 'email' => 'student@gmail.com',
                 'password' => bcrypt('password'),
                 'user_type' => 'Student',
-                'user_type_status' => 3,
+                'user_type_status' => 4,
             ],
         ];
         

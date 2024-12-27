@@ -82,6 +82,10 @@ Route::post('/reset-password', [CustomForgotPasswordController::class, 'resetPas
         ->name('edit-user');
         Route::put('user/edit/{id}', [DashboardController::class, 'editUserAction'])
         ->name('edit-user.action');
+        Route::get('instructors', [DashboardController::class, 'instructors'])
+        ->name('instructors'); 
+        Route::get('students', [DashboardController::class, 'students'])
+        ->name('student'); 
 
         Route::get('class-list', [DashboardController::class, 'classList'])
         ->name('class-list'); 

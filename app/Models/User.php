@@ -24,6 +24,7 @@ class User extends Authenticatable
         'password',
         'phone_no',        
         'user_type',
+        'user_type_status',
         'email_verified_status',
         'login_attempts',
         'class_list',

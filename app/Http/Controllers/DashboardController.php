@@ -60,7 +60,7 @@ class DashboardController extends Controller
         try {
             $user_id = auth()->user()->id;
             // Query all admin user
-            $users = User::where('user_type', '=', 'admin')->get();
+            $users = User::whereIn('user_type_status', [1, 2])->get();
 
             // Query successful payment transactions
             $successful_transactions = PaymentTransaction::where('transaction_status', 'Successful')->get();
@@ -564,9 +564,24 @@ class DashboardController extends Controller
     public function Users()
     {
         try {
-            $users = User::where('user_type', '=', 'admin')->paginate(10);
+            $users = User::whereIn('user_type_status', [1, 2])->paginate(10);
             
             return view('auth.users', compact('users'));
+        } catch (\Exception $e) {
+            // Handle any exceptions that may occur
+            // Log the error or redirect to a generic error page
+            return redirect('generic-error')->with('error', 'An unexpected error occurred');
+        }
+         
+
+    }
+
+    public function instructors()
+    {
+        try {
+            $users = User::where('user_type_status', '3')->paginate(10);
+            
+            return view('layout.instructors', compact('users'));
         } catch (\Exception $e) {
             // Handle any exceptions that may occur
             // Log the error or redirect to a generic error page
@@ -590,6 +605,7 @@ class DashboardController extends Controller
                 'first_name' => 'required|string|max:255',
                 'email' => 'required|email|unique:users',
                 'password' => 'required|string|min:8|confirmed',
+                'userType' => 'required|string',
             ]);
 
             $email_token = Str::random(40);
@@ -614,13 +630,27 @@ class DashboardController extends Controller
                 'student_transcript' => $request->has('studentTranscript') ? 1 : 0,
             ];
 
+            if($validatedData['userType'] == 'Superadmin') {
+                $userTypeStatus = 1;
+            }
+            elseif($validatedData['userType'] == 'Admin') {
+                $userTypeStatus = 2;
+            }
+            elseif($validatedData['userType'] == 'Instructor') {
+                $userTypeStatus = 3;
+            }
+            elseif($validatedData['userType'] == 'Student') {
+                $userTypeStatus = 4;
+            }
+
             // Merge validated data with roles
             $userData = array_merge($validatedData, $roles, [
                 'password' => Hash::make($validatedData['password']),
                 'email_verified_status' => 1,
                 'login_attempts' => 0,
                 'remember_token' => $email_token,
-                'user_type' => 'Admin',
+                'user_type' => $validatedData['userType'],
+                'user_type_status' => $userTypeStatus,
             ]);
 
             // Create the user with roles
@@ -653,7 +683,8 @@ class DashboardController extends Controller
                 'last_name' => 'required|string|max:255',
                 'first_name' => 'required|string|max:255',
                 'email' => 'required|email|unique:users,email,' . $id, 
-                'password' => 'nullable|string|min:8|confirmed',  
+                'password' => 'nullable|string|min:8|confirmed', 
+                'userType' => 'required|string', 
             ]);
 
             // Find the user by ID
@@ -687,8 +718,22 @@ class DashboardController extends Controller
                 'student_transcript' => $request->has('studentTranscript') ? 1 : 0,
             ];
 
-            // Merge roles with the validated data
-            $userData = array_merge($validatedData, $roles);
+            if ($validatedData['userType'] == 'Superadmin') {
+                $userType = ['user_type' => 'Superadmin'];
+                $userTypeStatus = ['user_type_status' => 1];
+            } elseif ($validatedData['userType'] == 'Admin') {
+                $userType = ['user_type' => 'Admin'];
+                $userTypeStatus = ['user_type_status' => 2];
+            } elseif ($validatedData['userType'] == 'Instructor') {
+                $userType = ['user_type' => 'Instructor'];
+                $userTypeStatus = ['user_type_status' => 3];
+            } elseif ($validatedData['userType'] == 'Student') {
+                $userType = ['user_type' => 'Student'];
+                $userTypeStatus = ['user_type_status' => 4];
+            }
+
+            // Merge roles and user type status with the validated data
+            $userData = array_merge($validatedData, $roles, $userTypeStatus,$userType);
 
             // Update the user with new data (including roles)
             $user->update($userData);

@@ -50,7 +50,7 @@
                 class="user-img-radious-style"> <span class="d-sm-none d-lg-inline-block"></span></a>
             <div class="dropdown-menu dropdown-menu-right pullDown">
               <div class="dropdown-title">Hello {{auth()->user()->first_name}}</div> 
-              <a href="{{ route('account-setting', ['id' => auth()->user()->id]) }}" class="dropdown-item has-icon"> <i class="fas fa-cog"></i>
+              <a href="{{ route('admin-account-setting', ['id' => auth()->user()->id]) }}" class="dropdown-item has-icon"> <i class="fas fa-cog"></i>
                 Account Settings
               </a>
               <div class="dropdown-divider"></div>
@@ -64,7 +64,7 @@
       <div class="main-sidebar sidebar-style-2">
         <aside id="sidebar-wrapper">
           <div class="sidebar-brand">
-            <a href="{{route('dashboard')}}"> <img alt="image" src="{{asset('dashboard/assets/img/logo.png')}}" class="header-logo" /> <span
+            <a href="{{route('admin-dashboard')}}"> <img alt="image" src="{{asset('dashboard/assets/img/logo.png')}}" class="header-logo" /> <span
                 class="logo-name">E-Result</span>
             </a>
           </div>
@@ -218,7 +218,27 @@
       <!-- Main Content -->
       <div class="main-content">
         <section class="section">
-        @if(session('success'))
+        
+        <div class="row ">
+              <div class="col-xl-3 col-lg-6">
+                <div class="card l-bg-green">
+                  <div class="card-statistic-3">
+                    <div class="card-icon card-icon-large"><i class="fa fa-award"></i></div>
+                    <div class="card-content">
+                      <h4 class="card-title">Instructors - {{$users->count()}}</h4>
+                      <span><strong></strong></span>
+                      <div class="progress mt-1 mb-1" data-height="8">
+                        <div class="progress-bar l-bg-purple" role="progressbar" data-width="{{$users->count()}}" aria-valuenow="{{$users->count()}}"
+                          aria-valuemin="0" aria-valuemax="{{$users->count()}}"></div>
+                      </div>
+                      
+                    </div>
+                  </div>
+                </div>
+              </div> 
+              
+            </div>
+            @if(session('success'))
                     <div class="alert alert-success">
                       {{ session('success') }}
                     </div>
@@ -227,220 +247,60 @@
                       {{ session('error') }}
                     </div>
                     @endif	
-        <div class="row ">
-              <div class="col-xl-3 col-lg-6">
-                <div class="card l-bg-green">
-                  <div class="card-statistic-3">
-                    <div class="card-icon card-icon-large"><i class="fa fa-award"></i></div>
-                    <div class="card-content">
-                      <h4 class="card-title">No of Request - {{$user_request->count()}}</h4>
-                      <span><strong></strong></span>
-                      <div class="progress mt-1 mb-1" data-height="8">
-                        <div class="progress-bar l-bg-purple" role="progressbar" data-width="{{$user_request->count()}}" aria-valuenow="{{$user_request->count()}}"
-                          aria-valuemin="0" aria-valuemax="{{$user_request->count()}}"></div>
-                      </div>
-                      
-                    </div>
-                  </div>
-                </div>
-              </div>    
-              
-              <div class="col-xl-3 col-lg-6">
-                <div class="card l-bg-cyan">
-                  <div class="card-statistic-3">
-                    <div class="card-icon card-icon-large"><i class="fa fa-briefcase"></i></div>
-                    <div class="card-content">
-                      <h4 class="card-title">Payment - {{$user_payment->count()}}</h4>
-                      <span><strong></strong></span>
-                      <div class="progress mt-1 mb-1" data-height="8">
-                        <div class="progress-bar l-bg-orange" role="progressbar" data-width="{{$user_payment->count()}}" aria-valuenow="{{$user_payment->count()}}"
-                          aria-valuemin="0" aria-valuemax="{{$user_payment->count()}}"></div>
-                      </div>
-                      <div><a href="{{route('payment-report')}}" class="black-link">Check payment history</a></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-xl-3 col-lg-6">
-                <div class="card l-bg-orange">
-                  <div class="card-statistic-3">
-                    <div class="card-icon card-icon-large"><i class="fa fa-money-bill-alt"></i></div>
-                    <div class="card-content">
-                      <h4 class="card-title">Transcript - {{$user_transcript->count()}}</h4>
-                      <span></span>
-                      <div class="progress mt-1 mb-1" data-height="8">
-                        <div class="progress-bar l-bg-green" role="progressbar" data-width="" aria-valuenow=""
-                          aria-valuemin="0" aria-valuemax="10000"></div>
-                      </div>
-                      
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-           
-
-          <div class="row ">
-            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
-              <div class="card">
-                <div class="card-statistic-4">
-                  <div class="align-items-center justify-content-between">
-                    <div class="row ">
-                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
-                        <div class="card-content">
-                        <h2 class="mb-3 font-16"><strong><a href="{{route('dashboard')}}" class="black-link">Dashboard</a></strong></h2>                                                 
-                        </div>
-                      </div>
-                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
-                        <div class="banner-img">
-                        <a href=""><img src="{{asset('dashboard/assets/img/d2.png')}}" alt=""></a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
-              <div class="card">
-                <div class="card-statistic-4">
-                  <div class="align-items-center justify-content-between">
-                    <div class="row ">
-                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
-                        <div class="card-content">
-                        <h2 class="mb-3 font-16"><strong><a href="{{route('user-request')}}" class="black-link">Request Transcript</a></strong></h2>                        
-                        </div>
-                      </div>
-                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
-                        <div class="banner-img">
-                        <a href=""><img src="{{asset('dashboard/assets/img/d3.png')}}" alt=""></a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
-              <div class="card">
-                <div class="card-statistic-4">
-                  <div class="align-items-center justify-content-between">
-                    <div class="row ">
-                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3"><div class="card-content">
-                        <h2 class="mb-3 font-16"><strong><a href="{{ route('account-setting', ['id' => auth()->user()->id]) }}" class="black-link">Account Settings</a></strong></h2>                         
-                        </div>
-                      </div>
-                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
-                        <div class="banner-img">
-                        <a href=""> <img src="{{asset('dashboard/assets/img/d4.png')}}" alt=""></a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
-              <div class="card">
-                <div class="card-statistic-4">
-                  <div class="align-items-center justify-content-between">
-                    <div class="row ">
-                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
-                        <div class="card-content">
-                        <h2 class="mb-3 font-16"><strong><a href="{{route('contact-us')}}" class="black-link">Contact Us</a></strong></h2>                          
-                        </div>
-                      </div>
-                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
-                        <div class="banner-img">
-                        <a href=""> <img src="{{asset('dashboard/assets/img/d5.png')}}" alt=""></a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          
-          
           <div class="row">
-            <div class="col-md-6 col-lg-12 col-xl-6">
-              <!-- Support tickets -->
+            <div class="col-12">
               <div class="card">
                 <div class="card-header">
-                  <h4>Transcript Status</h4>                  
+                  <h4></h4>
+                  <div class="card-header-form">
+                    <form>                    
+                      <div class="input-group">
+                      <a href="{{route('add-user')}}" class="btn btn-primary">Add Instructor</a>
+                        <!-- <input type="text" class="form-control" placeholder="Search"> -->
+                        <!-- <div class="input-group-btn">
+                          <button class="btn btn-primary"><i class="fas fa-search"></i></button>
+                        </div> -->
+                      </div>
+                    </form>
+                  </div>
                 </div>
-                @if ($user_track->count() > 0)
-			@foreach ($user_track as $rs)
-                <div class="card-body">                 
-                  <div class="support-ticket media pb-1 mb-3">                 
-                    <img src="{{asset('dashboard/assets/img/blank.jpg')}}" class="user-img mr-2" alt="">
-                    <div class="media-body ml-3">
-                      <div class="badge badge-pill badge-info mb-1 float-right">{{$rs->certificate_status}}</div>
-                      <span class="font-weight-bold">{{$rs->request_id}}</span>
-                      <!-- <a href="javascript:void(0)">About template page load speed</a> -->
-                      <p class="my-1">{{$rs->comments}}</p>
-                      <small class="text-muted">Updated by <span class="font-weight-bold font-13">{{$rs->approved_by}}</span>
-                        &nbsp;&nbsp; on {{ \Carbon\Carbon::parse($rs->created_at)->format('F j, Y, h:i A') }}
-
-</small>
-                    </div>                                     
-                  </div>                 
-                </div>  
-                @endforeach 
-		@else
-    <p>Transcript status not available.</p>		
-		@endif            
-               <p> {{ $user_track->appends(['tab' => 'transcript-status'])->links() }}</p>
-              </div>
-              <!-- Support tickets -->
-            </div>
-            <div class="col-md-6 col-lg-12 col-xl-6">
-              <div class="card">
-                <div class="card-header">
-                  <h4>Transcript Request</h4>
-                </div>
-                <div class="card-body">
+                <div class="card-body p-0">
                   <div class="table-responsive">
-                    <table class="table table-hover mb-0">
-                      <thead>
-                        <tr>                          
-                          <th>Request ID</th>
-                          <th>Matric No</th>
-                          <th>Programme</th>
-                          <th>Graduation Year</th>
-                          <th>Clearance No</th>
-                          <th>Date</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                      @if ($user_request->count() > 0)
-			@foreach ($user_request as $rd)
-                        <tr>
-                          <td>{{$rd->request_id}}</td>
-                          <td>{{$rd->matric_no}}</td>
-                          <td>{{$rd->programme}}</td>
-                          <td>{{$rd->graduation_year}}</td>
-                          <td>{{$rd->clearance_no}}</td>
-                          <td>{{$rd->created_at}}</td>
-                        </tr> 
-                        @endforeach
+                    <table class="table table-striped">
+                      <tr>           
+                      <th>#</th>             
+                        <th>Email Address</th>
+                        <th>Admin Name</th>
+                        <th>Status</th>
+                        <!-- <th>Created On</th> -->
+                        <th>Action</th>
+                      </tr>
+
+                      @if ($users->count() > 0)
+			@foreach ($users as $key => $rd)
+                      <tr> 
+                        <td>{{$key + 1}}</td> 
+                        <td>{{$rd->email}}</td>
+                        <td>{{$rd->last_name . " " . $rd->first_name}}</td>
+                        <td><div class="badge badge-info">{{$rd->user_type}}</div></td>
+                        <!-- <td>{{$rd->created_at}}</td> -->
+                        <td><a href="{{route('edit-user', ['id' => $rd->id])}}" class="btn btn-outline-primary">Edit</a></td>
+                      </tr>  
+                      @endforeach
 		@else
 		<tr>
-			<td colspan="8">Transcript request not available.</td>
+			<td colspan="8">Users not available.</td>
 		</tr>
-		@endif                       
-                      </tbody>
+		@endif                                   
                     </table>
-                    {{ $user_request->appends(['tab' => 'transcript-request'])->links() }}
+                    {{ $users->links() }}
                   </div>
                 </div>
               </div>
             </div>
           </div>
+          
+          
         </section>
         <div class="settingSidebar">
           <a href="javascript:void(0)" class="settingPanelToggle"> <i class="fa fa-spin fa-cog"></i>
