@@ -110,10 +110,10 @@
               </ul>
             </li>
             <li class="dropdown">
-              <a href="{{route('course-setup')}}" class="nav-link"><i data-feather="book"></i><span>Course Setup</span></a>
+              <a href="{{route('course-setup')}}" class="nav-link"><i data-feather="book"></i><span>Course</span></a>
             </li>
             <li class="dropdown">
-              <a href="{{route('hod-setup')}}" class="nav-link"><i data-feather="briefcase"></i><span>HOD Setup</span></a>
+              <a href="{{route('hod-setup')}}" class="nav-link"><i data-feather="briefcase"></i><span>HOD</span></a>
             </li>
             <li class="dropdown">
               <a href="{{route('grading')}}" class="nav-link"><i data-feather="slack"></i><span>Grading System</span></a>
@@ -161,10 +161,10 @@
               </ul>
             </li>
             <li class="dropdown">
-              <a href="{{route('course-setup')}}" class="nav-link"><i data-feather="book"></i><span>Course Setup</span></a>
+              <a href="{{route('course-setup')}}" class="nav-link"><i data-feather="book"></i><span>Course</span></a>
             </li>
             <li class="dropdown">
-              <a href="{{route('hod-setup')}}" class="nav-link"><i data-feather="briefcase"></i><span>HOD Setup</span></a>
+              <a href="{{route('hod-setup')}}" class="nav-link"><i data-feather="briefcase"></i><span>HOD</span></a>
             </li>
             <li class="dropdown">
               <a href="{{route('grading')}}" class="nav-link"><i data-feather="slack"></i><span>Grading System</span></a>
@@ -304,136 +304,180 @@
                     <h5>User Roles</h5>
                     <span class="style2">Module</span> : <span class="style7">Sub-module</span>
                     <table width="516" border="1" cellpadding="3" cellspacing="3">
-                        <tr>
-                            <td width="31">
-                                <input type="checkbox" name="classList" id="classList" {{ $user->class_list ? 'checked' : '' }} />
-                            </td>
-                            <td width="214">
-                                <span class="style2"><i class="fas fa-list"></i> ClassList</span>
-                            </td>
-                            <td width="42">
-                                <input name="courseSetup" type="checkbox" class="style3" id="courseSetup" {{ $user->course_setup ? 'checked' : '' }} />
-                            </td>
-                            <td width="209">
-                                <span class="style2"><i class="fas fa-cogs"></i> Course Setup</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkbox" name="scoreSheet" id="scoreSheet" {{ $user->score_sheet ? 'checked' : '' }} />
-                            </td>
-                            <td>
-                                <span class="style2"><i class="fas fa-chart-bar"></i> Score Sheet</span>
-                            </td>
-                            <td>
-                                <input name="gradingSystem" type="checkbox" id="gradingSystem" {{ $user->grading_system ? 'checked' : '' }} />
-                            </td>
-                            <td>
-                                <span class="style2"><i class="fas fa-ruler"></i> Grading System</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkbox" name="accessSetup" id="accessSetup" {{ $user->access_setup ? 'checked' : '' }} />
-                            </td>
-                            <td>
-                                <span class="style2"><i class="fas fa-unlock"></i> Access Setup</span>
-                            </td>
-                            <td>
-                                <input name="hodSetup" type="checkbox" id="hodSetup" {{ $user->hod_setup ? 'checked' : '' }} />
-                            </td>
-                            <td>
-                                <span class="style2"><i class="fas fa-user-tie"></i> Hod Setup</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkbox" name="result" id="result" {{ $user->result ? 'checked' : '' }} />
-                            </td>
-                            <td>
-                                <span class="style2"><i class="fas fa-file-alt"></i> Result Module</span>
-                            </td>
-                            <td>
-                                <input name="student" type="checkbox" id="student" {{ $user->student ? 'checked' : '' }} />
-                            </td>
-                            <td>
-                                <span class="style2"><i class="fas fa-user-graduate"></i> Student Module</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkbox" name="resultEntry" id="resultEntry" {{ $user->result_entry ? 'checked' : '' }} />
-                            </td>
-                            <td>
-                                <span class="style7"><i class="fas fa-keyboard"></i> Result Entry</span>
-                            </td>
-                            <td>
-                                <input name="studentRegistration" type="checkbox" id="studentRegistration" {{ $user->student_registration ? 'checked' : '' }} />
-                            </td>
-                            <td>
-                                <span class="style7"><i class="fas fa-user-plus"></i> Student Registration</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkbox" name="resultCompute" id="resultCompute" {{ $user->result_compute ? 'checked' : '' }} />
-                            </td>
-                            <td>
-                                <span class="style7"><i class="fas fa-calculator"></i> Result Compute</span>
-                            </td>
-                            <td>
-                                <input name="studentMigration" type="checkbox" id="studentMigration" {{ $user->student_migration ? 'checked' : '' }} />
-                            </td>
-                            <td>
-                                <span class="style7"><i class="fas fa-exchange-alt"></i> Student Migration</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkbox" name="semesterResult" id="semesterResult" {{ $user->semester_result ? 'checked' : '' }} />
-                            </td>
-                            <td>
-                                <span class="style7"><i class="fas fa-clipboard"></i> Semester Result</span>
-                            </td>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkbox" name="semesterSummary" id="semesterSummary" {{ $user->semester_summary ? 'checked' : '' }} />
-                            </td>
-                            <td>
-                                <span class="style7"><i class="fas fa-chart-line"></i> Semester Result Summary</span>
-                            </td>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkbox" name="cgpaSummary" id="cgpaSummary" {{ $user->cgpa_summary ? 'checked' : '' }} />
-                            </td>
-                            <td>
-                                <span class="style7"><i class="fas fa-graduation-cap"></i> CGPA Summary</span>
-                            </td>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkbox" name="studentTranscript" id="studentTranscript" {{ $user->student_transcript ? 'checked' : '' }} />
-                            </td>
-                            <td>
-                                <span class="style7"><i class="fas fa-file-signature"></i> Student Transcript</span>
-                            </td>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
-                        </tr>
-                    </table>
+    <tr>
+        <td width="31">
+            <input type="checkbox" name="classList" id="classList" 
+                   {{ $user->class_list ? 'checked' : '' }} />
+        </td>
+        <td width="214">
+            <span class="style2"><i class="fas fa-list"></i> ClassList</span>
+        </td>
+        <td width="42">
+            <input type="checkbox" name="courseSetup" id="courseSetup" 
+                   {{ $user->course_setup ? 'checked' : '' }} />
+        </td>
+        <td width="209">
+            <span class="style2"><i class="fas fa-cogs"></i> Course Setup</span>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <input type="checkbox" name="scoreSheet" id="scoreSheet" 
+                   {{ $user->score_sheet? 'checked' : '' }} />
+        </td>
+        <td>
+            <span class="style2"><i class="fas fa-chart-bar"></i> Score Sheet</span>
+        </td>
+        <td>
+            <input type="checkbox" name="gradingSystem" id="gradingSystem" 
+                   {{ $user->grading_system ? 'checked' : '' }} />
+        </td>
+        <td>
+            <span class="style2"><i class="fas fa-ruler"></i> Grading System</span>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <input type="checkbox" name="result" id="result" 
+                   {{ $user->result ? 'checked' : '' }} />
+        </td>
+        <td>
+            <span class="style2"><i class="fas fa-file-alt"></i> Result Module</span>
+        </td>
+        <td>
+            <input type="checkbox" name="hodSetup" id="hodSetup" 
+                   {{ $user->hod_setup ? 'checked' : '' }} />
+        </td>
+        <td>
+            <span class="style2"><i class="fas fa-user-tie"></i> HOD Setup</span>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <input type="checkbox" name="resultEntry" id="resultEntry" 
+                   {{ $user->result_entry ? 'checked' : '' }} />
+        </td>
+        <td>
+            <span class="style7"><i class="fas fa-keyboard"></i> Result Entry</span>
+        </td>
+        <td>
+            <input type="checkbox" name="accessSetup" id="accessSetup" 
+                   {{ $user->access_setup ? 'checked' : '' }} />
+        </td>
+        <td>
+            <span class="style2"><i class="fas fa-unlock"></i> Access Setup</span>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <input type="checkbox" name="resultCompute" id="resultCompute" 
+                   {{ $user->result_compute ? 'checked' : '' }} />
+        </td>
+        <td>
+            <span class="style7"><i class="fas fa-calculator"></i> Result Compute</span>
+        </td>
+        <td>
+            <input type="checkbox" name="admins" id="admins" 
+                   {{ $user->admins ? 'checked' : '' }} />
+        </td>
+        <td>
+            <span class="style7"><i class="fas fa-user-shield"></i> Admins</span>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <input type="checkbox" name="semesterResult" id="semesterResult" 
+                   {{ $user->semester_result ? 'checked' : '' }} />
+        </td>
+        <td>
+            <span class="style7"><i class="fas fa-clipboard"></i> Semester Result</span>
+        </td>
+        <td>
+            <input type="checkbox" name="instructors" id="instructors" 
+                   {{ $user->instructors ? 'checked' : '' }} />
+        </td>
+        <td>
+            <span class="style7"><i class="fas fa-chalkboard-teacher"></i> Instructors</span>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <input type="checkbox" name="semesterSummary" id="semesterSummary" 
+                   {{ $user->semester_summary ? 'checked' : '' }} />
+        </td>
+        <td>
+            <span class="style7"><i class="fas fa-chart-line"></i> Semester Result Summary</span>
+        </td>
+        <td>
+            <input type="checkbox" name="students" id="students" 
+                   {{ $user->students ? 'checked' : '' }} />
+        </td>
+        <td>
+            <span class="style7"><i class="fas fa-user-graduate"></i> Students</span>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <input type="checkbox" name="cgpaSummary" id="cgpaSummary" 
+                   {{ $user->cgpa_summary ? 'checked' : '' }} />
+        </td>
+        <td>
+            <span class="style7"><i class="fas fa-graduation-cap"></i> CGPA Summary</span>
+        </td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>
+            <input type="checkbox" name="studentTranscript" id="studentTranscript" 
+                   {{ $user->student_transcript ? 'checked' : '' }} />
+        </td>
+        <td>
+            <span class="style7"><i class="fas fa-file-signature"></i> Transcript</span>
+        </td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>
+            <input type="checkbox" name="student" id="student" 
+                   {{ $user->student ? 'checked' : '' }} />
+        </td>
+        <td>
+            <span class="style2"><i class="fas fa-user-graduate"></i> Student Module</span>
+        </td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>
+            <input type="checkbox" name="studentRegistration" id="studentRegistration" 
+                   {{ $user->student_registration ? 'checked' : '' }} />
+        </td>
+        <td>
+            <span class="style7"><i class="fas fa-user-plus"></i> Student Registration</span>
+        </td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>
+            <input type="checkbox" name="studentMigration" id="studentMigration" 
+                   {{ $user->student_migration ? 'checked' : '' }} />
+        </td>
+        <td>
+            <span class="style7"><i class="fas fa-exchange-alt"></i> Student Migration</span>
+        </td>
+        <td></td>
+        <td></td>
+    </tr>
+</table>
+
 
 
                     <div class="card-footer text-right">
                         <input class="btn btn-primary mr-1" type="submit" value="Update" />
-                        <input class="btn btn-secondary" type="reset" value="Reset" />
+                        <!-- <input class="btn btn-secondary" type="reset" value="Reset" /> -->
                     </div>
                 </form>
 

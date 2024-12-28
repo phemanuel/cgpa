@@ -110,10 +110,10 @@
               </ul>
             </li>
             <li class="dropdown">
-              <a href="{{route('course-setup')}}" class="nav-link"><i data-feather="book"></i><span>Course Setup</span></a>
+              <a href="{{route('course-setup')}}" class="nav-link"><i data-feather="book"></i><span>Course</span></a>
             </li>
             <li class="dropdown">
-              <a href="{{route('hod-setup')}}" class="nav-link"><i data-feather="briefcase"></i><span>HOD Setup</span></a>
+              <a href="{{route('hod-setup')}}" class="nav-link"><i data-feather="briefcase"></i><span>HOD</span></a>
             </li>
             <li class="dropdown">
               <a href="{{route('grading')}}" class="nav-link"><i data-feather="slack"></i><span>Grading System</span></a>
@@ -161,10 +161,10 @@
               </ul>
             </li>
             <li class="dropdown">
-              <a href="{{route('course-setup')}}" class="nav-link"><i data-feather="book"></i><span>Course Setup</span></a>
+              <a href="{{route('course-setup')}}" class="nav-link"><i data-feather="book"></i><span>Course</span></a>
             </li>
             <li class="dropdown">
-              <a href="{{route('hod-setup')}}" class="nav-link"><i data-feather="briefcase"></i><span>HOD Setup</span></a>
+              <a href="{{route('hod-setup')}}" class="nav-link"><i data-feather="briefcase"></i><span>HOD</span></a>
             </li>
             <li class="dropdown">
               <a href="{{route('grading')}}" class="nav-link"><i data-feather="slack"></i><span>Grading System</span></a>
@@ -316,40 +316,34 @@
                       <td><span class="style2"><i class="fas fa-ruler"></i> Grading System</span></td>
                     </tr>
                     <tr>
-                      <td><input type="checkbox" name="accessSetup" id="accessSetup" /></td>
-                      <td><span class="style2"><i class="fas fa-unlock"></i> Access Setup</span></td>
+                      <td><input type="checkbox" name="result" id="result" /></td>
+                      <td><span class="style2"><i class="fas fa-file-alt"></i> Result Module</span></td>
                       <td><input name="hodSetup" type="checkbox" id="hodSetup" /></td>
                       <td><span class="style2"><i class="fas fa-user-tie"></i> Hod Setup</span></td>
                     </tr>
                     <tr>
-                      <td><input type="checkbox" name="result" id="result" /></td>
-                      <td><span class="style2"><i class="fas fa-file-alt"></i> Result Module</span></td>
-                      <td><input name="student" type="checkbox" id="student" /></td>
-                      <td><span class="style2"><i class="fas fa-user-graduate"></i> Student Module</span></td>
-                    </tr>
-                    <tr>
                       <td><input type="checkbox" name="resultEntry" id="resultEntry" /></td>
                       <td><span class="style7"><i class="fas fa-keyboard"></i> Result Entry</span></td>
-                      <td><input name="studentRegistration" type="checkbox" id="studentRegistration" /></td>
-                      <td><span class="style7"><i class="fas fa-user-plus"></i> Student Registration</span></td>
+                      <td><input type="checkbox" name="accessSetup" id="accessSetup" /></td>
+                      <td><span class="style2"><i class="fas fa-unlock"></i> Access Setup</span></td>
                     </tr>
                     <tr>
                       <td><input type="checkbox" name="resultCompute" id="resultCompute" /></td>
                       <td><span class="style7"><i class="fas fa-calculator"></i> Result Compute</span></td>
-                      <td><input name="studentMigration" type="checkbox" id="studentMigration" /></td>
-                      <td><span class="style7"><i class="fas fa-exchange-alt"></i> Student Migration</span></td>
+                      <td><input type="checkbox" name="admins" id="admins" /></td>
+                      <td><span class="style7"><i class="fas fa-user-shield"></i> Admins</span></td>
                     </tr>
                     <tr>
                       <td><input type="checkbox" name="semesterResult" id="semesterResult" /></td>
                       <td><span class="style7"><i class="fas fa-clipboard"></i> Semester Result</span></td>
-                      <td>&nbsp;</td>
-                      <td>&nbsp;</td>
+                      <td><input type="checkbox" name="instructors" id="instructors" /></td>
+                      <td><span class="style7"><i class="fas fa-chalkboard-teacher"> Instructors</span></td>
                     </tr>
                     <tr>
                       <td><input type="checkbox" name="semesterSummary" id="semesterSummary" /></td>
                       <td><span class="style7"><i class="fas fa-chart-line"></i> Semester Result Summary</span></td>
-                      <td>&nbsp;</td>
-                      <td>&nbsp;</td>
+                      <td><input type="checkbox" name="students" id="students" /></td>
+                      <td><span class="style7"><i class="fas fa-user-graduate"> Students</span></td>
                     </tr>
                     <tr>
                       <td><input type="checkbox" name="cgpaSummary" id="cgpaSummary" /></td>
@@ -359,7 +353,25 @@
                     </tr>
                     <tr>
                       <td><input type="checkbox" name="studentTranscript" id="studentTranscript" /></td>
-                      <td><span class="style7"><i class="fas fa-file-signature"></i> Student Transcript</span></td>
+                      <td><span class="style7"><i class="fas fa-file-signature"></i>Transcript</span></td>
+                      <td>&nbsp;</td>
+                      <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                      <td><input name="student" type="checkbox" id="student" /></td>
+                      <td><span class="style2"><i class="fas fa-user-graduate"></i> Student Module</span></td>
+                      <td>&nbsp;</td>
+                      <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                      <td><input name="studentRegistration" type="checkbox" id="studentRegistration" /></td>
+                      <td><span class="style7"><i class="fas fa-user-plus"></i> Student Registration</span></td>
+                      <td>&nbsp;</td>
+                      <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                      <td><input name="studentMigration" type="checkbox" id="studentMigration" /></td>
+                      <td><span class="style7"><i class="fas fa-exchange-alt"></i> Student Migration</span></td>
                       <td>&nbsp;</td>
                       <td>&nbsp;</td>
                     </tr>
@@ -369,7 +381,7 @@
                   </div>
                   <div class="card-footer text-right"> 
                     <input class="btn btn-primary mr-1" type="submit" value="Submit"></input>
-                    <input class="btn btn-secondary" type="reset" value="Reset"></input>
+                    <!-- <input class="btn btn-secondary" type="reset" value="Reset"></input> -->
                   </div>
                     </form>
                   

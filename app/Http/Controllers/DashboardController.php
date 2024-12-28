@@ -567,6 +567,13 @@ class DashboardController extends Controller
     public function Users()
     {
         try {
+            $user = auth()->user();
+            $rolePermission = $user->admins;
+
+            if($rolePermission != 1) {
+                return redirect()->back()->with('error', 'You do not have permission to this module.');
+            }
+        
             $users = User::whereIn('user_type_status', [1, 2])->paginate(10);
             
             return view('auth.users', compact('users'));
@@ -582,6 +589,13 @@ class DashboardController extends Controller
     public function instructors()
     {
         try {
+            $user = auth()->user();
+            $rolePermission = $user->instructors;
+
+            if($rolePermission != 1) {
+                return redirect()->back()->with('error', 'You do not have permission to this module.');
+            }
+        
             $users = User::where('user_type_status', '3')->paginate(10);
             
             return view('layout.instructors', compact('users'));
@@ -597,6 +611,13 @@ class DashboardController extends Controller
     public function students()
     {
         try {
+            $user = auth()->user();
+            $rolePermission = $user->students;
+
+            if($rolePermission != 1) {
+                return redirect()->back()->with('error', 'You do not have permission to this module.');
+            }
+        
             $users = Registration::paginate(10);
             $userCount = Registration::count();
             return view('layout.students', compact('users','userCount'));
@@ -610,7 +631,7 @@ class DashboardController extends Controller
     }
 
     public function addUser()
-    {
+    {        
         return view('auth.add-user');
     }
 
@@ -635,6 +656,9 @@ class DashboardController extends Controller
                 'score_sheet' => $request->has('scoreSheet') ? 1 : 0,
                 'grading_system' => $request->has('gradingSystem') ? 1 : 0,
                 'access_setup' => $request->has('accessSetup') ? 1 : 0,
+                'admins' => $request->has('admins') ? 1 : 0,
+                'instructors' => $request->has('instructors') ? 1 : 0,
+                'students' => $request->has('students') ? 1 : 0,
                 'hod_setup' => $request->has('hodSetup') ? 1 : 0,
                 'result' => $request->has('result') ? 1 : 0,
                 'student' => $request->has('student') ? 1 : 0,
@@ -738,6 +762,9 @@ class DashboardController extends Controller
                 'score_sheet' => $request->has('scoreSheet') ? 1 : 0,
                 'grading_system' => $request->has('gradingSystem') ? 1 : 0,
                 'access_setup' => $request->has('accessSetup') ? 1 : 0,
+                'admins' => $request->has('admins') ? 1 : 0,
+                'instructors' => $request->has('instructors') ? 1 : 0,
+                'students' => $request->has('students') ? 1 : 0,
                 'hod_setup' => $request->has('hodSetup') ? 1 : 0,
                 'result' => $request->has('result') ? 1 : 0,
                 'student' => $request->has('student') ? 1 : 0,

@@ -24,6 +24,9 @@ return new class extends Migration
             $table->integer('course_setup');
             $table->integer('score_sheet');
             $table->integer('access_setup');
+            $table->integer('admins');
+            $table->integer('instructors');
+            $table->integer('students');
             $table->integer('student');
             $table->integer('student_registration');
             $table->integer('student_migration');

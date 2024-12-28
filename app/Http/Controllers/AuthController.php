@@ -122,7 +122,13 @@ class AuthController extends Controller
             if ($user->email_verified_status == 1) {
                 // Email is verified, proceed with login
                 $request->session()->regenerate();
-                if($user->user_type == 'Admin'){
+                if($user->user_type == 'Superadmin'){
+                    return redirect()->route('admin-dashboard');
+                }
+                else if($user->user_type == 'Admin'){
+                    return redirect()->route('admin-dashboard');
+                }
+                else if($user->user_type == 'Instructor'){
                     return redirect()->route('admin-dashboard');
                 }
                 elseif($user->user_type == 'Student'){

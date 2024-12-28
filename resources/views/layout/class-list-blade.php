@@ -2,11 +2,11 @@
 <html lang="en">
 
 
-<!-- index.html  21 Nov 2019 03:44:50 GMT -->
+<!-- basic-form.html  21 Nov 2019 03:54:41 GMT -->
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-  <title>@yield('pageTitle')</title>
+  <title>E-Result :: Class List</title>
   <!-- General CSS Files -->
   <link rel="stylesheet" href="{{asset('dashboard/assets/css/app.min.css')}}">
   <!-- Template CSS -->
@@ -16,16 +16,30 @@
   <link rel="stylesheet" href="{{asset('dashboard/assets/css/custom.css')}}">
   <link rel='shortcut icon' type='image/x-icon' href="{{asset('dashboard/assets/img/favicon.png')}}" />
   <style>
-    .black-link {
-    color: black;
-    font-weight: bold;
+    /* Success Alert */
+    .alert.alert-success {
+        background-color: #28a745; /* Green background color */
+        color: #fff; /* White text color */
+        padding: 10px; /* Padding around the text */
+        border-radius: 5px; /* Rounded corners */
     }
 
-    .black-link:hover {
-        color: black;
-
+    /* Error Alert */
+    .alert.alert-danger {
+        background-color: #dc3545; /* Red background color */
+        color: #fff; /* White text color */
+        padding: 10px; /* Padding around the text */
+        border-radius: 5px; /* Rounded corners */
     }
-  </style>
+</style>
+<style type="text/css">
+.style2 {
+	color: #006600;
+	font-weight: bold;
+}
+.style3 {font-weight: bold}
+.style7 {color: #0000FF; font-weight: bold; }
+</style>
 </head>
 
 <body>
@@ -64,7 +78,7 @@
       <div class="main-sidebar sidebar-style-2">
         <aside id="sidebar-wrapper">
           <div class="sidebar-brand">
-            <a href="{{route('admin-dashboard')}}"> <img alt="image" src="{{asset('dashboard/assets/img/logo.png')}}" class="header-logo" /> <span
+            <a href="{{route('dashboard')}}"> <img alt="image" src="{{asset('dashboard/assets/img/logo.png')}}" class="header-logo" /> <span
                 class="logo-name">E-Result</span>
             </a>
           </div>
@@ -218,27 +232,14 @@
       <!-- Main Content -->
       <div class="main-content">
         <section class="section">
-        
-        <div class="row ">
-              <div class="col-xl-3 col-lg-6">
-                <div class="card l-bg-green">
-                  <div class="card-statistic-3">
-                    <div class="card-icon card-icon-large"><i class="fa fa-award"></i></div>
-                    <div class="card-content">
-                      <h4 class="card-title">Users - {{$users->count()}}</h4>
-                      <span><strong></strong></span>
-                      <div class="progress mt-1 mb-1" data-height="8">
-                        <div class="progress-bar l-bg-purple" role="progressbar" data-width="{{$users->count()}}" aria-valuenow="{{$users->count()}}"
-                          aria-valuemin="0" aria-valuemax="{{$users->count()}}"></div>
-                      </div>
-                      
-                    </div>
+          <div class="section-body">
+            <div class="row">
+              <div class="col-12 col-md-6 col-lg-6">
+                <div class="card">
+                  <div class="card-header">
+                  <h4>Class List</h4>
                   </div>
-                </div>
-              </div> 
-              
-            </div>
-            @if(session('success'))
+                  @if(session('success'))
                     <div class="alert alert-success">
                       {{ session('success') }}
                     </div>
@@ -247,60 +248,38 @@
                       {{ session('error') }}
                     </div>
                     @endif	
-          <div class="row">
-            <div class="col-12">
-              <div class="card">
-                <div class="card-header">
-                  <h4></h4>
-                  <div class="card-header-form">
-                    <form>                    
-                      <div class="input-group">
-                      <a href="{{route('add-user')}}" class="btn btn-primary">Add User</a>
-                        <!-- <input type="text" class="form-control" placeholder="Search"> -->
-                        <!-- <div class="input-group-btn">
-                          <button class="btn btn-primary"><i class="fas fa-search"></i></button>
-                        </div> -->
-                      </div>
-                    </form>
-                  </div>
-                </div>
-                <div class="card-body p-0">
-                  <div class="table-responsive">
-                    <table class="table table-striped">
-                      <tr>           
-                      <th>#</th>             
-                        <th>Email Address</th>
-                        <th>Admin Name</th>
-                        <th>Status</th>
-                        <!-- <th>Created On</th> -->
-                        <th>Action</th>
-                      </tr>
+                  <div class="card-body">
+                  <form action="{{ route('edit-student.action') }}" method="post">
+                    @csrf                   
 
-                      @if ($users->count() > 0)
-			@foreach ($users as $key => $rd)
-                      <tr> 
-                        <td>{{$key + 1}}</td> 
-                        <td>{{$rd->email}}</td>
-                        <td>{{$rd->last_name . " " . $rd->first_name}}</td>
-                        <td><div class="badge badge-info">{{$rd->user_type}}</div></td>
-                        <!-- <td>{{$rd->created_at}}</td> -->
-                        <td><a href="{{route('edit-user', ['id' => $rd->id])}}" class="btn btn-outline-primary">Edit</a></td>
-                      </tr>  
-                      @endforeach
-		@else
-		<tr>
-			<td colspan="8">Users not available.</td>
-		</tr>
-		@endif                                   
-                    </table>
-                    {{ $users->links() }}
-                  </div>
-                </div>
+                    <div class="form-group">
+                        <label>Programme</label>
+                        <select name="programme" id="" class="form-control">
+                            <!-- Default selected value -->
+                            <option value="{{ $user->course }}" selected>{{ $user->course }}</option>
+                            
+                            <!-- Loop through programmes, excluding the current course -->
+                            @foreach($programmes->where('department', '!=', $user->course) as $program)
+                                <option value="{{ $program->department }}">{{ $program->department }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    @error('programme')
+                        <span class="invalid-feedback">{{ $message }}</span>
+                    @enderror
+
+                    <div class="card-footer text-right">
+                        <input class="btn btn-primary mr-1" type="submit" value="Update" />
+                        <input class="btn btn-secondary" type="reset" value="Reset" />
+                    </div>
+                </form>
+
+                  
+                </div>               
+
               </div>
             </div>
           </div>
-          
-          
         </section>
         <div class="settingSidebar">
           <a href="javascript:void(0)" class="settingPanelToggle"> <i class="fa fa-spin fa-cog"></i>
@@ -403,8 +382,8 @@
       </footer>
     </div>
   </div>
-  <!-- General JS Scripts -->
-  <script src="{{asset('dashboard/assets/js/app.min.js')}}"></script>
+   <!-- General JS Scripts -->
+   <script src="{{asset('dashboard/assets/js/app.min.js')}}"></script>
   <!-- JS Libraies -->
   <script src="{{asset('dashboard/assets/bundles/apexcharts/apexcharts.min.js')}}"></script>
   <!-- Page Specific JS File -->
@@ -416,5 +395,5 @@
 </body>
 
 
-<!-- index.html  21 Nov 2019 03:47:04 GMT -->
+<!-- basic-form.html  21 Nov 2019 03:54:41 GMT -->
 </html>

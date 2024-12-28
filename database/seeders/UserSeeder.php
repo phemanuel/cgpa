@@ -42,15 +42,15 @@ class UserSeeder extends Seeder
                 'user_type' => 'Instructor',
                 'user_type_status' => 3,
             ],
-            [
-                'last_name' => 'Doe',
-                'first_name' => 'John',
-                'phone_no' => '23407098765432',
-                'email' => 'student@gmail.com',
-                'password' => bcrypt('password'),
-                'user_type' => 'Student',
-                'user_type_status' => 4,
-            ],
+            // [`
+            //     'last_name' => 'Doe',
+            //     'first_name' => 'John',
+            //     'phone_no' => '23407098765432',
+            //     'email' => 'student@gmail.com',
+            //     'password' => bcrypt('password'),
+            //     'user_type' => 'Student',
+            //  `   'user_type_status' => 4,
+            // ],
         ];
         
         DB::table('users')->insert($users);
