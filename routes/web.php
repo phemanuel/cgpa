@@ -127,10 +127,24 @@ Route::post('/reset-password', [CustomForgotPasswordController::class, 'resetPas
         ->name('course-add.action');
         Route::get('course/edit/{id}', [CourseController::class, 'courseEdit'])
         ->name('course-edit');
+        Route::put('course/edit/{id}', [CourseController::class, 'courseEditAction'])
+        ->name('course-edit.action');
         Route::get('course/delete/{id}', [CourseController::class, 'courseDelete'])
         ->name('course-delete');
-        Route::get('hod', [ResultController::class, 'hodSetup'])
+        //---HOD
+        Route::get('hod', [CourseController::class, 'hodSetup'])
         ->name('hod-setup');
+        Route::get('hod/add', [CourseController::class, 'hodAdd'])
+        ->name('hod-add');
+        Route::post('hod/add', [CourseController::class, 'hodAddAction'])
+        ->name('hod-add.action');
+        Route::get('hod/edit/{id}', [CourseController::class, 'hodEdit'])
+        ->name('hod-edit');
+        Route::put('hod/edit/{id}', [CourseController::class, 'hodEditAction'])
+        ->name('hod-edit.action');
+        Route::get('hod/delete/{id}', [CourseController::class, 'hodDelete'])
+        ->name('hod-delete');
+        //----Grading
         Route::get('grading', [ResultController::class, 'gradingSystem'])
         ->name('grading');
         Route::get('score-sheet', [ResultController::class, 'scoreSheet'])

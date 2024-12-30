@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\CourseStudyAll;
 use App\Models\StudentLevel;
 use App\Models\Course;
+use App\Models\hod;
 use Illuminate\Support\Facades\Log;
 
 use Illuminate\Http\Request;
@@ -156,6 +157,64 @@ class CourseController extends Controller
         ])->with('success', 'Course deleted successfully!');
     }
 
+    public function courseEdit($id)
+    {
+        $course = Course::find($id);
+
+        // Check if the course exists
+        if (!$course) {
+            return redirect()->back()->with('error', 'Course not found!');
+        }
+
+        return view('layout.course-edit', compact('course'));
+
+    }
+
+    public function courseEditAction(Request $request, $id)
+    {
+        // Validate the form data
+        $validated = $request->validate([
+            'programme' => 'required|string',
+            'stdLevel' => 'required|string',
+            'semester' => 'required|string',
+            'acadSession' => 'required|string',
+            'courseTitle' => 'required|string|unique:course,course_title,' . $id, // Ignore unique check for the current course
+            'courseCode' => 'required|string',
+            'courseUnit' => 'required|numeric',
+        ]);
+
+        // Find the course to update
+        $course = Course::find($id);
+
+        // Check if course exists
+        if (!$course) {
+            return redirect()->route('course-list')->with('error', 'Course not found!');
+        }
+
+        // Update the course data
+        $course->course_title = $request->courseTitle;
+        $course->course_code = $request->courseCode;
+        $course->course_unit = $request->courseUnit;
+        $course->course = $request->programme;
+        $course->level = $request->stdLevel;
+        $course->semester = $request->semester;
+        $course->session1 = $request->acadSession;
+        $course->save();
+
+        // Redirect back to course list with success message
+        return redirect()->route('course-list', [
+            'programme' => $course->course,
+            'semester' => $course->semester,
+            'stdLevel' => $course->level,
+        ])->with('success', 'Course updated successfully!');
+    }
+
+    public function hodSetup()
+    {
+        $allHod = hod::all();
+
+        return view('layout.hod', compact('allHod'));
+    }
 
 
 }
