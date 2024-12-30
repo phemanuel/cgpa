@@ -286,7 +286,7 @@
                                   <td>{{ $user->email }}</td>
                                   <td>{{ $user->last_name . ' ' . $user->first_name }}</td>
                                   <td><div class="badge badge-info">{{ $user->user_type }}</div></td>
-                                  <td><a href="{{ route('edit-user', ['id' => $user->id]) }}" class="btn btn-outline-primary">Edit</a></td>
+                                  <td><a href="{{ route('edit-user', ['id' => $user->id]) }}" class="btn btn-outline-primary"><i class="fas fa-edit"></i></a></td>
                               </tr>  
                               @endforeach
                           @else

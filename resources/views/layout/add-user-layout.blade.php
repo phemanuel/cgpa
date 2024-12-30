@@ -302,7 +302,7 @@
                 <hr>
                 <h5>User Roles</h5>
                 <span class="style2">Module</span> : <span class="style7">Sub-module</span>
-                <table width="516" border="1" cellpadding="3" cellspacing="3">
+                <table width="516" class="table table-bordered">
                     <tr>
                       <td width="31"><input type="checkbox" name="classList" id="classList" /></td>
                       <td width="214"><span class="style2"><i class="fas fa-list"></i> ClassList</span></td>
@@ -316,34 +316,40 @@
                       <td><span class="style2"><i class="fas fa-ruler"></i> Grading System</span></td>
                     </tr>
                     <tr>
-                      <td><input type="checkbox" name="result" id="result" /></td>
-                      <td><span class="style2"><i class="fas fa-file-alt"></i> Result Module</span></td>
+                      <td><input type="checkbox" name="transcript" id="transcript" /></td>
+                      <td><span class="style2"><i class="fas fa-file-signature"></i>Transcript Request</span></td>
                       <td><input name="hodSetup" type="checkbox" id="hodSetup" /></td>
                       <td><span class="style2"><i class="fas fa-user-tie"></i> Hod Setup</span></td>
                     </tr>
                     <tr>
-                      <td><input type="checkbox" name="resultEntry" id="resultEntry" /></td>
-                      <td><span class="style7"><i class="fas fa-keyboard"></i> Result Entry</span></td>
+                      <td><input type="checkbox" name="result" id="result" /></td>
+                      <td><span class="style2"><i class="fas fa-file-alt"></i> Result Module</span></td>
                       <td><input type="checkbox" name="accessSetup" id="accessSetup" /></td>
                       <td><span class="style2"><i class="fas fa-unlock"></i> Access Setup</span></td>
                     </tr>
                     <tr>
-                      <td><input type="checkbox" name="resultCompute" id="resultCompute" /></td>
-                      <td><span class="style7"><i class="fas fa-calculator"></i> Result Compute</span></td>
+                      <td><input type="checkbox" name="resultEntry" id="resultEntry" /></td>
+                      <td><span class="style7"><i class="fas fa-keyboard"></i> Result Entry</span></td>
                       <td><input type="checkbox" name="admins" id="admins" /></td>
                       <td><span class="style7"><i class="fas fa-user-shield"></i> Admins</span></td>
                     </tr>
                     <tr>
-                      <td><input type="checkbox" name="semesterResult" id="semesterResult" /></td>
-                      <td><span class="style7"><i class="fas fa-clipboard"></i> Semester Result</span></td>
+                      <td><input type="checkbox" name="resultCompute" id="resultCompute" /></td>
+                      <td><span class="style7"><i class="fas fa-calculator"></i> Result Compute</span></td>
                       <td><input type="checkbox" name="instructors" id="instructors" /></td>
                       <td><span class="style7"><i class="fas fa-chalkboard-teacher"> Instructors</span></td>
                     </tr>
                     <tr>
-                      <td><input type="checkbox" name="semesterSummary" id="semesterSummary" /></td>
-                      <td><span class="style7"><i class="fas fa-chart-line"></i> Semester Result Summary</span></td>
+                      <td><input type="checkbox" name="semesterResult" id="semesterResult" /></td>
+                      <td><span class="style7"><i class="fas fa-clipboard"></i> Semester Result</span></td>
                       <td><input type="checkbox" name="students" id="students" /></td>
                       <td><span class="style7"><i class="fas fa-user-graduate"> Students</span></td>
+                    </tr>
+                    <tr>
+                      <td><input type="checkbox" name="semesterSummary" id="semesterSummary" /></td>
+                      <td><span class="style7"><i class="fas fa-chart-line"></i> Semester Result Summary</span></td>
+                      <td>&nbsp;</td>
+                      <td>&nbsp;</td>
                     </tr>
                     <tr>
                       <td><input type="checkbox" name="cgpaSummary" id="cgpaSummary" /></td>

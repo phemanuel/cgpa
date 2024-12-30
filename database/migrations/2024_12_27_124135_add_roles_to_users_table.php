@@ -32,6 +32,7 @@ return new class extends Migration
             $table->integer('student_migration');
             $table->integer('hod_setup');
             $table->integer('grading_system');
+            $table->integer('transcript');
 
         });
     }

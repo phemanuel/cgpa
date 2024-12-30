@@ -3,6 +3,8 @@ use App\Http\Controllers\MailController;
 use App\Http\Controllers\AuthController;
 //use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\StudentController;
+use App\Http\Controllers\CourseController;
 use App\Http\Controllers\CustomForgotPasswordController;
 use Illuminate\Support\Facades\Route; 
 
@@ -91,6 +93,7 @@ Route::post('/reset-password', [CustomForgotPasswordController::class, 'resetPas
         Route::put('student/edit/{id}', [DashboardController::class, 'editStudentAction'])
         ->name('edit-student.action');
 
+        //---Class List
         Route::get('class-list', [DashboardController::class, 'classList'])
         ->name('class-list'); 
         Route::get('class-list-view', [DashboardController::class, 'classListAction'])
@@ -114,8 +117,18 @@ Route::post('/reset-password', [CustomForgotPasswordController::class, 'resetPas
         Route::get('result/transcript', [ResultController::class, 'studentTranscript'])
         ->name('student-transcript');
 
-        Route::get('course', [ResultController::class, 'courseSetup'])
+        Route::get('course', [CourseController::class, 'courseSetup'])
         ->name('course-setup');
+        Route::get('course/list', [CourseController::class, 'courseList'])
+        ->name('course-list');
+        Route::get('course/add', [CourseController::class, 'courseAdd'])
+        ->name('course-add');
+        Route::post('course/add', [CourseController::class, 'courseAddAction'])
+        ->name('course-add.action');
+        Route::get('course/edit/{id}', [CourseController::class, 'courseEdit'])
+        ->name('course-edit');
+        Route::get('course/delete/{id}', [CourseController::class, 'courseDelete'])
+        ->name('course-delete');
         Route::get('hod', [ResultController::class, 'hodSetup'])
         ->name('hod-setup');
         Route::get('grading', [ResultController::class, 'gradingSystem'])

@@ -6,7 +6,7 @@
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-  <title>E-Result :: Instructors</title>
+  <title>E-result :: Course List</title>
   <!-- General CSS Files -->
   <link rel="stylesheet" href="{{asset('dashboard/assets/css/app.min.css')}}">
   <!-- Template CSS -->
@@ -225,11 +225,11 @@
                   <div class="card-statistic-3">
                     <div class="card-icon card-icon-large"><i class="fa fa-award"></i></div>
                     <div class="card-content">
-                      <h4 class="card-title">Instructors - {{$allUsers->count()}}</h4>
+                      <h4 class="card-title">Courses - {{$courses->count()}}</h4>
                       <span><strong></strong></span>
                       <div class="progress mt-1 mb-1" data-height="8">
-                        <div class="progress-bar l-bg-purple" role="progressbar" data-width="{{$allUsers->count()}}" aria-valuenow="{{$allUsers->count()}}"
-                          aria-valuemin="0" aria-valuemax="{{$allUsers->count()}}"></div>
+                        <div class="progress-bar l-bg-purple" role="progressbar" data-width="{{$courses->count()}}" aria-valuenow="{{$courses->count()}}"
+                          aria-valuemin="0" aria-valuemax="{{$courses->count()}}"></div>
                       </div>
                       
                     </div>
@@ -251,13 +251,13 @@
             <div class="col-12">
               <div class="card">
                 <div class="card-header">
-                  <h4>Instructors List | <a href="javascript:void(0)" onclick="printAllUsers()" class="btn btn-outline-primary">
+                  <h4>{{$programme}} {{$studentLevel}} level Course List for {{$semester}} semester. | <a href="javascript:void(0)" onclick="printAllStudents()" class="btn btn-outline-primary">
         <i class="fas fa-print"></i> Print All
     </a></h4>
                   <div class="card-header-form">
                     <form>                    
                       <div class="input-group">
-                      <a href="{{route('add-user')}}" class="btn btn-primary">Add User</a>
+                      <a href="{{ route('course-add', ['programme' => $programme, 'studentLevel' => $studentLevel, 'semester' => $semester]) }}" class="btn btn-primary">Add Course</a>
                         <!-- <input type="text" class="form-control" placeholder="Search"> -->
                         <!-- <div class="input-group-btn">
                           <button class="btn btn-primary"><i class="fas fa-search"></i></button>
@@ -268,35 +268,64 @@
                 </div>
                 <div class="card-body p-0">
                   <div class="table-responsive">
-                  <table class="table table-bordered" id="allUsersTable">
-                      <thead>
-                          <tr>
-                              <th>#</th>             
-                              <th>Email Address</th>
-                              <th>Admin Name</th>
-                              <th>Role</th>
-                              <th>Action</th>
-                          </tr>
-                      </thead>
-                      <tbody>
-                          @if ($users->count() > 0)
-                              @foreach ($users as $key => $user)
-                              <tr> 
-                                  <td>{{ $key + 1 }}</td> 
-                                  <td>{{ $user->email }}</td>
-                                  <td>{{ $user->last_name . ' ' . $user->first_name }}</td>
-                                  <td><div class="badge badge-info">{{ $user->user_type }}</div></td>
-                                  <td><a href="{{ route('edit-user', ['id' => $user->id]) }}" class="btn btn-outline-primary"><i class="fas fa-edit"></i></a></td>
-                              </tr>  
-                              @endforeach
-                          @else
-                          <tr>
-                              <td colspan="5">Users not available.</td>
-                          </tr>
-                          @endif                                   
-                      </tbody>
-                  </table>
-                    {{ $users->links() }}
+                  <table id="courseListTable" class="table table-bordered">
+                  <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Course Title</th>
+                            <th>Course Code</th>
+                            <th>Course Unit</th>
+                            <!-- <th>Programme</th>
+                            <th>Level</th> -->
+                            <th>Action</th>
+                            <!-- Add other headers if needed -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @php
+                            $totalUnits = 0; // Variable to keep track of the total course units
+                        @endphp
+
+                        @forelse ($courses as $index => $c)
+                        <tr>
+                            <td>{{ $index + 1 }}</td>
+                            <td>{{ $c->course_title }}</td>
+                            <td>{{ $c->course_code }}</td>
+                            <td>{{ $c->course_unit }}</td>
+                            <!-- <td>{{ $c->course }}</td>
+                            <td>{{ $c->level }}</td> -->
+                            <td>
+                                <a href="{{route('course-edit', ['id' => $c->id])}}" class="btn btn-outline-primary">
+                                    <i class="fas fa-edit"></i> <!-- Edit icon -->
+                                </a>
+                                <a href="{{ route('course-delete', ['id' => $c->id]) }}" class="btn btn-outline-danger"
+                                onclick="return confirm('Are you sure you want to delete this course?');">
+                                    <i class="fas fa-trash-alt"></i> <!-- Delete icon -->
+                                </a>
+                            </td>
+                            <!-- Add other table data if needed -->
+                        </tr>
+                        @php
+                            $totalUnits += $c->course_unit; // Adding course unit to total
+                        @endphp
+                        @empty
+                        <tr>
+                            <td colspan="6" class="text-center">No courses found.</td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td><strong>Total Units</strong></td>
+                            <td><strong>{{ $totalUnits }}</strong></td> 
+                            <td></td>
+                        </tr>
+                    </tfoot>
+
+                </table>
+                    
                   </div>
                 </div>
               </div>
@@ -305,38 +334,59 @@
           
           
         </section>
-        <!-- Hidden table for printing -->
-    <div id="printableTable" style="display: none;">
-        <h4>Instructor List</h4>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>#</th>             
-                    <th>Email Address</th>
-                    <th>Instructor Name</th>
-                    <th>Role</th>
-                </tr>
+
+        <!-- Hidden Table for Printing All Students -->
+<div id="allCoursesTable" style="display: none;">
+    <h4>{{$programme}} {{$studentLevel}} level Course List for {{$semester}} semester.</h4>
+    <table class="table table-bordered">
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>Course Title</th>
+        <th>Course Code</th>
+        <th>Course Unit</th>
+        <th>Programme</th>
+        <th>Level</th>
+        <!-- Add other headers if needed -->
+    </tr>
             </thead>
             <tbody>
-                @if ($allUsers->count() > 0)
-                    @foreach ($allUsers as $key => $user)
-                    <tr> 
-                        <td>{{ $key + 1 }}</td> 
-                        <td>{{ $user->email }}</td>
-                        <td>{{ $user->last_name . ' ' . $user->first_name }}</td>
-                        <td><div class="badge badge-info">{{ $user->user_type }}</div></td>                        
-                    </tr>  
-                    @endforeach
-                @else
-                <tr>
-                    <td colspan="5">Users not available.</td>
-                </tr>
-                @endif                                   
-            </tbody>
-        </table>
-    </div>
-</div>
+                @php
+                    $totalUnits = 0; // Variable to keep track of the total course units
+                @endphp
 
+                @forelse ($courses as $index => $c)
+                <tr>
+                    <td>{{ $index + 1 }}</td>
+                    <td>{{ $c->course_title }}</td>
+                    <td>{{ $c->course_code }}</td>
+                    <td>{{ $c->course_unit }}</td>
+                    <td>{{ $c->course }}</td>
+                    <td>{{ $c->level }}</td>
+                    <!-- Add other table data if needed -->
+                </tr>
+                @php
+                    $totalUnits += $c->course_unit; // Adding course unit to total
+                @endphp
+                @empty
+                <tr>
+                    <td colspan="6" class="text-center">No courses found.</td>
+                </tr>
+                @endforelse
+            </tbody>
+            <tfoot>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td><strong>Total Units</strong></td>
+                            <td><strong>{{ $totalUnits }}</strong></td> 
+                            <td></td>
+                            <td></td>
+                        </tr>
+            </tfoot>
+
+    </table>
+</div>
         <div class="settingSidebar">
           <a href="javascript:void(0)" class="settingPanelToggle"> <i class="fa fa-spin fa-cog"></i>
           </a>
@@ -454,9 +504,9 @@
 <!-- index.html  21 Nov 2019 03:47:04 GMT -->
 </html>
 <script>
-function printAllUsers() {
+function printAllStudents() {
     // Get the content of the hidden table
-    var printContents = document.getElementById('printableTable').innerHTML;
+    var printContents = document.getElementById('allCoursesTable').innerHTML;
 
     // Create a hidden iframe
     var iframe = document.createElement('iframe');
@@ -471,7 +521,7 @@ function printAllUsers() {
     doc.write(`
         <html>
             <head>
-                <title>Instructor List</title>
+                <title>Course List</title>
                 <style>
                     body { font-family: Arial, sans-serif; margin: 20px; }
                     table { width: 100%; border-collapse: collapse; margin-top: 20px; }
@@ -496,3 +546,4 @@ function printAllUsers() {
     }, 1000);
 }
 </script>
+

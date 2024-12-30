@@ -252,9 +252,7 @@
             <div class="col-12">
               <div class="card">
                 <div class="card-header">
-                  <h4>Student List | <a href="javascript:void(0)" onclick="printTable()" class="btn btn-outline-primary">
-        <i class="fas fa-print"></i> Print List
-    </a></h4>
+                  <h4>Student List | To print out list go to <a href="{{route('class-list')}}">Class List</a></h4>
                   <div class="card-header-form">
                     <form>                    
                       <div class="input-group">
@@ -296,7 +294,7 @@
                         <td>{{$rd->course}}</td>                        
                         <td><div class="badge badge-info">{{$rd->admission_year}}</div></td>
                         <!-- <td>{{$rd->created_at}}</td> -->
-                        <td><a href="{{route('edit-student', ['id' => $rd->id])}}" class="btn btn-outline-primary">Edit</a></td>
+                        <td><a href="{{route('edit-student', ['id' => $rd->id])}}" class="btn btn-outline-primary"><i class="fas fa-edit"></i></a></td>
                       </tr>  
                       @endforeach
 		@else

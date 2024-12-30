@@ -15,6 +15,7 @@ use App\Models\Registration;
 use App\Models\Department;
 use App\Models\CourseStudyAll;
 use App\Models\StudentLevel;
+use App\Models\Course;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
@@ -673,6 +674,7 @@ class DashboardController extends Controller
                 'semester_summary' => $request->has('semesterSummary') ? 1 : 0,
                 'cgpa_summary' => $request->has('cgpaSummary') ? 1 : 0,
                 'student_transcript' => $request->has('studentTranscript') ? 1 : 0,
+                'transcript' => $request->has('transcript') ? 1 : 0,
             ];
 
             if($validatedData['userType'] == 'Superadmin') {
@@ -779,6 +781,7 @@ class DashboardController extends Controller
                 'semester_summary' => $request->has('semesterSummary') ? 1 : 0,
                 'cgpa_summary' => $request->has('cgpaSummary') ? 1 : 0,
                 'student_transcript' => $request->has('studentTranscript') ? 1 : 0,
+                'transcript' => $request->has('transcript') ? 1 : 0,
             ];
 
             if ($validatedData['userType'] == 'Superadmin') {
@@ -1052,7 +1055,7 @@ class DashboardController extends Controller
             ]);
             return redirect()->back()->with('error', 'An unexpected error occurred. Please try again later.');
         }
-    }
+    }    
 
     public function testFile()
     {

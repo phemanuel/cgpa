@@ -261,7 +261,7 @@
                             @endforeach
                         </select>
                     </div>
-                    @error('stdLevel')
+                    @error('programme')
                         <span class="invalid-feedback">{{ $message }}</span>
                     @enderror
 
