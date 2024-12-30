@@ -225,11 +225,11 @@
                   <div class="card-statistic-3">
                     <div class="card-icon card-icon-large"><i class="fa fa-award"></i></div>
                     <div class="card-content">
-                      <h4 class="card-title">Users - {{$users->count()}}</h4>
+                      <h4 class="card-title">Admin - {{$allUsers->count()}}</h4>
                       <span><strong></strong></span>
                       <div class="progress mt-1 mb-1" data-height="8">
-                        <div class="progress-bar l-bg-purple" role="progressbar" data-width="{{$users->count()}}" aria-valuenow="{{$users->count()}}"
-                          aria-valuemin="0" aria-valuemax="{{$users->count()}}"></div>
+                        <div class="progress-bar l-bg-purple" role="progressbar" data-width="{{$allUsers->count()}}" aria-valuenow="{{$allUsers->count()}}"
+                          aria-valuemin="0" aria-valuemax="{{$allUsers->count()}}"></div>
                       </div>
                       
                     </div>
@@ -251,7 +251,9 @@
             <div class="col-12">
               <div class="card">
                 <div class="card-header">
-                  <h4></h4>
+                  <h4>Admins List | <a href="javascript:void(0)" onclick="printAllUsers()" class="btn btn-outline-primary">
+        <i class="fas fa-print"></i> Print All
+    </a></h4>
                   <div class="card-header-form">
                     <form>                    
                       <div class="input-group">
@@ -266,33 +268,34 @@
                 </div>
                 <div class="card-body p-0">
                   <div class="table-responsive">
-                    <table class="table table-striped">
-                      <tr>           
-                      <th>#</th>             
-                        <th>Email Address</th>
-                        <th>Admin Name</th>
-                        <th>Status</th>
-                        <!-- <th>Created On</th> -->
-                        <th>Action</th>
-                      </tr>
-
-                      @if ($users->count() > 0)
-			@foreach ($users as $key => $rd)
-                      <tr> 
-                        <td>{{$key + 1}}</td> 
-                        <td>{{$rd->email}}</td>
-                        <td>{{$rd->last_name . " " . $rd->first_name}}</td>
-                        <td><div class="badge badge-info">{{$rd->user_type}}</div></td>
-                        <!-- <td>{{$rd->created_at}}</td> -->
-                        <td><a href="{{route('edit-user', ['id' => $rd->id])}}" class="btn btn-outline-primary">Edit</a></td>
-                      </tr>  
-                      @endforeach
-		@else
-		<tr>
-			<td colspan="8">Users not available.</td>
-		</tr>
-		@endif                                   
-                    </table>
+                  <table class="table table-bordered" id="allUsersTable">
+                      <thead>
+                          <tr>
+                              <th>#</th>             
+                              <th>Email Address</th>
+                              <th>Admin Name</th>
+                              <th>Role</th>
+                              <th>Action</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          @if ($users->count() > 0)
+                              @foreach ($users as $key => $user)
+                              <tr> 
+                                  <td>{{ $key + 1 }}</td> 
+                                  <td>{{ $user->email }}</td>
+                                  <td>{{ $user->last_name . ' ' . $user->first_name }}</td>
+                                  <td><div class="badge badge-info">{{ $user->user_type }}</div></td>
+                                  <td><a href="{{ route('edit-user', ['id' => $user->id]) }}" class="btn btn-outline-primary">Edit</a></td>
+                              </tr>  
+                              @endforeach
+                          @else
+                          <tr>
+                              <td colspan="5">Users not available.</td>
+                          </tr>
+                          @endif                                   
+                      </tbody>
+                  </table>
                     {{ $users->links() }}
                   </div>
                 </div>
@@ -302,6 +305,38 @@
           
           
         </section>
+        <!-- Hidden table for printing -->
+    <div id="printableTable" style="display: none;">
+        <h4>Admin List</h4>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>#</th>             
+                    <th>Email Address</th>
+                    <th>Admin Name</th>
+                    <th>Role</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if ($allUsers->count() > 0)
+                    @foreach ($allUsers as $key => $user)
+                    <tr> 
+                        <td>{{ $key + 1 }}</td> 
+                        <td>{{ $user->email }}</td>
+                        <td>{{ $user->last_name . ' ' . $user->first_name }}</td>
+                        <td><div class="badge badge-info">{{ $user->user_type }}</div></td>                        
+                    </tr>  
+                    @endforeach
+                @else
+                <tr>
+                    <td colspan="5">Users not available.</td>
+                </tr>
+                @endif                                   
+            </tbody>
+        </table>
+    </div>
+</div>
+
         <div class="settingSidebar">
           <a href="javascript:void(0)" class="settingPanelToggle"> <i class="fa fa-spin fa-cog"></i>
           </a>
@@ -418,3 +453,46 @@
 
 <!-- index.html  21 Nov 2019 03:47:04 GMT -->
 </html>
+<script>
+function printAllUsers() {
+    // Get the content of the hidden table
+    var printContents = document.getElementById('printableTable').innerHTML;
+
+    // Create a hidden iframe
+    var iframe = document.createElement('iframe');
+    iframe.style.position = 'absolute';
+    iframe.style.top = '-10000px';
+    iframe.style.left = '-10000px';
+    document.body.appendChild(iframe);
+
+    // Write the content into the iframe
+    var doc = iframe.contentWindow.document;
+    doc.open();
+    doc.write(`
+        <html>
+            <head>
+                <title>Admin List</title>
+                <style>
+                    body { font-family: Arial, sans-serif; margin: 20px; }
+                    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+                    th, td { border: 1px solid black; padding: 8px; text-align: left; }
+                    th { background-color: #f2f2f2; }
+                </style>
+            </head>
+            <body>                
+                ${printContents}
+            </body>
+        </html>
+    `);
+    doc.close();
+
+    // Trigger the print dialog
+    iframe.contentWindow.focus();
+    iframe.contentWindow.print();
+
+    // Remove the iframe after printing
+    setTimeout(() => {
+        document.body.removeChild(iframe);
+    }, 1000);
+}
+</script>

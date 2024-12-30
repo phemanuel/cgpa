@@ -14,5 +14,7 @@ class CourseStudy extends Model
     protected $fillable = [
         'dept',
         'dept_name',
+        'dept_duration',
+        'dept_abbr',
     ];
 }

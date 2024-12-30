@@ -93,6 +93,8 @@ Route::post('/reset-password', [CustomForgotPasswordController::class, 'resetPas
 
         Route::get('class-list', [DashboardController::class, 'classList'])
         ->name('class-list'); 
+        Route::get('class-list-view', [DashboardController::class, 'classListAction'])
+        ->name('class-list.action'); 
         //----Student
         Route::get('student-registration', [StudentController::class, 'studentRegistration'])
         ->name('student-registration'); 

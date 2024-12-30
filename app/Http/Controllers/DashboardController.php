@@ -14,6 +14,7 @@ use App\Models\UserYear;
 use App\Models\Registration;
 use App\Models\Department;
 use App\Models\CourseStudyAll;
+use App\Models\StudentLevel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
@@ -575,8 +576,9 @@ class DashboardController extends Controller
             }
         
             $users = User::whereIn('user_type_status', [1, 2])->paginate(10);
+            $allUsers = User::whereIn('user_type_status', [1, 2])->get();
             
-            return view('auth.users', compact('users'));
+            return view('auth.users', compact('users','allUsers'));
         } catch (\Exception $e) {
             // Handle any exceptions that may occur
             // Log the error or redirect to a generic error page
@@ -597,8 +599,9 @@ class DashboardController extends Controller
             }
         
             $users = User::where('user_type_status', '3')->paginate(10);
+            $allUsers = User::where('user_type_status', '3')->get();
             
-            return view('layout.instructors', compact('users'));
+            return view('layout.instructors', compact('users', 'allUsers'));
         } catch (\Exception $e) {
             // Handle any exceptions that may occur
             // Log the error or redirect to a generic error page
@@ -986,6 +989,69 @@ class DashboardController extends Controller
             return redirect('generic-error')->with('error', 'An unexpected error occurred');
         }
         
+    }
+
+    public function classList()
+    {
+        $user = auth()->user();
+        $rolePermission = $user->class_list;
+
+        if($rolePermission != 1) {
+            return redirect()->back()->with('error', 'You do not have permission to this module.');
+        }
+
+        $allLevel = StudentLevel::all();
+        $programmes = CourseStudyAll::all();
+
+        return view('layout.class-list', compact('allLevel','programmes'));
+    }
+
+    public function classListAction(Request $request)
+    {
+        try {
+            // Get the query parameters (fallback to default if not present)
+            $programme = $request->query('programme', '');
+            $admissionYear = $request->query('admissionYear', '');
+            $stdLevel = $request->query('stdLevel', '');
+
+            // Validate the inputs
+            if (empty($programme) || empty($admissionYear) || empty($stdLevel)) {
+                return redirect()->back()->with('error', 'All filters are required.');
+            }
+
+            // Fetch paginated results
+            $students = Registration::where('admission_year', $admissionYear)
+                ->where('course', $programme)
+                ->where('class', $stdLevel)
+                ->orderBy('admission_no', 'asc')
+                ->paginate(10)
+                ->appends($request->query()); 
+
+            $allStudent = Registration::where('admission_year', $admissionYear)
+            ->where('course', $programme)
+            ->where('class', $stdLevel)
+            ->orderBy('admission_no', 'asc')
+            ->get();
+
+            if ($students->isEmpty()) {
+                return redirect()->back()->with('error', 'No students found for the selected filters.');
+            }
+
+            return view('layout.class-list-view', [
+                'students' => $students,
+                'studentLevel' => $stdLevel,
+                'programme' => $programme,
+                'admissionYear' => $admissionYear,
+                'allStudent' => $allStudent,
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Unexpected Error: ', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+                'request' => $request->all(),
+            ]);
+            return redirect()->back()->with('error', 'An unexpected error occurred. Please try again later.');
+        }
     }
 
     public function testFile()

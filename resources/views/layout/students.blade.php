@@ -252,7 +252,9 @@
             <div class="col-12">
               <div class="card">
                 <div class="card-header">
-                  <h4></h4>
+                  <h4>Student List | <a href="javascript:void(0)" onclick="printTable()" class="btn btn-outline-primary">
+        <i class="fas fa-print"></i> Print List
+    </a></h4>
                   <div class="card-header-form">
                     <form>                    
                       <div class="input-group">
