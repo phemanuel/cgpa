@@ -6,7 +6,7 @@
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-  <title>E-result :: HOD List</title>
+  <title>E-result :: Grading System</title>
   <!-- General CSS Files -->
   <link rel="stylesheet" href="{{asset('dashboard/assets/css/app.min.css')}}">
   <!-- Template CSS -->
@@ -98,10 +98,10 @@
             <li class="dropdown">
               <a href="{{route('course-setup')}}" class="nav-link"><i data-feather="book"></i><span>Course</span></a>
             </li>
-            <li class="dropdown active">
+            <li class="dropdown">
               <a href="{{route('hod-setup')}}" class="nav-link"><i data-feather="briefcase"></i><span>HOD</span></a>
             </li>
-            <li class="dropdown">
+            <li class="dropdown active">
               <a href="{{route('grading')}}" class="nav-link"><i data-feather="slack"></i><span>Grading System</span></a>
             </li>
             <li class="dropdown">
@@ -149,10 +149,10 @@
             <li class="dropdown">
               <a href="{{route('course-setup')}}" class="nav-link"><i data-feather="book"></i><span>Course</span></a>
             </li>
-            <li class="dropdown active">
+            <li class="dropdown">
               <a href="{{route('hod-setup')}}" class="nav-link"><i data-feather="briefcase"></i><span>HOD</span></a>
             </li>
-            <li class="dropdown">
+            <li class="dropdown active">
               <a href="{{route('grading')}}" class="nav-link"><i data-feather="slack"></i><span>Grading System</span></a>
             </li>
             <li class="dropdown">
@@ -333,11 +333,11 @@
                   <div class="card-statistic-3">
                     <div class="card-icon card-icon-large"><i class="fa fa-award"></i></div>
                     <div class="card-content">
-                      <h4 class="card-title">HOD - {{$allHod->count()}}</h4>
+                      <h4 class="card-title">Grading System</h4>
                       <span><strong></strong></span>
                       <div class="progress mt-1 mb-1" data-height="8">
-                        <div class="progress-bar l-bg-purple" role="progressbar" data-width="{{$allHod->count()}}" aria-valuenow="{{$allHod->count()}}"
-                          aria-valuemin="0" aria-valuemax="{{$allHod->count()}}"></div>
+                        <div class="progress-bar l-bg-purple" role="progressbar" data-width="{{$grading->count()}}" aria-valuenow="{{$grading->count()}}"
+                          aria-valuemin="0" aria-valuemax="{{$grading->count()}}"></div>
                       </div>
                       
                     </div>
@@ -359,13 +359,15 @@
             <div class="col-12">
               <div class="card">
                 <div class="card-header">
-                  <h4>HOD List | <a href="javascript:void(0)" onclick="printAllStudents()" class="btn btn-outline-primary">
-        <i class="fas fa-print"></i> Print All
-    </a></h4>
+                  <h4>Grading System  
+                    <!-- <a href="javascript:void(0)" onclick="printAllStudents()" class="btn btn-outline-primary">
+        <i class="fas fa-print"></i> Print
+    </a> -->
+</h4>
                   <div class="card-header-form">
                     <form>                    
                       <div class="input-group">
-                      <a href="{{ route('hod-add') }}" class="btn btn-primary">Add HOD</a>
+                      <a href="{{route('grading')}}" class="btn btn-primary"><i class="fas fa-edit"></i> Grading System</a>
                         <!-- <input type="text" class="form-control" placeholder="Search"> -->
                         <!-- <div class="input-group-btn">
                           <button class="btn btn-primary"><i class="fas fa-search"></i></button>
@@ -376,45 +378,95 @@
                 </div>
                 <div class="card-body p-0">
                   <div class="table-responsive">
-                  <table id="hodListTable" class="table table-bordered">
-                  <thead>
+                  
+           <form action="{{route('grading-edit.action')}}" method="POST">
+           @csrf
+           @method('PUT')
+           <table class="table table-bordered" id="hodListTable">
+                        <thead>
+                            <tr>
+                                <th width="37">&nbsp;</th>
+                                <th colspan="3">
+                                    <div align="center">Score(%)</div>            </th>
+                                <th width="64">
+                                    <div align="center">Unit</div>            </th>
+                                <th width="72">
+                                    <div align="center">Grade</div>            </th>
+                                <th width="60">&nbsp;</th>
+                            </tr>
+                            <tr>
+                                <th width="37">&nbsp;</th>
+                                <th width="60">From</th>
+                                <th width="6">&nbsp;</th>
+                                <th width="60">To</th>
+                                <th width="64"></th>
+                                <th width="72"></th>
+                                <th width="60"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
                         <tr>
-                            <th>#</th>
-                            <th>HOD Name</th>
-                            <th>Department</th>
-                            <th>Programme</th>
-                            <th>Signature</th>                            
-                            <th>Action</th>
-                            <!-- Add other headers if needed -->
+                            <th><div align="center">1</div></th>
+                            <td><input name="grade01" type="text" id="grade01" size="10" maxlength="3" value="{{ $grading->grade01 ?? '' }}" class="form-control" /></td>
+                            <td><div align="center">-</div></td>
+                            <td><input name="grade02" type="text" id="grade02" size="10" maxlength="3" value="{{ $grading->grade02 ?? '' }}" class="form-control" /></td>
+                            <td><input name="unit01" type="text" id="unit01" size="10" maxlength="4" value="{{ $grading->unit01 ?? '' }}" class="form-control" /></td>
+                            <td><input name="lgrade1" type="text" id="lgrade1" size="10" maxlength="4" value="{{ $grading->lgrade1 ?? '' }}" class="form-control" /></td>
+                            <td>&nbsp;</td>
                         </tr>
-                    </thead>
-                    <tbody> 
-                        @forelse ($allHod as $index => $c)
                         <tr>
-                            <td>{{ $index + 1 }}</td>
-                            <td>{{ $c->hod_name }}</td>
-                            <td>{{ $c->dept }}</td>
-                            <td>{{ $c->course }}</td>
-                            <td><img src="{{asset('signature/' . $c->sign)}}" alt="" width="100" height="50"></td>
-                            <td>
-                                <a href="{{route('hod-edit', ['id' => $c->id])}}" class="btn btn-outline-primary">
-                                    <i class="fas fa-edit"></i> <!-- Edit icon -->
-                                </a>
-                                <a href="{{ route('hod-delete', ['id' => $c->id]) }}" class="btn btn-outline-danger"
-                                onclick="return confirm('Are you sure you want to delete this course?');">
-                                    <i class="fas fa-trash-alt"></i> <!-- Delete icon -->
-                                </a>
-                            </td>
-                            <!-- Add other table data if needed -->
-                        </tr>                        
-                        @empty
-                        <tr>
-                            <td colspan="6" class="text-center">No HOD found.</td>
+                            <th><div align="center">2</div></th>
+                            <td><input name="grade11" type="text" id="grade11" size="10" maxlength="3" value="{{ $grading->grade11 ?? '' }}" class="form-control" /></td>
+                            <td><div align="center">-</div></td>
+                            <td><input name="grade12" type="text" id="grade12" size="10" maxlength="3" value="{{ $grading->grade12 ?? '' }}" class="form-control" /></td>
+                            <td><input name="unit02" type="text" id="unit02" size="10" maxlength="4" value="{{ $grading->unit02 ?? '' }}" class="form-control" /></td>
+                            <td><input name="lgrade2" type="text" id="lgrade2" size="10" maxlength="4" value="{{ $grading->lgrade2 ?? '' }}" class="form-control" /></td>
+                            <td>&nbsp;</td>
                         </tr>
-                        @endforelse
-                    </tbody>                   
+                        <tr>
+                            <th><div align="center">3</div></th>
+                            <td><input name="grade21" type="text" id="grade21" size="10" maxlength="3" value="{{ $grading->grade21 ?? '' }}" class="form-control" /></td>
+                            <td><div align="center">-</div></td>
+                            <td><input name="grade22" type="text" id="grade22" size="10" maxlength="3" value="{{ $grading->grade22 ?? '' }}" class="form-control" /></td>
+                            <td><input name="unit03" type="text" id="unit03" size="10" maxlength="4" value="{{ $grading->unit03 ?? '' }}" class="form-control" /></td>
+                            <td><input name="lgrade3" type="text" id="lgrade3" size="10" maxlength="4" value="{{ $grading->lgrade3 ?? '' }}" class="form-control" /></td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <th><div align="center">4</div></th>
+                            <td><input name="grade31" type="text" id="grade31" size="10" maxlength="3" value="{{ $grading->grade31 ?? '' }}" class="form-control" /></td>
+                            <td><div align="center">-</div></td>
+                            <td><input name="grade32" type="text" id="grade32" size="10" maxlength="3" value="{{ $grading->grade32 ?? '' }}" class="form-control" /></td>
+                            <td><input name="unit04" type="text" id="unit04" size="10" maxlength="4" value="{{ $grading->unit04 ?? '' }}" class="form-control" /></td>
+                            <td><input name="lgrade4" type="text" id="lgrade4" size="10" maxlength="4" value="{{ $grading->lgrade4 ?? '' }}" class="form-control" /></td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <th><div align="center">5</div></th>
+                            <td><input name="grade41" type="text" id="grade41" size="10" maxlength="3" value="{{ $grading->grade41 ?? '' }}" class="form-control" /></td>
+                            <td><div align="center">-</div></td>
+                            <td><input name="grade42" type="text" id="grade42" size="10" maxlength="3" value="{{ $grading->grade42 ?? '' }}" class="form-control" /></td>
+                            <td><input name="unit05" type="text" id="unit05" size="10" maxlength="4" value="{{ $grading->unit05 ?? '' }}" class="form-control" /></td>
+                            <td><input name="lgrade5" type="text" id="lgrade5" size="10" maxlength="4" value="{{ $grading->lgrade5 ?? '' }}" class="form-control" /></td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <th><div align="center">6</div></th>
+                            <td><input name="grade51" type="text" id="grade51" size="10" maxlength="3" value="{{ $grading->grade51 ?? '' }}" class="form-control" /></td>
+                            <td><div align="center">-</div></td>
+                            <td><input name="grade52" type="text" id="grade52" size="10" maxlength="3" value="{{ $grading->grade52 ?? '' }}" class="form-control" /></td>
+                            <td><input name="unit06" type="text" id="unit06" size="10" maxlength="4" value="{{ $grading->unit06 ?? '' }}" class="form-control" /></td>
+                            <td><input name="lgrade6" type="text" id="lgrade6" size="10" maxlength="4" value="{{ $grading->lgrade6 ?? '' }}" class="form-control" /></td>
+                            <td>&nbsp;</td>
+                        </tr>
+                    </tbody>
+                    </table>
+                    <div class="card-footer text-right">
+                                            <input class="btn btn-primary mr-1" type="submit" value="Update" />
+                                            <!-- <input class="btn btn-secondary" type="reset" value="Reset" /> -->
+                                        </div>
+           </form>
 
-                </table>
                     
                   </div>
                 </div>
@@ -426,39 +478,131 @@
         </section>
 
         <!-- hidden table -->
-        <div  id="allHodListTable" style="display: none;">
+        <div id="allGradingTable" style="display: none;">
         <table class="table table-bordered">
-                  <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>HOD Name</th>
-                            <th>Department</th>
-                            <th>Programme</th>
-                            <!-- <th>Signature</th>                            -->
-                           
-                            <!-- Add other headers if needed -->
-                        </tr>
-                    </thead>
-                    <tbody> 
-                        @forelse ($allHod as $index => $c)
-                        <tr>
-                            <td>{{ $index + 1 }}</td>
-                            <td>{{ $c->hod_name }}</td>
-                            <td>{{ $c->dept }}</td>
-                            <td>{{ $c->course }}</td>
-                            <!-- <td><img src="{{ url('public/signature/' . $c->sign) }}" alt="Signature" width="100" height="50"></td> -->
-                            
-                            <!-- Add other table data if needed -->
-                        </tr>                        
-                        @empty
-                        <tr>
-                            <td colspan="6" class="text-center">No HOD found.</td>
-                        </tr>
-                        @endforelse
-                    </tbody>                   
-
-                </table>
-  </div>
+    <thead>
+        <tr>
+            <th colspan="5"> <strong>Grading System</strong> </th>
+        </tr>
+        <tr>
+            <th colspan="3">
+                <div align="center">Score(%)</div>
+            </th>
+            <th width="25">
+                <div align="center">Unit</div>
+            </th>
+            <th width="166">
+                <div align="center">Grade</div>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td width="45">
+                <div align="center">{{$grading->grade01}}</div>
+            </td>
+            <td width="7">
+                <div align="center">-</div>
+            </td>
+            <td width="55">
+                <div align="center">{{$grading->grade02}}</div>
+            </td>
+            <td>
+                <div align="center">{{$grading->unit01}}</div>
+            </td>
+            <td>
+                <div align="center">{{$grading->lgrade1}}</div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div align="center">{{$grading->grade11}}</div>
+            </td>
+            <td>
+                <div align="center">-</div>
+            </td>
+            <td>
+                <div align="center">{{$grading->grade12}}</div>
+            </td>
+            <td>
+                <div align="center">{{$grading->unit02}}</div>
+            </td>
+            <td>
+                <div align="center">{{$grading->lgrade2}}</div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div align="center">{{$grading->grade21}}</div>
+            </td>
+            <td>
+                <div align="center">-</div>
+            </td>
+            <td>
+                <div align="center">{{$grading->grade22}}</div>
+            </td>
+            <td>
+                <div align="center">{{$grading->unit03}}</div>
+            </td>
+            <td>
+                <div align="center">{{$grading->lgrade3}}</div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div align="center">{{$grading->grade31}}</div>
+            </td>
+            <td>
+                <div align="center">-</div>
+            </td>
+            <td>
+                <div align="center">{{$grading->grade32}}</div>
+            </td>
+            <td>
+                <div align="center">{{$grading->unit04}}</div>
+            </td>
+            <td>
+                <div align="center">{{$grading->lgrade4}}</div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div align="center">{{$grading->grade41}}</div>
+            </td>
+            <td>
+                <div align="center">-</div>
+            </td>
+            <td>
+                <div align="center">{{$grading->grade42}}</div>
+            </td>
+            <td>
+                <div align="center">{{$grading->unit05}}</div>
+            </td>
+            <td>
+                <div align="center">{{$grading->lgrade5}}</div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div align="center">{{$grading->grade51}}</div>
+            </td>
+            <td>
+                <div align="center">-</div>
+            </td>
+            <td>
+                <div align="center">{{$grading->grade52}}</div>
+            </td>
+            <td>
+                <div align="center">{{$grading->unit06}}</div>
+            </td>
+            <td>
+                <div align="center">{{$grading->lgrade6}}</div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+        </div>
+</div>
 
         <div class="settingSidebar">
           <a href="javascript:void(0)" class="settingPanelToggle"> <i class="fa fa-spin fa-cog"></i>
@@ -579,7 +723,7 @@
 <script>
 function printAllStudents() {
     // Get the content of the hidden table
-    var printContents = document.getElementById('allHodListTable').innerHTML;
+    var printContents = document.getElementById('allGradingTable').innerHTML;
 
     // Create a hidden iframe
     var iframe = document.createElement('iframe');
@@ -594,7 +738,7 @@ function printAllStudents() {
     doc.write(`
         <html>
             <head>
-                <title>HOD List</title>
+                <title>Grading System</title>
                 <style>
                     body { font-family: Arial, sans-serif; margin: 20px; }
                     table { width: 100%; border-collapse: collapse; margin-top: 20px; }

@@ -337,5 +337,7 @@ class CourseController extends Controller
         return redirect()->route('hod-setup')->with('success', 'HOD deleted successfully.');
     }
 
+    
+
 
 }
