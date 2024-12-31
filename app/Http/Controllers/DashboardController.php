@@ -1063,6 +1063,11 @@ class DashboardController extends Controller
         }
     }    
 
+    public function pageDevelopment()
+    {
+        return view('layout.page-development');
+    }
+
     public function testFile()
     {
         return view('layout.test-file');

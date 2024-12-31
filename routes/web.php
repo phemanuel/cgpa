@@ -161,8 +161,12 @@ Route::post('/reset-password', [CustomForgotPasswordController::class, 'resetPas
         ->name('grading-edit');
         Route::put('grading/edit', [ResultController::class, 'gradingSystemEditAction'])
         ->name('grading-edit.action');
+        //------------------
         Route::get('score-sheet', [ResultController::class, 'scoreSheet'])
         ->name('score-sheet');
+        //---------
+        Route::get('page/development', [DashboardController::class, 'pageDevelopment'])
+        ->name('page-development');
 
         //--Send mail routes
         Route::get('send-mail-fail/{transaction_id}', [MailController::class, 'mailFailed'])

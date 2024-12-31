@@ -111,5 +111,16 @@ class ResultController extends Controller
         }
     }
 
+    public function scoreSheet()
+    {
+        $user = auth()->user();
+        $rolePermission = $user->score_sheet;
+
+        if($rolePermission != 1) {
+            return redirect()->back()->with('error', 'You do not have permission to this module.');
+        }
+
+        return redirect()->route('page-development');
+    }
 
 }

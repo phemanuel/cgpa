@@ -10,12 +10,12 @@ class StudentController extends Controller
 
     public function studentRegistration()
     {
-        return redirect()->back()->with('success','This module is still under development');
+        return redirect()->route('page-development');
     }
 
     public function studentMigration()
     {
-        return redirect()->back()->with('success','This module is still under development');
+        return redirect()->route('page-development');
     }
 
     public function studentMenu()
