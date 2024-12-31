@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\CourseStudyAll;
 use App\Models\StudentLevel;
 use App\Models\Course;
+use App\Models\Department;
 use App\Models\hod;
 use Illuminate\Support\Facades\Log;
 
@@ -211,9 +212,129 @@ class CourseController extends Controller
 
     public function hodSetup()
     {
+        $user = auth()->user();
+        $rolePermission = $user->hod_setup;
+
+        if($rolePermission != 1) {
+            return redirect()->back()->with('error', 'You do not have permission to this module.');
+        }
+
         $allHod = hod::all();
 
         return view('layout.hod', compact('allHod'));
+    }
+
+    public function hodAdd()
+    {
+        $allCourse = CourseStudyAll::all();
+        $allDepartment = Department::all();
+
+        return view('layout.hod-add', compact('allCourse', 'allDepartment'));
+    }
+
+    public function hodAddAction(Request $request)
+    {
+        // Validate the form input
+        $request->validate([
+            'department' => 'required|string|max:255',
+            'programme' => 'required|string|max:255',
+            'fullName' => 'required|string|max:255',
+            'signature' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        // Check if HOD already exists for the department and programme
+        $existingHod = Hod::where('dept', $request->department)
+            ->where('course', $request->programme)
+            ->first();
+
+        if ($existingHod) {
+            return back()->with('error', 'An HOD already exists for this department and programme.');
+        }
+
+        // Generate a unique file name
+        $signatureFile = $request->file('signature');
+        $generatedFileName = uniqid() . '.' . $signatureFile->getClientOriginalExtension();
+
+        // Save the file to the public/signature directory
+        $signatureFile->move(public_path('signature'), $generatedFileName);
+
+        // Save the HOD record
+        Hod::create([
+            'dept' => $request->department,
+            'course' => $request->programme,
+            'hod_name' => $request->fullName,
+            'sign' => $generatedFileName, // Save only the generated file name
+        ]);
+
+
+        return redirect()->route('hod-setup')->with('success', 'HOD added successfully.');
+    }
+
+    public function hodEdit($id)
+    {
+        $hod = hod::find($id);
+
+        return view('layout.hod-edit', compact('hod'));
+    }
+
+    public function hodEditAction(Request $request, $id)
+    {
+        // Validate the form input
+        $request->validate([
+            'department' => 'required|string|max:255',
+            'programme' => 'required|string|max:255',
+            'fullName' => 'required|string|max:255',
+            'signature' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        // Find the HOD record
+        $hod = Hod::findOrFail($id);
+
+        // Update the HOD details
+        // $hod->dept = $request->department;
+        // $hod->course = $request->programme;
+        $hod->hod_name = $request->fullName;
+
+        // Handle signature file if uploaded
+        if ($request->hasFile('signature')) {
+            // Delete the old signature file if it exists
+            $oldSignaturePath = public_path('signature/' . $hod->signature);
+            if (file_exists($oldSignaturePath)) {
+                unlink($oldSignaturePath);
+            }
+
+            // Save the new signature file
+            $signatureFile = $request->file('signature');
+            $generatedFileName = uniqid() . '.' . $signatureFile->getClientOriginalExtension();
+            $signatureFile->move(public_path('signature'), $generatedFileName);
+
+            // Update the signature field in the database
+            $hod->signature = $generatedFileName;
+        }
+
+        // Save the updated record
+        $hod->save();
+
+        return redirect()->route('hod-setup')->with('success', 'HOD updated successfully.');
+    }
+
+    public function hodDelete($id)
+    {
+        // Find the HOD record
+        $hod = hod::findOrFail($id);
+
+        // Delete the signature file if it exists
+        if ($hod->signature) {
+            $signaturePath = public_path('signature/' . $hod->signature);
+            if (file_exists($signaturePath)) {
+                unlink($signaturePath);
+            }
+        }
+
+        // Delete the HOD record
+        $hod->delete();
+
+        return redirect()->route('hod-setup')->with('success', 'HOD deleted successfully.');
     }
 
 
