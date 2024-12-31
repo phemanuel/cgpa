@@ -28,6 +28,12 @@ use Illuminate\Support\Str;
 class DashboardController extends Controller
 {
     //
+    
+    public function userMenu()
+    {
+        return view('layout.user-menu');
+    }
+
     public function index()
     {
         try {

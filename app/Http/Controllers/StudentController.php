@@ -17,4 +17,9 @@ class StudentController extends Controller
     {
         return redirect()->back()->with('success','This module is still under development');
     }
+
+    public function studentMenu()
+    {
+        return view('layout.student-menu');
+    }
 }
