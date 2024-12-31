@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\ResultController;
 use App\Http\Controllers\CustomForgotPasswordController;
 use Illuminate\Support\Facades\Route; 
 
@@ -54,27 +55,32 @@ Route::post('/reset-password', [CustomForgotPasswordController::class, 'resetPas
         Route::get('logout', [AuthController::class, 'logout'])->name('logout');
         
         // Profile routes
-        Route::get('account-setting/{id}', [AuthController::class, 'profileUpdate'])->name('account-setting');
-        Route::get('profile-picture', [AuthController::class, 'profilePicture'])->name('profile-picture');
-        Route::post('profile-picture-update', [AuthController::class, 'profilePictureUpdate'])->name('profile-picture-update');
+        Route::get('account-setting/{id}', [AuthController::class, 'profileUpdate'])
+        ->name('account-setting');
+        Route::get('profile-picture', [AuthController::class, 'profilePicture'])
+        ->name('profile-picture');
+        Route::post('profile-picture/update', [AuthController::class, 'profilePictureUpdate'])
+        ->name('profile-picture-update');
         
         Route::get('dashboard', [DashboardController::class, 'indexAdmin'])
         ->name('admin-dashboard');   
-        Route::get('account-setting/{id}', [AuthController::class, 'profileUpdateAdmin'])
+        Route::get('account/setting/{id}', [AuthController::class, 'profileUpdateAdmin'])
         ->name('admin-account-setting'); 
-        Route::get('transcript-request', [DashboardController::class, 'transcriptRequest'])
+        Route::get('transcript/request', [DashboardController::class, 'transcriptRequest'])
         ->name('transcript-request'); 
-        Route::get('transcript-request-view/{id}', [DashboardController::class, 'transcriptRequestView'])
+        Route::get('transcript/request/view/{id}', [DashboardController::class, 'transcriptRequestView'])
         ->name('transcript-request-view'); 
-        Route::post('transcript-request-view/{id}', [DashboardController::class, 'transcriptRequestAction'])
+        Route::post('transcript/request/view/{id}', [DashboardController::class, 'transcriptRequestAction'])
         ->name('transcript-request.action'); 
-        Route::get('transcript-upload/{id}', [DashboardController::class, 'transcriptUpload'])
+        Route::get('transcript/upload/{id}', [DashboardController::class, 'transcriptUpload'])
         ->name('transcript-upload'); 
-        Route::post('transcript-upload/{id}', [DashboardController::class, 'transcriptUploadAction'])
+        Route::post('transcript/upload/{id}', [DashboardController::class, 'transcriptUploadAction'])
         ->name('transcript-upload.action'); 
-        Route::get('user-transcript-upload', [DashboardController::class, 'userTranscriptUpload'])
+        Route::get('user/transcript/upload', [DashboardController::class, 'userTranscriptUpload'])
         ->name('user-transcript-upload');
-        Route::get('users', [DashboardController::class, 'Users'])
+        Route::get('user', [DashboardController::class, 'UserMenu'])
+        ->name('user-menu'); 
+        Route::get('users/view', [DashboardController::class, 'Users'])
         ->name('users'); 
         Route::get('user/add', [DashboardController::class, 'addUser'])
         ->name('add-user'); 
@@ -96,14 +102,18 @@ Route::post('/reset-password', [CustomForgotPasswordController::class, 'resetPas
         //---Class List
         Route::get('class-list', [DashboardController::class, 'classList'])
         ->name('class-list'); 
-        Route::get('class-list-view', [DashboardController::class, 'classListAction'])
+        Route::get('class-list/view', [DashboardController::class, 'classListAction'])
         ->name('class-list.action'); 
         //----Student
-        Route::get('student-registration', [StudentController::class, 'studentRegistration'])
+        Route::get('student', [StudentController::class, 'studentMenu'])
+        ->name('student-menu');
+        Route::get('student/registration', [StudentController::class, 'studentRegistration'])
         ->name('student-registration'); 
-        Route::get('student-migration', [studentController::class, 'studentMigration'])
+        Route::get('student/migration', [studentController::class, 'studentMigration'])
         ->name('student-migration'); 
         //---Result
+        Route::get('result', [ResultController::class, 'resultMenu'])
+        ->name('result-menu');
         Route::get('result/entry', [ResultController::class, 'resultEntry'])
         ->name('result-entry');
         Route::get('result/compute', [ResultController::class, 'resultCompute'])

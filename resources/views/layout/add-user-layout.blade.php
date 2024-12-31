@@ -233,6 +233,115 @@
       <div class="main-content">
         <section class="section">
           <div class="section-body">
+          <div class="row">
+                    <div class="col-12">
+                      <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb bg-dark text-white-all d-flex justify-content-between overflow-auto" style="white-space: nowrap;">
+                  @if(auth()->user()->user_type_status == 1)
+                  <li class="breadcrumb-item active">
+                    <a href="{{route('dashboard')}}"><i class="fas fa-home"></i> Dashboard</a>
+                  </li>
+                  <li class="breadcrumb-item">
+                    <a href="{{route('class-list')}}"><i class="fas fa-chalkboard-teacher"></i> Class List</a>
+                  </li>
+                  <li class="breadcrumb-item dropdown" aria-current="page">
+                    <a href="{{route('student-menu')}}"><i class="fas fa-user-graduate"></i> Student</a>         
+                  </li>
+                  <li class="breadcrumb-item" aria-current="page">
+                    <a href="{{route('result-menu')}}"><i class="fas fa-poll"></i> Result</a>                   
+                  </li>
+                  <li class="breadcrumb-item">
+                    <a href="{{route('course-setup')}}"><i class="fas fa-book"></i> Course</a>
+                  </li>
+                  <li class="breadcrumb-item">
+                    <a href="{{route('hod-setup')}}"><i class="fas fa-user-tie"></i> HOD</a>
+                  </li>        
+                  <li class="breadcrumb-item">
+                    <a href="{{route('grading')}}"><i class="fas fa-clipboard-list"></i> Grading System</a>
+                  </li>
+                  <li class="breadcrumb-item">
+                    <a href="{{route('score-sheet')}}"><i class="fas fa-file-alt"></i> Score Sheet</a>
+                  </li>     
+                  <li class="breadcrumb-item">
+                    <a href="{{route('transcript-request')}}"><i class="fas fa-file-signature"></i> Transcript Request</a>
+                  </li>
+                  <li class="breadcrumb-item">
+                    <a href="{{ route('admin-account-setting', ['id' => auth()->user()->id]) }}"><i class="fas fa-cogs"></i> Account Setting</a>
+                  </li>   
+                  <li class="breadcrumb-item">
+                    <a href="{{route('user-menu')}}"><i class="fas fa-users"></i> Users</a>
+                  </li> 
+                  @elseif(auth()->user()->user_type_status == 2)
+                  <li class="breadcrumb-item active">
+                    <a href="{{route('dashboard')}}"><i class="fas fa-home"></i> Dashboard</a>
+                  </li>
+                  <li class="breadcrumb-item">
+                    <a href="{{route('class-list')}}"><i class="fas fa-chalkboard-teacher"></i> Class List</a>
+                  </li>
+                  <li class="breadcrumb-item" aria-current="page">
+                    <a href="{{route('student-menu')}}"><i class="fas fa-user-graduate"></i> Student</a>         
+                  </li>
+                  <li class="breadcrumb-item" aria-current="page">
+                    <a href="{{route('result-menu')}}"><i class="fas fa-poll"></i> Result</a>                   
+                  </li>
+                  <li class="breadcrumb-item">
+                    <a href="{{route('course-setup')}}"><i class="fas fa-book"></i> Course</a>
+                  </li>
+                  <li class="breadcrumb-item">
+                    <a href="{{route('hod-setup')}}"><i class="fas fa-user-tie"></i> HOD</a>
+                  </li>        
+                  <li class="breadcrumb-item">
+                    <a href="{{route('grading')}}"><i class="fas fa-clipboard-list"></i> Grading System</a>
+                  </li>
+                  <li class="breadcrumb-item">
+                    <a href="{{route('score-sheet')}}"><i class="fas fa-file-alt"></i> Score Sheet</a>
+                  </li>     
+                  <li class="breadcrumb-item">
+                    <a href="{{route('transcript-request')}}"><i class="fas fa-file-signature"></i> Transcript Request</a>
+                  </li>
+                  <li class="breadcrumb-item">
+                    <a href="{{ route('admin-account-setting', ['id' => auth()->user()->id]) }}"><i class="fas fa-cogs"></i> Account Setting</a>
+                  </li>   
+                  <li class="breadcrumb-item">
+                    <a href="{{route('user-menu')}}"><i class="fas fa-users"></i> Users</a>
+                  </li> 
+                  @elseif(auth()->user()->user_type_status == 3)
+                  <li class="breadcrumb-item active">
+                    <a href="{{route('dashboard')}}"><i class="fas fa-home"></i> Dashboard</a>
+                  </li>
+                  <li class="breadcrumb-item">
+                    <a href="{{route('class-list')}}"><i class="fas fa-chalkboard-teacher"></i> Class List</a>
+                  </li>                  
+                  <li class="breadcrumb-item" aria-current="page">
+                    <a href="{{route('result-menu')}}"><i class="fas fa-poll"></i> Result</a>                   
+                  </li>
+                  <li class="breadcrumb-item">
+                    <a href="{{route('course-setup')}}"><i class="fas fa-book"></i> Course</a>
+                  </li> 
+                  <li class="breadcrumb-item">
+                    <a href="{{ route('admin-account-setting', ['id' => auth()->user()->id]) }}"><i class="fas fa-cogs"></i> Account Setting</a>
+                  </li>
+                  @elseif(auth()->user()->user_type_status == 4)
+                  <li class="breadcrumb-item active">
+                    <a href="{{route('dashboard')}}"><i class="fas fa-home"></i> Dashboard</a>
+                  </li>                  
+                  <li class="breadcrumb-item" aria-current="page">
+                    <a href="{{route('student-result')}}"><i class="fas fa-poll"></i> Result</a>                   
+                  </li>                   
+                  <li class="breadcrumb-item">
+                    <a href="{{route('user-request')}}"><i class="fas fa-file-signature"></i> Request Transcript</a>
+                  </li>
+                  <li class="breadcrumb-item">
+                    <a href="{{ route('account-setting', ['id' => auth()->user()->id]) }}"><i class="fas fa-cogs"></i> Account Setting</a>
+                  </li>   
+                  <li class="breadcrumb-item">
+                    <a href="{{route('contact-us')}}"><i class="fas fa-mail"></i> Contact Us</a>
+                  </li> 
+                  @endif
+                        </ol>
+                      </nav>
+                    </div>
+                  </div>
             <div class="row">
               <div class="col-12 col-md-6 col-lg-6">
                 <div class="card">
