@@ -91,7 +91,7 @@
           <ul class="sidebar-menu">
             <li class="menu-header">Main</li>
             @if(auth()->user()->user_type_status == 1)
-            <li class="dropdown active">
+            <li class="dropdown">
               <a href="{{ route('admin-dashboard') }}" class="nav-link"><i data-feather="home"></i><span>Dashboard</span></a>
             </li>
             <li class="dropdown">
@@ -133,7 +133,7 @@
             <li class="dropdown">
               <a href="{{ route('admin-account-setting', ['id' => auth()->user()->id]) }}" class="nav-link"><i data-feather="settings"></i><span>Account Settings</span></a>
             </li>
-            <li class="dropdown">
+            <li class="dropdown active">
               <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="users"></i><span>Users</span></a>
               <ul class="dropdown-menu">
                 <li><a class="nav-link" href="{{route('users')}}">Admins</a></li>
@@ -142,7 +142,7 @@
               </ul>
             </li>           
             @elseif(auth()->user()->user_type_status == 2)
-            <li class="dropdown active">
+            <li class="dropdown">
               <a href="{{ route('admin-dashboard') }}" class="nav-link"><i data-feather="home"></i><span>Dashboard</span></a>
             </li>
             <li class="dropdown">
@@ -184,7 +184,7 @@
             <li class="dropdown">
               <a href="{{ route('admin-account-setting', ['id' => auth()->user()->id]) }}" class="nav-link"><i data-feather="settings"></i><span>Account Settings</span></a>
             </li>
-            <li class="dropdown">
+            <li class="dropdown active">
               <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="users"></i><span>Users</span></a>
               <ul class="dropdown-menu">
                 <li><a class="nav-link" href="{{route('users')}}">Admins</a></li>
@@ -193,7 +193,7 @@
               </ul>
             </li> 
             @elseif(auth()->user()->user_type_status == 3)  
-            <li class="dropdown active">
+            <li class="dropdown">
               <a href="{{ route('admin-dashboard') }}" class="nav-link"><i data-feather="home"></i><span>Dashboard</span></a>
             </li>
             <li class="dropdown">
@@ -216,7 +216,7 @@
               <a href="{{ route('admin-account-setting', ['id' => auth()->user()->id]) }}" class="nav-link"><i data-feather="settings"></i><span>Account Settings</span></a>
             </li>                 
             @elseif(auth()->user()->user_type_status == 4)            
-            <li class="dropdown active">
+            <li class="dropdown">
               <a href="{{ route('dashboard') }}" class="nav-link"><i data-feather="home"></i><span>Dashboard</span></a>
             </li>
             <li class="dropdown">

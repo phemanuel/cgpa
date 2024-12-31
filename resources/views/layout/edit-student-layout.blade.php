@@ -85,13 +85,13 @@
           <ul class="sidebar-menu">
             <li class="menu-header">Main</li>
             @if(auth()->user()->user_type_status == 1)
-            <li class="dropdown active">
+            <li class="dropdown">
               <a href="{{ route('admin-dashboard') }}" class="nav-link"><i data-feather="home"></i><span>Dashboard</span></a>
             </li>
             <li class="dropdown">
               <a href="{{route('class-list')}}" class="nav-link"><i data-feather="list"></i><span>Class List</span></a>
             </li>
-            <li class="dropdown">
+            <li class="dropdown active">
               <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="user"></i><span>Student</span></a>
               <ul class="dropdown-menu">
                 <li><a class="nav-link" href="{{route('student-registration')}}">Student Registration</a></li>
@@ -136,13 +136,13 @@
               </ul>
             </li>           
             @elseif(auth()->user()->user_type_status == 2)
-            <li class="dropdown active">
+            <li class="dropdown">
               <a href="{{ route('admin-dashboard') }}" class="nav-link"><i data-feather="home"></i><span>Dashboard</span></a>
             </li>
             <li class="dropdown">
               <a href="{{route('class-list')}}" class="nav-link"><i data-feather="list"></i><span>Class List</span></a>
             </li>
-            <li class="dropdown">
+            <li class="dropdown active">
               <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="user"></i><span>Student</span></a>
               <ul class="dropdown-menu">
                 <li><a class="nav-link" href="{{route('student-registration')}}">Student Registration</a></li>
@@ -187,7 +187,7 @@
               </ul>
             </li> 
             @elseif(auth()->user()->user_type_status == 3)  
-            <li class="dropdown active">
+            <li class="dropdown">
               <a href="{{ route('admin-dashboard') }}" class="nav-link"><i data-feather="home"></i><span>Dashboard</span></a>
             </li>
             <li class="dropdown">
