@@ -470,9 +470,16 @@ class DashboardController extends Controller
     public function transcriptRequest()
     {
         try {
+            $user = auth()->user();
+            $rolePermission = $user->transcript;
+
+            if($rolePermission != 1) {
+                return redirect()->back()->with('error', 'You do not have permission to this module.');
+            }
+
             $user_id = auth()->user()->id;
             // Query all admin user
-            $users = User::where('user_type', '=', 'admin')->get();
+            $users = User::whereIn('user_type_status', [1, 2])->get();
             
             // Query successful payment transactions
             $successful_transactions = PaymentTransaction::where('transaction_status', 'Successful')->get();
@@ -586,51 +593,6 @@ class DashboardController extends Controller
             $allUsers = User::whereIn('user_type_status', [1, 2])->get();
             
             return view('auth.users', compact('users','allUsers'));
-        } catch (\Exception $e) {
-            // Handle any exceptions that may occur
-            // Log the error or redirect to a generic error page
-            return redirect('generic-error')->with('error', 'An unexpected error occurred');
-        }
-         
-
-    }
-
-    public function instructors()
-    {
-        try {
-            $user = auth()->user();
-            $rolePermission = $user->instructors;
-
-            if($rolePermission != 1) {
-                return redirect()->back()->with('error', 'You do not have permission to this module.');
-            }
-        
-            $users = User::where('user_type_status', '3')->paginate(10);
-            $allUsers = User::where('user_type_status', '3')->get();
-            
-            return view('layout.instructors', compact('users', 'allUsers'));
-        } catch (\Exception $e) {
-            // Handle any exceptions that may occur
-            // Log the error or redirect to a generic error page
-            return redirect('generic-error')->with('error', 'An unexpected error occurred');
-        }
-         
-
-    }
-
-    public function students()
-    {
-        try {
-            $user = auth()->user();
-            $rolePermission = $user->students;
-
-            if($rolePermission != 1) {
-                return redirect()->back()->with('error', 'You do not have permission to this module.');
-            }
-        
-            $users = Registration::paginate(10);
-            $userCount = Registration::count();
-            return view('layout.students', compact('users','userCount'));
         } catch (\Exception $e) {
             // Handle any exceptions that may occur
             // Log the error or redirect to a generic error page

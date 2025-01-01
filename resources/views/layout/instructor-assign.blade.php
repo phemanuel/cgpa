@@ -2,11 +2,12 @@
 <html lang="en">
 
 
-<!-- index.html  21 Nov 2019 03:44:50 GMT -->
+<!-- basic-form.html  21 Nov 2019 03:54:41 GMT -->
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-  <title>E-Result :: Instructors</title>
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+  <title>E-Result :: Instructor</title>
   <!-- General CSS Files -->
   <link rel="stylesheet" href="{{asset('dashboard/assets/css/app.min.css')}}">
   <!-- Template CSS -->
@@ -16,16 +17,30 @@
   <link rel="stylesheet" href="{{asset('dashboard/assets/css/custom.css')}}">
   <link rel='shortcut icon' type='image/x-icon' href="{{asset('dashboard/assets/img/favicon.png')}}" />
   <style>
-    .black-link {
-    color: black;
-    font-weight: bold;
+    /* Success Alert */
+    .alert.alert-success {
+        background-color: #28a745; /* Green background color */
+        color: #fff; /* White text color */
+        padding: 10px; /* Padding around the text */
+        border-radius: 5px; /* Rounded corners */
     }
 
-    .black-link:hover {
-        color: black;
-
+    /* Error Alert */
+    .alert.alert-danger {
+        background-color: #dc3545; /* Red background color */
+        color: #fff; /* White text color */
+        padding: 10px; /* Padding around the text */
+        border-radius: 5px; /* Rounded corners */
     }
-  </style>
+</style>
+<style type="text/css">
+.style2 {
+	color: #006600;
+	font-weight: bold;
+}
+.style3 {font-weight: bold}
+.style7 {color: #0000FF; font-weight: bold; }
+</style>
 </head>
 
 <body>
@@ -64,7 +79,7 @@
       <div class="main-sidebar sidebar-style-2">
         <aside id="sidebar-wrapper">
           <div class="sidebar-brand">
-            <a href="{{route('admin-dashboard')}}"> <img alt="image" src="{{asset('dashboard/assets/img/logo.png')}}" class="header-logo" /> <span
+            <a href="{{route('dashboard')}}"> <img alt="image" src="{{asset('dashboard/assets/img/logo.png')}}" class="header-logo" /> <span
                 class="logo-name">E-Result</span>
             </a>
           </div>
@@ -189,7 +204,7 @@
                 <li><a class="nav-link" href="{{route('cgpa-summary')}}">CGPA Summary</a></li>                
               </ul>
             </li>
-            <li class="dropdown">
+            <li class="dropdown active">
               <a href="{{route('course-setup')}}" class="nav-link"><i data-feather="book"></i><span>Course Setup</span></a>
             </li>
             <li class="dropdown">
@@ -218,7 +233,8 @@
       <!-- Main Content -->
       <div class="main-content">
         <section class="section">
-        <div class="row">
+          <div class="section-body">
+          <div class="row">
                     <div class="col-12">
                       <nav aria-label="breadcrumb">
                         <ol class="breadcrumb bg-dark text-white-all d-flex justify-content-between overflow-auto" style="white-space: nowrap;">
@@ -327,26 +343,13 @@
                       </nav>
                     </div>
                   </div>
-        <div class="row ">
-              <div class="col-xl-3 col-lg-6">
-                <div class="card l-bg-green">
-                  <div class="card-statistic-3">
-                    <div class="card-icon card-icon-large"><i class="fa fa-award"></i></div>
-                    <div class="card-content">
-                      <h4 class="card-title">Instructors - {{$allUsers->count()}}</h4>
-                      <span><strong></strong></span>
-                      <div class="progress mt-1 mb-1" data-height="8">
-                        <div class="progress-bar l-bg-purple" role="progressbar" data-width="{{$allUsers->count()}}" aria-valuenow="{{$allUsers->count()}}"
-                          aria-valuemin="0" aria-valuemax="{{$allUsers->count()}}"></div>
-                      </div>
-                      
-                    </div>
+            <div class="row">
+              <div class="col-12 col-md-6 col-lg-6">
+                <div class="card">
+                  <div class="card-header">
+                  <h4>Instructor</h4>
                   </div>
-                </div>
-              </div> 
-              
-            </div>
-            @if(session('success'))
+                  @if(session('success'))
                     <div class="alert alert-success">
                       {{ session('success') }}
                     </div>
@@ -355,105 +358,81 @@
                       {{ session('error') }}
                     </div>
                     @endif	
-          <div class="row">
-            <div class="col-12">
-              <div class="card">
-                <div class="card-header">
-                  <h4>Instructors List | <a href="javascript:void(0)" onclick="printAllUsers()" class="btn btn-outline-primary">
-        <i class="fas fa-print"></i> Print All
-    </a></h4>
-                  <div class="card-header-form">
-                    <form>                    
-                      <div class="input-group">
-                      <a href="{{route('add-user')}}" class="btn btn-primary">Add Instructor</a>
-                        <!-- <input type="text" class="form-control" placeholder="Search"> -->
-                        <!-- <div class="input-group-btn">
-                          <button class="btn btn-primary"><i class="fas fa-search"></i></button>
-                        </div> -->
-                      </div>
-                    </form>
-                  </div>
-                </div>
-                <div class="card-body p-0">
-                  <div class="table-responsive">
-                  <table class="table table-bordered" id="allUsersTable">
-                      <thead>
-                          <tr>
-                              <th>#</th>             
-                              <th>Email Address</th>
-                              <th>Admin Name</th>
-                              <th>Role</th>
-                              <th>Assign Instructor</th>
-                              <th>Action</th>
-                          </tr>
-                      </thead>
-                      <tbody>
-                          @if ($users->count() > 0)
-                              @foreach ($users as $key => $user)
-                              <tr> 
-                                  <td>{{ $key + 1 }}</td> 
-                                  <td>{{ $user->email }}</td>
-                                  <td>{{ $user->last_name . ' ' . $user->first_name }}</td>
-                                  <td><div class="badge badge-info">{{ $user->user_type }}</div></td>
-                                  <td>
-                                      <a href="{{ route('instructor-assign', ['id' => $user->id]) }}" class="btn btn-outline-primary">
-                                          <i class="fas fa-user-plus"></i>
-                                      </a>
-                                  </td>
-                                  <td>
-                                    <a href="{{ route('edit-user', ['id' => $user->id]) }}" class="btn btn-outline-primary">
-                                      <i class="fas fa-edit"></i></a>
-                                    </td>
-                                </tr>  
-                              @endforeach
-                          @else
-                          <tr>
-                              <td colspan="5">Users not available.</td>
-                          </tr>
-                          @endif                                   
-                      </tbody>
-                  </table>
-                    {{ $users->links() }}
-                  </div>
-                </div>
+                  <div class="card-body">
+                  <form action="{{route('instructor-assign.action')}}" method="POST">
+                    @csrf                   
+                    <div class="form-group">
+                        <label>Department</label>
+                        <select name="department" id="department" class="form-control" required>
+                            @foreach($allDepartment as $department)
+                                <option value="{{$department->dept_name}}">{{$department->dept_name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    @error('department')
+                        <span class="invalid-feedback">{{ $message }}</span>
+                    @enderror
+                    <div class="form-group">
+                        <label>Programme</label>
+                        <select name="programme" id="programme" class="form-control">                            
+                            <!-- Loop through levels -->
+                            @foreach($programmes as $d)
+                                <option value="{{ $d->department }}">{{ $d->department }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    @error('programme')
+                        <span class="invalid-feedback">{{ $message }}</span>
+                    @enderror                   
+
+                    <div class="form-group">
+                        <label>Academic Level</label>
+                        <select name="stdLevel" id="stdLevel" class="form-control">                            
+                            <!-- Loop through levels -->
+                            @foreach($allLevel as $d)
+                                <option value="{{ $d->level }}">{{ $d->level }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    @error('stdLevel')
+                        <span class="invalid-feedback">{{ $message }}</span>
+                    @enderror   
+                    
+                    <div class="form-group">
+                        <label>Semester</label>
+                        <select name="semester" id="semesterDropdown" class="form-control"> 
+                        <option value="">Select Semester</option> 
+                                <option value="FIRST">FIRST</option> 
+                                <option value="SECOND">SECOND</option>                          
+                        </select>
+                    </div>
+                    @error('semester')
+                        <span class="invalid-feedback">{{ $message }}</span>
+                    @enderror
+                    
+                    <div class="form-group">
+                        <label>Available Courses</label>
+                        <select name="course" id="courseDropdown" class="form-control">                            
+                                <option value=""></option>                            
+                        </select>
+                    </div>
+                    @error('course')
+                        <span class="invalid-feedback">{{ $message }}</span>
+                    @enderror   
+
+                    <div class="card-footer text-right">
+                        <input type="hidden" name="instructorId" value="{{auth()->user()->id}}">
+                        <input class="btn btn-primary mr-1" type="submit" value="Assign" />
+                        <!-- <input class="btn btn-secondary" type="reset" value="Reset" /> -->
+                    </div>
+                </form>
+                  
+                </div>               
+
               </div>
             </div>
           </div>
-          
-          
         </section>
-        <!-- Hidden table for printing -->
-    <div id="printableTable" style="display: none;">
-        <h4>Instructor List</h4>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>#</th>             
-                    <th>Email Address</th>
-                    <th>Instructor Name</th>
-                    <th>Role</th>
-                </tr>
-            </thead>
-            <tbody>
-                @if ($allUsers->count() > 0)
-                    @foreach ($allUsers as $key => $user)
-                    <tr> 
-                        <td>{{ $key + 1 }}</td> 
-                        <td>{{ $user->email }}</td>
-                        <td>{{ $user->last_name . ' ' . $user->first_name }}</td>
-                        <td><div class="badge badge-info">{{ $user->user_type }}</div></td>                        
-                    </tr>  
-                    @endforeach
-                @else
-                <tr>
-                    <td colspan="5">Users not available.</td>
-                </tr>
-                @endif                                   
-            </tbody>
-        </table>
-    </div>
-</div>
-
         <div class="settingSidebar">
           <a href="javascript:void(0)" class="settingPanelToggle"> <i class="fa fa-spin fa-cog"></i>
           </a>
@@ -555,8 +534,8 @@
       </footer>
     </div>
   </div>
-  <!-- General JS Scripts -->
-  <script src="{{asset('dashboard/assets/js/app.min.js')}}"></script>
+   <!-- General JS Scripts -->
+   <script src="{{asset('dashboard/assets/js/app.min.js')}}"></script>
   <!-- JS Libraies -->
   <script src="{{asset('dashboard/assets/bundles/apexcharts/apexcharts.min.js')}}"></script>
   <!-- Page Specific JS File -->
@@ -568,48 +547,65 @@
 </body>
 
 
-<!-- index.html  21 Nov 2019 03:47:04 GMT -->
+<!-- basic-form.html  21 Nov 2019 03:54:41 GMT -->
 </html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- <script src="{{ asset('js/jquery-3.5.1.min.js') }}"></script> -->
 <script>
-function printAllUsers() {
-    // Get the content of the hidden table
-    var printContents = document.getElementById('printableTable').innerHTML;
+    $(document).ready(function () {
+        // Listen for changes on the semester dropdown
+        $('select[name="semester"]').on('change', function () {
+            // Get selected values
+            let department = $('select[name="department"]').val();
+            let programme = $('select[name="programme"]').val();
+            let stdLevel = $('select[name="stdLevel"]').val();
+            let semester = $(this).val(); // Current semester selection
 
-    // Create a hidden iframe
-    var iframe = document.createElement('iframe');
-    iframe.style.position = 'absolute';
-    iframe.style.top = '-10000px';
-    iframe.style.left = '-10000px';
-    document.body.appendChild(iframe);
+            // Log the selected values for debugging
+            console.log("Selected Values:");
+            console.log("Department:", department);
+            console.log("Programme:", programme);
+            console.log("Student Level:", stdLevel);
+            console.log("Semester:", semester);
 
-    // Write the content into the iframe
-    var doc = iframe.contentWindow.document;
-    doc.open();
-    doc.write(`
-        <html>
-            <head>
-                <title>Instructor List</title>
-                <style>
-                    body { font-family: Arial, sans-serif; margin: 20px; }
-                    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-                    th, td { border: 1px solid black; padding: 8px; text-align: left; }
-                    th { background-color: #f2f2f2; }
-                </style>
-            </head>
-            <body>                
-                ${printContents}
-            </body>
-        </html>
-    `);
-    doc.close();
+            // Check if all fields are selected
+            if (department && programme && stdLevel && semester) {
+                console.log("All fields selected. Sending AJAX request...");
+                // Send AJAX request
+                $.ajax({
+                    url: "{{ route('get-courses') }}",
+                    method: "POST",
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        department: department,
+                        programme: programme,
+                        stdLevel: stdLevel,
+                        semester: semester,
+                    },
+                    success: function (data) {
+                        console.log("AJAX request successful. Data received:");
+                        console.log(data);
 
-    // Trigger the print dialog
-    iframe.contentWindow.focus();
-    iframe.contentWindow.print();
+                        // Clear previous options
+                        let courseDropdown = $('#courseDropdown');
+                        courseDropdown.empty();
+                        courseDropdown.append('<option value="">Select a course</option>');
 
-    // Remove the iframe after printing
-    setTimeout(() => {
-        document.body.removeChild(iframe);
-    }, 1000);
-}
+                        // Populate with new options
+                        $.each(data, function (key, course) {
+                            courseDropdown.append('<option value="' + course.id + '">' + course.course_title + ' - ' + course.course_code + '</option>');
+                        });
+                    },
+                    error: function (xhr) {
+                        console.error("AJAX request failed. Error:");
+                        console.error(xhr.responseText);
+                    },
+                });
+            } else {
+                console.log("Missing fields. Clearing the dropdown...");
+                // Clear the dropdown if any field is missing
+                $('#courseDropdown').empty().append('<option value="">Select a course</option>');
+            }
+        });
+    });
 </script>

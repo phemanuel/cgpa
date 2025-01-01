@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\ResultController;
+use App\Http\Controllers\InstructorController;
 use App\Http\Controllers\CustomForgotPasswordController;
 use Illuminate\Support\Facades\Route; 
 
@@ -89,11 +90,7 @@ Route::post('/reset-password', [CustomForgotPasswordController::class, 'resetPas
         Route::get('user/edit/{id}', [DashboardController::class, 'editUser'])
         ->name('edit-user');
         Route::put('user/edit/{id}', [DashboardController::class, 'editUserAction'])
-        ->name('edit-user.action');
-        Route::get('instructors', [DashboardController::class, 'instructors'])
-        ->name('instructors'); 
-        Route::get('students', [DashboardController::class, 'students'])
-        ->name('student'); 
+        ->name('edit-user.action'); 
         Route::get('student/edit/{id}', [DashboardController::class, 'editStudent'])
         ->name('edit-student');
         Route::put('student/edit/{id}', [DashboardController::class, 'editStudentAction'])
@@ -105,6 +102,8 @@ Route::post('/reset-password', [CustomForgotPasswordController::class, 'resetPas
         Route::get('class-list/view', [DashboardController::class, 'classListAction'])
         ->name('class-list.action'); 
         //----Student
+        Route::get('students', [StudentController::class, 'students'])
+        ->name('student'); 
         Route::get('student', [StudentController::class, 'studentMenu'])
         ->name('student-menu');
         Route::get('student/registration', [StudentController::class, 'studentRegistration'])
@@ -126,7 +125,7 @@ Route::post('/reset-password', [CustomForgotPasswordController::class, 'resetPas
         ->name('cgpa-summary');
         Route::get('result/transcript', [ResultController::class, 'studentTranscript'])
         ->name('student-transcript');
-
+        //---course
         Route::get('course', [CourseController::class, 'courseSetup'])
         ->name('course-setup');
         Route::get('course/list', [CourseController::class, 'courseList'])
@@ -141,6 +140,15 @@ Route::post('/reset-password', [CustomForgotPasswordController::class, 'resetPas
         ->name('course-edit.action');
         Route::get('course/delete/{id}', [CourseController::class, 'courseDelete'])
         ->name('course-delete');
+        //---
+        Route::get('instructors', [InstructorController::class, 'instructors'])
+        ->name('instructors');
+        Route::get('instructor/assign/{id}', [InstructorController::class, 'instructorAssign'])
+        ->name('instructor-assign');
+        Route::post('instructor/assign', [InstructorController::class, 'instructorAssignAction'])
+        ->name('instructor-assign.action');
+        Route::post('/get-courses', [InstructorController::class, 'getCourses'])
+        ->name('get-courses');
         //---HOD
         Route::get('hod', [CourseController::class, 'hodSetup'])
         ->name('hod-setup');
