@@ -17,8 +17,11 @@ class Instructor extends Model
         'course_code',
         'course_unit',
         'semester',
+        'level',
         'department',
+        'programme',
         'level',
         'assign_status',
+        'session1',
     ];
 }

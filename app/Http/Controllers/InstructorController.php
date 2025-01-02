@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\CourseStudyAll;
+use App\Models\CourseStudy;
 use App\Models\StudentLevel;
 use App\Models\Course;
 use App\Models\Department;
+use App\Models\Instructor;
 use Illuminate\Support\Facades\Log;
 
 use Illuminate\Http\Request;
@@ -42,8 +44,11 @@ class InstructorController extends Controller
         $allLevel = StudentLevel::all();
         $programmes = CourseStudyAll::all();
         $allDepartment = Department::all();
+        $instructorInfo = User::where('id', $id)->first();
+        $instructor = Instructor::where('instructor_id', $id)->paginate(10);
 
-        return view('layout.instructor-assign', compact('allLevel', 'allDepartment', 'programmes'));
+        return view('layout.instructor-assign', compact('allLevel', 'allDepartment', 
+        'programmes','instructor','instructorInfo'));
 
 
     }  
@@ -86,6 +91,92 @@ class InstructorController extends Controller
             return response()->json([
                 'error' => 'An error occurred while fetching courses.',
             ], 500);
+        }
+    }
+
+    public function getProgrammes(Request $request)
+    {
+        $request->validate([
+            'department' => 'required|string',
+        ]);
+
+        // Fetch programmes for the given department
+        $programmes = CourseStudy::where('dept', $request->department)->get();
+
+        return response()->json($programmes);
+    }
+
+    public function instructorAssignAction(Request $request)
+    {
+        try {
+            // Validate incoming data
+            $request->validate([
+                'acadSession' => 'required|string',
+                'department' => 'required|string',
+                'programme' => 'required|string',
+                'stdLevel' => 'required|string',
+                'semester' => 'required|string',
+                'courseId' => 'required|exists:course,id', // Ensure the course exists
+                'instructorId' => 'required|exists:users,id', // Ensure instructor exists
+            ]);
+    
+            // Check if the course is already assigned to an instructor
+            $existingAssignment = Instructor::where([
+                ['department', '=', $request->department],
+                ['programme', '=', $request->programme],
+                ['level', '=', $request->stdLevel],
+                ['semester', '=', $request->semester],
+                ['session1', '=', $request->acadSession],
+                ['course_id', '=', $request->courseId],
+            ])->first();
+    
+            if ($existingAssignment) {
+                $existingId = $existingAssignment->id;
+    
+                // Redirect to the reassignment page with relevant data
+                return redirect()->route('instructor-reassign', [
+                    'id' => $existingId,
+                ])->with('info', 'This course is already assigned to an instructor. Please confirm if you want to reassign to another instructor.');
+            }
+    
+            // Fetch instructor and course information
+            $instructorInfo = User::findOrFail($request->instructorId);
+            $courseInfo = Course::findOrFail($request->courseId);
+    
+            // Create a new assignment record
+            $assignment = Instructor::create([
+                'instructor_id' => $request->instructorId,
+                'instructor_name' => $instructorInfo->last_name . ' ' . $instructorInfo->first_name,
+                'department' => $request->department,
+                'programme' => $request->programme,
+                'level' => $request->stdLevel,
+                'semester' => $request->semester,
+                'session1' => $request->acadSession,
+                'course_id' => $request->courseId,
+                'course_title' => $courseInfo->course_title,
+                'course_code' => $courseInfo->course_code,
+                'course_unit' => $courseInfo->course_unit,
+                'assign_status' => 'Active',
+            ]);
+    
+            if ($assignment) {
+                // Update the user's department in the `users` table
+                $instructorInfo->update(['department' => $request->department]);
+    
+                return redirect()->route('instructor-assign', ['id' => $request->instructorId])
+                    ->with('success', 'Course assigned successfully!');
+            } else {
+                return redirect()->back()->with('error', 'Failed to assign course.');
+            }
+        } catch (\Exception $e) {
+            // Log the error
+            Log::error('Error assigning course: ' . $e->getMessage(), [
+                'request_data' => $request->all(),
+                'stack_trace' => $e->getTraceAsString(),
+            ]);
+    
+            // Redirect back with error message
+            return redirect()->back()->with('error', 'An error occurred while assigning the course. Please try again later.');
         }
     }
 

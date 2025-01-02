@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('instructors', function (Blueprint $table) {
-            $table->id(); // Primary key
+            $table->id(); 
             $table->unsignedBigInteger('instructor_id')->unique();
             $table->string('instructor_name', 50);
             $table->unsignedBigInteger('course_id');
@@ -22,6 +22,8 @@ return new class extends Migration
             $table->string('department', 50);
             $table->string('programme', 50);
             $table->string('semester', 10);
+            $table->string('level', 10);
+            $table->string('session1', 20);
             $table->string('assign_status')->default('Inactive'); 
             $table->timestamps();
         });

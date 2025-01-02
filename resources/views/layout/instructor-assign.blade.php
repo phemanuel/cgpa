@@ -2,12 +2,11 @@
 <html lang="en">
 
 
-<!-- basic-form.html  21 Nov 2019 03:54:41 GMT -->
+<!-- index.html  21 Nov 2019 03:44:50 GMT -->
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-  <meta name="csrf-token" content="{{ csrf_token() }}">
-  <title>E-Result :: Instructor</title>
+  <title>E-Result :: Instructors</title>
   <!-- General CSS Files -->
   <link rel="stylesheet" href="{{asset('dashboard/assets/css/app.min.css')}}">
   <!-- Template CSS -->
@@ -17,30 +16,16 @@
   <link rel="stylesheet" href="{{asset('dashboard/assets/css/custom.css')}}">
   <link rel='shortcut icon' type='image/x-icon' href="{{asset('dashboard/assets/img/favicon.png')}}" />
   <style>
-    /* Success Alert */
-    .alert.alert-success {
-        background-color: #28a745; /* Green background color */
-        color: #fff; /* White text color */
-        padding: 10px; /* Padding around the text */
-        border-radius: 5px; /* Rounded corners */
+    .black-link {
+    color: black;
+    font-weight: bold;
     }
 
-    /* Error Alert */
-    .alert.alert-danger {
-        background-color: #dc3545; /* Red background color */
-        color: #fff; /* White text color */
-        padding: 10px; /* Padding around the text */
-        border-radius: 5px; /* Rounded corners */
+    .black-link:hover {
+        color: black;
+
     }
-</style>
-<style type="text/css">
-.style2 {
-	color: #006600;
-	font-weight: bold;
-}
-.style3 {font-weight: bold}
-.style7 {color: #0000FF; font-weight: bold; }
-</style>
+  </style>
 </head>
 
 <body>
@@ -79,7 +64,7 @@
       <div class="main-sidebar sidebar-style-2">
         <aside id="sidebar-wrapper">
           <div class="sidebar-brand">
-            <a href="{{route('dashboard')}}"> <img alt="image" src="{{asset('dashboard/assets/img/logo.png')}}" class="header-logo" /> <span
+            <a href="{{route('admin-dashboard')}}"> <img alt="image" src="{{asset('dashboard/assets/img/logo.png')}}" class="header-logo" /> <span
                 class="logo-name">E-Result</span>
             </a>
           </div>
@@ -204,7 +189,7 @@
                 <li><a class="nav-link" href="{{route('cgpa-summary')}}">CGPA Summary</a></li>                
               </ul>
             </li>
-            <li class="dropdown active">
+            <li class="dropdown">
               <a href="{{route('course-setup')}}" class="nav-link"><i data-feather="book"></i><span>Course Setup</span></a>
             </li>
             <li class="dropdown">
@@ -233,8 +218,7 @@
       <!-- Main Content -->
       <div class="main-content">
         <section class="section">
-          <div class="section-body">
-          <div class="row">
+        <div class="row">
                     <div class="col-12">
                       <nav aria-label="breadcrumb">
                         <ol class="breadcrumb bg-dark text-white-all d-flex justify-content-between overflow-auto" style="white-space: nowrap;">
@@ -343,13 +327,26 @@
                       </nav>
                     </div>
                   </div>
-            <div class="row">
-              <div class="col-12 col-md-6 col-lg-6">
-                <div class="card">
-                  <div class="card-header">
-                  <h4>Instructor</h4>
+        <div class="row ">
+              <div class="col-xl-3 col-lg-6">
+                <div class="card l-bg-green">
+                  <div class="card-statistic-3">
+                    <div class="card-icon card-icon-large"><i class="fa fa-award"></i></div>
+                    <div class="card-content">
+                      <h4 class="card-title">Assigned Course/s - {{$instructor->count()}}</h4>
+                      <span><strong></strong></span>
+                      <div class="progress mt-1 mb-1" data-height="8">
+                        <div class="progress-bar l-bg-purple" role="progressbar" data-width="{{$instructor->count()}}" aria-valuenow="{{$instructor->count()}}"
+                          aria-valuemin="0" aria-valuemax="{{$instructor->count()}}"></div>
+                      </div>
+                      
+                    </div>
                   </div>
-                  @if(session('success'))
+                </div>
+              </div> 
+              
+            </div>
+            @if(session('success'))
                     <div class="alert alert-success">
                       {{ session('success') }}
                     </div>
@@ -358,12 +355,117 @@
                       {{ session('error') }}
                     </div>
                     @endif	
-                  <div class="card-body">
-                  <form action="{{route('instructor-assign.action')}}" method="POST">
-                    @csrf                   
+          <div class="row">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-header">
+                  <h4><span style="color:green;">{{$instructorInfo->last_name . ' ' . $instructorInfo->first_name}}</span>  
+                  Assigned Course/s | <a href="{{route('instructors')}}">Instructor List</a> | 
+                  <a href="javascript:void(0)" onclick="printAllUsers()" class="btn btn-outline-primary">
+        <i class="fas fa-print"></i> Print
+    </a></h4>
+                  <div class="card-header-form">
+                    <form>                    
+                      <div class="input-group">
+                      <button type="button" class="btn btn-primary" data-toggle="modal"
+                      data-target=".bd-example-modal-lg"><i class="fas fa-user-plus"></i> Assign Course</button>
+                        
+                      </div>
+                    </form>
+                  </div>
+                </div>
+                <div class="card-body p-0">
+                  <div class="table-responsive">
+                  <table class="table table-bordered" id="allUsersTable">
+                  <thead>
+                          <tr>
+                              <th>#</th>             
+                              <th>Department</th>
+                              <th>Programme</th>
+                              <th>Level</th>
+                              <th>Semester</th>
+                              <th>Academic Session</th>
+                              <th>Course</th>
+                              <th>Action</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          @if ($instructor->count() > 0)
+                              @foreach ($instructor as $key => $i)
+                              <tr> 
+                                  <td>{{ $key + 1 }}</td> 
+                                  <td>{{ $i->department }}</td>
+                                  <td>{{ $i->programme }}</td>
+                                  <td>{{ $i->level}}</td>
+                                  <td>{{ $i->semester}}</td>
+                                  <td>{{ $i->session1}}</td>
+                                  <td>{{ $i->course_title . ' - ' . $i->course_code}}</td>                                  
+                                  <td>
+                                      <a href="" class="btn btn-outline-danger">
+                                      <i class="fas fa-user-minus"></i> Unassign</i>
+                                      </a>
+                                                                        
+                                  </td>                                    
+                                </tr>  
+                              @endforeach
+                          @else
+                          <tr>
+                              <td colspan="5">No course/s assigned to this instructor.</td>
+                          </tr>
+                          @endif                                   
+                      </tbody>
+                  </table>
+                    {{ $instructor->links() }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          
+        </section>        
+
+        <!-- Large modal -->
+        <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+          aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="myLargeModalLabel">Assign Course for 
+                  <span style="color:green;">{{$instructorInfo->last_name}} {{$instructorInfo->first_name}}</span> </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <!-- Content goes here.... -->
+                <form action="{{route('instructor-assign.action')}}" method="POST">
+                    @csrf   
+                    @php
+                        $startYear = 2018;
+                        $currentYear = date('Y');
+                        $endYear = $currentYear + 1; // Include the current year in the loop
+                    @endphp
+
+                    <div class="form-group">
+                        <label>Academic Session</label>
+                        <select name="acadSession" id="acadSession" class="form-control" required>
+                            <option value="">Select Academic Session</option>
+                            @for ($year = $startYear; $year < $endYear; $year++)
+                                @php
+                                    $nextYear = $year + 1;
+                                @endphp
+                                <option value="{{ $year }}/{{ $nextYear }}">{{ $year }}/{{ $nextYear }}</option>
+                            @endfor
+                        </select>
+                    </div>
+                    @error('acadSession')
+                        <span class="invalid-feedback">{{ $message }}</span>
+                    @enderror                
                     <div class="form-group">
                         <label>Department</label>
                         <select name="department" id="department" class="form-control" required>
+                        <option value="">Select Department</option> 
                             @foreach($allDepartment as $department)
                                 <option value="{{$department->dept_name}}">{{$department->dept_name}}</option>
                             @endforeach
@@ -374,11 +476,8 @@
                     @enderror
                     <div class="form-group">
                         <label>Programme</label>
-                        <select name="programme" id="programme" class="form-control">                            
-                            <!-- Loop through levels -->
-                            @foreach($programmes as $d)
-                                <option value="{{ $d->department }}">{{ $d->department }}</option>
-                            @endforeach
+                        <select name="programme" id="programme" class="form-control">
+                            <option value="">Select a programme</option>
                         </select>
                     </div>
                     @error('programme')
@@ -412,7 +511,7 @@
                     
                     <div class="form-group">
                         <label>Available Courses</label>
-                        <select name="course" id="courseDropdown" class="form-control">                            
+                        <select name="courseId" id="courseDropdown" class="form-control">                            
                                 <option value=""></option>                            
                         </select>
                     </div>
@@ -420,19 +519,20 @@
                         <span class="invalid-feedback">{{ $message }}</span>
                     @enderror   
 
-                    <div class="card-footer text-right">
-                        <input type="hidden" name="instructorId" value="{{auth()->user()->id}}">
-                        <input class="btn btn-primary mr-1" type="submit" value="Assign" />
-                        <!-- <input class="btn btn-secondary" type="reset" value="Reset" /> -->
-                    </div>
+                    <div class="modal-footer bg-whitesmoke br">
+                        <input type="hidden" name="instructorId" value="{{ $instructorInfo->id }}">
+                        <button type="submit" class="btn btn-primary">Assign</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>                   
                 </form>
-                  
-                </div>               
-
               </div>
             </div>
           </div>
-        </section>
+        </div>
+
+        <!-- Hidden table for printing -->
+    
+
         <div class="settingSidebar">
           <a href="javascript:void(0)" class="settingPanelToggle"> <i class="fa fa-spin fa-cog"></i>
           </a>
@@ -534,8 +634,8 @@
       </footer>
     </div>
   </div>
-   <!-- General JS Scripts -->
-   <script src="{{asset('dashboard/assets/js/app.min.js')}}"></script>
+  <!-- General JS Scripts -->
+  <script src="{{asset('dashboard/assets/js/app.min.js')}}"></script>
   <!-- JS Libraies -->
   <script src="{{asset('dashboard/assets/bundles/apexcharts/apexcharts.min.js')}}"></script>
   <!-- Page Specific JS File -->
@@ -547,10 +647,53 @@
 </body>
 
 
-<!-- basic-form.html  21 Nov 2019 03:54:41 GMT -->
+<!-- index.html  21 Nov 2019 03:47:04 GMT -->
 </html>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<!-- <script src="{{ asset('js/jquery-3.5.1.min.js') }}"></script> -->
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
+<!-- <script src="{{asset('js/jquery-3.5.1.min.js') }}"></script> -->
+<script>
+function printAllUsers() {
+    // Get the content of the hidden table
+    var printContents = document.getElementById('printableTable').innerHTML;
+
+    // Create a hidden iframe
+    var iframe = document.createElement('iframe');
+    iframe.style.position = 'absolute';
+    iframe.style.top = '-10000px';
+    iframe.style.left = '-10000px';
+    document.body.appendChild(iframe);
+
+    // Write the content into the iframe
+    var doc = iframe.contentWindow.document;
+    doc.open();
+    doc.write(`
+        <html>
+            <head>
+                <title>Instructor List</title>
+                <style>
+                    body { font-family: Arial, sans-serif; margin: 20px; }
+                    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+                    th, td { border: 1px solid black; padding: 8px; text-align: left; }
+                    th { background-color: #f2f2f2; }
+                </style>
+            </head>
+            <body>                
+                ${printContents}
+            </body>
+        </html>
+    `);
+    doc.close();
+
+    // Trigger the print dialog
+    iframe.contentWindow.focus();
+    iframe.contentWindow.print();
+
+    // Remove the iframe after printing
+    setTimeout(() => {
+        document.body.removeChild(iframe);
+    }, 1000);
+}
+</script>
 <script>
     $(document).ready(function () {
         // Listen for changes on the semester dropdown
@@ -605,6 +748,37 @@
                 console.log("Missing fields. Clearing the dropdown...");
                 // Clear the dropdown if any field is missing
                 $('#courseDropdown').empty().append('<option value="">Select a course</option>');
+            }
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('#department').on('change', function () {
+            let department = $(this).val();
+
+            // Clear the programme dropdown
+            $('#programme').empty().append('<option value="">Select a programme</option>');
+
+            if (department) {
+                $.ajax({
+                    url: "{{ route('get-programmes') }}", // Define route in web.php
+                    method: "POST",
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        department: department
+                    },
+                    success: function (data) {
+                        // Populate the programme dropdown
+                        $.each(data, function (key, programme) {
+                            $('#programme').append('<option value="' + programme.dept_name + '">' + programme.dept_name + '</option>');
+                        });
+                    },
+                    error: function (xhr) {
+                        console.error(xhr.responseText);
+                    }
+                });
             }
         });
     });

@@ -47,6 +47,8 @@ class User extends Authenticatable
         'cgpa_summary',
         'student_transcript',
         'transcript',
+        'image',
+        'department',
     ];
 
     /**

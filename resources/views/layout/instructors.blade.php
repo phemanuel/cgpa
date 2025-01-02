@@ -383,7 +383,7 @@
                               <th>Email Address</th>
                               <th>Admin Name</th>
                               <th>Role</th>
-                              <th>Assign Instructor</th>
+                              <th></th>
                               <th>Action</th>
                           </tr>
                       </thead>
@@ -397,7 +397,7 @@
                                   <td><div class="badge badge-info">{{ $user->user_type }}</div></td>
                                   <td>
                                       <a href="{{ route('instructor-assign', ['id' => $user->id]) }}" class="btn btn-outline-primary">
-                                          <i class="fas fa-user-plus"></i>
+                                      <i class="fas fa-eye"></i> View Assigned Course/s
                                       </a>
                                   </td>
                                   <td>
