@@ -49,7 +49,7 @@ class User extends Authenticatable
         'transcript',
         'image',
         'department',
-    ];
+    ];    
 
     /**
      * The attributes that should be hidden for serialization.
@@ -70,4 +70,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function instructors()
+    {
+        return $this->hasMany(Instructor::class, 'instructor_id', 'id');
+    }
 }

@@ -24,4 +24,10 @@ class Instructor extends Model
         'assign_status',
         'session1',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'instructor_id', 'id');
+    }
+    
 }

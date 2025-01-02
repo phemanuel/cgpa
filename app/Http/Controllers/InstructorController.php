@@ -21,22 +21,23 @@ class InstructorController extends Controller
         try {
             $user = auth()->user();
             $rolePermission = $user->instructors;
-
+    
             if($rolePermission != 1) {
                 return redirect()->back()->with('error', 'You do not have permission to this module.');
             }
-        
-            $users = User::where('user_type_status', '3')->paginate(10);
-            $allUsers = User::where('user_type_status', '3')->get();
-            
-            return view('layout.instructors', compact('users', 'allUsers'));
-        } catch (\Exception $e) {
-            // Handle any exceptions that may occur
-            // Log the error or redirect to a generic error page
-            return redirect('generic-error')->with('error', 'An unexpected error occurred');
-        }
-         
 
+            // Fetch users with instructor data
+            $users = User::where('user_type_status', '3')
+                ->withCount('instructors') 
+                ->paginate(10);
+
+            $allUsers = User::where('user_type_status', '3')->get();
+
+            return view('layout.instructors', compact('users','allUsers'));
+        } catch (\Exception $e) {
+            \Log::error('Error fetching instructors: ' . $e->getMessage());
+            return redirect('generic-error')->with('error', 'An unexpected error occurred. Please try again later.');
+        }
     }
 
     public function instructorAssign($id)
@@ -179,5 +180,44 @@ class InstructorController extends Controller
             return redirect()->back()->with('error', 'An error occurred while assigning the course. Please try again later.');
         }
     }
+
+    public function instructorReassign($id)
+    {
+        $courseInfo = Instructor::where('id', $id)->first();
+        $instructorInfo = User::where('id', $courseInfo->instructor_id)->first();
+        $instructors = User::where('department', $courseInfo->department)
+        ->where('user_type_status', 3)
+        ->get();
+
+        return view('layout.instructor-reassign', compact('instructorInfo', 'courseInfo','instructors'));
+    }
+
+    public function instructorReassignAction(Request $request)
+    {
+        // Validate incoming request data
+        $validatedData = $request->validate([
+            'instructorId' => 'required|exists:users,id',
+            'assignId'     => 'required|exists:instructors,id',
+        ]);
+
+        // Get the new instructor and course
+        $newInstructor = User::find($validatedData['instructorId']);
+        $instructorName = $newInstructor->last_name . ' ' . $newInstructor->first_name;
+        $course = Instructor::find($validatedData['assignId']);
+
+        if (!$newInstructor || !$course) {
+            return redirect()->back()->with('error', 'Invalid instructor or assign details.');
+        }
+
+        // Update the instructor details in the course
+        $course->update([
+            'instructor_id' => $newInstructor->id,
+            'instructor_name' => $instructorName,
+        ]);        
+
+        return redirect()->route('instructor-assign',['id' => $newInstructor->id ])->with('success', 'Course re-assigned successfully.');
+    }
+
+
 
 }

@@ -381,7 +381,8 @@
                               <th>#</th>  
                               <th>Image</th>           
                               <th>Email Address</th>
-                              <th>Admin Name</th>
+                              <th>Instructor Name</th>
+                              <th>Department</th>
                               <th>Role</th>
                               <th></th>
                               <th>Action</th>
@@ -402,10 +403,12 @@
                                   </td>
                                   <td>{{ $user->email }}</td>
                                   <td>{{ $user->last_name . ' ' . $user->first_name }}</td>
+                                  <td>{{ $user->department}}</td>
                                   <td><div class="badge badge-info">{{ $user->user_type }}</div></td>
                                   <td>
                                       <a href="{{ route('instructor-assign', ['id' => $user->id]) }}" class="btn btn-outline-primary">
-                                      <i class="fas fa-eye"></i> View Assigned Course/s
+                                          <i class="fas fa-eye"></i> View Assigned Course/s - 
+                                          <span style="font-weight: bold;">({{ $user->instructors_count }})</span>
                                       </a>
                                   </td>
                                   <td>

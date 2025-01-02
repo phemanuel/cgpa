@@ -431,8 +431,8 @@
           
         </section>        
 
-        <!-- Large modal -->
-        <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+       <!-- Large modal -->
+       <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
           aria-hidden="true">
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -472,9 +472,11 @@
                         <label>Department</label>
                         <select name="department" id="department" class="form-control" required>
                         <option value="">Select Department</option> 
+                          <option value="{{$instructorInfo->department}}">{{$instructorInfo->department}}</option>
+                        <!-- <option value="">Select Department</option> 
                             @foreach($allDepartment as $department)
                                 <option value="{{$department->dept_name}}">{{$department->dept_name}}</option>
-                            @endforeach
+                            @endforeach -->
                         </select>
                     </div>
                     @error('department')
@@ -537,7 +539,42 @@
         </div>
 
         <!-- Hidden table for printing -->
-    
+        <div id="printableTable" style="display: none;">
+         <h4>Assigned Course/s for {{$instructorInfo->last_name . ' ' . $instructorInfo->first_name}}</h4>
+         <table class="table table-striped">
+                  <thead>
+                          <tr>
+                              <th>#</th>             
+                              <th>Department</th>
+                              <th>Programme</th>
+                              <th>Level</th>
+                              <th>Semester</th>
+                              <th>Academic Session</th>
+                              <th>Course</th>                              
+                          </tr>
+                      </thead>
+                      <tbody>
+                          @if ($instructor->count() > 0)
+                              @foreach ($instructor as $key => $i)
+                              <tr> 
+                                  <td>{{ $key + 1 }}</td> 
+                                  <td>{{ $i->department }}</td>
+                                  <td>{{ $i->programme }}</td>
+                                  <td>{{ $i->level}}</td>
+                                  <td>{{ $i->semester}}</td>
+                                  <td>{{ $i->session1}}</td>
+                                  <td>{{ $i->course_title . ' - ' . $i->course_code}}</td> 
+                                </tr>  
+                              @endforeach
+                          @else
+                          <tr>
+                              <td colspan="5">No course/s assigned to this instructor.</td>
+                          </tr>
+                          @endif                                   
+                      </tbody>
+                  </table>
+         </div>
+        
 
         <div class="settingSidebar">
           <a href="javascript:void(0)" class="settingPanelToggle"> <i class="fa fa-spin fa-cog"></i>
@@ -675,7 +712,7 @@ function printAllUsers() {
     doc.write(`
         <html>
             <head>
-                <title>Instructor List</title>
+                <title>Assigned Course/s</title>
                 <style>
                     body { font-family: Arial, sans-serif; margin: 20px; }
                     table { width: 100%; border-collapse: collapse; margin-top: 20px; }
