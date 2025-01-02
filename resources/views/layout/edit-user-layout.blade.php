@@ -57,10 +57,9 @@
               </a></li>
            
           </ul>
-        </div>
-        <ul class="navbar-nav navbar-right">        
+        </div><ul class="navbar-nav navbar-right">        
           <li class="dropdown"><a href="#" data-toggle="dropdown"
-              class="nav-link dropdown-toggle nav-link-lg nav-link-user"> <img alt="image" src="{{ asset('dashboard/assets/img/blank.jpg') }}" alt="Profile Picture"
+              class="nav-link dropdown-toggle nav-link-lg nav-link-user"> <img alt="image" src="{{ asset('profile_pictures/'. auth()->user()->image) }}" alt="Profile Picture"
                 class="user-img-radious-style"> <span class="d-sm-none d-lg-inline-block"></span></a>
             <div class="dropdown-menu dropdown-menu-right pullDown">
               <div class="dropdown-title">Hello {{auth()->user()->first_name}}</div> 
@@ -358,7 +357,7 @@
                     </div>
                     @endif	
                   <div class="card-body">
-                  <form action="{{ route('edit-user.action', ['id' => $user->id]) }}" method="post">
+                  <form action="{{ route('edit-user.action', ['id' => $user->id]) }}" method="post" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
                     <div class="form-group">
@@ -373,9 +372,29 @@
                 @error('userType')
                     <span class="invalid-feedback">{{ $message }}</span>
                 @enderror
+
+                @if($user->user_type_status == 3)
+                <div class="form-group">
+                    <label>Department</label>
+                    <select name="department" id="department" class="form-control">
+                        @if(isset($user->department))
+                            <option value="{{ $user->department }}" selected>{{ $user->department }}</option>
+                        @endif
+                        @foreach($allDepartment as $d)
+                            @if(!isset($user->department) || $user->department !== $d->dept_name)
+                                <option value="{{ $d->dept_name }}">{{ $d->dept_name }}</option>
+                            @endif
+                        @endforeach
+                    </select>
+                </div>
+                @endif
+                @error('department')
+                    <span class="invalid-feedback">{{ $message }}</span>
+                @enderror
+
                     <div class="form-group">
                         <label>Email Address</label>
-                        <input type="email" class="form-control" name="email" value="{{ old('email', $user->email) }}" required>
+                        <input type="email" class="form-control" name="email" value="{{ old('email', $user->email) }}" disabled>
                     </div>
                     @error('email')
                         <span class="invalid-feedback">{{ $message }}</span>
@@ -398,7 +417,7 @@
                     @enderror
 
                     <div class="form-group">
-                        <label>Password</label>
+                        <label>Password <span style="color:red;">(Leave blank if you are not changing the password.)</span></label>
                         <input type="password" class="form-control" name="password" value="" autocomplete="new-password">
                     </div>
                     @error('password')
@@ -409,6 +428,14 @@
                         <label>Confirm Password</label>
                         <input type="password" class="form-control" name="password_confirmation" value="">
                     </div>
+
+                    <div class="form-group">
+                    <label>Profile Picture</label>
+                    <input type="file" class="form-control" name="image">
+                    </div>
+                    @error('image')
+                        <span class="invalid-feedback">{{ $message }}</span>
+                    @enderror
                     <hr>
                     <h5>User Roles</h5>
                     <span class="style2">Module</span> : <span class="style7">Sub-module</span>
@@ -575,6 +602,7 @@
 
                   
                     <div class="card-footer text-right">
+                      <input type="hidden" name="email" value="{{$user->email}}">
                         <input class="btn btn-primary mr-1" type="submit" value="Update" />
                         <!-- <input class="btn btn-secondary" type="reset" value="Reset" /> -->
                     </div>

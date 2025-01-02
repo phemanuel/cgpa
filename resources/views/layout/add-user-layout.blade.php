@@ -57,10 +57,9 @@
               </a></li>
            
           </ul>
-        </div>
-        <ul class="navbar-nav navbar-right">        
+        </div><ul class="navbar-nav navbar-right">        
           <li class="dropdown"><a href="#" data-toggle="dropdown"
-              class="nav-link dropdown-toggle nav-link-lg nav-link-user"> <img alt="image" src="{{ asset('dashboard/assets/img/blank.jpg') }}" alt="Profile Picture"
+              class="nav-link dropdown-toggle nav-link-lg nav-link-user"> <img alt="image" src="{{ asset('profile_pictures/'. auth()->user()->image) }}" alt="Profile Picture"
                 class="user-img-radious-style"> <span class="d-sm-none d-lg-inline-block"></span></a>
             <div class="dropdown-menu dropdown-menu-right pullDown">
               <div class="dropdown-title">Hello {{auth()->user()->first_name}}</div> 
@@ -358,21 +357,34 @@
                     </div>
                     @endif	
                   <div class="card-body">
-                <form action="{{route('add-user.action')}}" method="post">
+                <form action="{{route('add-user.action')}}" method="post" enctype="multipart/form-data">
                       @csrf                    
-                <div class="form-group">
+                      <div class="form-group">
                     <label>User Type</label>
-                    <select name="userType" id="" class="form-control" required>
-                      <option value="Superadmin">Superadmin</option>
-                      <option value="Admin">Admin</option>
-                      <option value="Instructor">Instructor</option>
-                      <option value="Student">Student</option>
+                    <select name="userType" id="userType" class="form-control" required>
+                        <option value="Superadmin">Superadmin</option>
+                        <option value="Admin">Admin</option>
+                        <option value="Instructor">Instructor</option>
+                        <option value="Student">Student</option>
                     </select>
                 </div>
                 @error('userType')
                     <span class="invalid-feedback">{{ $message }}</span>
                 @enderror
-                    <div class="form-group">
+
+                <div class="form-group" id="departmentContainer" style="display: none;">
+                    <label>Department</label>
+                    <select name="department" id="department" class="form-control">
+                        @foreach($allDepartment as $d)
+                            <option value="{{$d->dept_name}}">{{$d->dept_name}}</option>
+                        @endforeach
+                    </select>
+                </div>
+                @error('department')
+                    <span class="invalid-feedback">{{ $message }}</span>
+                @enderror
+
+                <div class="form-group">
                     <label>Email Address</label>
                     <input type="email" class="form-control" name="email" value="{{ old('email') }}" required>
                 </div>
@@ -408,6 +420,14 @@
                     <label>Confirm Password</label>
                     <input type="password" class="form-control" name="password_confirmation" value="" required>
                 </div>
+
+                <div class="form-group">
+                    <label>Profile Picture</label>
+                    <input type="file" class="form-control" name="image">
+                </div>
+                @error('image')
+                    <span class="invalid-feedback">{{ $message }}</span>
+                @enderror
                 <hr>
                 <h5>User Roles</h5>
                 <span class="style2">Module</span> : <span class="style7">Sub-module</span>
@@ -622,3 +642,28 @@
 
 <!-- basic-form.html  21 Nov 2019 03:54:41 GMT -->
 </html>
+
+<script>
+    // Wait for the DOM to be ready
+    document.addEventListener('DOMContentLoaded', function () {
+        // Get the userType select element and the department container
+        var userTypeSelect = document.getElementById('userType');
+        var departmentContainer = document.getElementById('departmentContainer');
+
+        // Event listener to check changes in the userType select
+        userTypeSelect.addEventListener('change', function () {
+            if (userTypeSelect.value === 'Instructor') {
+                departmentContainer.style.display = 'block';  // Show department dropdown if Instructor
+            } else {
+                departmentContainer.style.display = 'none';   // Hide department dropdown for other user types
+            }
+        });
+
+        // Initial check on page load to ensure correct visibility
+        if (userTypeSelect.value !== 'Instructor') {
+            departmentContainer.style.display = 'none';
+        } else {
+            departmentContainer.style.display = 'block';
+        }
+    });
+</script>

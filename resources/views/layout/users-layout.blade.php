@@ -43,10 +43,9 @@
               </a></li>
            
           </ul>
-        </div>
-        <ul class="navbar-nav navbar-right">        
+        </div><ul class="navbar-nav navbar-right">        
           <li class="dropdown"><a href="#" data-toggle="dropdown"
-              class="nav-link dropdown-toggle nav-link-lg nav-link-user"> <img alt="image" src="{{ asset('dashboard/assets/img/blank.jpg') }}" alt="Profile Picture"
+              class="nav-link dropdown-toggle nav-link-lg nav-link-user"> <img alt="image" src="{{ asset('profile_pictures/'. auth()->user()->image) }}" alt="Profile Picture"
                 class="user-img-radious-style"> <span class="d-sm-none d-lg-inline-block"></span></a>
             <div class="dropdown-menu dropdown-menu-right pullDown">
               <div class="dropdown-title">Hello {{auth()->user()->first_name}}</div> 
@@ -379,7 +378,8 @@
                   <table class="table table-bordered" id="allUsersTable">
                       <thead>
                           <tr>
-                              <th>#</th>             
+                              <th>#</th> 
+                              <th>Image</th>            
                               <th>Email Address</th>
                               <th>Admin Name</th>
                               <th>Role</th>
@@ -391,6 +391,14 @@
                               @foreach ($users as $key => $user)
                               <tr> 
                                   <td>{{ $key + 1 }}</td> 
+                                  <td>
+                                  <img 
+                            alt="Profile Picture" 
+                            src="{{ file_exists(public_path('profile_pictures/' . $user->image)) ? asset('profile_pictures/' . $user->image) : asset('uploads/blank.jpg') }}" 
+                            class="user-img-radious-style" 
+                            width="50" 
+                            height="50">
+                                  </td>
                                   <td>{{ $user->email }}</td>
                                   <td>{{ $user->last_name . ' ' . $user->first_name }}</td>
                                   <td><div class="badge badge-info">{{ $user->user_type }}</div></td>

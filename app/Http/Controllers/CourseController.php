@@ -7,6 +7,8 @@ use App\Models\Course;
 use App\Models\Department;
 use App\Models\hod;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\File; 
+use Illuminate\Support\Facades\Storage;
 
 use Illuminate\Http\Request;
 
@@ -298,10 +300,12 @@ class CourseController extends Controller
         // Handle signature file if uploaded
         if ($request->hasFile('signature')) {
             // Delete the old signature file if it exists
-            $oldSignaturePath = public_path('signature/' . $hod->signature);
-            if (file_exists($oldSignaturePath)) {
-                unlink($oldSignaturePath);
-            }
+            $oldSignaturePath = ('public/signature/' . $hod->sign);
+            if (File::exists($oldSignaturePath)) {
+                File::delete($oldSignaturePath);
+            } else {
+                Log::warning('File not found for deletion: ' . $oldSignaturePath);
+            }   
 
             // Save the new signature file
             $signatureFile = $request->file('signature');
@@ -309,7 +313,7 @@ class CourseController extends Controller
             $signatureFile->move(public_path('signature'), $generatedFileName);
 
             // Update the signature field in the database
-            $hod->signature = $generatedFileName;
+            $hod->sign = $generatedFileName;
         }
 
         // Save the updated record
@@ -325,10 +329,12 @@ class CourseController extends Controller
 
         // Delete the signature file if it exists
         if ($hod->signature) {
-            $signaturePath = public_path('signature/' . $hod->signature);
-            if (file_exists($signaturePath)) {
-                unlink($signaturePath);
-            }
+            $oldSignaturePath = ('public/signature/' . $hod->sign);
+            if (File::exists($oldSignaturePath)) {
+                File::delete($oldSignaturePath);
+            } else {
+                Log::warning('File not found for deletion: ' . $oldSignaturePath);
+            }   
         }
 
         // Delete the HOD record

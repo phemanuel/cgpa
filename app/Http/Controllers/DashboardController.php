@@ -24,6 +24,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Exception;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\File; 
+use Illuminate\Support\Facades\Storage;
 
 class DashboardController extends Controller
 {
@@ -603,8 +605,9 @@ class DashboardController extends Controller
     }
 
     public function addUser()
-    {        
-        return view('auth.add-user');
+    {   
+        $allDepartment = Department::all(); 
+        return view('auth.add-user', compact('allDepartment'));
     }
 
     public function addUserAction(Request $request)
@@ -617,6 +620,8 @@ class DashboardController extends Controller
                 'email' => 'required|email|unique:users',
                 'password' => 'required|string|min:8|confirmed',
                 'userType' => 'required|string',
+                'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+                'department' => 'nullable|string'
             ]);
 
             $email_token = Str::random(40);
@@ -657,7 +662,19 @@ class DashboardController extends Controller
             elseif($validatedData['userType'] == 'Student') {
                 $userTypeStatus = 4;
             }
+            
+            if ($request->hasFile('image')) {
+                // Generate a unique file name
+            $imageFile = $request->file('image');
+            $generatedFileName = uniqid() . '.' . $imageFile->getClientOriginalExtension();
 
+            // Save the file to the public/signature directory
+            $imageFile->move(public_path('profile_pictures'), $generatedFileName);
+            }
+            else{
+                $generatedFileName = "blank.jpg";
+            }
+            
             // Merge validated data with roles
             $userData = array_merge($validatedData, $roles, [
                 'password' => Hash::make($validatedData['password']),
@@ -666,18 +683,20 @@ class DashboardController extends Controller
                 'remember_token' => $email_token,
                 'user_type' => $validatedData['userType'],
                 'user_type_status' => $userTypeStatus,
+                'image' => $generatedFileName,
+                'department' => $validatedData['department'],
             ]);
-
+            
             // Create the user with roles
             $user = User::create($userData);
             if($validatedData['userType'] == 'Superadmin'){
-                return redirect()->route('users')->with('success', 'User has been created successfully.');
+                return redirect()->route('users')->with('success', 'Admin has been created successfully.');
             }
             elseif($validatedData['userType'] == 'Admin'){
-                return redirect()->route('users')->with('success', 'User has been created successfully.');
+                return redirect()->route('users')->with('success', 'Admin has been created successfully.');
             }
-            elseif($validatedData['userType'] == 'instructor'){
-                return redirect()->route('instructors')->with('success', 'User has been created successfully.');
+            elseif($validatedData['userType'] == 'Instructor'){
+                return redirect()->route('instructors')->with('success', 'Instructor has been created successfully.');
             }            
         } catch (ValidationException $e) {
             // Validation failed. Redirect back with validation errors.
@@ -693,8 +712,9 @@ class DashboardController extends Controller
     public function editUser($id)
     {
         $user = User::findorFail($id);
+        $allDepartment = Department::all(); 
 
-        return view('auth.edit-user',compact('user'));
+        return view('auth.edit-user',compact('user', 'allDepartment'));
     }
 
     public function editStudent($id)
@@ -715,6 +735,8 @@ class DashboardController extends Controller
                 'email' => 'required|email|unique:users,email,' . $id, 
                 'password' => 'nullable|string|min:8|confirmed', 
                 'userType' => 'required|string', 
+                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'department' => 'nullable|string'
             ]);
 
             // Find the user by ID
@@ -752,34 +774,57 @@ class DashboardController extends Controller
                 'transcript' => $request->has('transcript') ? 1 : 0,
             ];
 
+                // Handle image file if uploaded
+            if ($request->hasFile('image')) {
+                // Delete the old simage file if it exists
+                $oldImagePath = public_path('profile_pictures/' . $user->image);
+                if (File::exists($oldImagePath)) {
+                    File::delete($oldImagePath);
+                } 
+                // Save the new image file
+                $imageFile = $request->file('image');
+                $generatedFileName = uniqid() . '.' . $imageFile->getClientOriginalExtension();
+                $imageFile->move(public_path('profile_pictures'), $generatedFileName);
+
+                // Update the image field in the database
+                $userImage = ['image' => $generatedFileName] ;
+            }
+            else{
+                $userImage = ['image' => $user->image] ;
+            }
+
             if ($validatedData['userType'] == 'Superadmin') {
                 $userType = ['user_type' => 'Superadmin'];
                 $userTypeStatus = ['user_type_status' => 1];
+                $department = "";                
             } elseif ($validatedData['userType'] == 'Admin') {
                 $userType = ['user_type' => 'Admin'];
-                $userTypeStatus = ['user_type_status' => 2];
+                $userTypeStatus = ['user_type_status' => 2];   
+                $department = "";             
             } elseif ($validatedData['userType'] == 'Instructor') {
                 $userType = ['user_type' => 'Instructor'];
                 $userTypeStatus = ['user_type_status' => 3];
+                $department = ['department' => $validatedData['department']];
             } elseif ($validatedData['userType'] == 'Student') {
                 $userType = ['user_type' => 'Student'];
                 $userTypeStatus = ['user_type_status' => 4];
+                $department = ""; 
             }
 
             // Merge roles and user type status with the validated data
-            $userData = array_merge($validatedData, $roles, $userTypeStatus,$userType);
+            $userData = array_merge($validatedData, $roles, $userTypeStatus,$userType,$userImage);
 
             // Update the user with new data (including roles)
             $user->update($userData);
 
             if($validatedData['userType'] == 'Superadmin'){
-                return redirect()->route('users')->with('success', 'User has been updated successfully.');
+                return redirect()->route('users')->with('success', 'Admin has been updated successfully.');
             }
             elseif($validatedData['userType'] == 'Admin'){
-                return redirect()->route('users')->with('success', 'User has been updated successfully.');
+                return redirect()->route('users')->with('success', 'Admin has been updated successfully.');
             }
-            elseif($validatedData['userType'] == 'instructor'){
-                return redirect()->route('instructors')->with('success', 'User has been updated successfully.');
+            elseif($validatedData['userType'] == 'Instructor'){
+                return redirect()->route('instructors')->with('success', 'Instructor has been updated successfully.');
             }           
             
         } catch (ValidationException $e) {
