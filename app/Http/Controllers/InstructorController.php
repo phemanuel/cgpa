@@ -217,6 +217,38 @@ class InstructorController extends Controller
         return redirect()->route('instructor-assign',['id' => $newInstructor->id ])->with('success', 'Course re-assigned successfully.');
     }
 
+    public function showDetails($id)
+    {
+        // Log the incoming request with the instructor ID
+        Log::info('Request to fetch instructor details for ID: ' . $id);
+
+        // Try to find the instructor by ID
+        $instructor = User::find($id);
+
+        // If the instructor is not found, log an error and return a 404 response
+        if (!$instructor) {
+            Log::error('Instructor not found for ID: ' . $id);
+            return response()->json(['error' => 'Instructor not found'], 404);
+        }
+
+        // Log the instructor data (optional for debugging)
+        Log::info('Instructor found:', [
+            'name' => $instructor->last_name . ' ' . $instructor->first_name,
+            'email' => $instructor->email,
+            'department' => $instructor->department,
+            'image' => $instructor->image,
+        ]);
+
+        // Return the instructor details as JSON
+        return response()->json([
+            'name' => $instructor->last_name . ' ' . $instructor->first_name,
+            'email' => $instructor->email,
+            'department' => $instructor->department,
+            'image' => $instructor->image
+        ]);
+    }
+
+
 
 
 }

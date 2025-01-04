@@ -99,7 +99,7 @@ class CourseController extends Controller
             'stdLevel' => 'required|string',
             'semester' => 'required|string',
             'acadSession' => 'required|string',
-            'courseTitle' => 'required|string|unique:course,course_title', // Unique within courses
+            'courseTitle' => 'required|string', // Unique within courses
             'courseCode' => 'required|string',
             'courseUnit' => 'required|numeric',
         ]);
@@ -155,6 +155,9 @@ class CourseController extends Controller
 
         // Delete the course
         $course->delete();
+
+        $instructorCourse = Instructor::where('course_id', $id)->first();
+        $instructorCourse->delete();
 
         // Redirect back to the course list with success message and parameters
         return redirect()->route('course-list', [

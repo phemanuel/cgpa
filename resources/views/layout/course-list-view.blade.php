@@ -402,7 +402,9 @@
                             <td>{{ $c->course_unit }}</td>
                             <td>
                                 @if ($c->instructor)
-                                    <button class="btn" style="background-color: #006400; color: white;">
+                                    <button class="btn" style="background-color: #006400; color: white;"
+                                        data-toggle="modal" data-target="#basicModal" 
+                                        data-instructor-id="{{ $c->instructor->instructor_id }}">
                                         Assigned to: {{ $c->instructor->instructor_name }}
                                     </button>                                    
                                 @else
@@ -475,6 +477,7 @@
         <th>Course Unit</th>
         <th>Programme</th>
         <th>Level</th>
+        <th>Assigned Status</th>
         <!-- Add other headers if needed -->
     </tr>
             </thead>
@@ -491,6 +494,16 @@
                     <td>{{ $c->course_unit }}</td>
                     <td>{{ $c->course }}</td>
                     <td>{{ $c->level }}</td>
+                    <td>
+                                @if ($c->instructor)
+                                    
+                                        Assigned to: {{ $c->instructor->instructor_name }}
+                                                                    
+                                @else
+                                     Not Assigned
+                                                                    
+                                @endif
+                            </td>
                     <!-- Add other table data if needed -->
                 </tr>
                 @php
@@ -510,11 +523,39 @@
                             <td><strong>{{ $totalUnits }}</strong></td> 
                             <td></td>
                             <td></td>
+                            <td></td>
                         </tr>
             </tfoot>
 
     </table>
 </div>
+
+set up the modal content:
+
+html
+Copy code
+<!-- Basic Modal -->
+<div class="modal fade" id="basicModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Instructor Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modal-body-content">
+                <!-- Instructor details will be loaded here dynamically -->
+            </div>
+            <div class="modal-footer bg-whitesmoke br">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Modal -->
+
         <div class="settingSidebar">
           <a href="javascript:void(0)" class="settingPanelToggle"> <i class="fa fa-spin fa-cog"></i>
           </a>
@@ -674,4 +715,30 @@ function printAllStudents() {
     }, 1000);
 }
 </script>
+
+<script>
+    $('#basicModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget); // Button that triggered the modal
+        var instructorId = button.data('instructor-id'); // Extract info from data-* attributes
+
+        // Send an AJAX request to fetch instructor details
+        $.ajax({
+            url: '/instructor-details/' + instructorId, // Adjust this route as needed
+            method: 'GET',
+            success: function(data) {
+                // Populate the modal body with the instructor's details
+                $('#modal-body-content').html(`
+                    <p><strong>Name:</strong> ${data.name}</p>
+                    <p><strong>Email:</strong> ${data.email}</p>
+                    <p><strong>Department:</strong> ${data.department}</p>                    
+                `);
+            },
+            error: function() {
+              console.error('Error:', error);
+                $('#modal-body-content').html('<p>Error loading instructor details.</p>');
+            }
+        });
+    });
+</script>
+
 

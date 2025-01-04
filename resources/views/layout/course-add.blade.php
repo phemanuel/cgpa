@@ -345,7 +345,13 @@
               <div class="col-12 col-md-6 col-lg-6">
                 <div class="card">
                   <div class="card-header">
-                  <h4>Add Course | <a href="{{route('course-setup')}}">Course List</a></h4>
+                  <h4>Add Course | 
+                  <a href="{{ route('course-list', [
+                        'programme' => $programme,
+                        'stdLevel' => $studentLevel,
+                        'semester' => $semester
+                    ]) }}">Course List</a>
+                  </h4>
                   </div>
                   @if(session('success'))
                     <div class="alert alert-success">
