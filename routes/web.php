@@ -140,6 +140,10 @@ Route::post('/reset-password', [CustomForgotPasswordController::class, 'resetPas
         ->name('course-edit.action');
         Route::get('course/delete/{id}', [CourseController::class, 'courseDelete'])
         ->name('course-delete');
+        Route::get('course/assign/{id}', [CourseController::class, 'courseAssign'])
+        ->name('course-assign');
+        Route::post('course/assign', [CourseController::class, 'courseAssignAction'])
+        ->name('course-assign.action');
         //---
         Route::get('instructors', [InstructorController::class, 'instructors'])
         ->name('instructors');

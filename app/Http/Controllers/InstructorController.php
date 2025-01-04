@@ -185,8 +185,7 @@ class InstructorController extends Controller
     {
         $courseInfo = Instructor::where('id', $id)->first();
         $instructorInfo = User::where('id', $courseInfo->instructor_id)->first();
-        $instructors = User::where('department', $courseInfo->department)
-        ->where('user_type_status', 3)
+        $instructors = User::where('user_type_status', 3)
         ->get();
 
         return view('layout.instructor-reassign', compact('instructorInfo', 'courseInfo','instructors'));

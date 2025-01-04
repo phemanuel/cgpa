@@ -6,7 +6,7 @@
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-  <title>E-Result :: Instructors</title>
+  <title>E-Result :: Course</title>
   <!-- General CSS Files -->
   <link rel="stylesheet" href="{{asset('dashboard/assets/css/app.min.css')}}">
   <!-- Template CSS -->
@@ -333,19 +333,16 @@
                       </nav>
                     </div>
                   </div>
-        
-                  <div class="col-12">
-                    <div class="card">
-                        <h5><span style="color:red;">This course is already assigned to an instructor. 
-                            Please confirm if you want to reassign to another instructor</span></h5>
-                    </div>
-                </div>
 
                     <div class="row">
               <div class="col-12 col-md-6 col-lg-6">
                 <div class="card">
                   <div class="card-header">
-                  <h4>Course Assign</h4>
+                  <h4>Course Assign | <a href="{{ route('course-list', [
+                        'programme' => $course->course,
+                        'stdLevel' => $course->level,
+                        'semester' => $course->semester
+                    ]) }}">Course List</a></h4>
                   </div>
                   @if(session('success'))
                     <div class="alert alert-success">
@@ -358,11 +355,13 @@
                     @endif	
                     
                   <div class="card-body">
-                  <form action="{{route('instructor-reassign.action')}}" method="POST">
+                  <form action="{{route('course-assign.action')}}" method="POST">
                     @csrf                   
 
                     <table class="table table-bordered">
-                    <tr>
+                        
+                        @if(!empty($courseInfo))
+                        <tr>
                             <td>&nbsp;</td>
                             <td colspan="2">
                                 <span class="style5" style="color:green;">
@@ -390,6 +389,13 @@
                             <td width="103"><span class="style11">Department</span></td>
                             <td width="322"><span class="style1">{{$instructorInfo->department}}</span></td>
                         </tr> 
+                        @else
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td colspan="2"><span class="style5">Current Assigned Instructor - 
+                                <span style="color:red;">There is no instructor assigned for this course.</span></span></td>
+                        </tr>                        
+                        @endif                      
                         <tr>
                             <td>&nbsp;</td>
                             <td colspan="2">
@@ -398,41 +404,41 @@
                                 </span>
                             </td>
                         </tr>
-                        <tr>
+                        <!-- <tr>
                             <td>&nbsp;</td>
                             <td><span class="style11">Department</span></td>
-                            <td>{{$courseInfo->department}}</td>
-                        </tr>
+                            <td>{{$course->department}}</td>
+                        </tr> -->
                         <tr>
                             <td>&nbsp;</td>
                             <td><span class="style11">Programme</span></td>
-                            <td>{{$courseInfo->programme}}</td>
+                            <td>{{$course->course}}</td>
                         </tr>
                         <tr>
                             <td>&nbsp;</td>
                             <td><span class="style11">Level</span></td>
-                            <td>{{$courseInfo->level}}</td>
+                            <td>{{$course->level}}</td>
                         </tr>
                         <tr>
                             <td>&nbsp;</td>
                             <td><span class="style11">Semester</span></td>
-                            <td>{{$courseInfo->semester}}</td>
+                            <td>{{$course->semester}}</td>
                         </tr>
                         <tr>
                             <td>&nbsp;</td>
                             <td><span class="style11">Course Title</span></td>
-                            <td>{{$courseInfo->course_title}}</td>
+                            <td>{{$course->course_title}}</td>
                         </tr>
                         <tr>
                             <td>&nbsp;</td>
                             <td><span class="style11">Course Code</span></td>
-                            <td>{{$courseInfo->course_code}}</td>
+                            <td>{{$course->course_code}}</td>
                         </tr>
                         <tr>
                             <td>&nbsp;</td>
                             <td><span class="style11">Course Unit</span></td>
-                            <td>{{$courseInfo->course_unit}}</td>
-                        </tr>
+                            <td>{{$course->course_unit}}</td>
+                        </tr>                        
                         <tr>
                             <td>&nbsp;</td>
                             <td colspan="2">&nbsp;</td>
@@ -441,23 +447,49 @@
                             <td>&nbsp;</td>
                             <td colspan="2">
                                 <span class="style5" style="color:green;">
-                                    <i class="fas fa-sync-alt"></i> Reassign to another Instructor
+                                    <i class="fas fa-user-plus"></i> Assign to an Instructor
                                 </span>
                             </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><span class="style11">Academic Session</span></td>
+                            <td>
+                            @php
+                                $startYear = 2018;
+                                $currentYear = date('Y');
+                                $endYear = $currentYear + 1; // Include the current year in the loop
+                            @endphp 
+                                <select name="acadSession" id="acadSession" class="form-control" required>
+                                    <option value="">Select Academic Session</option>
+                                    @for ($year = $startYear; $year < $endYear; $year++)
+                                        @php
+                                            $nextYear = $year + 1;
+                                        @endphp
+                                        <option value="{{ $year }}/{{ $nextYear }}">{{ $year }}/{{ $nextYear }}</option>
+                                    @endfor
+                                </select>
+                        </td>
                         </tr>
                         <tr>
                             <td>&nbsp;</td>
                             <td><span class="style11">Instructor Name:</span></td>
                             <td>
                                 <select name="instructorId" id="" class="form-control" required>
+                                    @if(!empty($courseInfo))
                                     @foreach($instructors as $i)
                                         @if($i->id !== $instructorInfo->id)
-                                            <option value="{{ $i->id }}">{{ $i->last_name . ' ' . $i->first_name }}</option>
+                                            <option value="{{ $i->id }}">{{ $i->last_name . ' ' . $i->first_name }} - {{$i->department}}</option>
                                         @endif
                                     @endforeach
+                                    @else
+                                    @foreach($instructors as $i)                                        
+                                            <option value="{{ $i->id }}">{{ $i->last_name . ' ' . $i->first_name }} - {{$i->department}}</option>                                       
+                                    @endforeach
+                                    @endif
                                 </select>
                             </td>
-                        </tr>
+                        </tr>                        
                         <tr>
                             <td>&nbsp;</td>
                             <td colspan="2">&nbsp;</td>
@@ -465,7 +497,13 @@
                     </table>
 
                     <div class="card-footer text-right">
-                        <input type="hidden" name="assignId" value="{{$courseInfo->id}}">
+                        <input type="hidden" name="programme" value="{{$course->course}}">
+                        <input type="hidden" name="level" value="{{$course->level}}">
+                        <input type="hidden" name="semester" value="{{$course->semester}}">
+                        <input type="hidden" name="courseTitle" value="{{$course->course_title}}">
+                        <input type="hidden" name="courseCode" value="{{$course->course_code}}">
+                        <input type="hidden" name="courseUnit" value="{{$course->course_unit}}">
+                        <input type="hidden" name="assignId" value="{{$course->id}}">
                         <input class="btn btn-primary mr-1" type="submit" value="Assign" />
                         <!-- <input class="btn btn-secondary" type="reset" value="Reset" /> -->
                     </div>

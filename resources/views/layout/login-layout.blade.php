@@ -89,7 +89,7 @@
 					<input type="submit" name="Login" class="register" value="Login">					
 			  </div>
               <div class="form-row-last">
-              <p><span class="style3">Don't have an account,<a href="{{route('signup')}}" class="style2">Sign Up</a></span></p>
+              <!-- <p><span class="style3">Don't have an account,<a href="{{route('signup')}}" class="style2">Sign Up</a></span></p> -->
               </div>
                   
 		    </form>         

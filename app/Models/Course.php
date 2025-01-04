@@ -20,4 +20,10 @@ class Course extends Model
         'course',
         'session1',
     ];
+
+    public function instructor()
+    {
+        return $this->hasOne(Instructor::class, 'course_id', 'id');
+    }
+    
 }

@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 use App\Models\CourseStudyAll;
 use App\Models\StudentLevel;
 use App\Models\Course;
+use App\Models\CourseStudy;
 use App\Models\Department;
 use App\Models\hod;
+use App\Models\User;
+use App\Models\Instructor;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\File; 
 use Illuminate\Support\Facades\Storage;
@@ -44,12 +47,13 @@ class CourseController extends Controller
                 return redirect()->back()->with('error', 'All filters are required.');
             }
 
-            // Fetch paginated results
+            // Fetch paginated results with the instructor relationship
             $courses = Course::where('semester', $semester)
-                ->where('course', $programme)
-                ->where('level', $stdLevel)
-                ->orderBy('course_title', 'asc')
-                ->get();             
+            ->where('course', $programme)
+            ->where('level', $stdLevel)
+            ->with('instructor') // Eager load instructor relationship
+            ->orderBy('course_title', 'asc')
+            ->get();           
 
             if ($courses->isEmpty()) {
                 return redirect()->back()->with('error', 'No course found for the selected filters.');
@@ -343,7 +347,93 @@ class CourseController extends Controller
         return redirect()->route('hod-setup')->with('success', 'HOD deleted successfully.');
     }
 
-    
+    public function courseAssign($id)
+    {
+        // Fetch course assignment information
+        $courseInfo = Instructor::where('course_id', $id)->first(); 
+
+        // Fetch course details
+        $course = Course::find($id);
+        if (!$course) {
+            return redirect()->back()->with('error', 'Course not found.');
+        }
+
+        // Fetch all instructors
+        $instructors = User::where('user_type_status', 3)->get();
+
+        // If the course is not assigned to an instructor
+        if (empty($courseInfo)) {
+            return view('layout.course-assign', compact('instructors', 'course'));
+        } 
+
+        // If the course is already assigned
+        $instructorInfo = User::find($courseInfo->instructor_id);
+        return view('layout.course-assign', compact('instructorInfo', 'courseInfo', 'instructors', 'course'));
+    }
+
+    public function courseAssignAction(Request $request)
+    {
+        $request->validate([
+            'acadSession' => 'required|string',
+            'instructorId' => 'required|exists:users,id',
+            'programme' => 'required|string',
+            'level' => 'required|string',
+            'semester' => 'required|string',
+            'courseTitle' => 'required|string',
+            'courseCode' => 'required|string',
+            'courseUnit' => 'required|integer',
+            'assignId' => 'required|exists:course,id',
+        ]);
+
+        // Check if there is an existing record in the instructor table for this course
+        $courseAssignment = Instructor::where('course_id', $request->assignId)->first();
+
+        // Retrieve the selected instructor
+        $instructor = User::find($request->instructorId);
+
+        //---Get department
+        $department = CourseStudy::where('dept_name', $request->programme)->first();
+
+        if ($courseAssignment) {
+            // Update the existing record
+            $courseAssignment->update([
+                'instructor_id' => $instructor->id,
+                'instructor_name' => $instructor->last_name . ' ' . $instructor->first_name,
+                'session1' => $request->acadSession,
+            ]);
+
+            return redirect()->route('course-list', [
+                'programme' => $request->programme,
+                'stdLevel' => $request->level,
+                'semester' => $request->semester,
+                ])->with('success', 'Course re-assigned successfully.');
+
+        } else {
+            // Create a new record
+            Instructor::create([
+                'course_id' => $request->assignId,
+                'instructor_id' => $instructor->id,
+                'instructor_name' => $instructor->last_name . ' ' . $instructor->first_name,
+                'session1' => $request->acadSession,
+                'department' => $department->dept,
+                'programme' => $request->programme,
+                'level' => $request->level,
+                'semester' => $request->semester,
+                'course_title' => $request->courseTitle,
+                'course_code' => $request->courseCode,
+                'course_unit' => $request->courseUnit,
+                'assign_status' => "Active",
+            ]);
+
+            return redirect()->route('course-list', [
+            'programme' => $request->programme,
+            'stdLevel' => $request->level,
+            'semester' => $request->semester,
+            ])->with('success', 'Course assigned successfully.');
+        }
+    }
+
+
 
 
 }

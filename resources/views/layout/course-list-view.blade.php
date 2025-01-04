@@ -382,9 +382,10 @@
                             <th>Course Title</th>
                             <th>Course Code</th>
                             <th>Course Unit</th>
-                            <!-- <th>Programme</th>
-                            <th>Level</th> -->
+                            <th>Assigned Status</th>   
+                            <th></th>                        
                             <th>Action</th>
+
                             <!-- Add other headers if needed -->
                         </tr>
                     </thead>
@@ -399,9 +400,29 @@
                             <td>{{ $c->course_title }}</td>
                             <td>{{ $c->course_code }}</td>
                             <td>{{ $c->course_unit }}</td>
-                            <!-- <td>{{ $c->course }}</td>
-                            <td>{{ $c->level }}</td> -->
                             <td>
+                                @if ($c->instructor)
+                                    <button class="btn" style="background-color: #006400; color: white;">
+                                        Assigned to: {{ $c->instructor->instructor_name }}
+                                    </button>                                    
+                                @else
+                                    <button class="btn" style="background-color: #FF0000; color: white;">
+                                        Not Assigned
+                                    </button>                                    
+                                @endif
+                            </td>
+                            <td>
+                            @if ($c->instructor)                                    
+                                    <a href="{{ route('course-assign', ['id' => $c->id]) }}" class="btn btn-outline-primary">
+                                        <i class="fas fa-exchange-alt"></i> Re-assign
+                                    </a>
+                                @else                                    
+                                    <a href="{{ route('course-assign', ['id' => $c->id]) }}" class="btn btn-outline-primary">
+                                        <i class="fas fa-plus-circle"></i> Assign
+                                    </a>
+                                @endif
+                            </td>
+                            <td>                                
                                 <a href="{{route('course-edit', ['id' => $c->id])}}" class="btn btn-outline-primary">
                                     <i class="fas fa-edit"></i> <!-- Edit icon -->
                                 </a>
