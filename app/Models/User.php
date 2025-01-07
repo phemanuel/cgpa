@@ -49,6 +49,7 @@ class User extends Authenticatable
         'transcript',
         'image',
         'department',
+        'user_status',
     ];    
 
     /**

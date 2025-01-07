@@ -358,7 +358,18 @@
                     @endif	
                   <div class="card-body">
                 <form action="{{route('add-user.action')}}" method="post" enctype="multipart/form-data">
-                      @csrf                    
+                      @csrf   
+                      
+                      <div class="form-group">
+                    <label>User Status</label>
+                    <select name="user_status" id="" class="form-control" required>
+                        <option value="Active">Active</option>
+                        <option value="Inactive">Inactive</option>                       
+                    </select>
+                </div>
+                @error('user_status')
+                    <span class="invalid-feedback">{{ $message }}</span>
+                @enderror
                       <div class="form-group">
                     <label>User Type</label>
                     <select name="userType" id="userType" class="form-control" required>

@@ -155,7 +155,8 @@ Route::post('/reset-password', [CustomForgotPasswordController::class, 'resetPas
         ->name('instructor-reassign');
         Route::post('instructor/reassign', [InstructorController::class, 'instructorReassignAction'])
         ->name('instructor-reassign.action');
-        Route::get('instructor-details/{id}', [InstructorController::class, 'showDetails']);
+        Route::get('instructor-details/{id}', [InstructorController::class, 'showDetails'])
+        ->name('instructor.details');
         
 
         Route::post('/get-courses', [InstructorController::class, 'getCourses'])

@@ -230,15 +230,7 @@ class InstructorController extends Controller
             Log::error('Instructor not found for ID: ' . $id);
             return response()->json(['error' => 'Instructor not found'], 404);
         }
-
-        // Log the instructor data (optional for debugging)
-        Log::info('Instructor found:', [
-            'name' => $instructor->last_name . ' ' . $instructor->first_name,
-            'email' => $instructor->email,
-            'department' => $instructor->department,
-            'image' => $instructor->image,
-        ]);
-
+        
         // Return the instructor details as JSON
         return response()->json([
             'name' => $instructor->last_name . ' ' . $instructor->first_name,

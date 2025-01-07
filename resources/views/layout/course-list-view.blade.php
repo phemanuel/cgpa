@@ -26,6 +26,19 @@
 
     }
   </style>
+  <style>
+    .table {
+    margin: auto;
+    width: 100%;
+}
+.table-bordered th, .table-bordered td {
+    vertical-align: middle;
+}
+.img-fluid {
+    display: block;
+    margin: 0 auto;
+}
+  </style>
 </head>
 
 <body>
@@ -723,14 +736,31 @@ function printAllStudents() {
 
         // Send an AJAX request to fetch instructor details
         $.ajax({
-            url: '/instructor-details/' + instructorId, // Adjust this route as needed
+            url: '/admin/instructor-details/' + instructorId, // Adjust this route as needed
             method: 'GET',
             success: function(data) {
-                // Populate the modal body with the instructor's details
+              let imagePath = data.image ? `/profile_pictures/${data.image}` : '/uploads/blank.jpg';
+                // Populate the modal body with the instructor's details in a table format
                 $('#modal-body-content').html(`
-                    <p><strong>Name:</strong> ${data.name}</p>
-                    <p><strong>Email:</strong> ${data.email}</p>
-                    <p><strong>Department:</strong> ${data.department}</p>                    
+                    <table class="table table-bordered">
+                        <tr>
+                            <td colspan="2" class="text-center">
+                                <img src="${imagePath}" alt="${data.name}" class="img-fluid rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Name</th>
+                            <td>${data.name}</td>
+                        </tr>
+                        <tr>
+                            <th>Email</th>
+                            <td>${data.email}</td>
+                        </tr>
+                        <tr>
+                            <th>Department</th>
+                            <td>${data.department}</td>
+                        </tr>
+                    </table>
                 `);
             },
             error: function() {

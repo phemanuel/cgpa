@@ -361,6 +361,17 @@
                     @csrf
                     @method('PUT')
                     <div class="form-group">
+                        <label>User Status</label>
+                        <select name="user_status" id="" class="form-control" required>
+                            <option value="Active" {{ $user->user_status == 'Active' ? 'selected' : '' }}>Active</option>
+                            <option value="Inactive" {{ $user->user_status == 'Inactive' ? 'selected' : '' }}>Inactive</option>                            
+                        </select>
+                    </div>
+                @error('user_status')
+                    <span class="invalid-feedback">{{ $message }}</span>
+                @enderror
+
+                    <div class="form-group">
                         <label>User Type</label>
                         <select name="userType" id="" class="form-control" required>
                             <option value="Superadmin" {{ $user->user_type == 'Superadmin' ? 'selected' : '' }}>Superadmin</option>
@@ -430,7 +441,7 @@
                     </div>
 
                     <div class="form-group">
-                    <label>Profile Picture</label>
+                    <label>Profile Picture <span style="color:red;">(Leave blank if you are not uploading image.)</span></label>
                     <input type="file" class="form-control" name="image">
                     </div>
                     @error('image')

@@ -119,7 +119,7 @@ class AuthController extends Controller
             //---reset the user login attempts----
             Auth::user()->update(['login_attempts' => 0]);
         
-            if ($user->email_verified_status == 1) {
+            if ($user->status == 'Active') {
                 // Email is verified, proceed with login
                 $request->session()->regenerate();
                 if($user->user_type == 'Superadmin'){
@@ -138,8 +138,11 @@ class AuthController extends Controller
             } else {                    
                 // Email is not verified, return a flash message
                 //Auth::logout(); // Log the user out since the email is not verified                    
-                $email_address = $request->email;         
-                 return view('auth.email-not-verify');
+                // $email_address = $request->email;         
+                //  return view('auth.email-not-verify');
+                Auth::logout();
+                return redirect()->route('login')->with('error', 
+                'You have been deactivated, please reach out to the administrator.');
                  
             }
         } catch (ValidationException $e) {

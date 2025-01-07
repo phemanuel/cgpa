@@ -620,6 +620,7 @@ class DashboardController extends Controller
                 'email' => 'required|email|unique:users',
                 'password' => 'required|string|min:8|confirmed',
                 'userType' => 'required|string',
+                'user_status' => 'required|string',
                 'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
                 'department' => 'nullable|string'
             ]);
@@ -682,6 +683,7 @@ class DashboardController extends Controller
                 'login_attempts' => 0,
                 'remember_token' => $email_token,
                 'user_type' => $validatedData['userType'],
+                'user_status' => $validatedData['user_status'],
                 'user_type_status' => $userTypeStatus,
                 'image' => $generatedFileName,
                 'department' => $validatedData['department'],
@@ -727,14 +729,27 @@ class DashboardController extends Controller
 
     public function editUserAction(Request $request, $id)
     {
+        // $validatedData = $request->validate([
+        //     'last_name' => 'required|string|max:255',
+        //     'first_name' => 'required|string|max:255',
+        //     'user_status' => 'required|string',
+        //     'email' => 'required|email|unique:users,email,' . $id, 
+        //     'password' => 'nullable|string|min:8|confirmed', 
+        //     'userType' => 'required|string',                 
+        //     'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        //     'department' => 'nullable|string'
+        // ]);
+
+        // return response()->json($validatedData);
         try {
             // Validate the input data
             $validatedData = $request->validate([
                 'last_name' => 'required|string|max:255',
                 'first_name' => 'required|string|max:255',
+                'user_status' => 'required|string',
                 'email' => 'required|email|unique:users,email,' . $id, 
                 'password' => 'nullable|string|min:8|confirmed', 
-                'userType' => 'required|string', 
+                'userType' => 'required|string',                 
                 'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
                 'department' => 'nullable|string'
             ]);

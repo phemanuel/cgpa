@@ -384,6 +384,7 @@
                               <th>Instructor Name</th>
                               <th>Department</th>
                               <th>Role</th>
+                              <th>Status</th>
                               <th></th>
                               <th>Action</th>
                           </tr>
@@ -405,6 +406,13 @@
                                   <td>{{ $user->last_name . ' ' . $user->first_name }}</td>
                                   <td>{{ $user->department}}</td>
                                   <td><div class="badge badge-info">{{ $user->user_type }}</div></td>
+                                  <td>
+                                    @if($user->user_status == 'Active')
+                                    <div class="badge badge-success">{{ $user->user_status }}</div>
+                                    @else
+                                    <div class="badge badge-danger">{{ $user->user_status }}</div>
+                                    @endif
+                                  </td>
                                   <td>
                                       <a href="{{ route('instructor-assign', ['id' => $user->id]) }}" class="btn btn-outline-primary">
                                           <i class="fas fa-eye"></i> View Assigned Course/s - 

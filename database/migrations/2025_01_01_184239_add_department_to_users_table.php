@@ -15,6 +15,7 @@ return new class extends Migration
             //
             $table->string('department')->nullable();
             $table->string('image')->nullable();
+            $table->enum('user_status',['Active','Inactive'])->defaultValue('Active');
         });
     }
 
