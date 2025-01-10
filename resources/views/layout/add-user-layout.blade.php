@@ -373,7 +373,9 @@
                       <div class="form-group">
                     <label>User Type</label>
                     <select name="userType" id="userType" class="form-control" required>
+                      @if(auth()->user()->user_type_status() == 1)
                         <option value="Superadmin">Superadmin</option>
+                        @endif
                         <option value="Admin">Admin</option>
                         <option value="Instructor">Instructor</option>
                         <option value="Student">Student</option>

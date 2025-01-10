@@ -16,6 +16,7 @@ use App\Models\Department;
 use App\Models\CourseStudyAll;
 use App\Models\StudentLevel;
 use App\Models\Course;
+use App\Models\hod;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
@@ -75,6 +76,8 @@ class DashboardController extends Controller
             // Query all admin user
             $users = User::whereIn('user_type_status', [1, 2])->get();
 
+            $instructors = User::whereIn('user_type_status', [3])->get();
+
             // Query successful payment transactions
             $successful_transactions = PaymentTransaction::where('transaction_status', 'Successful')->get();
 
@@ -95,9 +98,14 @@ class DashboardController extends Controller
 
             // Query user's transcript
             $user_transcript = TranscriptUpload::all();
+
+            $students = Registration::all();
+            $hod = hod::all();
+            $departments = Department::all();
         
             
-            return view('dashboard.dashboard-admin', compact('users', 'user_requests','user_transcript'));        
+            return view('dashboard.dashboard-admin', compact('users', 'user_requests','user_transcript',
+            'instructors','students', 'hod', 'departments'));        
         } catch (Exception $e) {
             // Log the error
             Log::error('Error in indexAdmin method: ' . $e->getMessage());

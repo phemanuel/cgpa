@@ -119,7 +119,7 @@ class AuthController extends Controller
             //---reset the user login attempts----
             Auth::user()->update(['login_attempts' => 0]);
         
-            if ($user->status == 'Active') {
+            if ($user->user_status == 'Active') {
                 // Email is verified, proceed with login
                 $request->session()->regenerate();
                 if($user->user_type == 'Superadmin'){
