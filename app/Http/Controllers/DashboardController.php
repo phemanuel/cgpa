@@ -15,6 +15,7 @@ use App\Models\Registration;
 use App\Models\Department;
 use App\Models\CourseStudyAll;
 use App\Models\StudentLevel;
+use App\Models\Instructor;
 use App\Models\Course;
 use App\Models\hod;
 use Illuminate\Http\Request;
@@ -102,10 +103,11 @@ class DashboardController extends Controller
             $students = Registration::all();
             $hod = hod::all();
             $departments = Department::all();
+            $assignedCourse = Instructor::where('instructor_id', $user_id)->paginate(10);
         
             
             return view('dashboard.dashboard-admin', compact('users', 'user_requests','user_transcript',
-            'instructors','students', 'hod', 'departments'));        
+            'instructors','students', 'hod', 'departments','assignedCourse'));        
         } catch (Exception $e) {
             // Log the error
             Log::error('Error in indexAdmin method: ' . $e->getMessage());
@@ -1063,8 +1065,8 @@ class DashboardController extends Controller
                 ->where('course', $programme)
                 ->where('class', $stdLevel)
                 ->orderBy('admission_no', 'asc')
-                ->paginate(10)
-                ->appends($request->query()); 
+                ->get();
+                // ->appends($request->query()); 
 
             $allStudent = Registration::where('admission_year', $admissionYear)
             ->where('course', $programme)

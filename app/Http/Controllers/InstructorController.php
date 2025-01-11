@@ -240,6 +240,19 @@ class InstructorController extends Controller
         ]);
     }
 
+    public function instructorUnassign($id)   
+    {   
+        $user = auth()->user();
+        $instructorCourse = Instructor::where('id', $id)->first();  
+        $instructorId = $instructorCourse->instructor_id;      
+        $instructorCourse->delete();
+
+        // Redirect back to the course list with success message and parameters
+        return redirect()->route('instructor-assign', [
+            'id' => $instructorId,
+        ])->with('success', 'Course unassigned successfully!');
+    }
+
 
 
 

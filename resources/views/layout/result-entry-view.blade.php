@@ -6,7 +6,7 @@
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-  <title>E-Result :: Instructors</title>
+  <title>E-Result :: Result</title>
   <!-- General CSS Files -->
   <link rel="stylesheet" href="{{asset('dashboard/assets/css/app.min.css')}}">
   <!-- Template CSS -->
@@ -15,6 +15,7 @@
   <!-- Custom style CSS -->
   <link rel="stylesheet" href="{{asset('dashboard/assets/css/custom.css')}}">
   <link rel='shortcut icon' type='image/x-icon' href="{{asset('dashboard/assets/img/favicon.png')}}" />
+  
   <style>
     .black-link {
     color: black;
@@ -26,6 +27,7 @@
 
     }
   </style>
+ 
 </head>
 
 <body>
@@ -43,7 +45,8 @@
               </a></li>
            
           </ul>
-        </div><ul class="navbar-nav navbar-right">        
+        </div>
+        <ul class="navbar-nav navbar-right">        
           <li class="dropdown"><a href="#" data-toggle="dropdown"
               class="nav-link dropdown-toggle nav-link-lg nav-link-user"> <img alt="image" src="{{ asset('profile_pictures/'. auth()->user()->image) }}" alt="Profile Picture"
                 class="user-img-radious-style"> <span class="d-sm-none d-lg-inline-block"></span></a>
@@ -83,7 +86,7 @@
                 <li><a class="nav-link" href="{{route('student-migration')}}">Student Migration</a></li>                
               </ul>
             </li>
-            <li class="dropdown">
+            <li class="dropdown active">
               <a href="#" class="nav-link menu-toggle nav-link has-dropdown"><i data-feather="clipboard"></i><span>Result</span></a>
               <ul class="dropdown-menu">
                 <li><a class="nav-link" href="{{route('result-entry')}}">Result Entry</a></li>
@@ -112,7 +115,7 @@
             <li class="dropdown">
               <a href="{{ route('admin-account-setting', ['id' => auth()->user()->id]) }}" class="nav-link"><i data-feather="settings"></i><span>Account Settings</span></a>
             </li>
-            <li class="dropdown active">
+            <li class="dropdown">
               <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="users"></i><span>Users</span></a>
               <ul class="dropdown-menu">
                 <li><a class="nav-link" href="{{route('users')}}">Admins</a></li>
@@ -134,7 +137,7 @@
                 <li><a class="nav-link" href="{{route('student-migration')}}">Student Migration</a></li>                
               </ul>
             </li>
-            <li class="dropdown">
+            <li class="dropdown active">
               <a href="#" class="nav-link menu-toggle nav-link has-dropdown"><i data-feather="clipboard"></i><span>Result</span></a>
               <ul class="dropdown-menu">
                 <li><a class="nav-link" href="{{route('result-entry')}}">Result Entry</a></li>
@@ -163,7 +166,7 @@
             <li class="dropdown">
               <a href="{{ route('admin-account-setting', ['id' => auth()->user()->id]) }}" class="nav-link"><i data-feather="settings"></i><span>Account Settings</span></a>
             </li>
-            <li class="dropdown active">
+            <li class="dropdown">
               <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="users"></i><span>Users</span></a>
               <ul class="dropdown-menu">
                 <li><a class="nav-link" href="{{route('users')}}">Admins</a></li>
@@ -178,7 +181,7 @@
             <li class="dropdown">
               <a href="{{route('class-list')}}" class="nav-link"><i data-feather="list"></i><span>Class List</span></a>
             </li>            
-            <li class="dropdown">
+            <li class="dropdown active">
               <a href="#" class="nav-link menu-toggle nav-link has-dropdown"><i data-feather="clipboard"></i><span>Result</span></a>
               <ul class="dropdown-menu">
                 <li><a class="nav-link" href="{{route('result-entry')}}">Result Entry</a></li>
@@ -189,13 +192,13 @@
               </ul>
             </li>
             <li class="dropdown">
-              <a href="{{route('course-setup')}}" class="nav-link"><i data-feather="book"></i><span>Course Setup</span></a>
+              <a href="{{route('course-setup')}}" class="nav-link"><i data-feather="book"></i><span>Course</span></a>
             </li>
             <li class="dropdown">
               <a href="{{ route('admin-account-setting', ['id' => auth()->user()->id]) }}" class="nav-link"><i data-feather="settings"></i><span>Account Settings</span></a>
             </li>                 
             @elseif(auth()->user()->user_type_status == 4)            
-            <li class="dropdown">
+            <li class="dropdown active">
               <a href="{{ route('dashboard') }}" class="nav-link"><i data-feather="home"></i><span>Dashboard</span></a>
             </li>
             <li class="dropdown">
@@ -217,7 +220,8 @@
       <!-- Main Content -->
       <div class="main-content">
         <section class="section">
-        <div class="row">
+        
+                    <div class="row">
                     <div class="col-12">
                       <nav aria-label="breadcrumb">
                         <ol class="breadcrumb bg-dark text-white-all d-flex justify-content-between overflow-auto" style="white-space: nowrap;">
@@ -325,27 +329,29 @@
                         </ol>
                       </nav>
                     </div>
-                  </div>
-        <div class="row ">
-              <div class="col-xl-3 col-lg-6">
-                <div class="card l-bg-green">
-                  <div class="card-statistic-3">
-                    <div class="card-icon card-icon-large"><i class="fa fa-award"></i></div>
-                    <div class="card-content">
-                      <h4 class="card-title">Assigned Course/s - {{$instructor->count()}}</h4>
-                      <span><strong></strong></span>
-                      <div class="progress mt-1 mb-1" data-height="8">
-                        <div class="progress-bar l-bg-purple" role="progressbar" data-width="{{$instructor->count()}}" aria-valuenow="{{$instructor->count()}}"
-                          aria-valuemin="0" aria-valuemax="{{$instructor->count()}}"></div>
-                      </div>
-                      
+                  </div>      
+                  
+          <div class="row ">
+      
+      <div class="col-xl-3 col-lg-6">
+              <div class="card l-bg-green">
+                <div class="card-statistic-3">
+                  <div class="card-icon card-icon-large"><i class="fa fa-briefcase"></i></div>
+                  <div class="card-content">
+                    <h4 class="card-title">No of Students - {{$students->count()}}</h4>
+                    <span><strong></strong></span>
+                    <div class="progress mt-1 mb-1" data-height="8">
+                      <div class="progress-bar l-bg-orange" role="progressbar" data-width="{{$students->count()}}" aria-valuenow="{{$students->count()}}"
+                        aria-valuemin="0" aria-valuemax="{{$students->count()}}"></div>
                     </div>
+                    <!-- <div> <a href="" class="black-link">Check list of Students</a></div> -->
                   </div>
                 </div>
-              </div> 
-              
+              </div>
             </div>
-            @if(session('success'))
+            
+          </div>
+          @if(session('success'))
                     <div class="alert alert-success">
                       {{ session('success') }}
                     </div>
@@ -358,224 +364,69 @@
             <div class="col-12">
               <div class="card">
                 <div class="card-header">
-                  <h4><span style="color:green;">
-                  <img 
-                                    alt="Profile Picture" 
-                                    src="{{ file_exists(public_path('profile_pictures/' . $instructorInfo->image)) ? asset('profile_pictures/' . $instructorInfo->image) : asset('uploads/blank.jpg') }}" 
-                                    class="user-img-radious-style" 
-                                    width="50" 
-                                    height="50">   
-                  {{$instructorInfo->last_name . ' ' . $instructorInfo->first_name}}</span>  
-                  Assigned Course/s | <a href="{{route('instructors')}}">Instructor List</a> | 
-                  <a href="javascript:void(0)" onclick="printAllUsers()" class="btn btn-outline-primary">
-        <i class="fas fa-print"></i> Print
-    </a></h4>
+                  <h4>Result Entry for {{ $assignedCourse->programme }} - {{ $assignedCourse->level }} Level - {{$assignedCourse->semester}} Semester</h4>
                   <div class="card-header-form">
-                    <form>                    
+                    <form>
                       <div class="input-group">
-                      <button type="button" class="btn btn-primary" data-toggle="modal"
-                      data-target=".bd-example-modal-lg"><i class="fas fa-user-plus"></i> Assign Course</button>
-                        
+                        <input type="text" class="form-control" placeholder="Search">
+                        <div class="input-group-btn">
+                          <button class="btn btn-primary"><i class="fas fa-search"></i></button>
+                        </div>
                       </div>
                     </form>
                   </div>
                 </div>
                 <div class="card-body p-0">
                   <div class="table-responsive">
-                  <table class="table table-bordered" id="allUsersTable">
-                  <thead>
-                          <tr>
-                              <th>#</th>             
-                              <th>Department</th>
-                              <th>Programme</th>
-                              <th>Level</th>
-                              <th>Semester</th>
-                              <th>Academic Session</th>
-                              <th>Course</th>
-                              <th>Action</th>
-                          </tr>
-                      </thead>
-                      <tbody>
-                          @if ($instructor->count() > 0)
-                              @foreach ($instructor as $key => $i)
-                              <tr> 
-                                  <td>{{ $key + 1 }}</td> 
-                                  <td>{{ $i->department }}</td>
-                                  <td>{{ $i->programme }}</td>
-                                  <td>{{ $i->level}}</td>
-                                  <td>{{ $i->semester}}</td>
-                                  <td>{{ $i->session1}}</td>
-                                  <td>{{ $i->course_title . ' - ' . $i->course_code}}</td>                                  
-                                  <td>
-                                      <a href="{{route('instructor-unassign', ['id' => $i->id])}}" class="btn btn-outline-danger">
-                                      <i class="fas fa-user-minus"></i> Unassign</i>
-                                      </a>
-                                                                        
-                                  </td>                                    
-                                </tr>  
-                              @endforeach
-                          @else
-                          <tr>
-                              <td colspan="5">No course/s assigned to this instructor.</td>
-                          </tr>
-                          @endif                                   
-                      </tbody>
-                  </table>
-                    {{ $instructor->links() }}
+                  <div class="container">
+    <h4>{{ $assignedCourse->course_title }} - {{ $assignedCourse->course_code }} - {{$assignedCourse->course_unit}}</h4>
+    <form action="" method="POST">
+        @csrf
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Image</th>
+                    <th>Student Name</th>
+                    <th>Matric No</th>
+                    <th>Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse ($students as $index => $student)
+                <tr>
+                    <td>{{ $index + 1 }}</td>
+                    <td><img 
+                            alt="Profile Picture" 
+                            src="{{ file_exists(public_path('uploads/' . $student->picture_dir . '.jpg')) ? asset('uploads/' . $student->picture_dir . '.jpg') : asset('uploads/blank.jpg') }}" 
+                            class="user-img-radious-style" 
+                            width="50" 
+                            height="50"></td>
+                    <td>{{ $student->surname }} {{ $student->first_name }} {{ $student->other_name }}</td>
+                    <td>{{ $student->admission_no }}</td>
+                    <td>
+                        <input type="number" name="scores[{{ $student->id }}]" class="form-control" min="0" max="100" required>
+                    </td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="4" class="text-center">No students found.</td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
+        <button type="submit" class="btn btn-success">Save Results</button>
+    </form>
+    <br>
+</div>
+                    
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+          </div>          
           
-          
-        </section>        
-
-       <!-- Large modal -->
-       <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
-          aria-hidden="true">
-          <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="myLargeModalLabel">Assign Course for 
-                  <span style="color:green;">{{$instructorInfo->last_name}} {{$instructorInfo->first_name}}</span> </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <!-- Content goes here.... -->
-                <form action="{{route('instructor-assign.action')}}" method="POST">
-                    @csrf   
-                    @php
-                        $startYear = 2018;
-                        $currentYear = date('Y');
-                        $endYear = $currentYear + 1; // Include the current year in the loop
-                    @endphp
-
-                    <div class="form-group">
-                        <label>Academic Session</label>
-                        <select name="acadSession" id="acadSession" class="form-control" required>
-                            <option value="">Select Academic Session</option>
-                            @for ($year = $startYear; $year < $endYear; $year++)
-                                @php
-                                    $nextYear = $year + 1;
-                                @endphp
-                                <option value="{{ $year }}/{{ $nextYear }}">{{ $year }}/{{ $nextYear }}</option>
-                            @endfor
-                        </select>
-                    </div>
-                    @error('acadSession')
-                        <span class="invalid-feedback">{{ $message }}</span>
-                    @enderror                
-                    <div class="form-group">
-                        <label>Department</label>
-                        <select name="department" id="department" class="form-control" required>
-                        <option value="">Select Department</option> 
-                          <!-- <option value="{{$instructorInfo->department}}">{{$instructorInfo->department}}</option> -->
-                        <option value="">Select Department</option> 
-                            @foreach($allDepartment as $department)
-                                <option value="{{$department->dept_name}}">{{$department->dept_name}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    @error('department')
-                        <span class="invalid-feedback">{{ $message }}</span>
-                    @enderror
-                    <div class="form-group">
-                        <label>Programme</label>
-                        <select name="programme" id="programme" class="form-control">
-                            <option value="">Select a programme</option>
-                        </select>
-                    </div>
-                    @error('programme')
-                        <span class="invalid-feedback">{{ $message }}</span>
-                    @enderror                   
-
-                    <div class="form-group">
-                        <label>Academic Level</label>
-                        <select name="stdLevel" id="stdLevel" class="form-control">                            
-                            <!-- Loop through levels -->
-                            @foreach($allLevel as $d)
-                                <option value="{{ $d->level }}">{{ $d->level }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    @error('stdLevel')
-                        <span class="invalid-feedback">{{ $message }}</span>
-                    @enderror   
-                    
-                    <div class="form-group">
-                        <label>Semester</label>
-                        <select name="semester" id="semesterDropdown" class="form-control"> 
-                        <option value="">Select Semester</option> 
-                                <option value="FIRST">FIRST</option> 
-                                <option value="SECOND">SECOND</option>                          
-                        </select>
-                    </div>
-                    @error('semester')
-                        <span class="invalid-feedback">{{ $message }}</span>
-                    @enderror
-                    
-                    <div class="form-group">
-                        <label>Available Courses</label>
-                        <select name="courseId" id="courseDropdown" class="form-control">                            
-                                <option value=""></option>                            
-                        </select>
-                    </div>
-                    @error('course')
-                        <span class="invalid-feedback">{{ $message }}</span>
-                    @enderror   
-
-                    <div class="modal-footer bg-whitesmoke br">
-                        <input type="hidden" name="instructorId" value="{{ $instructorInfo->id }}">
-                        <button type="submit" class="btn btn-primary">Assign</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    </div>                   
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Hidden table for printing -->
-        <div id="printableTable" style="display: none;">
-         <h4>Assigned Course/s for {{$instructorInfo->last_name . ' ' . $instructorInfo->first_name}}</h4>
-         <table class="table table-striped">
-                  <thead>
-                          <tr>
-                              <th>#</th>             
-                              <th>Department</th>
-                              <th>Programme</th>
-                              <th>Level</th>
-                              <th>Semester</th>
-                              <th>Academic Session</th>
-                              <th>Course</th>                              
-                          </tr>
-                      </thead>
-                      <tbody>
-                          @if ($instructor->count() > 0)
-                              @foreach ($instructor as $key => $i)
-                              <tr> 
-                                  <td>{{ $key + 1 }}</td> 
-                                  <td>{{ $i->department }}</td>
-                                  <td>{{ $i->programme }}</td>
-                                  <td>{{ $i->level}}</td>
-                                  <td>{{ $i->semester}}</td>
-                                  <td>{{ $i->session1}}</td>
-                                  <td>{{ $i->course_title . ' - ' . $i->course_code}}</td> 
-                                </tr>  
-                              @endforeach
-                          @else
-                          <tr>
-                              <td colspan="5">No course/s assigned to this instructor.</td>
-                          </tr>
-                          @endif                                   
-                      </tbody>
-                  </table>
-         </div>
-        
-
+        </section>
         <div class="settingSidebar">
           <a href="javascript:void(0)" class="settingPanelToggle"> <i class="fa fa-spin fa-cog"></i>
           </a>
@@ -692,137 +543,3 @@
 
 <!-- index.html  21 Nov 2019 03:47:04 GMT -->
 </html>
-<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
-<!-- <script src="{{asset('js/jquery-3.5.1.min.js') }}"></script> -->
-<script>
-function printAllUsers() {
-    // Get the content of the hidden table
-    var printContents = document.getElementById('printableTable').innerHTML;
-
-    // Create a hidden iframe
-    var iframe = document.createElement('iframe');
-    iframe.style.position = 'absolute';
-    iframe.style.top = '-10000px';
-    iframe.style.left = '-10000px';
-    document.body.appendChild(iframe);
-
-    // Write the content into the iframe
-    var doc = iframe.contentWindow.document;
-    doc.open();
-    doc.write(`
-        <html>
-            <head>
-                <title>Assigned Course/s</title>
-                <style>
-                    body { font-family: Arial, sans-serif; margin: 20px; }
-                    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-                    th, td { border: 1px solid black; padding: 8px; text-align: left; }
-                    th { background-color: #f2f2f2; }
-                </style>
-            </head>
-            <body>                
-                ${printContents}
-            </body>
-        </html>
-    `);
-    doc.close();
-
-    // Trigger the print dialog
-    iframe.contentWindow.focus();
-    iframe.contentWindow.print();
-
-    // Remove the iframe after printing
-    setTimeout(() => {
-        document.body.removeChild(iframe);
-    }, 1000);
-}
-</script>
-<script>
-    $(document).ready(function () {
-        // Listen for changes on the semester dropdown
-        $('select[name="semester"]').on('change', function () {
-            // Get selected values
-            let department = $('select[name="department"]').val();
-            let programme = $('select[name="programme"]').val();
-            let stdLevel = $('select[name="stdLevel"]').val();
-            let semester = $(this).val(); // Current semester selection
-
-            // Log the selected values for debugging
-            console.log("Selected Values:");
-            console.log("Department:", department);
-            console.log("Programme:", programme);
-            console.log("Student Level:", stdLevel);
-            console.log("Semester:", semester);
-
-            // Check if all fields are selected
-            if (department && programme && stdLevel && semester) {
-                console.log("All fields selected. Sending AJAX request...");
-                // Send AJAX request
-                $.ajax({
-                    url: "{{ route('get-courses') }}",
-                    method: "POST",
-                    data: {
-                        _token: "{{ csrf_token() }}",
-                        department: department,
-                        programme: programme,
-                        stdLevel: stdLevel,
-                        semester: semester,
-                    },
-                    success: function (data) {
-                        console.log("AJAX request successful. Data received:");
-                        console.log(data);
-
-                        // Clear previous options
-                        let courseDropdown = $('#courseDropdown');
-                        courseDropdown.empty();
-                        courseDropdown.append('<option value="">Select a course</option>');
-
-                        // Populate with new options
-                        $.each(data, function (key, course) {
-                            courseDropdown.append('<option value="' + course.id + '">' + course.course_title + ' - ' + course.course_code + '</option>');
-                        });
-                    },
-                    error: function (xhr) {
-                        console.error("AJAX request failed. Error:");
-                        console.error(xhr.responseText);
-                    },
-                });
-            } else {
-                console.log("Missing fields. Clearing the dropdown...");
-                // Clear the dropdown if any field is missing
-                $('#courseDropdown').empty().append('<option value="">Select a course</option>');
-            }
-        });
-    });
-</script>
-
-<script>
-    $(document).ready(function () {
-        $('#department').on('change', function () {
-            let department = $(this).val();
-
-            // Clear the programme dropdown
-            $('#programme').empty().append('<option value="">Select a programme</option>');
-
-            if (department) {
-                $.ajax({
-                    url: "{{ route('get-programmes') }}", // Define route in web.php
-                    method: "POST",
-                    data: {
-                        _token: "{{ csrf_token() }}",
-                        department: department
-                    },
-                    success: function (data) {
-                        // Populate the programme dropdown
-                        $.each(data, function (key, programme) {
-                            $('#programme').append('<option value="' + programme.dept_name + '">' + programme.dept_name + '</option>');
-                        });
-                    },
-                    error: function (xhr) {
-                        console.error(xhr.responseText);
-                    }
-                });
-            }
-        });
-    });
-</script>

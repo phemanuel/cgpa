@@ -115,6 +115,8 @@ Route::post('/reset-password', [CustomForgotPasswordController::class, 'resetPas
         ->name('result-menu');
         Route::get('result/entry', [ResultController::class, 'resultEntry'])
         ->name('result-entry');
+        Route::get('result/entry/{id}', [ResultController::class, 'resultEntryView'])
+        ->name('result-entry.view');
         Route::get('result/compute', [ResultController::class, 'resultCompute'])
         ->name('result-compute');
         Route::get('result/semester', [ResultController::class, 'semesterResult'])
@@ -157,6 +159,8 @@ Route::post('/reset-password', [CustomForgotPasswordController::class, 'resetPas
         ->name('instructor-reassign.action');
         Route::get('instructor-details/{id}', [InstructorController::class, 'showDetails'])
         ->name('instructor.details');
+        Route::get('instructor/unassign/{id}', [InstructorController::class, 'instructorUnassign'])
+        ->name('instructor-unassign');
         
 
         Route::post('/get-courses', [InstructorController::class, 'getCourses'])

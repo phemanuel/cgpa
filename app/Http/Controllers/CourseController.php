@@ -24,47 +24,62 @@ class CourseController extends Controller
         $user = auth()->user();
         $rolePermission = $user->course_setup;
 
-        if($rolePermission != 1) {
-            return redirect()->back()->with('error', 'You do not have permission to this module.');
+        // Check if the user has permission
+        if ($rolePermission != 1) {
+            return redirect()->back()->with('error', 'You do not have permission to access this module.');
         }
 
+        // Fetch common data
         $allLevel = StudentLevel::all();
         $programmes = CourseStudyAll::all();
+        $assignedCourse = Instructor::where('instructor_id', $user->id)->paginate(10);
 
-        return view('layout.course', compact('allLevel','programmes'));
+        // Handle view rendering based on user type status
+        if (in_array($user->user_type_status, [1, 2])) {
+            return view('layout.course', compact('allLevel', 'programmes'));
+        } elseif ($user->user_type_status == 3) {
+            return view('layout.course-list-view-instructor', compact('assignedCourse'));
+        }
+
+        // Default behavior if user_type_status is not handled
+        return redirect()->back()->with('error', 'Invalid user type status.');
     }
 
     public function courseList(Request $request)
     {
         try {
-            // Get the query parameters (fallback to default if not present)
-            $programme = $request->query('programme', '');
-            $semester = $request->query('semester', '');
-            $stdLevel = $request->query('stdLevel', '');
 
-            // Validate the inputs
-            if (empty($programme) || empty($semester) || empty($stdLevel)) {
-                return redirect()->back()->with('error', 'All filters are required.');
-            }
+            $user = auth()->user();
+            
+                // Get the query parameters (fallback to default if not present)
+                $programme = $request->query('programme', '');
+                $semester = $request->query('semester', '');
+                $stdLevel = $request->query('stdLevel', '');
 
-            // Fetch paginated results with the instructor relationship
-            $courses = Course::where('semester', $semester)
-            ->where('course', $programme)
-            ->where('level', $stdLevel)
-            ->with('instructor') // Eager load instructor relationship
-            ->orderBy('course_title', 'asc')
-            ->get();           
+                // Validate the inputs
+                if (empty($programme) || empty($semester) || empty($stdLevel)) {
+                    return redirect()->back()->with('error', 'All filters are required.');
+                }
 
-            if ($courses->isEmpty()) {
-                return redirect()->back()->with('error', 'No course found for the selected filters.');
-            }
+                // Fetch paginated results with the instructor relationship
+                $courses = Course::where('semester', $semester)
+                ->where('course', $programme)
+                ->where('level', $stdLevel)
+                ->with('instructor') // Eager load instructor relationship
+                ->orderBy('course_title', 'asc')
+                ->get();           
 
-            return view('layout.course-list-view', [
-                'courses' => $courses,
-                'studentLevel' => $stdLevel,
-                'programme' => $programme,
-                'semester' => $semester,
-            ]);
+                if ($courses->isEmpty()) {
+                    return redirect()->back()->with('error', 'No course found for the selected filters.');
+                }
+
+                return view('layout.course-list-view', [
+                    'courses' => $courses,
+                    'studentLevel' => $stdLevel,
+                    'programme' => $programme,
+                    'semester' => $semester,
+                ]);
+
         } catch (\Exception $e) {
             Log::error('Unexpected Error: ', [
                 'message' => $e->getMessage(),

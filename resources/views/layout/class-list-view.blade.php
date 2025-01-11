@@ -189,7 +189,7 @@
               </ul>
             </li>
             <li class="dropdown">
-              <a href="{{route('course-setup')}}" class="nav-link"><i data-feather="book"></i><span>Course Setup</span></a>
+              <a href="{{route('course-setup')}}" class="nav-link"><i data-feather="book"></i><span>Course</span></a>
             </li>
             <li class="dropdown">
               <a href="{{ route('admin-account-setting', ['id' => auth()->user()->id]) }}" class="nav-link"><i data-feather="settings"></i><span>Account Settings</span></a>
@@ -354,61 +354,63 @@
                       {{ session('error') }}
                     </div>
                     @endif	
-          <div class="row">
-            <div class="col-12">
-              <div class="card">
-                <div class="card-header">
-                  <h4>{{$programme}} {{$studentLevel}} level Class List for {{$admissionYear}} admission year. | <a href="javascript:void(0)" onclick="printAllStudents()" class="btn btn-outline-primary">
-        <i class="fas fa-print"></i> Print All
-    </a></h4>
-                  <div class="card-header-form">
-                    <form>                    
-                      <div class="input-group">
-                      <!-- <a href="{{route('add-user')}}" class="btn btn-primary">Add User</a> -->
-                        <!-- <input type="text" class="form-control" placeholder="Search"> -->
-                        <!-- <div class="input-group-btn">
-                          <button class="btn btn-primary"><i class="fas fa-search"></i></button>
-                        </div> -->
-                      </div>
+                    <div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4>
+                    {{$programme}} {{$studentLevel}} level Class List for {{$admissionYear}} admission year. |
+                    <a href="javascript:void(0)" onclick="printAllStudents()" class="btn btn-outline-primary">
+                        <i class="fas fa-print"></i> Print All
+                    </a>
+                </h4>
+                <div class="card-header-form">
+                    <form>
+                        <div class="input-group">
+                            <input type="text" id="searchInput" class="form-control" placeholder="Search">
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-primary" onclick="filterTable()"><i class="fas fa-search"></i></button>
+                            </div>
+                        </div>
                     </form>
-                  </div>
                 </div>
-                <div class="card-body p-0">
-                  <div class="table-responsive">
-                  <table id="classListTable" class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Admission No</th>
-                            <th>Name</th>
-                            <th>Programme</th>
-                            <th>Level</th>
-                            <!-- Add other headers if needed -->
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse ($students as $index => $student)
-                        <tr>
-                            <td>{{ $index + 1 }}</td>
-                            <td>{{ $student->admission_no }}</td>
-                            <td>{{ $student->surname . " " . $student->first_name . " ". $student->other_name }}</td>
-                            <td>{{ $student->course }}</td>
-                            <td>{{ $student->class }}</td>
-                            <!-- Add other table data if needed -->
-                        </tr>
-                        @empty
-                        <tr>
-                            <td colspan="5" class="text-center">No students found.</td>
-                        </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-                    {{ $students->links() }}
-                  </div>
-                </div>
-              </div>
             </div>
-          </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table id="classListTable" class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Matric No</th>
+                                <th>Name</th>
+                                <th>Programme</th>
+                                <th>Level</th>
+                                <!-- Add other headers if needed -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($students as $index => $student)
+                            <tr>
+                                <td>{{ $index + 1 }}</td>
+                                <td>{{ $student->admission_no }}</td>
+                                <td>{{ $student->surname . " " . $student->first_name . " ". $student->other_name }}</td>
+                                <td>{{ $student->course }}</td>
+                                <td>{{ $student->class }}</td>
+                                <!-- Add other table data if needed -->
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="5" class="text-center">No students found.</td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
           
           
         </section>
@@ -420,7 +422,7 @@
         <thead>
             <tr>
                 <th>#</th>
-                <th>Admission No</th>
+                <th>Matric No</th>
                 <th>Name</th>
                 <th>Programme</th>
                 <th>Level</th>
@@ -597,5 +599,33 @@ function printAllStudents() {
         document.body.removeChild(iframe);
     }, 1000);
 }
+</script>
+
+<script>
+    // JavaScript for filtering the table
+    function filterTable() {
+        const input = document.getElementById('searchInput').value.toLowerCase();
+        const table = document.getElementById('classListTable');
+        const rows = table.getElementsByTagName('tr');
+
+        for (let i = 1; i < rows.length; i++) { // Start from 1 to skip the header row
+            const cells = rows[i].getElementsByTagName('td');
+            let match = false;
+
+            // Loop through all cells in the row
+            for (let j = 0; j < cells.length; j++) {
+                if (cells[j] && cells[j].innerText.toLowerCase().includes(input)) {
+                    match = true;
+                    break;
+                }
+            }
+
+            // Toggle row visibility based on the match
+            rows[i].style.display = match ? '' : 'none';
+        }
+    }
+
+    // Optional: Add an event listener for real-time search
+    document.getElementById('searchInput').addEventListener('input', filterTable);
 </script>
 

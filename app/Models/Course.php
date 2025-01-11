@@ -25,5 +25,10 @@ class Course extends Model
     {
         return $this->hasOne(Instructor::class, 'course_id', 'id');
     }
+
+    public function instructors()
+    {
+        return $this->belongsToMany(Instructor::class, 'instructor_course', 'course_id', 'instructor_id');
+    }
     
 }

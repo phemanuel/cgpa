@@ -202,7 +202,7 @@
               </ul>
             </li>
             <li class="dropdown active">
-              <a href="{{route('course-setup')}}" class="nav-link"><i data-feather="book"></i><span>Course Setup</span></a>
+              <a href="{{route('course-setup')}}" class="nav-link"><i data-feather="book"></i><span>Course</span></a>
             </li>
             <li class="dropdown">
               <a href="{{ route('admin-account-setting', ['id' => auth()->user()->id]) }}" class="nav-link"><i data-feather="settings"></i><span>Account Settings</span></a>
@@ -371,7 +371,7 @@
             <div class="col-12">
               <div class="card">
                 <div class="card-header">
-                  <h4>{{$programme}} {{$studentLevel}} level Course List for {{$semester}} semester. | <a href="javascript:void(0)" onclick="printAllStudents()" class="btn btn-outline-primary">
+                  <h4>{{$programme}} {{$studentLevel}} level Course List for {{$semester}} semester. | <a href="javascript:void(0)" onClick="printAllStudents()" class="btn btn-outline-primary">
         <i class="fas fa-print"></i> Print All
     </a></h4>
                   <div class="card-header-form">
