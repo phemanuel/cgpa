@@ -113,8 +113,12 @@ Route::post('/reset-password', [CustomForgotPasswordController::class, 'resetPas
         //---Result
         Route::get('result', [ResultController::class, 'resultMenu'])
         ->name('result-menu');
-        Route::get('result/entry', [ResultController::class, 'resultEntry'])
+        Route::get('result/entry/user', [ResultController::class, 'resultEntry'])
         ->name('result-entry');
+        Route::get('result/entry', [ResultController::class, 'resultEntryAdmin'])
+        ->name('result-entry-admin');
+        Route::get('result/entry/view', [ResultController::class, 'resultEntryAdminView'])
+        ->name('result-entry-admin.view');
         Route::get('result/entry/{id}', [ResultController::class, 'resultEntryView'])
         ->name('result-entry.view');
         Route::get('result/compute', [ResultController::class, 'resultCompute'])
@@ -127,6 +131,8 @@ Route::post('/reset-password', [CustomForgotPasswordController::class, 'resetPas
         ->name('cgpa-summary');
         Route::get('result/transcript', [ResultController::class, 'studentTranscript'])
         ->name('student-transcript');
+        Route::post('/save-score', [ResultController::class, 'saveScore'])
+        ->name('save.score');
         //---course
         Route::get('course', [CourseController::class, 'courseSetup'])
         ->name('course-setup');

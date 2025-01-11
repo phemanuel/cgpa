@@ -371,7 +371,7 @@
             <div class="col-12">
               <div class="card">
                 <div class="card-header">
-                  <h4>Result Entry for {{ $assignedCourse->programme }} - {{ $assignedCourse->level }} Level - {{$assignedCourse->semester}} Semester
+                  <h4>Result Entry for {{ $programme }} - {{ $stdLevel }} Level - {{$semester}} Semester |
                   <a href="javascript:void(0)" onclick="printAllStudents()" class="btn btn-outline-primary">
                         <i class="fas fa-print"></i> Print Score Sheet
                     </a>
@@ -389,13 +389,13 @@
                 </div>
                 <div class="card-body p-0">
                   <div class="table-responsive">
-                    <br>                   
+                    <br>                    
                     <div class="container">
-                        <h4>{{ $assignedCourse->course_title }} - {{ $assignedCourse->course_code }} - {{$assignedCourse->course_unit}}</h4>
+                        <h4></h4>
                         <form method="POST" action="">
                                 @csrf
                                 <div class="table-wrapper">
-                                <table class="table table-bordered" id="classListTable">
+                                    <table class="table table-bordered" id="classListTable">
                                         <thead>
                                             <tr>
                                                 <th>Admission No</th>
@@ -416,7 +416,7 @@
                                                     <td>{{ $student->admission_no }}</td>
                                                     <td>{{ $student->surname }} {{ $student->first_name }} {{ $student->other_name }}</td>
                                                     <!-- <td>{{ $student->class }}</td>
-                                                    <td>{{ $assignedCourse->semester }}</td> -->
+                                                    <td>{{ $semester }}</td> -->
 
                                                     @foreach ($courses as $course)
                                                         @php
@@ -433,20 +433,10 @@
                                                         <input 
                                                             type="text" 
                                                             name="scores[{{ $student->id }}][{{ $course->id }}]" 
-                                                            class="form-control dynamic-score-input" 
+                                                            class="form-control" 
                                                             maxlength="4"
                                                             value="{{ $formattedScore }}"
-                                                            data-student-id="{{ $student->id }}"
-                                                            data-course-id="{{ $course->id }}"
-                                                            data-admission-no="{{ $student->admission_no }}"
-                                                            data-class="{{ $student->class }}"
-                                                            data-semester="{{ $assignedCourse->semester }}"
-                                                            data-course-index="{{ $loop->index + 1 }}"
-                                                            @if ($course->course_title == $assignedCourse->course_title)
-                                                                style="background-color: yellow;" 
-                                                            @else
-                                                                disabled
-                                                            @endif
+                                                            
                                                         >
                                                         </td>
                                                     @endforeach
@@ -457,22 +447,18 @@
                                 </div>
                                 <button type="submit" class="btn btn-primary">Save Results</button>
                             </form>
-
-
                         <br>
                     </div>
-
-                   
+                    
                   </div>
                 </div>
               </div>
             </div>
-          </div>          
+          </div>  
           
-
-          <!-- Hidden Table for Printing All Students -->
-          <div id="allStudentsTable" style="display: none;">
-            <h4>Score Sheet for {{ $assignedCourse->programme }} - {{ $assignedCourse->level }} Level - {{$assignedCourse->semester}} Semester </h4>
+           <!-- Hidden Table for Printing All Students -->
+            <div id="allStudentsTable" style="display: none;">
+            <h4>Score Sheet for {{ $programme }} - {{ $stdLevel }} Level - {{$semester}} Semester </h4>
             <table class="table table-bordered">
                                         <thead>
                                             <tr>
@@ -494,7 +480,7 @@
                                                     <td>{{ $student->admission_no }}</td>
                                                     <td>{{ $student->surname }} {{ $student->first_name }} {{ $student->other_name }}</td>
                                                     <!-- <td>{{ $student->class }}</td>
-                                                    <td>{{ $assignedCourse->semester }}</td> -->
+                                                    <td>{{ $semester }}</td> -->
 
                                                     @foreach ($courses as $course)
                                                         @php
@@ -517,7 +503,7 @@
                                     </table>
 
             </div>
-
+          
         </section>
         <div class="settingSidebar">
           <a href="javascript:void(0)" class="settingPanelToggle"> <i class="fa fa-spin fa-cog"></i>
@@ -635,6 +621,7 @@
 
 <!-- index.html  21 Nov 2019 03:47:04 GMT -->
 </html>
+
 <script>
     // JavaScript for filtering the table
     function filterTable() {
@@ -705,68 +692,4 @@ function printAllStudents() {
         document.body.removeChild(iframe);
     }, 1000);
 }
-</script>
-
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    const inputs = document.querySelectorAll('.dynamic-score-input');
-
-    inputs.forEach(input => {
-        input.addEventListener('change', async (e) => {
-            const field = e.target;
-            const studentId = field.dataset.studentId;
-            const courseId = field.dataset.courseId;
-            const admissionNo = field.dataset.admissionNo;
-            const className = field.dataset.class;
-            const semester = field.dataset.semester;
-            const courseIndex = field.dataset.courseIndex; // Retrieve the course index
-            const score = field.value;
-
-            // Validate score before sending
-            if (isNaN(score) || score < 0 || score > 100) {
-                alert('Please enter a valid score between 0 and 100.');
-                field.focus();
-                return;
-            }
-
-            try {
-                // Show loading indicator
-                field.disabled = true;
-
-                const response = await fetch('/admin/save-score', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                    },
-                    body: JSON.stringify({
-                        student_id: studentId,
-                        course_id: courseId,
-                        admission_no: admissionNo,
-                        class: className,
-                        semester: semester,
-                        course_index: courseIndex, // Pass course index to the server
-                        score: score
-                    })
-                });
-
-                const data = await response.json();
-
-                if (response.ok && data.message) {
-                    alert(data.message); // Success message
-                    field.style.borderColor = 'green'; // Visual feedback
-                } else {
-                    throw new Error(data.message || 'An error occurred while saving the score.');
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Failed to save the score. Please try again.');
-                field.style.borderColor = 'red'; // Error feedback
-            } finally {
-                field.disabled = false; // Re-enable the field
-            }
-        });
-    });
-});
-
 </script>
