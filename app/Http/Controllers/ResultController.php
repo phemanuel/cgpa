@@ -162,7 +162,7 @@ class ResultController extends Controller
             return redirect()->back()->with('error', 'You do not have permission to this module.');
         }
         
-        $programmes = CourseStudyAll::all();
+        $programmes = CourseStudyAll::orderBy('department', 'asc')->get();
         $allLevel = StudentLevel::all();
 
         return view('layout.result-entry-admin', compact('programmes','allLevel'));
@@ -370,20 +370,20 @@ class ResultController extends Controller
                 $result->{$courseIndex} = $validated['score'];
                 $result->save();
 
-                Log::info('Score updated successfully.', [
-                    'result_id' => $result->id,
-                    'course_index' => $courseIndex,
-                    'score' => $validated['score'],
-                ]);
+                // Log::info('Score updated successfully.', [
+                //     'result_id' => $result->id,
+                //     'course_index' => $courseIndex,
+                //     'score' => $validated['score'],
+                // ]);
 
                 return response()->json(['message' => 'Score saved successfully.']);
             }
 
-            Log::warning('Result record not found.', [
-                'admission_no' => $request->admission_no,
-                'class' => $request->class,
-                'semester' => $request->semester,
-            ]);
+            // Log::warning('Result record not found.', [
+            //     'admission_no' => $request->admission_no,
+            //     'class' => $request->class,
+            //     'semester' => $request->semester,
+            // ]);
 
             return response()->json(['message' => 'Result record not found.'], 404);
 

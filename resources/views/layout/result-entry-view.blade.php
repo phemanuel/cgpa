@@ -6,6 +6,7 @@
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>E-Result :: Result</title>
   <!-- General CSS Files -->
   <link rel="stylesheet" href="{{asset('dashboard/assets/css/app.min.css')}}">
@@ -371,7 +372,7 @@
             <div class="col-12">
               <div class="card">
                 <div class="card-header">
-                  <h4>Result Entry for {{ $assignedCourse->programme }} - {{ $assignedCourse->level }} Level - {{$assignedCourse->semester}} Semester
+                  <h4>Instructor :: Result Entry for {{ $assignedCourse->programme }} - {{ $assignedCourse->level }} Level - {{$assignedCourse->semester}} Semester
                   <a href="javascript:void(0)" onclick="printAllStudents()" class="btn btn-outline-primary">
                         <i class="fas fa-print"></i> Print Score Sheet
                     </a>
@@ -395,7 +396,7 @@
                         <form method="POST" action="">
                                 @csrf
                                 <div class="table-wrapper">
-                                <table class="table table-bordered" id="classListTable">
+                                <table class="table table-bordered" id="classListTable" >
                                         <thead>
                                             <tr>
                                                 <th>Admission No</th>
@@ -455,7 +456,7 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <button type="submit" class="btn btn-primary">Save Results</button>
+                                <!-- <button type="submit" class="btn btn-primary">Save Results</button> -->
                             </form>
 
 
@@ -753,7 +754,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const data = await response.json();
 
                 if (response.ok && data.message) {
-                    alert(data.message); // Success message
+                    // alert(data.message); // Success message
                     field.style.borderColor = 'green'; // Visual feedback
                 } else {
                     throw new Error(data.message || 'An error occurred while saving the score.');
@@ -768,5 +769,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+
 
 </script>

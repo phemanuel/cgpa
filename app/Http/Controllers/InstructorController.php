@@ -43,7 +43,7 @@ class InstructorController extends Controller
     public function instructorAssign($id)
     {
         $allLevel = StudentLevel::all();
-        $programmes = CourseStudyAll::all();
+        $programmes = CourseStudyAll::orderBy('department', 'asc')->get();
         $allDepartment = Department::all();
         $instructorInfo = User::where('id', $id)->first();
         $instructor = Instructor::where('instructor_id', $id)->paginate(10);
@@ -102,7 +102,9 @@ class InstructorController extends Controller
         ]);
 
         // Fetch programmes for the given department
-        $programmes = CourseStudy::where('dept', $request->department)->get();
+        $programmes = CourseStudy::where('dept', $request->department)
+            ->orderBy('dept_name', 'asc')
+            ->get();
 
         return response()->json($programmes);
     }
