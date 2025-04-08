@@ -123,6 +123,8 @@ Route::post('/reset-password', [CustomForgotPasswordController::class, 'resetPas
         ->name('result-entry.view');
         Route::get('result/compute', [ResultController::class, 'resultCompute'])
         ->name('result-compute');
+        Route::post('result/compute', [ResultController::class, 'resultComputeAction'])
+        ->name('result-compute-action');
         Route::get('result/semester', [ResultController::class, 'semesterResult'])
         ->name('semester-result');
         Route::get('result/summary', [ResultController::class, 'semesterSummary'])

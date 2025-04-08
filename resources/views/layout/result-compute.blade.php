@@ -2,12 +2,11 @@
 <html lang="en">
 
 
-<!-- index.html  21 Nov 2019 03:44:50 GMT -->
+<!-- basic-form.html  21 Nov 2019 03:54:41 GMT -->
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-  <meta name="csrf-token" content="{{ csrf_token() }}">
-  <title>E-Result :: Result</title>
+  <title>E-Result :: Result Compute</title>
   <!-- General CSS Files -->
   <link rel="stylesheet" href="{{asset('dashboard/assets/css/app.min.css')}}">
   <!-- Template CSS -->
@@ -16,26 +15,31 @@
   <!-- Custom style CSS -->
   <link rel="stylesheet" href="{{asset('dashboard/assets/css/custom.css')}}">
   <link rel='shortcut icon' type='image/x-icon' href="{{asset('dashboard/assets/img/favicon.png')}}" />
-  
   <style>
-    .black-link {
-    color: black;
-    font-weight: bold;
+    /* Success Alert */
+    .alert.alert-success {
+        background-color: #28a745; /* Green background color */
+        color: #fff; /* White text color */
+        padding: 10px; /* Padding around the text */
+        border-radius: 5px; /* Rounded corners */
     }
 
-    .black-link:hover {
-        color: black;
-
+    /* Error Alert */
+    .alert.alert-danger {
+        background-color: #dc3545; /* Red background color */
+        color: #fff; /* White text color */
+        padding: 10px; /* Padding around the text */
+        border-radius: 5px; /* Rounded corners */
     }
-  </style>
-  <style>
-    .form-control {
-    width: 70px; /* You can adjust this width based on your desired size */
-    text-align: center; /* Optional, to center the text in each input */
-    box-sizing: border-box; /* Ensures padding and borders are included in width */
+</style>
+<style type="text/css">
+.style2 {
+	color: #006600;
+	font-weight: bold;
 }
-  </style>
-
+.style3 {font-weight: bold}
+.style7 {color: #0000FF; font-weight: bold; }
+</style>
 </head>
 
 <body>
@@ -53,8 +57,7 @@
               </a></li>
            
           </ul>
-        </div>
-        <ul class="navbar-nav navbar-right">        
+        </div><ul class="navbar-nav navbar-right">        
           <li class="dropdown"><a href="#" data-toggle="dropdown"
               class="nav-link dropdown-toggle nav-link-lg nav-link-user"> <img alt="image" src="{{ asset('profile_pictures/'. auth()->user()->image) }}" alt="Profile Picture"
                 class="user-img-radious-style"> <span class="d-sm-none d-lg-inline-block"></span></a>
@@ -74,7 +77,7 @@
       <div class="main-sidebar sidebar-style-2">
         <aside id="sidebar-wrapper">
           <div class="sidebar-brand">
-            <a href="{{route('admin-dashboard')}}"> <img alt="image" src="{{asset('dashboard/assets/img/logo.png')}}" class="header-logo" /> <span
+            <a href="{{route('dashboard')}}"> <img alt="image" src="{{asset('dashboard/assets/img/logo.png')}}" class="header-logo" /> <span
                 class="logo-name">E-Result</span>
             </a>
           </div>
@@ -206,7 +209,7 @@
               <a href="{{ route('admin-account-setting', ['id' => auth()->user()->id]) }}" class="nav-link"><i data-feather="settings"></i><span>Account Settings</span></a>
             </li>                 
             @elseif(auth()->user()->user_type_status == 4)            
-            <li class="dropdown active">
+            <li class="dropdown">
               <a href="{{ route('dashboard') }}" class="nav-link"><i data-feather="home"></i><span>Dashboard</span></a>
             </li>
             <li class="dropdown">
@@ -228,8 +231,8 @@
       <!-- Main Content -->
       <div class="main-content">
         <section class="section">
-        
-                    <div class="row">
+          <div class="section-body">
+          <div class="row">
                     <div class="col-12">
                       <nav aria-label="breadcrumb">
                         <ol class="breadcrumb bg-dark text-white-all d-flex justify-content-between overflow-auto" style="white-space: nowrap;">
@@ -337,29 +340,14 @@
                         </ol>
                       </nav>
                     </div>
-                  </div>      
-                  
-          <div class="row ">
-      
-      <div class="col-xl-3 col-lg-6">
-              <div class="card l-bg-green">
-                <div class="card-statistic-3">
-                  <div class="card-icon card-icon-large"><i class="fa fa-briefcase"></i></div>
-                  <div class="card-content">
-                    <h4 class="card-title">No of Students - {{$students->count()}}</h4>
-                    <span><strong></strong></span>
-                    <div class="progress mt-1 mb-1" data-height="8">
-                      <div class="progress-bar l-bg-orange" role="progressbar" data-width="{{$students->count()}}" aria-valuenow="{{$students->count()}}"
-                        aria-valuemin="0" aria-valuemax="{{$students->count()}}"></div>
-                    </div>
-                    <!-- <div> <a href="" class="black-link">Check list of Students</a></div> -->
                   </div>
-                </div>
-              </div>
-            </div>
-            
-          </div>
-          @if(session('success'))
+            <div class="row">
+              <div class="col-12 col-md-6 col-lg-6">
+                <div class="card">
+                  <div class="card-header">
+                  <h4>Result Computation</h4>
+                  </div>
+                  @if(session('success'))
                     <div class="alert alert-success">
                       {{ session('success') }}
                     </div>
@@ -368,157 +356,82 @@
                       {{ session('error') }}
                     </div>
                     @endif	
-          <div class="row">
-            <div class="col-12">
-              <div class="card">
-                <div class="card-header">
-                  <h4>Instructor :: Result Entry for {{ $assignedCourse->programme }} - {{ $assignedCourse->level }} Level - {{$assignedCourse->semester}} Semester
-                  <a href="javascript:void(0)" onclick="printAllStudents()" class="btn btn-outline-primary">
-                        <i class="fas fa-print"></i> Print Score Sheet
-                    </a>
-                  </h4>
-                  <div class="card-header-form">
-                  <form>
-                        <div class="input-group">
-                            <input type="text" id="searchInput" class="form-control" placeholder="Search">
-                            <div class="input-group-btn">
-                                <button type="button" class="btn btn-primary" onclick="filterTable()"><i class="fas fa-search"></i></button>
-                            </div>
-                        </div>
-                    </form>
-                  </div>
-                </div>
-                <div class="card-body p-0">
-                  <div class="table-responsive">
-                    <br>                   
-                    <div class="container">
-                        <h4>{{ $assignedCourse->course_title }} - {{ $assignedCourse->course_code }} - {{$assignedCourse->course_unit}}</h4>
-                        <form method="POST" action="">
-                                @csrf
-                                <div class="table-wrapper">
-                                <table class="table table-bordered" id="classListTable" >
-                                        <thead>
-                                            <tr>
-                                                <th>Admission No</th>
-                                                <th>Name</th>
-                                                <!-- <th>Level</th>
-                                                <th>Semester</th> -->
-                                                @foreach ($courses as $course)
-                                                    <th>
-                                                        {{ $course->course_title }} <br>
-                                                        <strong><small><span style="color:green">({{ $course->course_code }})</span></small></strong>
-                                                    </th>
-                                                @endforeach
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($students as $student)
-                                                <tr>
-                                                    <td>{{ $student->admission_no }}</td>
-                                                    <td>{{ $student->surname }} {{ $student->first_name }} {{ $student->other_name }}</td>
-                                                    <!-- <td>{{ $student->class }}</td>
-                                                    <td>{{ $assignedCourse->semester }}</td> -->
+                    
+                  <div class="card-body">
+                  <form action="{{route('result-compute-action')}}" method="POST">
+                    @csrf                   
 
-                                                    @foreach ($courses as $course)
-                                                        @php
-                                                            // Get the score for the student and course from the $studentScores array
-                                                            $score = $studentScores[$student->admission_no][$course->id] ?? 0;
-                                                        @endphp
-                                                        
-                                                        <td>
-                                                        @php
-                                                            // Format the score to remove the decimal part if it's a whole number
-                                                            $formattedScore = (float)$score == (int)$score ? (int)$score : $score;
-                                                        @endphp
-
-                                                        <input 
-                                                            type="text" 
-                                                            name="scores[{{ $student->id }}][{{ $course->id }}]" 
-                                                            class="form-control dynamic-score-input" 
-                                                            maxlength="4"
-                                                            value="{{ $formattedScore }}"
-                                                            data-student-id="{{ $student->id }}"
-                                                            data-course-id="{{ $course->id }}"
-                                                            data-admission-no="{{ $student->admission_no }}"
-                                                            data-class="{{ $student->class }}"
-                                                            data-semester="{{ $assignedCourse->semester }}"
-                                                            data-course-index="{{ $loop->index + 1 }}"
-                                                            @if ($course->course_title == $assignedCourse->course_title)
-                                                                style="background-color: yellow;" 
-                                                            @else
-                                                                disabled
-                                                            @endif
-                                                        >
-                                                        </td>
-                                                    @endforeach
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <!-- <button type="submit" class="btn btn-primary">Save Results</button> -->
-                            </form>
-
-
-                        <br>
+                    <div class="form-group">
+                        <label>Programme</label>
+                        <select name="programme" id="" class="form-control">                            
+                            <!-- Loop through levels -->
+                            @foreach($programmes as $d)
+                                <option value="{{ $d->department }}">{{ $d->department }}</option>
+                            @endforeach
+                        </select>
                     </div>
+                    @error('programme')
+                        <span class="invalid-feedback">{{ $message }}</span>
+                    @enderror
 
-                   
-                  </div>
-                </div>
+                    @php
+                        $startYear = 2018;
+                        $currentYear = date('Y');
+                        $endYear = $currentYear + 1; // Include the current year in the loop
+                    @endphp
+                    <div class="form-group">
+                        <label>Admission Year</label>
+                        <select name="acad_session" id="acad_session" class="form-control">
+                        <option value="">Select Admission Year</option>
+                            @for ($year = $startYear; $year < $endYear; $year++)
+                                @php
+                                    $nextYear = $year + 1;
+                                @endphp
+                                <!-- <option value="{{ $year }}/{{ $nextYear }}">{{ $year }}/{{ $nextYear }}</option> -->
+                                <option value="{{ $year }}">{{ $year }}</option>
+                            @endfor
+                        </select>
+                    </div>
+                    @error('acad_session')
+                        <span class="invalid-feedback">{{ $message }}</span>
+                    @enderror
+
+                    <div class="form-group">
+                        <label>Academic Level</label>
+                        <select name="stdLevel" id="" class="form-control">                            
+                            <!-- Loop through levels -->
+                            @foreach($allLevel as $d)
+                                <option value="{{ $d->level }}">{{ $d->level }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    @error('stdLevel')
+                        <span class="invalid-feedback">{{ $message }}</span>
+                    @enderror
+
+                    <div class="form-group">
+                        <label>Semester</label>
+                        <select name="semester" id="" class="form-control">
+                                <option value="FIRST">FIRST</option>
+                                <option value="SECOND">SECOND</option>                           
+                        </select>
+                    </div>
+                    @error('semester')
+                        <span class="invalid-feedback">{{ $message }}</span>
+                    @enderror
+
+                    <div class="card-footer text-right">
+                        <input class="btn btn-primary mr-1" type="submit" value="Compute" />
+                        <!-- <input class="btn btn-secondary" type="reset" value="Reset" /> -->
+                    </div>
+                </form>
+
+                  
+                </div>               
+
               </div>
             </div>
-          </div>          
-          
-
-          <!-- Hidden Table for Printing All Students -->
-          <div id="allStudentsTable" style="display: none;">
-            <h4>Score Sheet for {{ $assignedCourse->programme }} - {{ $assignedCourse->level }} Level - {{$assignedCourse->semester}} Semester </h4>
-            <table class="table table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th>Admission No</th>
-                                                <th>Name</th>
-                                                <!-- <th>Level</th>
-                                                <th>Semester</th> -->
-                                                @foreach ($courses as $course)
-                                                    <th>
-                                                        {{ $course->course_title }} <br>
-                                                        <strong><small><span style="color:green">{{ $course->course_code }}</span></small></strong>
-                                                    </th>
-                                                @endforeach
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($students as $student)
-                                                <tr>
-                                                    <td>{{ $student->admission_no }}</td>
-                                                    <td>{{ $student->surname }} {{ $student->first_name }} {{ $student->other_name }}</td>
-                                                    <!-- <td>{{ $student->class }}</td>
-                                                    <td>{{ $assignedCourse->semester }}</td> -->
-
-                                                    @foreach ($courses as $course)
-                                                        @php
-                                                            // Get the score for the student and course from the $studentScores array
-                                                            $score = $studentScores[$student->admission_no][$course->id] ?? 0;
-                                                        @endphp
-                                                        
-                                                        <td>
-                                                        @php
-                                                            // Format the score to remove the decimal part if it's a whole number
-                                                            $formattedScore = (float)$score == (int)$score ? (int)$score : $score;
-                                                        @endphp
-                                                       {{ $formattedScore}}
-                                                        
-                                                        </td>
-                                                    @endforeach
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-
-            </div>
-
+          </div>
         </section>
         <div class="settingSidebar">
           <a href="javascript:void(0)" class="settingPanelToggle"> <i class="fa fa-spin fa-cog"></i>
@@ -621,8 +534,8 @@
       </footer>
     </div>
   </div>
-  <!-- General JS Scripts -->
-  <script src="{{asset('dashboard/assets/js/app.min.js')}}"></script>
+   <!-- General JS Scripts -->
+   <script src="{{asset('dashboard/assets/js/app.min.js')}}"></script>
   <!-- JS Libraies -->
   <script src="{{asset('dashboard/assets/bundles/apexcharts/apexcharts.min.js')}}"></script>
   <!-- Page Specific JS File -->
@@ -634,141 +547,5 @@
 </body>
 
 
-<!-- index.html  21 Nov 2019 03:47:04 GMT -->
+<!-- basic-form.html  21 Nov 2019 03:54:41 GMT -->
 </html>
-<script>
-    // JavaScript for filtering the table
-    function filterTable() {
-        const input = document.getElementById('searchInput').value.toLowerCase();
-        const table = document.getElementById('classListTable');
-        const rows = table.getElementsByTagName('tr');
-
-        for (let i = 1; i < rows.length; i++) { // Start from 1 to skip the header row
-            const cells = rows[i].getElementsByTagName('td');
-            let match = false;
-
-            // Loop through all cells in the row
-            for (let j = 0; j < cells.length; j++) {
-                if (cells[j] && cells[j].innerText.toLowerCase().includes(input)) {
-                    match = true;
-                    break;
-                }
-            }
-
-            // Toggle row visibility based on the match
-            rows[i].style.display = match ? '' : 'none';
-        }
-    }
-
-    // Optional: Add an event listener for real-time search
-    document.getElementById('searchInput').addEventListener('input', filterTable);
-</script>
-
-<script>
-function printAllStudents() {
-    // Get the content of the hidden table
-    var printContents = document.getElementById('allStudentsTable').innerHTML;
-
-    // Create a hidden iframe
-    var iframe = document.createElement('iframe');
-    iframe.style.position = 'absolute';
-    iframe.style.top = '-10000px';
-    iframe.style.left = '-10000px';
-    document.body.appendChild(iframe);
-
-    // Write the content into the iframe
-    var doc = iframe.contentWindow.document;
-    doc.open();
-    doc.write(`
-        <html>
-            <head>
-                <title>Score Sheet</title>
-                <style>
-                    body { font-family: Arial, sans-serif; margin: 20px; }
-                    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-                    th, td { border: 1px solid black; padding: 8px; text-align: left; }
-                    th { background-color: #f2f2f2; }
-                </style>
-            </head>
-            <body>                
-                ${printContents}
-            </body>
-        </html>
-    `);
-    doc.close();
-
-    // Trigger the print dialog
-    iframe.contentWindow.focus();
-    iframe.contentWindow.print();
-
-    // Remove the iframe after printing
-    setTimeout(() => {
-        document.body.removeChild(iframe);
-    }, 1000);
-}
-</script>
-
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    const inputs = document.querySelectorAll('.dynamic-score-input');
-
-    inputs.forEach(input => {
-        input.addEventListener('change', async (e) => {
-            const field = e.target;
-            const studentId = field.dataset.studentId;
-            const courseId = field.dataset.courseId;
-            const admissionNo = field.dataset.admissionNo;
-            const className = field.dataset.class;
-            const semester = field.dataset.semester;
-            const courseIndex = field.dataset.courseIndex; // Retrieve the course index
-            const score = field.value;
-
-            // Validate score before sending
-            if (isNaN(score) || score < 0 || score > 100) {
-                alert('Please enter a valid score between 0 and 100.');
-                field.focus();
-                return;
-            }
-
-            try {
-                // Show loading indicator
-                field.disabled = true;
-
-                const response = await fetch('/admin/save-score', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                    },
-                    body: JSON.stringify({
-                        student_id: studentId,
-                        course_id: courseId,
-                        admission_no: admissionNo,
-                        class: className,
-                        semester: semester,
-                        course_index: courseIndex, // Pass course index to the server
-                        score: score
-                    })
-                });
-
-                const data = await response.json();
-
-                if (response.ok && data.message) {
-                    // alert(data.message); // Success message
-                    field.style.borderColor = 'green'; // Visual feedback
-                } else {
-                    throw new Error(data.message || 'An error occurred while saving the score.');
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Failed to save the score. Please try again.');
-                field.style.borderColor = 'red'; // Error feedback
-            } finally {
-                field.disabled = false; // Re-enable the field
-            }
-        });
-    });
-});
-
-
-</script>

@@ -415,7 +415,7 @@
                                                 @foreach ($courses as $course)
                                                     <th>
                                                         {{ $course->course_title }} <br>
-                                                        <strong><small><span style="color:green">{{ $course->course_code }}</span></small></strong>
+                                                        <strong><small><span style="color:green">({{ $course->course_code }})</span></small></strong>
                                                     </th>
                                                 @endforeach
                                             </tr>

@@ -31,7 +31,7 @@ class CourseController extends Controller
 
         // Fetch common data
         $allLevel = StudentLevel::all();
-        $programmes = CourseStudyAll::all();
+        $programmes = CourseStudyAll::orderBy('department', 'asc')->get();
         $assignedCourse = Instructor::where('instructor_id', $user->id)->paginate(10);
 
         // Handle view rendering based on user type status
