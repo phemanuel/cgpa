@@ -401,7 +401,7 @@ class ResultController extends Controller
             'programme'    => 'required|string',
         ]);
 
-            // Retrieve validated input
+        // Retrieve validated input
         $level       = $validatedData['stdLevel'];
         $semester    = ucfirst(strtolower($validatedData['semester'])); // Normalize to 'First', 'Second', etc.
         $acadSession = $validatedData['acad_session'];
@@ -419,16 +419,18 @@ class ResultController extends Controller
         // Check if the provided level and semester have a corresponding method
         if (isset($methodMap[$level][$semester])) {
             $method = $methodMap[$level][$semester];
-            return $this->$method($acadSession, $programme, $level, $semester);
+            return $this->$method($acadSession, $programme, $level, $semester, $request);
         }        
 
         // Handle other cases or return a default response
         return redirect()->back()->with('error', 'Invalid selection made.');
     }
 
-    public function firstSemester100($acadSession, $programme, $level, $semester)
+    public function firstSemester100($acadSession, $programme, $level, $semester, Request $request)
     {
-        //--- Check if the result has been computed already ------
+        $collegeInfo = AdministratorControl::first();
+
+        // Check if result already computed
         $resultComputeExists = ResultCompute::where('semester', $semester)
             ->where('class', $level)
             ->where('session1', $acadSession)
@@ -439,59 +441,163 @@ class ResultController extends Controller
             return redirect()->back()->with('error', 'The result has been computed already. You can delete and recompute it.');
         }
 
-        // Retrieve the student results
-        $resultExists = Result::where('semester', $semester)
+        // Retrieve student results
+        $results = Result::where('semester', $semester)
             ->where('class', $level)
             ->where('session1', $acadSession)
             ->where('course', $programme)
             ->get();
         
-            if (!$resultExists) {
-                return redirect()->back()->with('error', 'The result is unavailable at the moment, please enter the results.');
-            }
-        
-            $noOfStudent = $resultExists->count();
 
-        //Grading System
-        $grading = GradingSystem::first();
-        $collegeInfo = AdministratorControl::first();
-
-        // Retrieve student registration records
-        $students = Registration::where('admission_year', $acadSession)
-            ->where('course', $programme)
-            ->orderBy('admission_no', 'asc')
-            ->get();
-
-        // Initialize arrays to store names
-        $stusurname = [];
-        $surname = [];
-        $firstname = [];
-        $othername = [];
-
-        // Loop through each student record
-        foreach ($students as $index => $student) {
-            // Adjust index to start from 1
-            $i = $index + 1;
-
-            // Concatenate full name
-            $stusurname[$i] = $student->surname . ' ' . $student->first_name . ' ' . $student->other_name;
-
-            // Store individual name components
-            $surname[$i] = $student->surname;
-            $firstname[$i] = $student->first_name;
-            $othername[$i] = $student->other_name;
+        if ($results->isEmpty()) {
+            return redirect()->back()->with('error', 'The result is unavailable at the moment, please enter the results.');
         }
 
-        // For demonstration purposes, return the arrays as JSON
-        return response()->json([
-            'stusurname' => $stusurname,
-            'surname' => $surname,
-            'firstname' => $firstname,
-            'othername' => $othername,
+        $grading = GradingSystem::first();
+
+        // Define grading structure
+        $grades = [
+            ['min' => $grading->grade01, 'max' => $grading->grade02, 'unit' => $grading->unit01, 'letter_grade' => $grading->lgrade1],
+            ['min' => $grading->grade11, 'max' => $grading->grade12, 'unit' => $grading->unit02, 'letter_grade' => $grading->lgrade2],
+            ['min' => $grading->grade21, 'max' => $grading->grade22, 'unit' => $grading->unit03, 'letter_grade' => $grading->lgrade3],
+            ['min' => $grading->grade31, 'max' => $grading->grade32, 'unit' => $grading->unit04, 'letter_grade' => $grading->lgrade4],
+            ['min' => $grading->grade41, 'max' => $grading->grade42, 'unit' => $grading->unit05, 'letter_grade' => $grading->lgrade5],
+            ['min' => $grading->grade51, 'max' => $grading->grade52, 'unit' => $grading->unit06, 'letter_grade' => $grading->lgrade6],
+        ];
+
+        // Initialize studentData
+        $studentData = [];
+
+        foreach ($results as $index => $result) {
+            $totalPassedCourses = 0;
+            $totalFailedCourses = 0;
+            $totalCourseUnits = 0;
+            $gpaPoints = 0;
+            $failedTitles = [];
+
+            // Build student info
+            $studentData[$index] = [
+                'stuno' => $result->admission_no,
+                'stusurname' => $result->surname . ' ' . $result->firstname . ' ' . $result->othername,
+                'surname' => $result->surname,
+                'firstname' => $result->first_name,
+                'othername' => $result->other_name,
+                'class' => $result->class,
+                'noofcoursekeep' => $result->no_of_course,
+                'studpicture' => $result->picture_dir,
+                'coursekeep' => $result->course,
+                'courses' => [],
+            ];
+
+            // Loop through up to 15 courses
+            for ($i = 0; $i < 15; $i++) {
+                $scoreField = 'score' . ($i + 1);
+                $unitField = 'unit' . ($i + 1);
+                $titleField = 'ctitle' . ($i + 1);
+                $subjectField = 'subject'. ($i + 1);
+
+                $examScore = $result->$scoreField ?? 0;
+                $courseUnit = (int) $result->$unitField ?? 0;
+                $courseTitle = trim($result->$titleField ?? '');
+                $subjectTitle = trim($result->$subjectField ?? '');
+
+                // Save raw scores and titles
+                $studentData[$index]['courses'][$i] = [
+                    'subjectTitle' => $subjectTitle,
+                    'courseTitle' => $courseTitle,
+                    'courseUnit' => $courseUnit,
+                    'examScore' => $examScore,
+                    'grade' => 'F',  // Default grade if score is less than 50
+                ];
+
+                if (empty($courseTitle)) {
+                    continue;
+                }
+
+                $totalCourseUnits += $courseUnit;
+
+                // Grade computation
+                $gradeUnit = 0;
+                $letter = 'F';
+                foreach ($grades as $grade) {
+                    if ($examScore >= $grade['min'] && $examScore <= $grade['max']) {
+                        $gradeUnit = $grade['unit'];
+                        $letter = $grade['letter_grade'];
+                        break;
+                    }
+                }
+
+                if ($examScore >= 50) {
+                    $totalPassedCourses++;
+                    $gpaPoints += $courseUnit * $gradeUnit;
+                } else {
+                    if ($examScore > 0) {
+                        $failedTitles[] = $courseTitle;
+                        $totalFailedCourses++;
+                    }
+                }
+
+                // Assign grade to the course
+                $studentData[$index]['courses'][$i]['grade'] = $letter;
+            }
+
+            $studentData[$index]['totalPassed'] = $totalPassedCourses;
+            $studentData[$index]['totalFailed'] = $totalFailedCourses;
+            $studentData[$index]['totalUnits'] = $totalCourseUnits;
+            $studentData[$index]['failedRemarks'] = $failedTitles;
+            $studentData[$index]['totalGradePoints'] = $gpaPoints;
+
+            // GPA & Letter Grade
+            if ($totalCourseUnits > 0) {
+                $gpa = $gpaPoints / $totalCourseUnits;
+                $studentData[$index]['totalGPA'] = round($gpa, 2);
+
+                if ($gpa >= $grading->grade51) {
+                    $letterGrade = $grading->lgrade6;
+                } elseif ($gpa >= $grading->grade41) {
+                    $letterGrade = $grading->lgrade5;
+                } elseif ($gpa >= $grading->grade31) {
+                    $letterGrade = $grading->lgrade4;
+                } elseif ($gpa >= $grading->grade21) {
+                    $letterGrade = $grading->lgrade3;
+                } elseif ($gpa >= $grading->grade11) {
+                    $letterGrade = $grading->lgrade2;
+                } else {
+                    $letterGrade = $grading->lgrade1;
+                }
+
+                $studentData[$index]['letterGrade'] = $letterGrade;
+            }
+
+            $studentData[$index]['remarks'] = $totalFailedCourses > 0 ? 'HAS CARRYOVER' : 'PASSED ALL';
+        }
+
+        // Paginate and get current student data
+        $page = $request->query('page', 1);  // Get the current page or default to page 1
+        $resultsPerPage = 1;  // This can be adjusted depending on how many results you want per page
+
+        $paginatedResults = Result::where('semester', $semester)
+            ->where('class', $level)
+            ->where('session1', $acadSession)
+            ->where('course', $programme)
+            ->paginate($resultsPerPage);
+
+        $total = $paginatedResults->total(); // Get the total number of records
+
+        // Now pass the paginated results to the view
+        return view('results.student_result_page', [
+            'studentData' => $studentData,
+            'page' => $page,
+            'total' => $total,
+            'collegeInfo' => $collegeInfo,
+            'semester' => $semester,
+            'level' => $level,
+            'programme' => $programme,
+            'acadSession' => $acadSession,
+            'results' => $paginatedResults,
+            'gradingSystem' => $grading,
+            'grades' => $grades,
         ]);
-
-        
-
     }
 
 

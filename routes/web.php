@@ -135,6 +135,8 @@ Route::post('/reset-password', [CustomForgotPasswordController::class, 'resetPas
         ->name('student-transcript');
         Route::post('/save-score', [ResultController::class, 'saveScore'])
         ->name('save.score');
+        Route::get('/results/semester100/{acadSession}/{programme}/{level}/{semester}/{studentIndex?}', [ResultController::class, 'firstSemester100'])
+        ->name('results.semester100');
         //---course
         Route::get('course', [CourseController::class, 'courseSetup'])
         ->name('course-setup');
