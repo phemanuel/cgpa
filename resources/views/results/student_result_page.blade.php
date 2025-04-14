@@ -600,8 +600,8 @@
     </div>
 
     {{-- Pagination --}}
-    <div class="mt-4 d-flex justify-content-center">
-        {{ $results->links() }}
+    <div class="pagination">
+        {{ $results->appends(request()->query())->links() }}
     </div>
 
     @else

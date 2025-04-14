@@ -447,6 +447,8 @@ class ResultController extends Controller
             ->where('session1', $acadSession)
             ->where('course', $programme)
             ->get();
+
+        $totalStudent  = $results->count();
         
 
         if ($results->isEmpty()) {
@@ -583,21 +585,83 @@ class ResultController extends Controller
             ->paginate($resultsPerPage);
 
         $total = $paginatedResults->total(); // Get the total number of records
+        //---save results to db-----
+        foreach ($studentData as $index => $data) {
+            $compute = new \App\Models\ResultCompute();
+        
+            $compute->admission_no = $data['stuno'] ?? '';
+            $compute->surname = $data['surname'] ?? '';
+            $compute->first_name = $data['firstname'] ?? '';
+            $compute->other_name = $data['othername'] ?? '';
+            $compute->student_full_name = $data['surname'] . ' ' . $data['firstname'] . ' ' . $data['othername'];
+            $compute->class = $data['class'] ?? '';
+            $compute->semester = $semester;
+            $compute->session1 = $acadSession;
+            $compute->course = $data['coursekeep'] ?? '';
+            $compute->no_of_course = $data['noofcoursekeep'] ?? 0;
+            $compute->picture_dir = $data['studpicture'] ?? '';
+            $compute->gpa = $data['totalGPA'] ?? 0;
+            $compute->total_grade_point = $data['totalGradePoints'] ?? 0;
+            $compute->total_course_unit = $data['totalUnits'] ?? 0;
+            $compute->total_failed_course = $data['totalFailed'] ?? 0;
+            $compute->failed_course = !empty($data['failedRemarks']) ? implode(', ', $data['failedRemarks']) : '';
+            $compute->remark = $data['remarks'] ?? 'PASSED ALL';
+        
+            if (!empty($data['courses'])) {
+                foreach ($data['courses'] as $i => $course) {
+                    $col = $i + 1;
+                    if ($col > 19) break;
+        
+                    $unit = $course['courseUnit'] ?? 0;
+                    $score = $course['examScore'] ?? 0;
+                    $gradePoint = 0;
+                    $letterGrade = 'F';
+        
+                    // Determine grade and point based on grading scheme
+                    foreach ($grades as $grade) {
+                        if ($score >= $grade['min'] && $score <= $grade['max']) {
+                            $gradePoint = $grade['unit'];
+                            $letterGrade = $grade['letter_grade'];
+                            break;
+                        }
+                    }
+        
+                    $compute["subject{$col}"] = $course['subjectTitle'] ?? '';
+                    $compute["score{$col}"] = $score;
+                    $compute["unit{$col}"] = $unit;
+                    $compute["subjectgrade{$col}"] = $letterGrade;
+                    $compute["ctitle{$col}"] = $course['courseTitle'] ?? '';
+                    $compute["ctotal{$col}"] = $unit * $gradePoint;
+                }
+            }
+        
+            if (!empty($data['failedRemarks'])) {
+                foreach ($data['failedRemarks'] as $i => $fail) {
+                    if ($i < 15) {
+                        $compute["carryover" . ($i + 1)] = $fail;
+                    }
+                }
+            }
+            $compute->sn = $index + 1;
+            $compute->save();        
+
+            return redirect()->route('result-compute')->with('success' , 'Result Computed Successfuly.');
+        }
 
         // Now pass the paginated results to the view
-        return view('results.student_result_page', [
-            'studentData' => $studentData,
-            'page' => $page,
-            'total' => $total,
-            'collegeInfo' => $collegeInfo,
-            'semester' => $semester,
-            'level' => $level,
-            'programme' => $programme,
-            'acadSession' => $acadSession,
-            'results' => $paginatedResults,
-            'gradingSystem' => $grading,
-            'grades' => $grades,
-        ]);
+        // return view('results.student_result_page', [
+        //     'studentData' => $studentData,
+        //     'page' => $page,
+        //     'total' => $total,
+        //     'collegeInfo' => $collegeInfo,
+        //     'semester' => $semester,
+        //     'level' => $level,
+        //     'programme' => $programme,
+        //     'acadSession' => $acadSession,
+        //     'results' => $paginatedResults,
+        //     'gradingSystem' => $grading,
+        //     'grades' => $grades,
+        // ]);
     }
 
 
