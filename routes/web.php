@@ -125,8 +125,10 @@ Route::post('/reset-password', [CustomForgotPasswordController::class, 'resetPas
         ->name('result-compute');
         Route::post('result/compute', [ResultController::class, 'resultComputeAction'])
         ->name('result-compute-action');
-        Route::get('result/{acadSession}/{programme}/{level}/{semester}', [ResultController::class, 'firstSemester100'])
-        ->name('first-semester-results');
+        Route::post('/result-compute/delete', [ResultController::class, 'resultDelete'])
+        ->name('result-compute-delete');
+        Route::get('/preview-results', [ResultController::class, 'preview'])
+        ->name('result-compute-preview');
         Route::get('result/semester', [ResultController::class, 'semesterResult'])
         ->name('semester-result');
         Route::get('result/summary', [ResultController::class, 'semesterSummary'])

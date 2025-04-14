@@ -35,19 +35,20 @@
     box-sizing: border-box; /* Ensures padding and borders are included in width */
 }
   </style>
-
 <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        .header { text-align: center; }
-        .college-logo { width: 100px; height: auto; }
-        .student-info, .course-table { margin-top: 30px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        th, td { border: 1px solid #999; padding: 8px; text-align: center; }
-        th { background-color: #f4f4f4; }
-        .remarks { margin-top: 20px; font-weight: bold; }
-        .pagination { margin-top: 30px; text-align: center; }
-    </style>
+    body {
+        font-family: Arial, sans-serif;
+    }
 
+    .container {
+        width: 100%;
+    }
+
+    /* Remove any unwanted elements like the footer */
+    footer {
+        display: none;
+    }
+</style>
 </head>
 
 <body>
@@ -351,26 +352,7 @@
                     </div>
                   </div>      
                   
-          <div class="row ">
-      
-      <div class="col-xl-3 col-lg-6">
-              <div class="card l-bg-green">
-                <div class="card-statistic-3">
-                  <div class="card-icon card-icon-large"><i class="fa fa-briefcase"></i></div>
-                  <div class="card-content">
-                    <h4 class="card-title">No of Students </h4>
-                    <span><strong></strong></span>
-                    <div class="progress mt-1 mb-1" data-height="8">
-                      <div class="progress-bar l-bg-orange" role="progressbar" data-width="" aria-valuenow=""
-                        aria-valuemin="0" aria-valuemax=""></div>
-                    </div>
-                    <!-- <div> <a href="" class="black-link">Check list of Students</a></div> -->
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-          </div>
+          
           @if(session('success'))
                     <div class="alert alert-success">
                       {{ session('success') }}
@@ -384,29 +366,35 @@
             <div class="col-12">
               <div class="card">
                 <div class="card-header">
-                  <h4>Instructor
-                                 <a href="javascript:void(0)" onclick="printAllStudents()" class="btn btn-outline-primary">
-                        <i class="fas fa-print"></i> Print Score Sheet
-                    </a>
+                  <h4>
+                  <!-- Print the specific result (Current Page) -->
+<a href="javascript:void(0)" onclick="printResult()" class="btn btn-outline-primary">
+    <i class="fas fa-print"></i> Print Result
+</a>
+
+<!-- Print all results (entire content) -->
+<a href="javascript:void(0)" onclick="printAllResults()" class="btn btn-outline-primary">
+    <i class="fas fa-print"></i> Print All Results
+</a>
                   </h4>
                   <div class="card-header-form">
-                  <!-- <form>
+                  <form>
                         <div class="input-group">
                             <input type="text" id="searchInput" class="form-control" placeholder="Search">
                             <div class="input-group-btn">
                                 <button type="button" class="btn btn-primary" onclick="filterTable()"><i class="fas fa-search"></i></button>
                             </div>
                         </div>
-                    </form> -->
+                    </form>
                   </div>
                 </div>
                 <div class="card-body p-0">
                   <div class="table-responsive">
                     <br>                   
                     <div class="container">
-                        
-                        <form method="POST" action="">
+                        <h4></h4>
                         <div class="container mt-4">
+
     {{-- Header --}}
     <div class="text-center mb-4">
         <img src="{{ asset('dashboard/assets/img/logo.png') }}" alt="College Logo" style="height: 100px;">
@@ -414,16 +402,14 @@
         <p>Eleyele, Ibadan, Oyo State, Nigeria.</p>
     </div>
 
-    {{-- Student Info Section --}}
-    @php $student = $studentData[$page - 1] ?? null; @endphp
-
-    @if ($student)
+    @foreach ($studentData as $student)
+    {{-- Student Info --}}
     <div class="card mb-4">
         <div class="card-body">
-            <h5 class="card-title text-center"><strong>
-                {{ strtoupper($student['class'] . ' Level ' . $semester . ' Semester Academic Report') }}
-            </strong>            
+            <h5 class="card-title text-center font-weight-bold">
+                {{ strtoupper("{$student['class']} Level {$semester} Semester Academic Report") }}
             </h5>
+
             <table class="table table-bordered align-middle">
                 <tr>
                     <td rowspan="4" style="width: 150px; text-align: center;">
@@ -448,15 +434,14 @@
         </div>
     </div>
 
-    {{-- Row with Results Table and Two Cards --}}
+    {{-- Results and GPA --}}
     <div class="row">
-        {{-- Results Table --}}
         <div class="col-md-8">
             <div class="card">
                 <div class="card-body">
                     <table class="table table-striped table-bordered text-center">
-                        <thead class="bg-dark">
-                            <tr>
+                        <thead class="bg-dark text-white">
+                        <tr>
                                 <th style="color: white;">Code</th>
                                 <th style="color: white;">Course</th>
                                 <th style="color: white;">Unit</th>
@@ -465,31 +450,28 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($student['courses'] as $index => $course)
-                                @if (!empty($course['courseTitle']))
-                                <tr>
-                                    <td>{{ $course['courseTitle'] }}</td>
-                                    <td style="text-align: left;">{{ $course['subjectTitle'] }}</td>
-                                    <td>{{ $course['courseUnit'] }}</td>
-                                    <td>
-                                        @if ($course['examScore'] == floor($course['examScore']))
-                                            {{ number_format($course['examScore'], 0) }} <!-- No decimals for whole numbers -->
-                                        @else
-                                            {{ $course['examScore'] }} <!-- Show the score as is for non-whole numbers -->
-                                        @endif
-                                    </td>
-                                    <td>{{ $course['grade'] }}</td>
-                                </tr>
-                                @endif
-                            @endforeach
+                            {{-- Check if subjects, grades, units, and scores are set and not null --}}
+                            @if(isset($student['subjects']) && is_array($student['subjects']) && count($student['subjects']) > 0)
+                                @foreach ($student['subjects'] as $index => $subject)
+                                    @if(!empty($subject) && !is_null($subject) && !empty($student['subjectGrades'][$index]) && !is_null($student['subjectGrades'][$index]) && !empty($student['units'][$index]) && !is_null($student['units'][$index]) && !empty($student['scores'][$index]) && !is_null($student['scores'][$index]))
+                                    <tr>
+                                        <td>{{ $student['ctitles'][$index] }}</td>
+                                        <td style="text-align: left;">{{ $subject }}</td>
+                                        <td>{{ $student['units'][$index] }}</td>
+                                        <td>{{ $student['scores'][$index] }}</td>
+                                        <td>{{ $student['subjectGrades'][$index] }}</td>
+                                    </tr>
+                                    @endif
+                                @endforeach
+                            @else
+                                <tr><td colspan="4">No subjects available</td></tr>
+                            @endif
                         </tbody>
                     </table>
 
-                    {{-- GPA and Remarks Table --}}
+                    {{-- GPA Summary --}}
                     <div class="mt-4">
                         <table class="table table-bordered table-sm">
-                            <thead class="thead-dark">
-                            </thead>
                             <tbody>
                                 <tr>
                                     <td><strong>Total Grade Points:</strong></td>
@@ -498,25 +480,29 @@
                                 <tr>
                                     <td><strong>Total Units:</strong></td>
                                     <td>{{ $student['totalUnits'] }}</td>
-                                </tr>                                                       
+                                </tr>
                                 <tr>
                                     <td><strong>GPA:</strong></td>
                                     <td>{{ $student['totalGPA'] ?? 'N/A' }}</td>
                                 </tr>
-                                <tr>
+                                <!-- <tr>
                                     <td><strong>Grade:</strong></td>
                                     <td>{{ $student['letterGrade'] ?? 'N/A' }}</td>
-                                </tr>
+                                </tr> -->
                                 <tr>
                                     <td><strong>Remark:</strong></td>
-                                    <td><span class="{{ $student['remarks'] == 'PASSED ALL' ? 'text-success' : 'text-danger' }}">{{ $student['remarks'] }}</span></td>
+                                    <td>
+                                        <span class="{{ $student['remarks'] === 'PASSED ALL' ? 'text-success' : 'text-danger' }}">
+                                            {{ $student['remarks'] }}
+                                        </span>
+                                    </td>
                                 </tr>
-
+                                
                                 @if (!empty($student['failedRemarks']))
-                                    <tr>
-                                        <td><strong>Courses with Carryover:</strong></td>
-                                        <td>{{ implode(', ', $student['failedRemarks']) }}</td>
-                                    </tr>
+                                <tr>
+                                    <td><strong>Courses with Carryover:</strong></td>
+                                    <td>{{ $student['failedRemarks'] }}</td>
+                                </tr>
                                 @endif
                             </tbody>
                         </table>
@@ -524,94 +510,71 @@
                 </div>
             </div>
         </div>
-        {{-- Grading System and GPA Classification Cards --}}
-                <div class="col-md-4">
-                    <div class="row">
-                        {{-- Grading System Card --}}
-                        <div class="col-12 mb-2">
-                            <div class="card h-100">
-                                <div class="card-body p-1">
-                                <h6 class="card-title mb-1 text-center font-weight-bold">Grading System</h6>
-                                    <table class="table table-striped table-bordered text-center">
-                                        <thead class="bg-dark">
-                                            <tr>
-                                                <th style="color: white; padding: 0.2rem;">Score</th> <!-- Reduced padding -->
-                                                <th style="color: white; padding: 0.2rem;">Grade</th>
-                                                <th style="color: white; padding: 0.2rem;">Point</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($grades as $grade)
-                                                <tr>
-                                                    <td style="padding: 0.1rem;">{{ $grade['min'] }} - {{ $grade['max'] }}</td>
-                                                    <td style="padding: 0.1rem;">{{ $grade['letter_grade'] }}</td>
-                                                    <td style="padding: 0.1rem;">{{ number_format($grade['unit'], 2) }}</td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
 
-                        {{-- GPA Classification Card --}}
-                        <div class="col-12 mb-2">
-                            <div class="card h-100">
-                                <div class="card-body p-1">
-                                    <h6 class="card-title mb-1 text-center font-weight-bold">Classification</h6>
-                                    <table class="table table-striped table-bordered text-center">
-                                        <thead class="bg-dark">
-                                            <tr>
-                                                <th style="color: white; padding: 0.2rem;">CGPA</th> <!-- Reduced padding -->
-                                                <th style="color: white; padding: 0.2rem;">Class</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td style="padding: 0.1rem;">3.5 - 4.0</td>
-                                                <td style="padding: 0.1rem;">Distinction</td>
-                                            </tr>
-                                            <tr>
-                                                <td style="padding: 0.1rem;">3.0 - 3.49</td>
-                                                <td style="padding: 0.1rem;">Upper Credit</td>
-                                            </tr>
-                                            <tr>
-                                                <td style="padding: 0.1rem;">2.5 - 2.9</td>
-                                                <td style="padding: 0.1rem;">Lower Credit</td>
-                                            </tr>
-                                            <tr>
-                                                <td style="padding: 0.1rem;">2.0 - 2.49</td>
-                                                <td style="padding: 0.1rem;">Pass</td>
-                                            </tr>
-                                            <tr>
-                                                <td style="padding: 0.1rem;">Below 2.0</td>
-                                                <td style="padding: 0.1rem;">Fail</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
+        {{-- Grading System & Classification --}}
+        <div class="col-md-4">
+            <div class="row">
+                {{-- Grading System --}}
+                <div class="col-12 mb-2">
+                    <div class="card h-100">
+                        <div class="card-body p-1">
+                            <h6 class="card-title text-center font-weight-bold mb-1">Grading System</h6>
+                            <table class="table table-striped table-bordered text-center">
+                                <thead class="bg-dark text-white">
+                                    <tr>
+                                        <th style="padding: 0.2rem; color: white;" >Score</th>
+                                        <th style="padding: 0.2rem; color: white;">Grade</th>
+                                        <th style="padding: 0.2rem; color: white;">Point</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($grades as $grade)
+                                    <tr>
+                                        <td style="padding: 0.1rem;">{{ $grade['min'] }} - {{ $grade['max'] }}</td>
+                                        <td style="padding: 0.1rem;">{{ $grade['letter_grade'] }}</td>
+                                        <td style="padding: 0.1rem;">{{ number_format($grade['unit'], 2) }}</td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
-               
-            </div>
-        </div>
-    </div>
+
+                {{-- Classification --}}
+                <div class="col-12 mb-2">
+                    <div class="card h-100">
+                        <div class="card-body p-1">
+                            <h6 class="card-title text-center font-weight-bold mb-1">Classification</h6>
+                            <table class="table table-striped table-bordered text-center">
+                                <thead class="bg-dark text-white">
+                                    <tr>
+                                        <th style="padding: 0.2rem; color: white;">CGPA</th>
+                                        <th style="padding: 0.2rem; color: white;">Class</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td style="padding: 0.1rem;">3.5 - 4.0</td><td style="padding: 0.1rem;">Distinction</td></tr>
+                                    <tr><td style="padding: 0.1rem;">3.0 - 3.49</td><td style="padding: 0.1rem;">Upper Credit</td></tr>
+                                    <tr><td style="padding: 0.1rem;">2.5 - 2.9</td><td style="padding: 0.1rem;">Lower Credit</td></tr>
+                                    <tr><td style="padding: 0.1rem;">2.0 - 2.49</td><td style="padding: 0.1rem;">Pass</td></tr>
+                                    <tr><td style="padding: 0.1rem;">Below 2.0</td><td style="padding: 0.1rem;">Fail</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- end row -->
+        </div> <!-- end col-md-4 -->
+    </div> <!-- end row -->
 
     {{-- Pagination --}}
     <div class="pagination">
         {{ $results->appends(request()->query())->links() }}
     </div>
 
-    @else
-        <p class="text-danger">No student data found for this page.</p>
-    @endif
+    @endforeach
 </div>
-
-
-                        
-                    </form>
 
 
                         <br>
@@ -622,7 +585,7 @@
                 </div>
               </div>
             </div>
-          </div>         
+          </div>          
           
 
           
@@ -745,138 +708,61 @@
 <!-- index.html  21 Nov 2019 03:47:04 GMT -->
 </html>
 <script>
-    // JavaScript for filtering the table
-    function filterTable() {
-        const input = document.getElementById('searchInput').value.toLowerCase();
-        const table = document.getElementById('classListTable');
-        const rows = table.getElementsByTagName('tr');
+ // Function to print the current result (the page the user is on)
+function printResult() {
+    var content = document.querySelector('.container'); // Select the specific result section
 
-        for (let i = 1; i < rows.length; i++) { // Start from 1 to skip the header row
-            const cells = rows[i].getElementsByTagName('td');
-            let match = false;
+    // Open a new window to print the content
+    var printWindow = window.open('', '', 'height=650, width=900');
 
-            // Loop through all cells in the row
-            for (let j = 0; j < cells.length; j++) {
-                if (cells[j] && cells[j].innerText.toLowerCase().includes(input)) {
-                    match = true;
-                    break;
-                }
-            }
-
-            // Toggle row visibility based on the match
-            rows[i].style.display = match ? '' : 'none';
+    // Add styles to maintain the design when printing
+    var styles = document.querySelectorAll('style, link[rel="stylesheet"]');
+    var styleTags = '';
+    styles.forEach(function (style) {
+        if (style.tagName.toLowerCase() === 'style') {
+            styleTags += '<style>' + style.innerHTML + '</style>';
+        } else if (style.tagName.toLowerCase() === 'link') {
+            styleTags += '<link rel="stylesheet" href="' + style.getAttribute('href') + '" />';
         }
-    }
-
-    // Optional: Add an event listener for real-time search
-    document.getElementById('searchInput').addEventListener('input', filterTable);
-</script>
-
-<script>
-function printAllStudents() {
-    // Get the content of the hidden table
-    var printContents = document.getElementById('allStudentsTable').innerHTML;
-
-    // Create a hidden iframe
-    var iframe = document.createElement('iframe');
-    iframe.style.position = 'absolute';
-    iframe.style.top = '-10000px';
-    iframe.style.left = '-10000px';
-    document.body.appendChild(iframe);
-
-    // Write the content into the iframe
-    var doc = iframe.contentWindow.document;
-    doc.open();
-    doc.write(`
-        <html>
-            <head>
-                <title>Score Sheet</title>
-                <style>
-                    body { font-family: Arial, sans-serif; margin: 20px; }
-                    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-                    th, td { border: 1px solid black; padding: 8px; text-align: left; }
-                    th { background-color: #f2f2f2; }
-                </style>
-            </head>
-            <body>                
-                ${printContents}
-            </body>
-        </html>
-    `);
-    doc.close();
-
-    // Trigger the print dialog
-    iframe.contentWindow.focus();
-    iframe.contentWindow.print();
-
-    // Remove the iframe after printing
-    setTimeout(() => {
-        document.body.removeChild(iframe);
-    }, 1000);
-}
-</script>
-
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    const inputs = document.querySelectorAll('.dynamic-score-input');
-
-    inputs.forEach(input => {
-        input.addEventListener('change', async (e) => {
-            const field = e.target;
-            const studentId = field.dataset.studentId;
-            const courseId = field.dataset.courseId;
-            const admissionNo = field.dataset.admissionNo;
-            const className = field.dataset.class;
-            const semester = field.dataset.semester;
-            const courseIndex = field.dataset.courseIndex; // Retrieve the course index
-            const score = field.value;
-
-            // Validate score before sending
-            if (isNaN(score) || score < 0 || score > 100) {
-                alert('Please enter a valid score between 0 and 100.');
-                field.focus();
-                return;
-            }
-
-            try {
-                // Show loading indicator
-                field.disabled = true;
-
-                const response = await fetch('/admin/save-score', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                    },
-                    body: JSON.stringify({
-                        student_id: studentId,
-                        course_id: courseId,
-                        admission_no: admissionNo,
-                        class: className,
-                        semester: semester,
-                        course_index: courseIndex, // Pass course index to the server
-                        score: score
-                    })
-                });
-
-                const data = await response.json();
-
-                if (response.ok && data.message) {
-                    // alert(data.message); // Success message
-                    field.style.borderColor = 'green'; // Visual feedback
-                } else {
-                    throw new Error(data.message || 'An error occurred while saving the score.');
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Failed to save the score. Please try again.');
-                field.style.borderColor = 'red'; // Error feedback
-            } finally {
-                field.disabled = false; // Re-enable the field
-            }
-        });
     });
-});
+
+    printWindow.document.write('<html><head><title>Print Result</title>');
+    printWindow.document.write(styleTags); // Insert existing styles
+    printWindow.document.write('</head><body>');
+    printWindow.document.write(content.innerHTML); // Write the content to be printed
+    printWindow.document.write('</body></html>');
+    printWindow.document.close();
+    printWindow.print(); // Trigger the print dialog for the current result
+}
+
+// Function to print all results (entire content)
+function printAllResults() {
+    var content = document.querySelector('.container'); // Select the entire content
+
+    // Open a new window to print the content
+    var printWindow = window.open('', '', 'height=650, width=900');
+
+    // Add styles to maintain the design when printing
+    var styles = document.querySelectorAll('style, link[rel="stylesheet"]');
+    var styleTags = '';
+    styles.forEach(function (style) {
+        if (style.tagName.toLowerCase() === 'style') {
+            styleTags += '<style>' + style.innerHTML + '</style>';
+        } else if (style.tagName.toLowerCase() === 'link') {
+            styleTags += '<link rel="stylesheet" href="' + style.getAttribute('href') + '" />';
+        }
+    });
+
+    printWindow.document.write('<html><head><title>Print All Results</title>');
+    printWindow.document.write(styleTags); // Insert existing styles
+    printWindow.document.write('</head><body>');
+    printWindow.document.write(content.innerHTML); // Write the entire content to be printed
+    printWindow.document.write('</body></html>');
+    printWindow.document.close();
+    printWindow.print(); // Trigger the print dialog for all results
+}
 
 
 </script>
+
+

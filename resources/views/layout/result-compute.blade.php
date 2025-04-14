@@ -363,7 +363,7 @@
 
                     <div class="form-group">
                         <label>Programme</label>
-                        <select name="programme" id="" class="form-control">                            
+                        <select name="programme" id="programme" class="form-control">                            
                             <!-- Loop through levels -->
                             @foreach($programmes as $d)
                                 <option value="{{ $d->department }}">{{ $d->department }}</option>
@@ -398,7 +398,7 @@
 
                     <div class="form-group">
                         <label>Academic Level</label>
-                        <select name="stdLevel" id="" class="form-control">                            
+                        <select name="stdLevel" id="stdLevel" class="form-control">                            
                             <!-- Loop through levels -->
                             @foreach($allLevel as $d)
                                 <option value="{{ $d->level }}">{{ $d->level }}</option>
@@ -411,7 +411,7 @@
 
                     <div class="form-group">
                         <label>Semester</label>
-                        <select name="semester" id="" class="form-control">
+                        <select name="semester" id="semester" class="form-control">
                                 <option value="FIRST">FIRST</option>
                                 <option value="SECOND">SECOND</option>                           
                         </select>
@@ -421,11 +421,21 @@
                     @enderror
 
                     <div class="card-footer text-right">
-                        <input class="btn btn-primary mr-1" type="submit" value="Compute" />
-                        <!-- <input class="btn btn-secondary" type="reset" value="Reset" /> -->
-                    </div>
+                       <!-- Compute Button -->                       
+                       <button type="submit" class="btn btn-primary mr-1">
+                            <i class="fas fa-calculator"></i> Compute
+                        </button>                    
+                   
                 </form>
+                <a href="#" class="btn btn-info mr-1" id="previewBtn">
+                    <i class="fas fa-eye"></i> Preview
+                </a>
 
+                    <!-- Delete Button -->
+                    <button type="button" id="deleteBtn" class="btn btn-danger">
+                        <i class="fas fa-trash"></i> Delete
+                    </button>
+                    </div>
                   
                 </div>               
 
@@ -525,6 +535,19 @@
           </div>
         </div>
       </div>
+
+      <!-- Preview Modal -->
+        <div class="modal fade" id="resultPreviewModal" tabindex="-1" role="dialog" aria-labelledby="previewLabel" aria-hidden="true">
+          <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+              <div class="modal-body" id="resultPreviewContent">
+                <div class="text-center p-5">Loading preview...</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
       <footer class="main-footer">
         <div class="footer-left">
           <a href="https://oyschst.edu.ng" target="_blank">Oyo State College of Health, Science and Technology</a></a>
@@ -549,3 +572,81 @@
 
 <!-- basic-form.html  21 Nov 2019 03:54:41 GMT -->
 </html>
+<script>
+    document.getElementById('deleteBtn').addEventListener('click', function () {
+        // Grab selected values
+        const programme = document.querySelector('[name="programme"]').value;
+        const acadSession = document.querySelector('[name="acad_session"]').value;
+        const stdLevel = document.querySelector('[name="stdLevel"]').value;
+        const semester = document.querySelector('[name="semester"]').value;
+
+        // Basic validation
+        if (!programme || !acadSession || !stdLevel || !semester) {
+            alert('Please select all required fields before deleting.');
+            return;
+        }
+
+        if (!confirm('Are you sure you want to delete the results for the selected parameters?')) {
+            return;
+        }
+
+        // Make AJAX request
+        fetch("{{ route('result-compute-delete') }}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            },
+            body: JSON.stringify({
+                programme: programme,
+                acad_session: acadSession,
+                stdLevel: stdLevel,
+                semester: semester
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert(data.message || 'Delete successful');
+            // optionally reload or update UI
+            window.location.reload();
+        })
+        .catch(error => {
+            console.error('Delete error:', error);
+            alert('An error occurred while trying to delete results.');
+        });
+    });
+</script>
+
+<script>
+    document.getElementById('previewBtn').addEventListener('click', function(e) {
+        e.preventDefault(); // Prevent default anchor behavior
+        console.log('Preview button clicked'); // Debugging line
+
+        // Get the selected parameters (check if the element exists)
+        const programme = document.getElementById('programme');
+        const acadSession = document.getElementById('acad_session');
+        const stdLevel = document.getElementById('stdLevel');
+        const semester = document.getElementById('semester');
+
+        // Ensure the elements exist before trying to get their values
+        if (!programme || !acadSession || !stdLevel || !semester) {
+            console.error('One or more elements not found!');
+            return;
+        }
+
+        // Log the selected values to debug
+        console.log(`Programme: ${programme.value}, Session: ${acadSession.value}, Level: ${stdLevel.value}, Semester: ${semester.value}`);
+
+        // Construct the URL dynamically
+        const url = `{{ route('result-compute-preview') }}?programme=${programme.value}&acad_session=${acadSession.value}&stdLevel=${stdLevel.value}&semester=${semester.value}`;
+
+        // Log the constructed URL
+        console.log('Constructed URL:', url);
+
+        // Redirect the user to the generated URL
+        window.location.href = url;
+    });
+</script>
+
+
+
