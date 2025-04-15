@@ -10,6 +10,7 @@ use App\Models\Course;
 use App\Models\CourseStudyAll;
 use App\Models\StudentLevel;
 use App\Models\AdministratorControl;
+use App\Models\hod;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -412,8 +413,8 @@ class ResultController extends Controller
             '100'  => ['First' => 'firstSemester100',  'Second' => 'secondSemester100'],
             '200'  => ['First' => 'firstSemester200',  'Second' => 'secondSemester200'],
             '300'  => ['First' => 'firstSemester300',  'Second' => 'secondSemester300'],
-            'NDI'  => ['First' => 'firstSemesterNDI',  'Second' => 'secondSemesterNDI'],
-            'NDII' => ['First' => 'firstSemesterNDII', 'Second' => 'secondSemesterNDII'],
+            'NDI'  => ['First' => 'firstSemester100',  'Second' => 'secondSemester100'],
+            'NDII' => ['First' => 'firstSemester300', 'Second' => 'secondSemester300'],
         ];
 
         // Check if the provided level and semester have a corresponding method
@@ -967,8 +968,8 @@ class ResultController extends Controller
             '100'  => ['First' => 'preview100First',  'Second' => 'preview100Second'],
             '200'  => ['First' => 'preview200First',  'Second' => 'preview200Second'],
             '300'  => ['First' => 'preview300First',  'Second' => 'preview300Second'],
-            'NDI'  => ['First' => 'previewNDIFirst',  'Second' => 'previewNDISecond'],
-            'NDII' => ['First' => 'previewNDIIFirst', 'Second' => 'previewNDIISecond'],
+            'NDI'  => ['First' => 'preview100First',  'Second' => 'preview100Second'],
+            'NDII' => ['First' => 'preview300First', 'Second' => 'preview300Second'],
         ];
 
         // Check if the provided level and semester have a corresponding method
@@ -1023,6 +1024,7 @@ class ResultController extends Controller
                 ];
             });
 
+            $hod = hod::where('course', $programme)->first();
             $grading = GradingSystem::first();
             $grades = [
                 ['min' => $grading->grade01, 'max' => $grading->grade02, 'unit' => $grading->unit01, 'letter_grade' => $grading->lgrade1],
@@ -1039,6 +1041,7 @@ class ResultController extends Controller
                 'studentData' => $studentData,
                 'semester' => $semester,
                 'grades' => $grades,
+                'hod' => $hod,
             ]);
         } catch (\Exception $e) {
             // Log the exception for debugging
@@ -1049,5 +1052,74 @@ class ResultController extends Controller
         }
     }
 
+    public function preview100Second($acadSession, $programme, $level, $semester,Request $request)
+    {
+
+        try {
+            // Query the results based on the validated data
+            $results = ResultCompute::where('course', $programme)
+                ->where('session1', $acadSession)
+                ->where('class', $level)
+                ->where('semester', $semester)
+                ->paginate(1);
+
+            // Check if the results are empty
+            if ($results->isEmpty()) {
+                // \Log::info('No results found for the given parameters.');
+                return redirect()->route('result-compute-preview')->with('message', 'No results found.');
+            }
+
+            // Map the data into a format for the view
+            $studentData = $results->map(function ($item) {
+                return [
+                    'stusurname' => $item->student_full_name ?? 'No Name',
+                    'stuno' => $item->admission_no ?? 'No Matric No',
+                    'class' => $item->class ?? 'No Level',
+                    'coursekeep' => $item->course ?? 'No Programme',
+                    'studpicture' => $item->picture_dir ?? 'No Picture',
+                    'totalGradePoints' => $item->total_grade_point ?? 0,
+                    'totalUnits' => $item->total_course_unit ?? 0,
+                    'totalGPA' => $item->gpa1 ?? 0.0,
+                    'totalGPA2' => $item->gpa2 ?? 0.0,
+                    'totalCGPA' => $item->cgpa ?? 0.0,
+                    'letterGrade' => $item->subjectgrade1 ?? 'No Grade',
+                    'remarks' => $item->remark ?? 'No Remarks',
+                    'failedRemarks' => $item->failed_course ?? 'No failed course',
+                    // Safely map course titles, grades, units, and scores
+                    'ctitles' => array_map(fn($i) => $item->{"ctitle{$i}"} ?? null, range(1, 17)),
+                    'subjects' => array_map(fn($i) => $item->{"subject{$i}"} ?? null, range(1, 16)),
+                    'subjectGrades' => array_map(fn($i) => $item->{"subjectgrade{$i}"} ?? null, range(1, 17)),
+                    'units' => array_map(fn($i) => $item->{"unit{$i}"} ?? null, range(1, 18)),
+                    'scores' => array_map(fn($i) => $item->{"score{$i}"} ?? null, range(1, 19)),
+                ];
+            });
+
+            $hod = hod::where('course', $programme)->first();
+            $grading = GradingSystem::first();
+            $grades = [
+                ['min' => $grading->grade01, 'max' => $grading->grade02, 'unit' => $grading->unit01, 'letter_grade' => $grading->lgrade1],
+                ['min' => $grading->grade11, 'max' => $grading->grade12, 'unit' => $grading->unit02, 'letter_grade' => $grading->lgrade2],
+                ['min' => $grading->grade21, 'max' => $grading->grade22, 'unit' => $grading->unit03, 'letter_grade' => $grading->lgrade3],
+                ['min' => $grading->grade31, 'max' => $grading->grade32, 'unit' => $grading->unit04, 'letter_grade' => $grading->lgrade4],
+                ['min' => $grading->grade41, 'max' => $grading->grade42, 'unit' => $grading->unit05, 'letter_grade' => $grading->lgrade5],
+                ['min' => $grading->grade51, 'max' => $grading->grade52, 'unit' => $grading->unit06, 'letter_grade' => $grading->lgrade6],
+            ];
+
+            // Render the view with the fetched data
+            return view('results.student_result_page1', [
+                'results' => $results,
+                'studentData' => $studentData,
+                'semester' => $semester,
+                'grades' => $grades,
+                'hod' => $hod,
+            ]);
+        } catch (\Exception $e) {
+            // Log the exception for debugging
+            \Log::error('Error details: ' . $e->getMessage() . ' | Trace: ' . $e->getTraceAsString());
+
+            // Redirect with error message
+            return view('results.student_result_page1')->with('error', 'An error occurred. Please try again later.');
+        }
+    }
 
 }
