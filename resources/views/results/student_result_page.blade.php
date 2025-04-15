@@ -367,6 +367,9 @@
               <div class="card">
                 <div class="card-header">
                   <h4>
+                  <a href="{{route('result-compute')}}"  class="btn btn-outline-primary">
+                      <i class="fas fa-print"></i> Back to Result Page
+                  </a>
                   <!-- Print Current Page -->
                   <a href="javascript:void(0)" onclick="printReport()" class="btn btn-outline-primary">
                       <i class="fas fa-print"></i> Print Result
@@ -456,17 +459,17 @@
                                                     @foreach ($student['subjects'] as $index => $subject)
                                                         @if(!empty($subject) && !is_null($subject) && !empty($student['subjectGrades'][$index]) && !is_null($student['subjectGrades'][$index]) && !empty($student['units'][$index]) && !is_null($student['units'][$index]) && !empty($student['scores'][$index]) && !is_null($student['scores'][$index]))
                                                         <tr>
-                                                            <td>{{ $student['ctitles'][$index] }}</td>
-                                                            <td style="text-align: left;">{{ $subject }}</td>
-                                                            <td>{{ $student['units'][$index] }}</td>
-                                                            <td>
+                                                            <td style="font-size: 13px;">{{ $student['ctitles'][$index] }}</td>
+                                                            <td style="text-align: left; font-size: 13px;">{{ $subject }}</td>
+                                                            <td style="font-size: 13px;">{{ $student['units'][$index] }}</td>
+                                                            <td style="font-size: 13px;">
                                                                 @if (floor($student['scores'][$index]) == $student['scores'][$index])
-                                                                    {{ (int) $student['scores'][$index] }}  <!-- Display as an integer (no decimal) -->
+                                                                    {{ (int) $student['scores'][$index] }}
                                                                 @else
-                                                                    {{ $student['scores'][$index] }}  <!-- Display the number with decimals -->
+                                                                    {{ $student['scores'][$index] }}
                                                                 @endif
                                                             </td>
-                                                            <td>{{ $student['subjectGrades'][$index] }}</td>
+                                                            <td style="font-size: 13px;">{{ $student['subjectGrades'][$index] }}</td>
                                                         </tr>
                                                         @endif
                                                     @endforeach
@@ -478,33 +481,37 @@
 
                                         {{-- GPA Summary --}}
                                         <div class="mt-4">
-                                            <table class="table table-bordered table-sm">
+                                        <table class="table table-bordered table-sm">
                                                 <tbody>
                                                     <tr>
-                                                        <td><strong>Total Grade Points:</strong></td>
-                                                        <td>{{ $student['totalGradePoints'] }}</td>
+                                                        <td style="font-size: 13px;"><strong>Total Grade Points:</strong></td>
+                                                        <td style="font-size: 13px;">{{ $student['totalGradePoints'] }}</td>
+                                                        <td>&nbsp;</td>
+                                                        <td rowspan="3"><img src="{{asset('signature/' . $hod->sign)}}" alt="Hod Signature" width="160" height="60"></td>
                                                     </tr>
                                                     <tr>
-                                                        <td><strong>Total Units:</strong></td>
-                                                        <td>{{ $student['totalUnits'] }}</td>
+                                                        <td style="font-size: 13px;"><strong>Total Units:</strong></td>
+                                                        <td style="font-size: 13px;">{{ $student['totalUnits'] }}</td>
+                                                        <td>&nbsp;</td>
                                                     </tr>
                                                     <tr>
-                                                        <td><strong>GPA:</strong></td>
-                                                        <td>{{ $student['totalGPA'] ?? 'N/A' }}</td>
+                                                        <td style="font-size: 13px;"><strong>GPA:</strong></td>
+                                                        <td style="font-size: 13px;">{{ $student['totalGPA'] ?? 'N/A' }}</td>
+                                                        <td>&nbsp;</td>
                                                     </tr>                                
                                                     <tr>
-                                                        <td><strong>Remark:</strong></td>
-                                                        <td>
+                                                        <td style="font-size: 13px;"><strong>Remark:</strong></td>
+                                                        <td style="font-size: 13px;">
                                                             <span class="{{ $student['remarks'] === 'PASSED ALL' ? 'text-success' : 'text-danger' }}">
-                                                                {{ $student['remarks'] }}
-                                                            </span>
-                                                        </td>
+                                                                {{ $student['remarks'] }}                                                            </span>                                                        </td>
+                                                        <td>&nbsp;</td>
+                                                        <td style="text-align: center; font-size: 13px;">{{ $hod->hod_name }}</td>
                                                     </tr>
                                                     
                                                     @if (!empty($student['failedRemarks']))
                                                     <tr>
-                                                        <td><strong>Courses with Carryover:</strong></td>
-                                                        <td>{{ $student['failedRemarks'] }}</td>
+                                                        <td style="font-size: 13px;"><strong>Courses with Carryover:</strong></td>
+                                                        <td colspan="3" style="font-size: 12px;">{{ $student['failedRemarks'] }}</td>
                                                     </tr>
                                                     @endif
                                                 </tbody>
@@ -525,17 +532,17 @@
                                                 <table class="table table-striped table-bordered text-center">
                                                     <thead class="bg-dark text-white">
                                                         <tr>
-                                                            <th style="padding: 0.2rem; color: white;" >Score</th>
-                                                            <th style="padding: 0.2rem; color: white;">Grade</th>
-                                                            <th style="padding: 0.2rem; color: white;">Point</th>
+                                                            <th style="padding: 0.2rem; color: white; font-size: 13px;" >Score</th>
+                                                            <th style="padding: 0.2rem; color: white; font-size: 13px;">Grade</th>
+                                                            <th style="padding: 0.2rem; color: white; font-size: 13px;">Point</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         @foreach ($grades as $grade)
                                                         <tr>
-                                                            <td style="padding: 0.1rem;">{{ $grade['min'] }} - {{ $grade['max'] }}</td>
-                                                            <td style="padding: 0.1rem;">{{ $grade['letter_grade'] }}</td>
-                                                            <td style="padding: 0.1rem;">{{ number_format($grade['unit'], 2) }}</td>
+                                                            <td style="padding: 0.1rem; font-size: 13px;">{{ $grade['min'] }} - {{ $grade['max'] }}</td>
+                                                            <td style="padding: 0.1rem; font-size: 13px;">{{ $grade['letter_grade'] }}</td>
+                                                            <td style="padding: 0.1rem; font-size: 13px;">{{ number_format($grade['unit'], 2) }}</td>
                                                         </tr>
                                                         @endforeach
                                                     </tbody>
@@ -552,16 +559,16 @@
                                                 <table class="table table-striped table-bordered text-center">
                                                     <thead class="bg-dark text-white">
                                                         <tr>
-                                                            <th style="padding: 0.2rem; color: white;">CGPA</th>
-                                                            <th style="padding: 0.2rem; color: white;">Class</th>
+                                                            <th style="padding: 0.2rem; color: white; font-size: 13px;">CGPA</th>
+                                                            <th style="padding: 0.2rem; color: white; font-size: 13px;">Class</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <tr><td style="padding: 0.1rem;">3.5 - 4.0</td><td style="padding: 0.1rem;">Distinction</td></tr>
-                                                        <tr><td style="padding: 0.1rem;">3.0 - 3.49</td><td style="padding: 0.1rem;">Upper Credit</td></tr>
-                                                        <tr><td style="padding: 0.1rem;">2.5 - 2.9</td><td style="padding: 0.1rem;">Lower Credit</td></tr>
-                                                        <tr><td style="padding: 0.1rem;">2.0 - 2.49</td><td style="padding: 0.1rem;">Pass</td></tr>
-                                                        <tr><td style="padding: 0.1rem;">Below 2.0</td><td style="padding: 0.1rem;">Fail</td></tr>
+                                                        <tr><td style="padding: 0.1rem; font-size: 13px;">3.5 - 4.0</td><td style="padding: 0.1rem;">Distinction</td></tr>
+                                                        <tr><td style="padding: 0.1rem; font-size: 13px;">3.0 - 3.49</td><td style="padding: 0.1rem;">Upper Credit</td></tr>
+                                                        <tr><td style="padding: 0.1rem; font-size: 13px;">2.5 - 2.9</td><td style="padding: 0.1rem;">Lower Credit</td></tr>
+                                                        <tr><td style="padding: 0.1rem; font-size: 13px;">2.0 - 2.49</td><td style="padding: 0.1rem;">Pass</td></tr>
+                                                        <tr><td style="padding: 0.1rem; font-size: 13px;">Below 2.0</td><td style="padding: 0.1rem;">Fail</td></tr>
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -643,11 +650,11 @@
                                         <table class="table table-striped table-bordered text-center">
                                             <thead class="bg-dark text-white">
                                             <tr>
-                                                    <th style="color: white;">Code</th>
-                                                    <th style="color: white;">Course</th>
-                                                    <th style="color: white;">Unit</th>
-                                                    <th style="color: white;">Average(100)</th>
-                                                    <th style="color: white;">Grade</th>
+                                                    <th style="color: black;">Code</th>
+                                                    <th style="color: black;">Course</th>
+                                                    <th style="color: black;">Unit</th>
+                                                    <th style="color: black;">Average(100)</th>
+                                                    <th style="color: black;">Grade</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -656,17 +663,17 @@
                                                     @foreach ($student['subjects'] as $index => $subject)
                                                         @if(!empty($subject) && !is_null($subject) && !empty($student['subjectGrades'][$index]) && !is_null($student['subjectGrades'][$index]) && !empty($student['units'][$index]) && !is_null($student['units'][$index]) && !empty($student['scores'][$index]) && !is_null($student['scores'][$index]))
                                                         <tr>
-                                                            <td>{{ $student['ctitles'][$index] }}</td>
-                                                            <td style="text-align: left;">{{ $subject }}</td>
-                                                            <td>{{ $student['units'][$index] }}</td>
-                                                            <td>
+                                                            <td style="font-size: 13px;">{{ $student['ctitles'][$index] }}</td>
+                                                            <td style="text-align: left; font-size: 13px;">{{ $subject }}</td>
+                                                            <td style="font-size: 13px;">{{ $student['units'][$index] }}</td>
+                                                            <td style="font-size: 13px;">
                                                                 @if (floor($student['scores'][$index]) == $student['scores'][$index])
-                                                                    {{ (int) $student['scores'][$index] }}  <!-- Display as an integer (no decimal) -->
+                                                                    {{ (int) $student['scores'][$index] }}
                                                                 @else
-                                                                    {{ $student['scores'][$index] }}  <!-- Display the number with decimals -->
+                                                                    {{ $student['scores'][$index] }}
                                                                 @endif
                                                             </td>
-                                                            <td>{{ $student['subjectGrades'][$index] }}</td>
+                                                            <td style="font-size: 13px;">{{ $student['subjectGrades'][$index] }}</td>
                                                         </tr>
                                                         @endif
                                                     @endforeach
@@ -678,33 +685,37 @@
 
                                         {{-- GPA Summary --}}
                                         <div class="mt-4">
-                                            <table class="table table-bordered table-sm">
+                                        <table class="table table-bordered table-sm">
                                                 <tbody>
                                                     <tr>
-                                                        <td><strong>Total Grade Points:</strong></td>
-                                                        <td>{{ $student['totalGradePoints'] }}</td>
+                                                        <td style="font-size: 13px;"><strong>Total Grade Points:</strong></td>
+                                                        <td style="font-size: 13px;">{{ $student['totalGradePoints'] }}</td>
+                                                        <td>&nbsp;</td>
+                                                        <td rowspan="3"><img src="{{asset('signature/' . $hod->sign)}}" alt="Hod Signature" width="160" height="60"></td>
                                                     </tr>
                                                     <tr>
-                                                        <td><strong>Total Units:</strong></td>
-                                                        <td>{{ $student['totalUnits'] }}</td>
+                                                        <td style="font-size: 13px;"><strong>Total Units:</strong></td>
+                                                        <td style="font-size: 13px;">{{ $student['totalUnits'] }}</td>
+                                                        <td>&nbsp;</td>
                                                     </tr>
                                                     <tr>
-                                                        <td><strong>GPA:</strong></td>
-                                                        <td>{{ $student['totalGPA'] ?? 'N/A' }}</td>
+                                                        <td style="font-size: 13px;"><strong>GPA:</strong></td>
+                                                        <td style="font-size: 13px;">{{ $student['totalGPA'] ?? 'N/A' }}</td>
+                                                        <td>&nbsp;</td>
                                                     </tr>                                
                                                     <tr>
-                                                        <td><strong>Remark:</strong></td>
-                                                        <td>
+                                                        <td style="font-size: 13px;"><strong>Remark:</strong></td>
+                                                        <td style="font-size: 13px;">
                                                             <span class="{{ $student['remarks'] === 'PASSED ALL' ? 'text-success' : 'text-danger' }}">
-                                                                {{ $student['remarks'] }}
-                                                            </span>
-                                                        </td>
+                                                                {{ $student['remarks'] }}                                                            </span>                                                        </td>
+                                                        <td>&nbsp;</td>
+                                                        <td style="text-align: center; font-size: 13px;">{{ $hod->hod_name }}</td>
                                                     </tr>
                                                     
                                                     @if (!empty($student['failedRemarks']))
                                                     <tr>
-                                                        <td><strong>Courses with Carryover:</strong></td>
-                                                        <td>{{ $student['failedRemarks'] }}</td>
+                                                        <td style="font-size: 13px;"><strong>Courses with Carryover:</strong></td>
+                                                        <td colspan="3" style="font-size: 13px;">{{ $student['failedRemarks'] }}</td>
                                                     </tr>
                                                     @endif
                                                 </tbody>
