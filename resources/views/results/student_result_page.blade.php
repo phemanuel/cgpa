@@ -367,25 +367,26 @@
               <div class="card">
                 <div class="card-header">
                   <h4>
-                  <!-- Print the specific result (Current Page) -->
-<a href="javascript:void(0)" onclick="printResult()" class="btn btn-outline-primary">
-    <i class="fas fa-print"></i> Print Result
-</a>
+                  <!-- Print Current Page -->
+                  <a href="javascript:void(0)" onclick="printReport()" class="btn btn-outline-primary">
+                      <i class="fas fa-print"></i> Print Result
+                  </a>
 
-<!-- Print all results (entire content) -->
-<a href="javascript:void(0)" onclick="printAllResults()" class="btn btn-outline-primary">
-    <i class="fas fa-print"></i> Print All Results
-</a>
+                  <!-- Print All Results -->
+                  <!-- <a href="javascript:void(0)" onclick="printAllResults()" class="btn btn-outline-primary">
+                      <i class="fas fa-print"></i> Print All Results
+                  </a> -->
                   </h4>
                   <div class="card-header-form">
-                  <form>
-                        <div class="input-group">
-                            <input type="text" id="searchInput" class="form-control" placeholder="Search">
-                            <div class="input-group-btn">
-                                <button type="button" class="btn btn-primary" onclick="filterTable()"><i class="fas fa-search"></i></button>
-                            </div>
+                  <!-- <form>
+                      <div class="input-group">
+                      <input type="text" id="searchInput" class="form-control" placeholder="Search by Full Name or Matric No" onkeyup="filterTable()">
+                      </div>
+                  </form> -->
+                  {{-- Pagination --}}
+                        <div class="pagination">
+                            {{ $results->appends(request()->query())->links() }}
                         </div>
-                    </form>
                   </div>
                 </div>
                 <div class="card-body p-0">
@@ -394,187 +395,184 @@
                     <div class="container">
                         <h4></h4>
                         <div class="container mt-4">
+                        
+                        {{-- Header --}}
+                        <div class="text-center mb-4">
+                            <img src="{{ asset('dashboard/assets/img/logo.png') }}" alt="College Logo" style="height: 100px;">
+                            <h3 class="mt-2">{{ strtoupper('Oyo State College of Health Science and Technology') }}</h3>
+                            <p>Eleyele, Ibadan, Oyo State, Nigeria.</p>
+                        </div>                        
 
-    {{-- Header --}}
-    <div class="text-center mb-4">
-        <img src="{{ asset('dashboard/assets/img/logo.png') }}" alt="College Logo" style="height: 100px;">
-        <h3 class="mt-2">{{ strtoupper('Oyo State College of Health Science and Technology') }}</h3>
-        <p>Eleyele, Ibadan, Oyo State, Nigeria.</p>
-    </div>
+                        @foreach ($studentData as $student)
+                        {{-- Student Info --}}
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title text-center font-weight-bold">
+                                    {{ strtoupper("{$student['class']} Level {$semester} Semester Academic Report") }}
+                                </h5>
 
-    @foreach ($studentData as $student)
-    {{-- Student Info --}}
-    <div class="card mb-4">
-        <div class="card-body">
-            <h5 class="card-title text-center font-weight-bold">
-                {{ strtoupper("{$student['class']} Level {$semester} Semester Academic Report") }}
-            </h5>
-
-            <table class="table table-bordered align-middle">
-                <tr>
-                    <td rowspan="4" style="width: 150px; text-align: center;">
-                        <img src="{{ asset('uploads/' . $student['studpicture'] . '.jpg') }}" alt="Student Picture" class="img-thumbnail" style="max-width: 130px;">
-                    </td>
-                    <th>Full Name:</th>
-                    <td>{{ $student['stusurname'] }}</td>
-                </tr>
-                <tr>
-                    <th>Matric No:</th>
-                    <td>{{ $student['stuno'] }}</td>
-                </tr>
-                <tr>
-                    <th>Level:</th>
-                    <td>{{ $student['class'] }}</td>
-                </tr>
-                <tr>
-                    <th>Programme:</th>
-                    <td>{{ $student['coursekeep'] }}</td>
-                </tr>
-            </table>
-        </div>
-    </div>
-
-    {{-- Results and GPA --}}
-    <div class="row">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-body">
-                    <table class="table table-striped table-bordered text-center">
-                        <thead class="bg-dark text-white">
-                        <tr>
-                                <th style="color: white;">Code</th>
-                                <th style="color: white;">Course</th>
-                                <th style="color: white;">Unit</th>
-                                <th style="color: white;">Average(100)</th>
-                                <th style="color: white;">Grade</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {{-- Check if subjects, grades, units, and scores are set and not null --}}
-                            @if(isset($student['subjects']) && is_array($student['subjects']) && count($student['subjects']) > 0)
-                                @foreach ($student['subjects'] as $index => $subject)
-                                    @if(!empty($subject) && !is_null($subject) && !empty($student['subjectGrades'][$index]) && !is_null($student['subjectGrades'][$index]) && !empty($student['units'][$index]) && !is_null($student['units'][$index]) && !empty($student['scores'][$index]) && !is_null($student['scores'][$index]))
+                                <table class="table table-bordered align-middle">
                                     <tr>
-                                        <td>{{ $student['ctitles'][$index] }}</td>
-                                        <td style="text-align: left;">{{ $subject }}</td>
-                                        <td>{{ $student['units'][$index] }}</td>
-                                        <td>{{ $student['scores'][$index] }}</td>
-                                        <td>{{ $student['subjectGrades'][$index] }}</td>
+                                        <td rowspan="4" style="width: 150px; text-align: center;">
+                                            <img src="{{ asset('uploads/' . $student['studpicture'] . '.jpg') }}" alt="Student Picture" class="img-thumbnail" style="max-width: 130px;">
+                                        </td>
+                                        <th>Full Name:</th>
+                                        <td>{{ $student['stusurname'] }}</td>
                                     </tr>
-                                    @endif
-                                @endforeach
-                            @else
-                                <tr><td colspan="4">No subjects available</td></tr>
-                            @endif
-                        </tbody>
-                    </table>
-
-                    {{-- GPA Summary --}}
-                    <div class="mt-4">
-                        <table class="table table-bordered table-sm">
-                            <tbody>
-                                <tr>
-                                    <td><strong>Total Grade Points:</strong></td>
-                                    <td>{{ $student['totalGradePoints'] }}</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Total Units:</strong></td>
-                                    <td>{{ $student['totalUnits'] }}</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>GPA:</strong></td>
-                                    <td>{{ $student['totalGPA'] ?? 'N/A' }}</td>
-                                </tr>
-                                <!-- <tr>
-                                    <td><strong>Grade:</strong></td>
-                                    <td>{{ $student['letterGrade'] ?? 'N/A' }}</td>
-                                </tr> -->
-                                <tr>
-                                    <td><strong>Remark:</strong></td>
-                                    <td>
-                                        <span class="{{ $student['remarks'] === 'PASSED ALL' ? 'text-success' : 'text-danger' }}">
-                                            {{ $student['remarks'] }}
-                                        </span>
-                                    </td>
-                                </tr>
-                                
-                                @if (!empty($student['failedRemarks']))
-                                <tr>
-                                    <td><strong>Courses with Carryover:</strong></td>
-                                    <td>{{ $student['failedRemarks'] }}</td>
-                                </tr>
-                                @endif
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        {{-- Grading System & Classification --}}
-        <div class="col-md-4">
-            <div class="row">
-                {{-- Grading System --}}
-                <div class="col-12 mb-2">
-                    <div class="card h-100">
-                        <div class="card-body p-1">
-                            <h6 class="card-title text-center font-weight-bold mb-1">Grading System</h6>
-                            <table class="table table-striped table-bordered text-center">
-                                <thead class="bg-dark text-white">
                                     <tr>
-                                        <th style="padding: 0.2rem; color: white;" >Score</th>
-                                        <th style="padding: 0.2rem; color: white;">Grade</th>
-                                        <th style="padding: 0.2rem; color: white;">Point</th>
+                                        <th>Matric No:</th>
+                                        <td>{{ $student['stuno'] }}</td>
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($grades as $grade)
                                     <tr>
-                                        <td style="padding: 0.1rem;">{{ $grade['min'] }} - {{ $grade['max'] }}</td>
-                                        <td style="padding: 0.1rem;">{{ $grade['letter_grade'] }}</td>
-                                        <td style="padding: 0.1rem;">{{ number_format($grade['unit'], 2) }}</td>
+                                        <th>Level:</th>
+                                        <td>{{ $student['class'] }}</td>
                                     </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                                    <tr>
+                                        <th>Programme:</th>
+                                        <td>{{ $student['coursekeep'] }}</td>
+                                    </tr>
+                                </table>
+                            </div>
                         </div>
-                    </div>
-                </div>
 
-                {{-- Classification --}}
-                <div class="col-12 mb-2">
-                    <div class="card h-100">
-                        <div class="card-body p-1">
-                            <h6 class="card-title text-center font-weight-bold mb-1">Classification</h6>
-                            <table class="table table-striped table-bordered text-center">
-                                <thead class="bg-dark text-white">
-                                    <tr>
-                                        <th style="padding: 0.2rem; color: white;">CGPA</th>
-                                        <th style="padding: 0.2rem; color: white;">Class</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr><td style="padding: 0.1rem;">3.5 - 4.0</td><td style="padding: 0.1rem;">Distinction</td></tr>
-                                    <tr><td style="padding: 0.1rem;">3.0 - 3.49</td><td style="padding: 0.1rem;">Upper Credit</td></tr>
-                                    <tr><td style="padding: 0.1rem;">2.5 - 2.9</td><td style="padding: 0.1rem;">Lower Credit</td></tr>
-                                    <tr><td style="padding: 0.1rem;">2.0 - 2.49</td><td style="padding: 0.1rem;">Pass</td></tr>
-                                    <tr><td style="padding: 0.1rem;">Below 2.0</td><td style="padding: 0.1rem;">Fail</td></tr>
-                                </tbody>
-                            </table>
+                        {{-- Results and GPA --}}
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <table class="table table-striped table-bordered text-center">
+                                            <thead class="bg-dark text-white">
+                                            <tr>
+                                                    <th style="color: white;">Code</th>
+                                                    <th style="color: white;">Course</th>
+                                                    <th style="color: white;">Unit</th>
+                                                    <th style="color: white;">Average(100)</th>
+                                                    <th style="color: white;">Grade</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {{-- Check if subjects, grades, units, and scores are set and not null --}}
+                                                @if(isset($student['subjects']) && is_array($student['subjects']) && count($student['subjects']) > 0)
+                                                    @foreach ($student['subjects'] as $index => $subject)
+                                                        @if(!empty($subject) && !is_null($subject) && !empty($student['subjectGrades'][$index]) && !is_null($student['subjectGrades'][$index]) && !empty($student['units'][$index]) && !is_null($student['units'][$index]) && !empty($student['scores'][$index]) && !is_null($student['scores'][$index]))
+                                                        <tr>
+                                                            <td>{{ $student['ctitles'][$index] }}</td>
+                                                            <td style="text-align: left;">{{ $subject }}</td>
+                                                            <td>{{ $student['units'][$index] }}</td>
+                                                            <td>{{ $student['scores'][$index] }}</td>
+                                                            <td>{{ $student['subjectGrades'][$index] }}</td>
+                                                        </tr>
+                                                        @endif
+                                                    @endforeach
+                                                @else
+                                                    <tr><td colspan="4">No subjects available</td></tr>
+                                                @endif
+                                            </tbody>
+                                        </table>
+
+                                        {{-- GPA Summary --}}
+                                        <div class="mt-4">
+                                            <table class="table table-bordered table-sm">
+                                                <tbody>
+                                                    <tr>
+                                                        <td><strong>Total Grade Points:</strong></td>
+                                                        <td>{{ $student['totalGradePoints'] }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><strong>Total Units:</strong></td>
+                                                        <td>{{ $student['totalUnits'] }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><strong>GPA:</strong></td>
+                                                        <td>{{ $student['totalGPA'] ?? 'N/A' }}</td>
+                                                    </tr>                                
+                                                    <tr>
+                                                        <td><strong>Remark:</strong></td>
+                                                        <td>
+                                                            <span class="{{ $student['remarks'] === 'PASSED ALL' ? 'text-success' : 'text-danger' }}">
+                                                                {{ $student['remarks'] }}
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                    
+                                                    @if (!empty($student['failedRemarks']))
+                                                    <tr>
+                                                        <td><strong>Courses with Carryover:</strong></td>
+                                                        <td>{{ $student['failedRemarks'] }}</td>
+                                                    </tr>
+                                                    @endif
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{-- Grading System & Classification --}}
+                            <div class="col-md-4">
+                                <div class="row">
+                                    {{-- Grading System --}}
+                                    <div class="col-12 mb-2">
+                                        <div class="card h-100">
+                                            <div class="card-body p-1">
+                                                <h6 class="card-title text-center font-weight-bold mb-1">Grading System</h6>
+                                                <table class="table table-striped table-bordered text-center">
+                                                    <thead class="bg-dark text-white">
+                                                        <tr>
+                                                            <th style="padding: 0.2rem; color: white;" >Score</th>
+                                                            <th style="padding: 0.2rem; color: white;">Grade</th>
+                                                            <th style="padding: 0.2rem; color: white;">Point</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($grades as $grade)
+                                                        <tr>
+                                                            <td style="padding: 0.1rem;">{{ $grade['min'] }} - {{ $grade['max'] }}</td>
+                                                            <td style="padding: 0.1rem;">{{ $grade['letter_grade'] }}</td>
+                                                            <td style="padding: 0.1rem;">{{ number_format($grade['unit'], 2) }}</td>
+                                                        </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {{-- Classification --}}
+                                    <div class="col-12 mb-2">
+                                        <div class="card h-100">
+                                            <div class="card-body p-1">
+                                                <h6 class="card-title text-center font-weight-bold mb-1">Classification</h6>
+                                                <table class="table table-striped table-bordered text-center">
+                                                    <thead class="bg-dark text-white">
+                                                        <tr>
+                                                            <th style="padding: 0.2rem; color: white;">CGPA</th>
+                                                            <th style="padding: 0.2rem; color: white;">Class</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr><td style="padding: 0.1rem;">3.5 - 4.0</td><td style="padding: 0.1rem;">Distinction</td></tr>
+                                                        <tr><td style="padding: 0.1rem;">3.0 - 3.49</td><td style="padding: 0.1rem;">Upper Credit</td></tr>
+                                                        <tr><td style="padding: 0.1rem;">2.5 - 2.9</td><td style="padding: 0.1rem;">Lower Credit</td></tr>
+                                                        <tr><td style="padding: 0.1rem;">2.0 - 2.49</td><td style="padding: 0.1rem;">Pass</td></tr>
+                                                        <tr><td style="padding: 0.1rem;">Below 2.0</td><td style="padding: 0.1rem;">Fail</td></tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> 
+                            </div> <!-- end col-md-4 -->
+                        </div> <!-- end row -->
+
+                        {{-- Pagination --}}
+                        <div class="pagination">
+                            {{ $results->appends(request()->query())->links() }}
                         </div>
+
+                        @endforeach
                     </div>
-                </div>
-            </div> <!-- end row -->
-        </div> <!-- end col-md-4 -->
-    </div> <!-- end row -->
-
-    {{-- Pagination --}}
-    <div class="pagination">
-        {{ $results->appends(request()->query())->links() }}
-    </div>
-
-    @endforeach
-</div>
+                  
 
 
                         <br>
@@ -585,12 +583,187 @@
                 </div>
               </div>
             </div>
-          </div>          
-          
-
-          
+          </div>   
 
         </section>
+
+<!-- Hidden Container -->
+<div id="reportToPrint" style="display: none;">
+<div class="container mt-4">
+                        {{-- Header --}}
+                        <div class="text-center mb-4">
+                            <img src="{{ asset('dashboard/assets/img/logo.png') }}" alt="College Logo" style="height: 100px;">
+                            <h3 class="mt-2">{{ strtoupper('Oyo State College of Health Science and Technology') }}</h3>
+                            <p>Eleyele, Ibadan, Oyo State, Nigeria.</p>
+                        </div>
+
+                        @foreach ($studentData as $student)
+                        {{-- Student Info --}}
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title text-center font-weight-bold">
+                                    {{ strtoupper("{$student['class']} Level {$semester} Semester Academic Report") }}
+                                </h5>
+
+                                <table class="table table-bordered align-middle">
+                                    <tr>
+                                        <td rowspan="4" style="width: 150px; text-align: center;">
+                                            <img src="{{ asset('uploads/' . $student['studpicture'] . '.jpg') }}" alt="Student Picture" class="img-thumbnail" style="max-width: 130px;">
+                                        </td>
+                                        <th>Full Name:</th>
+                                        <td>{{ $student['stusurname'] }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Matric No:</th>
+                                        <td>{{ $student['stuno'] }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Level:</th>
+                                        <td>{{ $student['class'] }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Programme:</th>
+                                        <td>{{ $student['coursekeep'] }}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        {{-- Results and GPA --}}
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <table class="table table-striped table-bordered text-center">
+                                            <thead class="bg-dark text-white">
+                                            <tr>
+                                                    <th style="color: white;">Code</th>
+                                                    <th style="color: white;">Course</th>
+                                                    <th style="color: white;">Unit</th>
+                                                    <th style="color: white;">Average(100)</th>
+                                                    <th style="color: white;">Grade</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {{-- Check if subjects, grades, units, and scores are set and not null --}}
+                                                @if(isset($student['subjects']) && is_array($student['subjects']) && count($student['subjects']) > 0)
+                                                    @foreach ($student['subjects'] as $index => $subject)
+                                                        @if(!empty($subject) && !is_null($subject) && !empty($student['subjectGrades'][$index]) && !is_null($student['subjectGrades'][$index]) && !empty($student['units'][$index]) && !is_null($student['units'][$index]) && !empty($student['scores'][$index]) && !is_null($student['scores'][$index]))
+                                                        <tr>
+                                                            <td>{{ $student['ctitles'][$index] }}</td>
+                                                            <td style="text-align: left;">{{ $subject }}</td>
+                                                            <td>{{ $student['units'][$index] }}</td>
+                                                            <td>{{ $student['scores'][$index] }}</td>
+                                                            <td>{{ $student['subjectGrades'][$index] }}</td>
+                                                        </tr>
+                                                        @endif
+                                                    @endforeach
+                                                @else
+                                                    <tr><td colspan="4">No subjects available</td></tr>
+                                                @endif
+                                            </tbody>
+                                        </table>
+
+                                        {{-- GPA Summary --}}
+                                        <div class="mt-4">
+                                            <table class="table table-bordered table-sm">
+                                                <tbody>
+                                                    <tr>
+                                                        <td><strong>Total Grade Points:</strong></td>
+                                                        <td>{{ $student['totalGradePoints'] }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><strong>Total Units:</strong></td>
+                                                        <td>{{ $student['totalUnits'] }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><strong>GPA:</strong></td>
+                                                        <td>{{ $student['totalGPA'] ?? 'N/A' }}</td>
+                                                    </tr>                                
+                                                    <tr>
+                                                        <td><strong>Remark:</strong></td>
+                                                        <td>
+                                                            <span class="{{ $student['remarks'] === 'PASSED ALL' ? 'text-success' : 'text-danger' }}">
+                                                                {{ $student['remarks'] }}
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                    
+                                                    @if (!empty($student['failedRemarks']))
+                                                    <tr>
+                                                        <td><strong>Courses with Carryover:</strong></td>
+                                                        <td>{{ $student['failedRemarks'] }}</td>
+                                                    </tr>
+                                                    @endif
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{-- Grading System & Classification --}}
+                            <!-- <div class="col-md-4">
+                                <div class="row">
+                                    {{-- Grading System --}}
+                                    <div class="col-12 mb-2">
+                                        <div class="card h-100">
+                                            <div class="card-body p-1">
+                                                <h6 class="card-title text-center font-weight-bold mb-1">Grading System</h6>
+                                                <table class="table table-striped table-bordered text-center">
+                                                    <thead class="bg-dark text-white">
+                                                        <tr>
+                                                            <th style="padding: 0.2rem; color: white;" >Score</th>
+                                                            <th style="padding: 0.2rem; color: white;">Grade</th>
+                                                            <th style="padding: 0.2rem; color: white;">Point</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($grades as $grade)
+                                                        <tr>
+                                                            <td style="padding: 0.1rem;">{{ $grade['min'] }} - {{ $grade['max'] }}</td>
+                                                            <td style="padding: 0.1rem;">{{ $grade['letter_grade'] }}</td>
+                                                            <td style="padding: 0.1rem;">{{ number_format($grade['unit'], 2) }}</td>
+                                                        </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {{-- Classification --}}
+                                    <div class="col-12 mb-2">
+                                        <div class="card h-100">
+                                            <div class="card-body p-1">
+                                                <h6 class="card-title text-center font-weight-bold mb-1">Classification</h6>
+                                                <table class="table table-striped table-bordered text-center">
+                                                    <thead class="bg-dark text-white">
+                                                        <tr>
+                                                            <th style="padding: 0.2rem; color: white;">CGPA</th>
+                                                            <th style="padding: 0.2rem; color: white;">Class</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr><td style="padding: 0.1rem;">3.5 - 4.0</td><td style="padding: 0.1rem;">Distinction</td></tr>
+                                                        <tr><td style="padding: 0.1rem;">3.0 - 3.49</td><td style="padding: 0.1rem;">Upper Credit</td></tr>
+                                                        <tr><td style="padding: 0.1rem;">2.5 - 2.9</td><td style="padding: 0.1rem;">Lower Credit</td></tr>
+                                                        <tr><td style="padding: 0.1rem;">2.0 - 2.49</td><td style="padding: 0.1rem;">Pass</td></tr>
+                                                        <tr><td style="padding: 0.1rem;">Below 2.0</td><td style="padding: 0.1rem;">Fail</td></tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> 
+                            </div>  -->
+                        </div> <!-- end row -->
+                        
+
+                        @endforeach
+                    </div>
+  </div>
+<!-- end -->
         <div class="settingSidebar">
           <a href="javascript:void(0)" class="settingPanelToggle"> <i class="fa fa-spin fa-cog"></i>
           </a>
@@ -708,61 +881,61 @@
 <!-- index.html  21 Nov 2019 03:47:04 GMT -->
 </html>
 <script>
- // Function to print the current result (the page the user is on)
-function printResult() {
-    var content = document.querySelector('.container'); // Select the specific result section
+function printReport() {
+    const reportContent = document.getElementById('reportToPrint').innerHTML;
 
-    // Open a new window to print the content
-    var printWindow = window.open('', '', 'height=650, width=900');
+    const printWindow = window.open('', '', 'height=800,width=1000');
 
-    // Add styles to maintain the design when printing
-    var styles = document.querySelectorAll('style, link[rel="stylesheet"]');
-    var styleTags = '';
-    styles.forEach(function (style) {
-        if (style.tagName.toLowerCase() === 'style') {
-            styleTags += '<style>' + style.innerHTML + '</style>';
-        } else if (style.tagName.toLowerCase() === 'link') {
-            styleTags += '<link rel="stylesheet" href="' + style.getAttribute('href') + '" />';
-        }
-    });
+    printWindow.document.write(`
+        <html>
+        <head>
+            <title>Print Academic Report</title>
+            <link rel="stylesheet" href="{{ asset('dashboard/assets/css/bootstrap.min.css') }}">
+            <style>
+                body { font-family: Arial, sans-serif; margin: 20px; }
+                img { max-height: 130px; }
+                .table { width: 100%; border-collapse: collapse; }
+                .table td, .table th { border: 1px solid #000; padding: 4px; }
+                .text-center { text-align: center; }
+                .text-success { color: green; }
+                .text-danger { color: red; }
+                .card { border: 1px solid #ccc; padding: 15px; margin-bottom: 20px; }
+                .card-title { font-size: 18px; font-weight: bold; }
+            </style>
+        </head>
+        <body onload="window.print(); window.close();">
+            ${reportContent}
+        </body>
+        </html>
+    `);
 
-    printWindow.document.write('<html><head><title>Print Result</title>');
-    printWindow.document.write(styleTags); // Insert existing styles
-    printWindow.document.write('</head><body>');
-    printWindow.document.write(content.innerHTML); // Write the content to be printed
-    printWindow.document.write('</body></html>');
     printWindow.document.close();
-    printWindow.print(); // Trigger the print dialog for the current result
 }
-
-// Function to print all results (entire content)
-function printAllResults() {
-    var content = document.querySelector('.container'); // Select the entire content
-
-    // Open a new window to print the content
-    var printWindow = window.open('', '', 'height=650, width=900');
-
-    // Add styles to maintain the design when printing
-    var styles = document.querySelectorAll('style, link[rel="stylesheet"]');
-    var styleTags = '';
-    styles.forEach(function (style) {
-        if (style.tagName.toLowerCase() === 'style') {
-            styleTags += '<style>' + style.innerHTML + '</style>';
-        } else if (style.tagName.toLowerCase() === 'link') {
-            styleTags += '<link rel="stylesheet" href="' + style.getAttribute('href') + '" />';
-        }
-    });
-
-    printWindow.document.write('<html><head><title>Print All Results</title>');
-    printWindow.document.write(styleTags); // Insert existing styles
-    printWindow.document.write('</head><body>');
-    printWindow.document.write(content.innerHTML); // Write the entire content to be printed
-    printWindow.document.write('</body></html>');
-    printWindow.document.close();
-    printWindow.print(); // Trigger the print dialog for all results
-}
-
-
 </script>
+
+<script>
+    // Function to filter the table rows based on search input
+    function filterTable() {
+        const searchInput = document.getElementById('searchInput').value.toLowerCase();
+        const tableRows = document.querySelectorAll('.table-striped tbody tr'); // Get all rows in the table
+
+        tableRows.forEach(row => {
+            // Get the student name and matric no columns. These are in the first and second columns.
+            const studentName = row.cells[1].textContent.toLowerCase();  // Full Name column (second column)
+            const matricNo = row.cells[2].textContent.toLowerCase();  // Matric No column (third column)
+
+            // If the search term is found in the name or matric number, show the row. Otherwise, hide it.
+            if (studentName.includes(searchInput) || matricNo.includes(searchInput)) {
+                row.style.display = '';  // Show row
+            } else {
+                row.style.display = 'none';  // Hide row
+            }
+        });
+    }
+</script>
+
+
+
+
 
 

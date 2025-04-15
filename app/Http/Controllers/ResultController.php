@@ -438,7 +438,7 @@ class ResultController extends Controller
             ->exists();
 
         if ($resultComputeExists) {
-            return redirect()->back()->with('error', 'The result has been computed already. You can delete and recompute it.');
+            return redirect()->back()->with('error', 'The result has been computed already. You can either preview, or delete and recompute.');
         }
 
         // Retrieve student results
@@ -673,80 +673,80 @@ class ResultController extends Controller
     }
 
     public function preview(Request $request)
-{
-    // Validate incoming request
-    $validated = $request->validate([
-        'programme' => 'required|string',
-        'acad_session' => 'required|string',
-        'stdLevel' => 'required|string',
-        'semester' => 'required|string',
-    ]);
-
-    // Log the validated parameters to see what is being passed from the URL
-    \Log::info('Preview Request Parameters:', $validated);
-
-    try {
-        // Query the results based on the validated data
-        $results = ResultCompute::where('course', $validated['programme'])
-            ->where('session1', $validated['acad_session'])
-            ->where('class', $validated['stdLevel'])
-            ->where('semester', $validated['semester'])
-            ->paginate(1);  // You can adjust the pagination count if needed
-
-        // Check if the results are empty
-        if ($results->isEmpty()) {
-            \Log::info('No results found for the given parameters.');
-            return redirect()->route('result-compute-preview')->with('message', 'No results found.');
-        }
-
-        // Map the data into a format for the view
-        $studentData = $results->map(function ($item) {
-            return [
-                'stusurname' => $item->surname ?? 'No Name',
-                'stuno' => $item->admission_no ?? 'No Matric No',
-                'class' => $item->class ?? 'No Level',
-                'coursekeep' => $item->course ?? 'No Programme',
-                'studpicture' => $item->picture_dir ?? 'No Picture',
-                'totalGradePoints' => $item->total_grade_point ?? 0,
-                'totalUnits' => $item->total_course_unit ?? 0,
-                'totalGPA' => $item->gpa ?? 0.0,
-                'letterGrade' => $item->subjectgrade1 ?? 'No Grade',
-                'remarks' => $item->remark ?? 'No Remarks',
-                'failedRemarks' => $item->failed_course ?? 'No failed course',
-                // Safely map course titles, grades, units, and scores
-                'ctitles' => array_map(fn($i) => $item->{"ctitle{$i}"} ?? null, range(1, 17)),
-                'subjects' => array_map(fn($i) => $item->{"subject{$i}"} ?? null, range(1, 16)),
-                'subjectGrades' => array_map(fn($i) => $item->{"subjectgrade{$i}"} ?? null, range(1, 17)),
-                'units' => array_map(fn($i) => $item->{"unit{$i}"} ?? null, range(1, 18)),
-                'scores' => array_map(fn($i) => $item->{"score{$i}"} ?? null, range(1, 19)),
-            ];
-        });
-
-        $grading = GradingSystem::first();
-        $grades = [
-            ['min' => $grading->grade01, 'max' => $grading->grade02, 'unit' => $grading->unit01, 'letter_grade' => $grading->lgrade1],
-            ['min' => $grading->grade11, 'max' => $grading->grade12, 'unit' => $grading->unit02, 'letter_grade' => $grading->lgrade2],
-            ['min' => $grading->grade21, 'max' => $grading->grade22, 'unit' => $grading->unit03, 'letter_grade' => $grading->lgrade3],
-            ['min' => $grading->grade31, 'max' => $grading->grade32, 'unit' => $grading->unit04, 'letter_grade' => $grading->lgrade4],
-            ['min' => $grading->grade41, 'max' => $grading->grade42, 'unit' => $grading->unit05, 'letter_grade' => $grading->lgrade5],
-            ['min' => $grading->grade51, 'max' => $grading->grade52, 'unit' => $grading->unit06, 'letter_grade' => $grading->lgrade6],
-        ];
-
-        // Render the view with the fetched data
-        return view('results.student_result_page', [
-            'results' => $results,
-            'studentData' => $studentData,
-            'semester' => $validated['semester'],
-            'grades' => $grades,
+    {
+        // Validate incoming request
+        $validated = $request->validate([
+            'programme' => 'required|string',
+            'acad_session' => 'required|string',
+            'stdLevel' => 'required|string',
+            'semester' => 'required|string',
         ]);
-    } catch (\Exception $e) {
-        // Log the exception for debugging
-        \Log::error('Error details: ' . $e->getMessage() . ' | Trace: ' . $e->getTraceAsString());
 
-        // Redirect with error message
-        return view('results.student_result_page')->with('error', 'An error occurred. Please try again later.');
+        // Log the validated parameters to see what is being passed from the URL
+        // \Log::info('Preview Request Parameters:', $validated);
+
+        try {
+            // Query the results based on the validated data
+            $results = ResultCompute::where('course', $validated['programme'])
+                ->where('session1', $validated['acad_session'])
+                ->where('class', $validated['stdLevel'])
+                ->where('semester', $validated['semester'])
+                ->paginate(1);
+
+            // Check if the results are empty
+            if ($results->isEmpty()) {
+                // \Log::info('No results found for the given parameters.');
+                return redirect()->route('result-compute-preview')->with('message', 'No results found.');
+            }
+
+            // Map the data into a format for the view
+            $studentData = $results->map(function ($item) {
+                return [
+                    'stusurname' => $item->student_full_name ?? 'No Name',
+                    'stuno' => $item->admission_no ?? 'No Matric No',
+                    'class' => $item->class ?? 'No Level',
+                    'coursekeep' => $item->course ?? 'No Programme',
+                    'studpicture' => $item->picture_dir ?? 'No Picture',
+                    'totalGradePoints' => $item->total_grade_point ?? 0,
+                    'totalUnits' => $item->total_course_unit ?? 0,
+                    'totalGPA' => $item->gpa ?? 0.0,
+                    'letterGrade' => $item->subjectgrade1 ?? 'No Grade',
+                    'remarks' => $item->remark ?? 'No Remarks',
+                    'failedRemarks' => $item->failed_course ?? 'No failed course',
+                    // Safely map course titles, grades, units, and scores
+                    'ctitles' => array_map(fn($i) => $item->{"ctitle{$i}"} ?? null, range(1, 17)),
+                    'subjects' => array_map(fn($i) => $item->{"subject{$i}"} ?? null, range(1, 16)),
+                    'subjectGrades' => array_map(fn($i) => $item->{"subjectgrade{$i}"} ?? null, range(1, 17)),
+                    'units' => array_map(fn($i) => $item->{"unit{$i}"} ?? null, range(1, 18)),
+                    'scores' => array_map(fn($i) => $item->{"score{$i}"} ?? null, range(1, 19)),
+                ];
+            });
+
+            $grading = GradingSystem::first();
+            $grades = [
+                ['min' => $grading->grade01, 'max' => $grading->grade02, 'unit' => $grading->unit01, 'letter_grade' => $grading->lgrade1],
+                ['min' => $grading->grade11, 'max' => $grading->grade12, 'unit' => $grading->unit02, 'letter_grade' => $grading->lgrade2],
+                ['min' => $grading->grade21, 'max' => $grading->grade22, 'unit' => $grading->unit03, 'letter_grade' => $grading->lgrade3],
+                ['min' => $grading->grade31, 'max' => $grading->grade32, 'unit' => $grading->unit04, 'letter_grade' => $grading->lgrade4],
+                ['min' => $grading->grade41, 'max' => $grading->grade42, 'unit' => $grading->unit05, 'letter_grade' => $grading->lgrade5],
+                ['min' => $grading->grade51, 'max' => $grading->grade52, 'unit' => $grading->unit06, 'letter_grade' => $grading->lgrade6],
+            ];
+
+            // Render the view with the fetched data
+            return view('results.student_result_page', [
+                'results' => $results,
+                'studentData' => $studentData,
+                'semester' => $validated['semester'],
+                'grades' => $grades,
+            ]);
+        } catch (\Exception $e) {
+            // Log the exception for debugging
+            \Log::error('Error details: ' . $e->getMessage() . ' | Trace: ' . $e->getTraceAsString());
+
+            // Redirect with error message
+            return view('results.student_result_page')->with('error', 'An error occurred. Please try again later.');
+        }
     }
-}
 
 
 
