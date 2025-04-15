@@ -131,6 +131,8 @@ Route::post('/reset-password', [CustomForgotPasswordController::class, 'resetPas
         ->name('result-compute-preview');
         Route::get('result/semester', [ResultController::class, 'semesterResult'])
         ->name('semester-result');
+        Route::post('result/semester', [ResultController::class, 'semesterResultAction'])
+        ->name('semester-result-action');
         Route::get('result/summary', [ResultController::class, 'semesterSummary'])
         ->name('semester-summary');
         Route::get('result/cgpa', [ResultController::class, 'cgpaSummary'])

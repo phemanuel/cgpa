@@ -1847,4 +1847,43 @@ class ResultController extends Controller
         }
     }
 
+    public function semesterResult()
+    {
+        $user = auth()->user();
+        $rolePermission = $user->result_compute;
+
+        if($rolePermission != 1) {
+            return redirect()->back()->with('error', 'You do not have permission to this module.');
+        }
+        
+        $programmes = CourseStudyAll::orderBy('department', 'asc')->get();
+        $allLevel = StudentLevel::all();
+
+        return view('layout.semester-result', compact('programmes','allLevel'));
+    }
+
+    public function semesterResultAction(Request $request)
+    {
+        $validated = $request->validate([
+            'programme' => 'required|string',
+            'acad_session' => 'required|string',
+            'stdLevel' => 'required|string',
+            'semester' => 'required|string',
+        ]);
+    
+        $results = ResultCompute::where('course', $validated['programme'])
+            ->where('session1', $validated['acad_session'])
+            ->where('semester', $validated['semester'])
+            ->where('class', $validated['stdLevel'])
+            ->get(); 
+
+        $programme = $validated['programme'];
+        $acadsession = $validated['acad_session'];
+        $stdLevel = $validated['stdLevel'];
+        $semester = $validated['semester'];
+    
+        
+        return view('layout.semester-result-view', compact('results','programme','semester','acadsession','stdLevel'));
+    }
+
 }
