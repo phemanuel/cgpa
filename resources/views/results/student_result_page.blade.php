@@ -459,7 +459,13 @@
                                                             <td>{{ $student['ctitles'][$index] }}</td>
                                                             <td style="text-align: left;">{{ $subject }}</td>
                                                             <td>{{ $student['units'][$index] }}</td>
-                                                            <td>{{ $student['scores'][$index] }}</td>
+                                                            <td>
+                                                                @if (floor($student['scores'][$index]) == $student['scores'][$index])
+                                                                    {{ (int) $student['scores'][$index] }}  <!-- Display as an integer (no decimal) -->
+                                                                @else
+                                                                    {{ $student['scores'][$index] }}  <!-- Display the number with decimals -->
+                                                                @endif
+                                                            </td>
                                                             <td>{{ $student['subjectGrades'][$index] }}</td>
                                                         </tr>
                                                         @endif
@@ -653,7 +659,13 @@
                                                             <td>{{ $student['ctitles'][$index] }}</td>
                                                             <td style="text-align: left;">{{ $subject }}</td>
                                                             <td>{{ $student['units'][$index] }}</td>
-                                                            <td>{{ $student['scores'][$index] }}</td>
+                                                            <td>
+                                                                @if (floor($student['scores'][$index]) == $student['scores'][$index])
+                                                                    {{ (int) $student['scores'][$index] }}  <!-- Display as an integer (no decimal) -->
+                                                                @else
+                                                                    {{ $student['scores'][$index] }}  <!-- Display the number with decimals -->
+                                                                @endif
+                                                            </td>
                                                             <td>{{ $student['subjectGrades'][$index] }}</td>
                                                         </tr>
                                                         @endif

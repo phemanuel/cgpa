@@ -423,17 +423,17 @@
                     <div class="card-footer text-right">
                        <!-- Compute Button -->                       
                        <button type="submit" class="btn btn-primary mr-1">
-                            <i class="fas fa-calculator"></i> Compute
+                            <i class="fas fa-calculator"></i> Compute Result
                         </button>                    
                    
                 </form>
                 <a href="#" class="btn btn-info mr-1" id="previewBtn">
-                    <i class="fas fa-eye"></i> Preview
+                    <i class="fas fa-eye"></i> Preview Result
                 </a>
 
                     <!-- Delete Button -->
                     <button type="button" id="deleteBtn" class="btn btn-danger">
-                        <i class="fas fa-trash"></i> Delete
+                        <i class="fas fa-trash"></i> Delete Result Computation
                     </button>
                     </div>
                   
