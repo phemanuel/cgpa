@@ -7,6 +7,7 @@ use App\Models\Registration;
 use App\Models\Result;
 use App\Models\ResultCompute;
 use App\Models\Course;
+use App\Models\CourseStudy;
 use App\Models\CourseStudyAll;
 use App\Models\StudentLevel;
 use App\Models\AdministratorControl;
@@ -408,14 +409,29 @@ class ResultController extends Controller
         $acadSession = $validatedData['acad_session'];
         $programme   = $validatedData['programme'];
 
-        // Define the mapping of level and semester combinations to methods
-        $methodMap = [
-            '100'  => ['First' => 'firstSemester100',  'Second' => 'secondSemester100'],
-            '200'  => ['First' => 'firstSemester200',  'Second' => 'secondSemester200'],
-            '300'  => ['First' => 'firstSemester300',  'Second' => 'secondSemester300'],
-            'NDI'  => ['First' => 'firstSemester100',  'Second' => 'secondSemester100'],
-            'NDII' => ['First' => 'firstSemester300', 'Second' => 'secondSemester300'],
-        ];
+        $courseStudy = CourseStudy::where('dept_name', $validatedData['programme'])->first();
+        $courseDuration = $courseStudy->dept_duration;
+
+        if($courseDuration == 2){
+            // Define the mapping of level and semester combinations to methods
+            $methodMap = [
+                '100'  => ['First' => 'firstSemester100',  'Second' => 'secondSemester100'],
+                '200'  => ['First' => 'firstSemester300',  'Second' => 'secondSemester300'],                
+                'NDI'  => ['First' => 'firstSemester100',  'Second' => 'secondSemester100'],
+                'NDII' => ['First' => 'firstSemester300', 'Second' => 'secondSemester300'],
+            ];
+        }
+        elseif($courseDuration == 3){
+            // Define the mapping of level and semester combinations to methods
+            $methodMap = [
+                '100'  => ['First' => 'firstSemester100',  'Second' => 'secondSemester100'],
+                '200'  => ['First' => 'firstSemester200',  'Second' => 'secondSemester200'],
+                '300'  => ['First' => 'firstSemester300',  'Second' => 'secondSemester300'],
+                'NDI'  => ['First' => 'firstSemester100',  'Second' => 'secondSemester100'],
+                'NDII' => ['First' => 'firstSemester300', 'Second' => 'secondSemester300'],
+            ];
+        }
+        
 
         // Check if the provided level and semester have a corresponding method
         if (isset($methodMap[$level][$semester])) {
@@ -1688,14 +1704,28 @@ class ResultController extends Controller
         $acadSession = $validatedData['acad_session'];
         $programme   = $validatedData['programme'];
 
-        // Define the mapping of level and semester combinations to methods
-        $methodMap = [
-            '100'  => ['First' => 'preview100First',  'Second' => 'preview100Second'],
-            '200'  => ['First' => 'preview100First',  'Second' => 'preview100Second'],
-            '300'  => ['First' => 'preview100First',  'Second' => 'preview300Second'],
-            'NDI'  => ['First' => 'preview100First',  'Second' => 'preview100Second'],
-            'NDII' => ['First' => 'preview100First',  'Second' => 'preview300Second'],
-        ];
+        $courseStudy = CourseStudy::where('dept_name', $validatedData['programme'])->first();
+        $courseDuration = $courseStudy->dept_duration;
+
+        if($courseDuration == 2){
+            // Define the mapping of level and semester combinations to methods
+            $methodMap = [
+                '100'  => ['First' => 'preview100First',  'Second' => 'preview100Second'],
+                '200'  => ['First' => 'preview100First',  'Second' => 'preview300Second'],                
+                'NDI'  => ['First' => 'preview100First',  'Second' => 'preview100Second'],
+                'NDII' => ['First' => 'preview100First',  'Second' => 'preview300Second'],
+            ];
+        }
+        elseif($courseDuration == 3){
+                // Define the mapping of level and semester combinations to methods
+                $methodMap = [
+                    '100'  => ['First' => 'preview100First',  'Second' => 'preview100Second'],
+                    '200'  => ['First' => 'preview100First',  'Second' => 'preview100Second'],
+                    '300'  => ['First' => 'preview100First',  'Second' => 'preview300Second'],
+                    'NDI'  => ['First' => 'preview100First',  'Second' => 'preview100Second'],
+                    'NDII' => ['First' => 'preview100First',  'Second' => 'preview300Second'],
+                ];
+        }
 
         // Check if the provided level and semester have a corresponding method
         if (isset($methodMap[$level][$semester])) {
