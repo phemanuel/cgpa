@@ -2,12 +2,11 @@
 <html lang="en">
 
 
-<!-- index.html  21 Nov 2019 03:44:50 GMT -->
+<!-- basic-form.html  21 Nov 2019 03:54:41 GMT -->
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-  <meta name="csrf-token" content="{{ csrf_token() }}">
-  <title>E-Result :: Result</title>
+  <title>E-Result :: Result Compute</title>
   <!-- General CSS Files -->
   <link rel="stylesheet" href="{{asset('dashboard/assets/css/app.min.css')}}">
   <!-- Template CSS -->
@@ -16,38 +15,30 @@
   <!-- Custom style CSS -->
   <link rel="stylesheet" href="{{asset('dashboard/assets/css/custom.css')}}">
   <link rel='shortcut icon' type='image/x-icon' href="{{asset('dashboard/assets/img/favicon.png')}}" />
-  
   <style>
-    .black-link {
-    color: black;
-    font-weight: bold;
+    /* Success Alert */
+    .alert.alert-success {
+        background-color: #28a745; /* Green background color */
+        color: #fff; /* White text color */
+        padding: 10px; /* Padding around the text */
+        border-radius: 5px; /* Rounded corners */
     }
 
-    .black-link:hover {
-        color: black;
-
+    /* Error Alert */
+    .alert.alert-danger {
+        background-color: #dc3545; /* Red background color */
+        color: #fff; /* White text color */
+        padding: 10px; /* Padding around the text */
+        border-radius: 5px; /* Rounded corners */
     }
-  </style>
-  <style>
-    .form-control {
-    width: 70px; /* You can adjust this width based on your desired size */
-    text-align: center; /* Optional, to center the text in each input */
-    box-sizing: border-box; /* Ensures padding and borders are included in width */
+</style>
+<style type="text/css">
+.style2 {
+	color: #006600;
+	font-weight: bold;
 }
-  </style>
-<style>
-    body {
-        font-family: Arial, sans-serif;
-    }
-
-    .container {
-        width: 100%;
-    }
-
-    /* Remove any unwanted elements like the footer */
-    footer {
-        display: none;
-    }
+.style3 {font-weight: bold}
+.style7 {color: #0000FF; font-weight: bold; }
 </style>
 </head>
 
@@ -66,8 +57,7 @@
               </a></li>
            
           </ul>
-        </div>
-        <ul class="navbar-nav navbar-right">        
+        </div><ul class="navbar-nav navbar-right">        
           <li class="dropdown"><a href="#" data-toggle="dropdown"
               class="nav-link dropdown-toggle nav-link-lg nav-link-user"> <img alt="image" src="{{ asset('profile_pictures/'. auth()->user()->image) }}" alt="Profile Picture"
                 class="user-img-radious-style"> <span class="d-sm-none d-lg-inline-block"></span></a>
@@ -87,7 +77,7 @@
       <div class="main-sidebar sidebar-style-2">
         <aside id="sidebar-wrapper">
           <div class="sidebar-brand">
-            <a href="{{route('admin-dashboard')}}"> <img alt="image" src="{{asset('dashboard/assets/img/logo.png')}}" class="header-logo" /> <span
+            <a href="{{route('dashboard')}}"> <img alt="image" src="{{asset('dashboard/assets/img/logo.png')}}" class="header-logo" /> <span
                 class="logo-name">E-Result</span>
             </a>
           </div>
@@ -219,7 +209,7 @@
               <a href="{{ route('admin-account-setting', ['id' => auth()->user()->id]) }}" class="nav-link"><i data-feather="settings"></i><span>Account Settings</span></a>
             </li>                 
             @elseif(auth()->user()->user_type_status == 4)            
-            <li class="dropdown active">
+            <li class="dropdown">
               <a href="{{ route('dashboard') }}" class="nav-link"><i data-feather="home"></i><span>Dashboard</span></a>
             </li>
             <li class="dropdown">
@@ -241,8 +231,8 @@
       <!-- Main Content -->
       <div class="main-content">
         <section class="section">
-        
-                    <div class="row">
+          <div class="section-body">
+          <div class="row">
                     <div class="col-12">
                       <nav aria-label="breadcrumb">
                         <ol class="breadcrumb bg-dark text-white-all d-flex justify-content-between overflow-auto" style="white-space: nowrap;">
@@ -350,10 +340,14 @@
                         </ol>
                       </nav>
                     </div>
-                  </div>      
-                  
-          
-          @if(session('success'))
+                  </div>
+            <div class="row">
+              <div class="col-12 col-md-6 col-lg-6">
+                <div class="card">
+                  <div class="card-header">
+                  <h4>Semester Result Summary</h4>
+                  </div>
+                  @if(session('success'))
                     <div class="alert alert-success">
                       {{ session('success') }}
                     </div>
@@ -362,166 +356,86 @@
                       {{ session('error') }}
                     </div>
                     @endif	
-          <div class="row">
-            <div class="col-12">
-              <div class="card">
-                <div class="card-header">
-                  <h4>
-                  <a href="{{route('semester-result')}}"  class="btn btn-outline-primary">
-                      <i class="fas fa-print"></i> Back to Semester Result Page
-                  </a>                 
-                  <button class="btn btn-success"
-                      onclick="exportTableToCSV('{{ $programme . '-' . $stdLevel . '-' . str_replace('/', '-', $acadsession) . '-' . $semester . '-' . date('Y-m-d') }}.csv')">
-                      <i class="fas fa-file-csv"></i> Export CSV Report
-                  </button>
-                    <button class="btn btn-primary" onclick="printTable()">
-                        <i class="fas fa-print"></i> Print Report
-                    </button>
-               
+                    
+                  <div class="card-body">
+                  <form action="{{route('semester-summary-action')}}" method="POST">
+                    @csrf                   
 
-                  <!-- Print All Results -->
-                  <!-- <a href="javascript:void(0)" onclick="printAllResults()" class="btn btn-outline-primary">
-                      <i class="fas fa-print"></i> Print All Results
-                  </a> -->
-                  </h4>
-                  <div class="card-header-form">
-                  <form>
-                      <div class="input-group mb-3">
-                          <input type="text" id="searchInput" class="form-control" placeholder="Search by Name or Matric No" onkeyup="filterTable()">
-                          <div class="input-group-btn">
-                              <!-- <button type="button" class="btn btn-primary">
-                                  <i class="fas fa-search"></i>
-                              </button> -->
-                          </div>
-                      </div>
-                  </form>
-                  </div>
-                </div>
-                <div class="card-body p-0">
-                  <div class="table-responsive">
-                    <br>                   
-                    <div class="container">
-                        <h4></h4>
-                        <div class="container">   
-
-                        @if($results->count())
-    <div class="table-responsive" id="printArea">
-        @php
-            $programmeName = $programme;
-            $level = $stdLevel;
-            $semester = ucfirst(strtolower($semester));
-            $acadsession = $acadsession;
-        @endphp
-
-        @php
-            $first = $results->first();
-            $ctitleKeys = [];
-
-            if ($first) {
-                for ($i = 1; $i <= 17; $i++) {
-                    $key = "ctitle{$i}";
-                    if (!empty($first->$key)) {
-                        $ctitleKeys[] = $key;
-                    }
-                }
-            }
-
-            function gpaClass($gpa) {
-                if (!is_numeric($gpa)) return '';
-                if ($gpa >= 3.5) return 'badge bg-success text-white'; // Distinction
-                if ($gpa >= 3.0) return 'badge bg-primary text-white'; // Upper Credit
-                if ($gpa >= 2.5) return 'badge bg-info text-white';    // Lower Credit
-                if ($gpa >= 2.0) return 'badge bg-warning text-white'; // Pass
-                return 'badge bg-danger text-white'; // Fail
-            }
-        @endphp
-
-        <table class="table table-bordered">
-            <thead>
-                {{-- Report Header Row --}}
-                <tr>
-                    <th colspan="{{ 5 + count($ctitleKeys) }}" class="text-center">
-                        {{ $programmeName }} - {{ $acadsession }} - {{ $level }} Level - {{ $semester }} Semester Report
-                    </th>
-                </tr>
-
-                {{-- Column Titles --}}
-                <tr>
-                    <th>#</th>
-                    <th>Admission No</th>
-                    <th>Full Name</th>
-                    @foreach ($ctitleKeys as $ctitleKey)
-                        <th>{{ $first->$ctitleKey }}</th>
-                    @endforeach
-                    <th>GPA</th>
-                    <th>Failed Course</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse ($results as $index => $result)
-                    <tr>
-                        <td>{{ $index + 1 }}</td>
-                        <td>{{ $result->admission_no }}</td>
-                        <td>{{ $result->student_full_name }}</td>
-
-                        @foreach ($ctitleKeys as $key)
-                            @php
-                                $indexNum = (int) filter_var($key, FILTER_SANITIZE_NUMBER_INT);
-                                $scoreKey = "score{$indexNum}";
-                                $score = $result->$scoreKey ?? '';
-                                $isFailed = is_numeric($score) && $score < 40;
-                                $formattedScore = is_numeric($score) ? (fmod($score, 1) === 0.0 ? intval($score) : $score) : $score;
-                            @endphp
-                            <td class="{{ $isFailed ? 'text-danger fw-bold' : '' }}">{{ $formattedScore }}</td>
-                        @endforeach
-
-                        @php
-                            $gpa = $result->gpa;
-                            $formattedGPA = is_numeric($gpa) ? (fmod($gpa, 1) === 0.0 ? intval($gpa) : $gpa) : $gpa;
-                        @endphp
-                        <td><span class="{{ gpaClass($gpa) }}">{{ $formattedGPA }}</span></td>
-                        <td>{{ $result->failed_course }}</td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="{{ 5 + count($ctitleKeys) }}">No results found.</td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
-
-        {{-- GPA Grading Scale --}}
-        <div class="mt-3">
-            <strong>GPA Grading Scale:</strong>
-            <ul style="list-style-type: none; padding-left: 0;">
-                <li><span class="badge bg-success text-white">3.5 - 4.0</span> Distinction</li>
-                <li><span class="badge bg-primary text-white">3.0 - 3.49</span> Upper Credit</li>
-                <li><span class="badge bg-info text-white">2.5 - 2.9</span> Lower Credit</li>
-                <li><span class="badge bg-warning text-white">2.0 - 2.49</span> Pass</li>
-                <li><span class="badge bg-danger text-white">Below 2.0</span> Fail</li>
-            </ul>
-        </div>
-    </div>
-@else
-    <div class="alert alert-warning">No results found for the specified parameters.</div>
-@endif
-
-
-</div>
-
-                        <br>
+                    <div class="form-group">
+                        <label>Programme</label>
+                        <select name="programme" id="programme" class="form-control">                            
+                            <!-- Loop through levels -->
+                            @foreach($programmes as $d)
+                                <option value="{{ $d->department }}">{{ $d->department }}</option>
+                            @endforeach
+                        </select>
                     </div>
+                    @error('programme')
+                        <span class="invalid-feedback">{{ $message }}</span>
+                    @enderror
 
+                    @php
+                        $startYear = 2018;
+                        $currentYear = date('Y');
+                        $endYear = $currentYear + 1; // Include the current year in the loop
+                    @endphp
+                    <div class="form-group">
+                        <label>Admission Year</label>
+                        <select name="acad_session" id="acad_session" class="form-control">
+                        <option value="">Select Admission Year</option>
+                            @for ($year = $startYear; $year < $endYear; $year++)
+                                @php
+                                    $nextYear = $year + 1;
+                                @endphp
+                                <!-- <option value="{{ $year }}/{{ $nextYear }}">{{ $year }}/{{ $nextYear }}</option> -->
+                                <option value="{{ $year }}">{{ $year }}</option>
+                            @endfor
+                        </select>
+                    </div>
+                    @error('acad_session')
+                        <span class="invalid-feedback">{{ $message }}</span>
+                    @enderror
+
+                    <div class="form-group">
+                        <label>Academic Level</label>
+                        <select name="stdLevel" id="stdLevel" class="form-control">                            
+                            <!-- Loop through levels -->
+                            @foreach($allLevel as $d)
+                                <option value="{{ $d->level }}">{{ $d->level }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    @error('stdLevel')
+                        <span class="invalid-feedback">{{ $message }}</span>
+                    @enderror
+
+                    <!-- <div class="form-group">
+                        <label>Semester</label>
+                        <select name="semester" id="semester" class="form-control">
+                                <option value="FIRST">FIRST</option>
+                                <option value="SECOND">SECOND</option>                           
+                        </select>
+                    </div>
+                    @error('semester')
+                        <span class="invalid-feedback">{{ $message }}</span>
+                    @enderror -->
+
+                    <div class="card-footer text-right">
+                       <!-- Compute Button -->                       
+                       <button type="submit" class="btn btn-primary mr-1">
+                       <i class="fas fa-eye"></i> Preview Result
+                        </button>                    
                    
-                  </div>
-                </div>
+                </form>
+                                 
+                    </div>
+                  
+                </div>               
+
               </div>
             </div>
-          </div>   
-
+          </div>
         </section>
-
-
         <div class="settingSidebar">
           <a href="javascript:void(0)" class="settingPanelToggle"> <i class="fa fa-spin fa-cog"></i>
           </a>
@@ -614,6 +528,19 @@
           </div>
         </div>
       </div>
+
+      <!-- Preview Modal -->
+        <div class="modal fade" id="resultPreviewModal" tabindex="-1" role="dialog" aria-labelledby="previewLabel" aria-hidden="true">
+          <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+              <div class="modal-body" id="resultPreviewContent">
+                <div class="text-center p-5">Loading preview...</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
       <footer class="main-footer">
         <div class="footer-left">
           <a href="https://oyschst.edu.ng" target="_blank">Oyo State College of Health, Science and Technology</a></a>
@@ -623,8 +550,8 @@
       </footer>
     </div>
   </div>
-  <!-- General JS Scripts -->
-  <script src="{{asset('dashboard/assets/js/app.min.js')}}"></script>
+   <!-- General JS Scripts -->
+   <script src="{{asset('dashboard/assets/js/app.min.js')}}"></script>
   <!-- JS Libraies -->
   <script src="{{asset('dashboard/assets/bundles/apexcharts/apexcharts.min.js')}}"></script>
   <!-- Page Specific JS File -->
@@ -636,113 +563,8 @@
 </body>
 
 
-<!-- index.html  21 Nov 2019 03:47:04 GMT -->
+<!-- basic-form.html  21 Nov 2019 03:54:41 GMT -->
 </html>
-<script>
-    function exportTableToCSV(filename) {
-        const csv = [];
-
-        // Get the header text
-        const header = document.querySelector(".report-header");
-        if (header) {
-            csv.push(`"${header.innerText}"`);
-            csv.push(""); // Empty line
-        }
-
-        const rows = document.querySelectorAll("table tr");
-
-        for (let row of rows) {
-            const cols = row.querySelectorAll("th, td");
-            const rowData = [];
-            for (let col of cols) {
-                let data = col.innerText.replace(/"/g, '""'); // Escape quotes
-                rowData.push(`"${data}"`);
-            }
-            csv.push(rowData.join(","));
-        }
-
-        const csvFile = new Blob([csv.join("\n")], { type: "text/csv" });
-        const downloadLink = document.createElement("a");
-        downloadLink.download = filename;
-        downloadLink.href = URL.createObjectURL(csvFile);
-        downloadLink.style.display = "none";
-        document.body.appendChild(downloadLink);
-        downloadLink.click();
-    }
-
-    function printTable() {
-        const tableHTML = document.querySelector("table").outerHTML;
-        const headerHTML = document.querySelector(".report-header")?.outerHTML || "";
-
-        const printContents = `
-            <html>
-                <head>
-                    <title>Print Table</title>
-                    <style>
-                        body {
-                            font-family: Arial, sans-serif;
-                            padding: 20px;
-                        }
-                        h4 {
-                            text-align: center;
-                            font-weight: bold;
-                            margin-bottom: 20px;
-                        }
-                        table {
-                            width: 100%;
-                            border-collapse: collapse;
-                        }
-                        th, td {
-                            border: 1px solid #000;
-                            padding: 5px;
-                            text-align: center;
-                        }
-                        th {
-                            background-color: #f2f2f2;
-                        }
-                    </style>
-                </head>
-                <body>
-                    ${headerHTML}
-                    ${tableHTML}
-                </body>
-            </html>
-        `;
-
-        const originalContents = document.body.innerHTML;
-        document.body.innerHTML = printContents;
-        window.print();
-        document.body.innerHTML = originalContents;
-        location.reload();
-    }
-</script>
-
-<script>
-    function filterTable() {
-        const input = document.getElementById("searchInput");
-        const filter = input.value.toLowerCase();
-        const table = document.querySelector("#printArea table");
-        const rows = table.getElementsByTagName("tr");
-
-        // Skip the first two rows if the first is header text and second is table head
-        for (let i = 2; i < rows.length; i++) {
-            const cells = rows[i].getElementsByTagName("td");
-            let match = false;
-
-            for (let j = 0; j < cells.length; j++) {
-                const cellText = cells[j].textContent || cells[j].innerText;
-                if (cellText.toLowerCase().indexOf(filter) > -1) {
-                    match = true;
-                    break;
-                }
-            }
-
-            rows[i].style.display = match ? "" : "none";
-        }
-    }
-</script>
-
-
 
 
 
