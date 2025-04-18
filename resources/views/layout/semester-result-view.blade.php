@@ -403,105 +403,137 @@
                     <div class="container">
                         <h4></h4>
                         <div class="container">   
-
                         @if($results->count())
-    <div class="table-responsive" id="printArea">
-        @php
-            $programmeName = $programme;
-            $level = $stdLevel;
-            $semester = ucfirst(strtolower($semester));
-            $acadsession = $acadsession;
-        @endphp
+<div class="table-responsive" id="printArea">
+    @php
+        $programmeName = $programme;
+        $level = $stdLevel;
+        $semester = ucfirst(strtolower($semester));
+        $acadsession = $acadsession;
+    @endphp
 
-        @php
-            $first = $results->first();
-            $ctitleKeys = [];
+    @php
+        $first = $results->first();
+        $ctitleKeys = [];
 
-            if ($first) {
-                for ($i = 1; $i <= 17; $i++) {
-                    $key = "ctitle{$i}";
-                    if (!empty($first->$key)) {
-                        $ctitleKeys[] = $key;
-                    }
+        if ($first) {
+            for ($i = 1; $i <= 17; $i++) {
+                $key = "ctitle{$i}";
+                if (!empty($first->$key)) {
+                    $ctitleKeys[] = $key;
                 }
             }
+        }
 
-            function gpaClass($gpa) {
-                if (!is_numeric($gpa)) return '';
-                if ($gpa >= 3.5) return 'badge bg-success text-white'; // Distinction
-                if ($gpa >= 3.0) return 'badge bg-primary text-white'; // Upper Credit
-                if ($gpa >= 2.5) return 'badge bg-info text-white';    // Lower Credit
-                if ($gpa >= 2.0) return 'badge bg-warning text-white'; // Pass
-                return 'badge bg-danger text-white'; // Fail
-            }
-        @endphp
+        function gpaClass($gpa) {
+            if (!is_numeric($gpa)) return '';
+            if ($gpa >= 3.5) return 'badge bg-success text-white';
+            if ($gpa >= 3.0) return 'badge bg-primary text-white';
+            if ($gpa >= 2.5) return 'badge bg-info text-white';
+            if ($gpa >= 2.0) return 'badge bg-warning text-white';
+            return 'badge bg-danger text-white';
+        }
 
-        <table class="table table-bordered">
-            <thead>
-                {{-- Report Header Row --}}
+        function gpaRemark($gpa) {
+            if (!is_numeric($gpa)) return '';
+            if ($gpa >= 3.5) return 'Distinction';
+            if ($gpa >= 3.0) return 'Upper Credit';
+            if ($gpa >= 2.5) return 'Lower Credit';
+            if ($gpa >= 2.0) return 'Pass';
+            return 'Fail';
+        }
+    @endphp
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th colspan="{{ 8 + count($ctitleKeys) }}" class="text-center">
+                    {{ $programmeName }} - {{ $acadsession }} - {{ $level }} Level - {{ $semester }} Semester Report
+                </th>
+            </tr>
+            <tr>
+                <th>#</th>
+                <th>Admission No</th>
+                <th>Full Name</th>
+                @foreach ($ctitleKeys as $ctitleKey)
+                    <th>{{ $first->$ctitleKey }}</th>
+                @endforeach
+                <th>GPA</th>
+                <th>Failed Course</th>
+                @if($semester == 'Second')
+                    <th>GPA(First)</th>
+                    <th>CGPA</th>
+                    <th>Remark</th>
+                @endif
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($results as $index => $result)
+                @php
+                    $gpa = $result->gpa;
+                    $formattedGPA = is_numeric($gpa) ? (fmod($gpa, 1) === 0.0 ? intval($gpa) : $gpa) : '-';
+
+                    $gpa1 = $result->gpa1 ?? null;
+                    $formattedGPA1 = is_numeric($gpa1) ? (fmod($gpa1, 1) === 0.0 ? intval($gpa1) : $gpa1) : '-';
+
+                    $cgpa = $result->cgpa;
+                    $formattedCGPA = is_numeric($cgpa) ? (fmod($cgpa, 1) === 0.0 ? intval($cgpa) : $cgpa) : '-';
+
+                    $remark = $semester == 'Second' ? gpaRemark($cgpa) : '';
+
+                    // Determine which GPA to apply badge styling on
+                    $gpaBadge = $semester == 'Second' ? '' : gpaClass($gpa);
+                    $cgpaBadge = $semester == 'Second' ? gpaClass($cgpa) : '';
+                @endphp
                 <tr>
-                    <th colspan="{{ 5 + count($ctitleKeys) }}" class="text-center">
-                        {{ $programmeName }} - {{ $acadsession }} - {{ $level }} Level - {{ $semester }} Semester Report
-                    </th>
-                </tr>
+                    <td>{{ $index + 1 }}</td>
+                    <td>{{ $result->admission_no }}</td>
+                    <td>{{ $result->student_full_name }}</td>
 
-                {{-- Column Titles --}}
-                <tr>
-                    <th>#</th>
-                    <th>Admission No</th>
-                    <th>Full Name</th>
-                    @foreach ($ctitleKeys as $ctitleKey)
-                        <th>{{ $first->$ctitleKey }}</th>
-                    @endforeach
-                    <th>GPA</th>
-                    <th>Failed Course</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse ($results as $index => $result)
-                    <tr>
-                        <td>{{ $index + 1 }}</td>
-                        <td>{{ $result->admission_no }}</td>
-                        <td>{{ $result->student_full_name }}</td>
-
-                        @foreach ($ctitleKeys as $key)
-                            @php
-                                $indexNum = (int) filter_var($key, FILTER_SANITIZE_NUMBER_INT);
-                                $scoreKey = "score{$indexNum}";
-                                $score = $result->$scoreKey ?? '';
-                                $isFailed = is_numeric($score) && $score < 40;
-                                $formattedScore = is_numeric($score) ? (fmod($score, 1) === 0.0 ? intval($score) : $score) : $score;
-                            @endphp
-                            <td class="{{ $isFailed ? 'text-danger fw-bold' : '' }}">{{ $formattedScore }}</td>
-                        @endforeach
-
+                    @foreach ($ctitleKeys as $key)
                         @php
-                            $gpa = $result->gpa;
-                            $formattedGPA = is_numeric($gpa) ? (fmod($gpa, 1) === 0.0 ? intval($gpa) : $gpa) : $gpa;
+                            $indexNum = (int) filter_var($key, FILTER_SANITIZE_NUMBER_INT);
+                            $scoreKey = "score{$indexNum}";
+                            $score = $result->$scoreKey ?? '';
+                            $isFailed = is_numeric($score) && $score < 40;
+                            $formattedScore = is_numeric($score) ? (fmod($score, 1) === 0.0 ? intval($score) : $score) : $score;
                         @endphp
-                        <td><span class="{{ gpaClass($gpa) }}">{{ $formattedGPA }}</span></td>
-                        <td>{{ $result->failed_course }}</td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="{{ 5 + count($ctitleKeys) }}">No results found.</td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
+                        <td class="{{ $isFailed ? 'text-danger fw-bold' : '' }}">{{ $formattedScore }}</td>
+                    @endforeach
 
-        {{-- GPA Grading Scale --}}
-        <div class="mt-3">
-            <strong>GPA Grading Scale:</strong>
-            <ul style="list-style-type: none; padding-left: 0;">
-                <li><span class="badge bg-success text-white">3.5 - 4.0</span> Distinction</li>
-                <li><span class="badge bg-primary text-white">3.0 - 3.49</span> Upper Credit</li>
-                <li><span class="badge bg-info text-white">2.5 - 2.9</span> Lower Credit</li>
-                <li><span class="badge bg-warning text-white">2.0 - 2.49</span> Pass</li>
-                <li><span class="badge bg-danger text-white">Below 2.0</span> Fail</li>
-            </ul>
-        </div>
+                    {{-- GPA --}}
+                    <td><span class="{{ $gpaBadge }}">{{ $formattedGPA }}</span></td>
+
+                    {{-- Failed Course --}}
+                    <td>{{ $result->failed_course }}</td>
+
+                    @if($semester == 'Second')
+                        {{-- GPA(First Semester) --}}
+                        <td>{{ $formattedGPA1 }}</td>
+
+                        {{-- CGPA with badge --}}
+                        <td><span class="{{ $cgpaBadge }}">{{ $formattedCGPA }}</span></td>
+
+                        {{-- Remark --}}
+                        <td>{{ $remark }}</td>
+                    @endif
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+
+    {{-- GPA Grading Scale --}}
+    <div class="mt-3">
+        <strong>GPA Grading Scale:</strong>
+        <ul style="list-style-type: none; padding-left: 0;">
+            <li><span class="badge bg-success text-white">3.5 - 4.0</span> Distinction</li>
+            <li><span class="badge bg-primary text-white">3.0 - 3.49</span> Upper Credit</li>
+            <li><span class="badge bg-info text-white">2.5 - 2.9</span> Lower Credit</li>
+            <li><span class="badge bg-warning text-white">2.0 - 2.49</span> Pass</li>
+            <li><span class="badge bg-danger text-white">Below 2.0</span> Fail</li>
+        </ul>
     </div>
+</div>
 @else
     <div class="alert alert-warning">No results found for the specified parameters.</div>
 @endif
