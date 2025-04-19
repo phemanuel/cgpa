@@ -45,25 +45,30 @@
   </style>
 
 <style>
-    /* Make the Admission No and Name columns sticky */
-    .sticky-col {
-        position: sticky;
-        left: 0;
-        background-color: #f8f9fa; /* Make it stand out */
-        z-index: 1; /* Make sure it stays on top of other content */
-    }
+ /* Make the table header sticky */
+#classListTable thead th {
+    position: sticky;
+    top: 0;
+    background-color: #f8f9fa;
+    z-index: 2; /* Make sure it stays above the table content */
+    text-align: center;
+    vertical-align: middle;
+}
 
-    .sticky-name {
-        position: sticky;
-        left: 120px; /* Adjust this if needed */
-        background-color: #f8f9fa;
-        z-index: 1;
-    }
+/* Maintain the sticky Admission No and Name columns */
+.sticky-col {
+    position: sticky;
+    left: 0;
+    background-color: #f8f9fa;
+    z-index: 3; /* Higher than header */
+}
 
-    table th, table td {
-        text-align: center;
-        vertical-align: middle;
-    }
+.sticky-name {
+    position: sticky;
+    left: 120px; /* Adjust based on column width */
+    background-color: #f8f9fa;
+    z-index: 3;
+}
 </style>
 
 </head>
@@ -421,7 +426,7 @@
                 <div class="card-body p-0">
                   <div class="table-responsive">
                     <br>                    
-                    <div class="container custom-width" >
+                    <div class="container custom-width" style="overflow: auto; max-height: 500px;">
                         <h4></h4>
                         <form method="POST" action="">
                                 @csrf
@@ -435,7 +440,8 @@
             @foreach ($courses as $course)
                 <th>
                     {{ $course->course_title }} <br>
-                    <strong><small><span style="color:green">({{ $course->course_code }})</span></small></strong>
+                    <strong><small><span style="color:green">{{ $course->course_code }}</span></small> -
+                    <small><span style="color:red">{{ $course->course_unit }}</span></small>
                 </th>
             @endforeach
         </tr>
@@ -503,7 +509,9 @@
                                                 @foreach ($courses as $course)
                                                     <th>
                                                         {{ $course->course_title }} <br>
-                                                        <strong><small><span style="color:green">{{ $course->course_code }}</span></small></strong>
+                                                        <strong><small><span style="color:green">{{ $course->course_code }}</span></small> -
+                                                        <small><span style="color:red">{{ $course->course_unit }}</span></small>
+                                                      </strong>
                                                     </th>
                                                 @endforeach
                                             </tr>
