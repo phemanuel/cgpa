@@ -44,6 +44,28 @@
 }
   </style>
 
+<style>
+    /* Make the Admission No and Name columns sticky */
+    .sticky-col {
+        position: sticky;
+        left: 0;
+        background-color: #f8f9fa; /* Make it stand out */
+        z-index: 1; /* Make sure it stays on top of other content */
+    }
+
+    .sticky-name {
+        position: sticky;
+        left: 120px; /* Adjust this if needed */
+        background-color: #f8f9fa;
+        z-index: 1;
+    }
+
+    table th, table td {
+        text-align: center;
+        vertical-align: middle;
+    }
+</style>
+
 </head>
 
 <body>
@@ -404,63 +426,58 @@
                         <form method="POST" action="">
                                 @csrf
                                 <div class="table-wrapper">
-                                    <table class="table table-bordered" id="classListTable" width="100%">
-                                        <thead>
-                                            <tr>
-                                              <th></th>
-                                                <th>Admission No</th>
-                                                <th>Name</th>
-                                                <!-- <th>Level</th>
-                                                <th>Semester</th> -->
-                                                @foreach ($courses as $course)
-                                                    <th>
-                                                        {{ $course->course_title }} <br>
-                                                        <strong><small><span style="color:green">({{ $course->course_code }})</span></small></strong>
-                                                    </th>
-                                                @endforeach
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($students as $key => $student)
-                                                <tr>
-                                                  <td>{{$key + 1}}</td>
-                                                    <td>{{ $student->admission_no }}</td>
-                                                    <td>{{ $student->surname }} {{ $student->first_name }} {{ $student->other_name }}</td>
-                                                    <!-- <td>{{ $student->class }}</td>
-                                                    <td>{{ $semester }}</td> -->
+                                <table class="table table-bordered" id="classListTable" width="100%">
+    <thead>
+        <tr>
+            <th></th>
+            <th class="sticky-col">Admission No</th>
+            <th class="sticky-name">Name</th>
+            @foreach ($courses as $course)
+                <th>
+                    {{ $course->course_title }} <br>
+                    <strong><small><span style="color:green">({{ $course->course_code }})</span></small></strong>
+                </th>
+            @endforeach
+        </tr>
+    </thead>
+    <tbody>
+        @foreach ($students as $key => $student)
+            <tr>
+                <td>{{$key + 1}}</td>
+                <td class="sticky-col">{{ $student->admission_no }}</td>
+                <td class="sticky-name">{{ $student->surname }} {{ $student->first_name }} {{ $student->other_name }}</td>
 
-                                                    @foreach ($courses as $course)
-                                                        @php
-                                                            // Get the score for the student and course from the $studentScores array
-                                                            $score = $studentScores[$student->admission_no][$course->id] ?? 0;
-                                                        @endphp
-                                                        
-                                                        <td>
-                                                        @php
-                                                            // Format the score to remove the decimal part if it's a whole number
-                                                            $formattedScore = (float)$score == (int)$score ? (int)$score : $score;
-                                                        @endphp
+                @foreach ($courses as $course)
+                    @php
+                        // Get the score for the student and course from the $studentScores array
+                        $score = $studentScores[$student->admission_no][$course->id] ?? 0;
+                    @endphp
+                    
+                    <td>
+                    @php
+                        // Format the score to remove the decimal part if it's a whole number
+                        $formattedScore = (float)$score == (int)$score ? (int)$score : $score;
+                    @endphp
 
-                                                        <input 
-                                                        type="text" 
-                                                            name="scores[{{ $student->id }}][{{ $course->id }}]" 
-                                                            class="form-control dynamic-score-input" 
-                                                            maxlength="4"
-                                                            value="{{ $formattedScore }}"
-                                                            data-student-id="{{ $student->id }}"
-                                                            data-course-id="{{ $course->id }}"
-                                                            data-admission-no="{{ $student->admission_no }}"
-                                                            data-class="{{ $student->class }}"
-                                                            data-semester="{{ $semester }}"
-                                                            data-course-index="{{ $loop->index + 1 }}"
-                                                            
-                                                        >
-                                                        </td>
-                                                    @endforeach
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
+                    <input 
+                        type="text" 
+                        name="scores[{{ $student->id }}][{{ $course->id }}]" 
+                        class="form-control dynamic-score-input" 
+                        maxlength="4"
+                        value="{{ $formattedScore }}"
+                        data-student-id="{{ $student->id }}"
+                        data-course-id="{{ $course->id }}"
+                        data-admission-no="{{ $student->admission_no }}"
+                        data-class="{{ $student->class }}"
+                        data-semester="{{ $semester }}"
+                        data-course-index="{{ $loop->index + 1 }}"
+                    >
+                    </td>
+                @endforeach
+            </tr>
+        @endforeach
+    </tbody>
+</table>
                                 </div>
                                 <!-- <button type="submit" class="btn btn-primary">Save Results</button> -->
                             </form>

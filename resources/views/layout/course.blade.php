@@ -346,6 +346,9 @@
                 <div class="card">
                   <div class="card-header">
                   <h4>Course Setup</h4>
+                  <a href="#"  class="btn btn-outline-primary">
+                      <i class="fas fa-print"></i> Create Programme
+                  </a>
                   </div>
                   @if(session('success'))
                     <div class="alert alert-success">
