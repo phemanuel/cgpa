@@ -358,20 +358,38 @@
           <div class="row">
             <div class="col-12">
               <div class="card">
-                <div class="card-header">
-                  <h4>Student List | To print out list go to <a href="{{route('class-list')}}">Class List</a></h4>
-                  <div class="card-header-form">
-                  <div class="input-group">
+              <div class="card-header d-flex justify-content-between align-items-center flex-wrap">
+                    <div class="mb-2">
+                        <h4 class="mb-0">
+                            <i class="fas fa-users text-primary"></i> Student List 
+                            <small class="ml-2">
+                                | To print out list for a given <strong>programme, level and year</strong>, go to 
+                                <a href="{{ route('class-list') }}" class="text-info">
+                                    <i class="fas fa-print"></i> Class List
+                                </a>
+                            </small>
+                        </h4>
+                    </div>
+
+                    <div class="d-flex align-items-center flex-wrap">
+                    <a href="#" class="btn btn-success" data-toggle="modal" data-target="#createStudentModal">
+                        <i class="fas fa-user-plus"></i> Create Student
+                    </a>&nbsp;&nbsp;
+
+                        <form>
+                        <div class="input-group">
                             <input type="text" id="searchInput" class="form-control" placeholder="Search">
                             <div class="input-group-btn">
                                 <button type="button" class="btn btn-primary" onclick="filterTable()"><i class="fas fa-search"></i></button>
                             </div>
                         </div>
-                  </div>
+                    </form>
+                    </div>
                 </div>
+
                 <div class="card-body p-0">
                   <div class="table-responsive">
-                    <table class="table table-striped" id="classListTable"  class="display">
+                    <table class="table table-striped" id="classListTable" class="display">
                       <tr>  
                         <th></th>         
                       <th>#</th>             
@@ -407,15 +425,257 @@
 		</tr>
 		@endif                                   
                     </table>
-                    {{ $users->links() }}
+                    &nbsp;&nbsp; {{ $users->links() }}
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          
-          
+          </div> 
         </section>
+
+        <!-- student registration modal -->
+        <div class="modal fade" id="createStudentModal" tabindex="-1" role="dialog" aria-labelledby="createStudentLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createStudentLabel"><i class="fas fa-user-graduate"></i> Register Student</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+
+                    <ul class="nav nav-tabs mb-3" id="studentTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="single-tab" data-toggle="tab" href="#single" role="tab">Register One</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="bulk-tab" data-toggle="tab" href="#bulk" role="tab">Import Bulk</a>
+                    </li>
+                    </ul>
+
+                    <div class="tab-content" id="studentTabContent">
+
+                    {{-- Single Registration --}}
+                    <div class="tab-pane fade show active" id="single" role="tabpanel">
+                    <form action="{{ route('student.store') }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <div class="scrollable-form-container" style="max-height: 500px; overflow-y: auto;">
+                                <div class="row">
+                                    <div class="form-group col-md-6">
+                                        <label>Matric No</label>
+                                        <input type="text" name="admission_no" class="form-control" required>
+                                        @error('admission_no')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        <label>Admission No <small>(If not available, enter the Matric No)</small></label>
+                                        <input type="text" name="reg_no" class="form-control">
+                                        @error('reg_no')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        <label>Surname</label>
+                                        <input type="text" name="surname" class="form-control" required>
+                                        @error('surname')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        <label>First Name</label>
+                                        <input type="text" name="first_name" class="form-control" required>
+                                        @error('first_name')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        <label>Other Name</label>
+                                        <input type="text" name="other_name" class="form-control">
+                                        @error('other_name')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        <label>Gender</label>
+                                        <select name="gender" class="form-control" required>
+                                            <option value="">Select</option>
+                                            <option>Male</option>
+                                            <option>Female</option>
+                                        </select>
+                                        @error('gender')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        <label>Programme</label>
+                                        <select name="programme" class="form-control">
+                                            @foreach($programmes as $d)
+                                                <option value="{{ $d->department }}">{{ $d->department }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('programme')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        <label>Admission Year</label>
+                                        <select name="admission_year" class="form-control" required>
+                                            <option value="">Select Admission Year</option>
+                                            @for ($year = 2018; $year < date('Y') + 1; $year++)
+                                                <option value="{{ $year }}">{{ $year }}</option>
+                                            @endfor
+                                        </select>
+                                        @error('admission_year')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        <label>Level</label>
+                                        <select name="class" class="form-control" required>
+                                            @foreach($allLevel as $d)
+                                                <option value="{{ $d->level }}">{{ $d->level }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('class')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        <label>Phone No</label>
+                                        <input type="number" name="phone_no" class="form-control">
+                                        @error('phone_no')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        <label>State</label>
+                                        <select name="state" class="form-control" required>
+                                            <option value="ABIA">ABIA</option>
+                                            <option value="ADAMAWA">ADAMAWA</option>
+                                            <option value="AKWAIBOM">AKWAIBOM</option>
+                                            <option value="ANAMBRA">ANAMBRA</option>
+                                            <option value="BAUCHI">BAUCHI</option>
+                                            <option value="BAYELSA">BAYELSA</option>
+                                            <option value="BENUE">BENUE</option>
+                                            <option value="BORNO">BORNO</option>
+                                            <option value="CROSSRIVER">CROSSRIVER</option>
+                                            <option value="DELTA">DELTA</option>
+                                            <option value="EBONYI">EBONYI</option>
+                                            <option value="EDO">EDO</option>
+                                            <option value="EKITI">EKITI</option>
+                                            <option value="ENUGU">ENUGU</option>
+                                            <option value="GOMBE">GOMBE</option>
+                                            <option value="IMO">IMO</option>
+                                            <option value="JIGAWA">JIGAWA</option>
+                                            <option value="KADUNA">KADUNA</option>
+                                            <option value="KANO">KANO</option>
+                                            <option value="KASTINA">KASTINA</option>
+                                            <option value="KEBBI">KEBBI</option>
+                                            <option value="KOGI">KOGI</option>
+                                            <option value="KWARA">KWARA</option>
+                                            <option value="LAGOS">LAGOS</option>
+                                            <option value="NASSARAWA">NASSARAWA</option>
+                                            <option value="NIGER">NIGER</option>
+                                            <option value="OGUN">OGUN</option>
+                                            <option value="ONDO">ONDO</option>
+                                            <option value="OSUN">OSUN</option>
+                                            <option value="OYO" selected>OYO</option>
+                                            <option value="PLATEAU">PLATEAU</option>
+                                            <option value="RIVERS">RIVERS</option>
+                                            <option value="SOKOTO">SOKOTO</option>
+                                            <option value="TARABA">TARABA</option>
+                                            <option value="YOBE">YOBE</option>
+                                            <option value="ZAMFARA">ZAMFARA</option>
+                                            <option value="ABUJA">ABUJA</option>
+                                        </select>
+                                        @error('state')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        <label>LGA</label>
+                                        <input type="text" name="lga" class="form-control" required>
+                                        @error('lga')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        <label>Date of Birth</label>
+                                        <input type="date" name="dob" class="form-control" required>
+                                        @error('dob')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        <label>Address</label>
+                                        <textarea name="address" id="" class="form-control" required></textarea>
+                                        @error('address')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        <label>Profile Picture</label>
+                                        <input type="file" name="picture_dir" class="form-control">
+                                        @error('picture_dir')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary mt-3" type="submit" id="saveBtn">
+                                <i class="fas fa-save"></i> Save Student
+                            </button>
+                            <!-- Spinner to show when AJAX is processing -->
+                            <div id="loadingSpinner" style="display:none;">
+                                <img src="path_to_spinner.gif" alt="Saving...">
+                            </div>
+                        </form>
+
+
+                    </div>
+
+                    {{-- Bulk Import --}}
+                    <div class="tab-pane fade" id="bulk" role="tabpanel">
+                        <form action="{{ route('student.import') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="form-group">
+                            <label>Upload Excel File (.xlsx, .csv)</label>
+                            <input type="file" name="import_file" class="form-control" accept=".xlsx,.csv" required>
+                        </div>
+                        <button class="btn btn-info mt-2" type="submit">
+                            <i class="fas fa-file-import"></i> Import Students
+                        </button>
+                        </form>
+                        <p class="mt-3">
+                        Need a template? <a href="{{ asset('templates/student-import-template.xlsx') }}" target="_blank">Download here</a>.
+                        </p>
+                    </div>
+
+                    </div>
+
+                </div>
+                </div>
+            </div>
+            </div>
+
         <div class="settingSidebar">
           <a href="javascript:void(0)" class="settingPanelToggle"> <i class="fa fa-spin fa-cog"></i>
           </a>
@@ -526,16 +786,17 @@
   <!-- Template JS File -->
   <script src="{{asset('dashboard/assets/js/scripts.js')}}"></script>
   <!-- Custom JS File -->
-  <script src="{{asset('dashboard/assets/js/custom.js')}}"></script>
+  <script src="{{asset('dashboard/assets/js/custom.js')}}"></script>  
 </body>
-
-
 <!-- index.html  21 Nov 2019 03:47:04 GMT -->
 </html>
 
 <script src="{{asset('js/jquery.dataTables.min.js')}}"></script>
 <script src="{{asset('js/plugins-init/datatables.init.js')}}"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>  
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     // JavaScript for filtering the table
     function filterTable() {
@@ -563,3 +824,45 @@
     // Optional: Add an event listener for real-time search
     document.getElementById('searchInput').addEventListener('input', filterTable);
 </script>
+
+<script>
+    $(document).ready(function () {
+        $('#createStudentForm').on('submit', function (e) {
+            e.preventDefault();
+
+            // Show loading indication (e.g., a spinner or message)
+            $('#loadingSpinner').show();  // Assume you have a spinner or some loading element
+
+            var formData = new FormData(this); // Get all form data including file
+
+            $.ajax({
+                url: "{{ route('student.store') }}",
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    if (response.success) {
+                        // Close the modal (when successful)
+                        $('#createStudentModal').modal('hide');
+
+                        // Refresh the page to see updated data and modal disappear
+                        location.reload();
+                    } else if (response.errors) {
+                        alert('There was a problem with your submission.');
+                    }
+                },
+                error: function (xhr) {
+                    alert('An error occurred. Please try again.');
+                },
+                complete: function() {
+                    // Hide the loading indication after the request is complete
+                    $('#loadingSpinner').hide(); // Hide the spinner
+                }
+            });
+        });
+    });
+</script>
+
+
+

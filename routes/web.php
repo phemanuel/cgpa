@@ -108,6 +108,10 @@ Route::post('/reset-password', [CustomForgotPasswordController::class, 'resetPas
         ->name('student-menu');
         Route::get('student/registration', [StudentController::class, 'studentRegistration'])
         ->name('student-registration'); 
+        Route::post('/student/store', [StudentController::class, 'store'])
+        ->name('student.store');
+        Route::post('/student/import', [StudentController::class, 'import'])
+        ->name('student.import');
         Route::get('student/migration', [studentController::class, 'studentMigration'])
         ->name('student-migration'); 
         //---Result
