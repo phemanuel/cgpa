@@ -5,6 +5,7 @@ use App\Models\Registration;
 use App\Models\StudentLevel;
 use App\Models\CourseStudy;
 use App\Models\CourseStudyAll;
+use Illuminate\Support\Facades\DB;
 use Validator;
 
 use Illuminate\Http\Request;
@@ -128,9 +129,56 @@ class StudentController extends Controller
         // return response()->json(['success' => true]);
     }
 
-    public function import()
+    public function import(Request $request)
     {
+        if ($request->hasFile('import_file')) {
+            $file = $request->file('import_file');
+            $fileName = $file->getRealPath();            
+            $session1 =  $request->get('session1');
 
+            if (($handle = fopen($fileName, "r")) !== FALSE) {
+                $headers = fgetcsv($handle, 10000, ","); // Read headers
+                while (($column = fgetcsv($handle, 10000, ",")) !== FALSE) {
+                    $data = array_combine($headers, $column); // Combine headers with data
+
+                    // Insert data into database
+                    DB::table('registrations')->insert([
+                        'admission_no' => $data['admission_no'], 
+                        'admission_year' => $data['admission_year'],                   
+                        'surname' => $data['surname'],
+                        'first_name' => $data['first_name'],
+                        'other_name' => $data['other_name'],
+                        'course' => $data['course'],
+                        'class' => $data['class'],
+                        'gender' => $data['gender'],
+                        'state' => $data['state'],
+                        'lga' => $data['lga'],                        
+                        'phone_no' => $data['phone_no'],
+                        //-------Others--------------
+                        'reg_no' => $data['admission_no'],
+                        'result_year' => $data['admission_year'],
+                        'ident_status' => "STUDENT",
+                        'picture_dir' => "blank",
+                        'student_full_name' => $data['surname'] . " " . $data['first_name'] . " " . $data['other_name'],
+                        'acad_session' => $data['admission_year'] . "/" . ($data['admission_year'] + 1),
+                        'created_at' => date('Y-m-d H:i:s'),
+                        'updated_at' => date('Y-m-d H:i:s'),
+                    ]);
+                }
+                fclose($handle);
+                // $type = "success";
+                // $message = "CSV Data Imported into the Database";
+                // Redirect back with success message
+            return redirect()->route('student-registration')->with('success', 'Student Data imported successfully.');
+            } else {
+                // Log or handle missing data
+            Log::warning('Missing data in row: ' . json_encode($row));
+            return redirect()->back()->with('error', 'Student data import not successful.');
+            }  
+        } else {
+           
+           return redirect()->back()->with('error', 'No file was uploaded.');
+        }  
     }
 
     public function searchStudents(Request $request)

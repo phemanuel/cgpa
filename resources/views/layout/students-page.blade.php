@@ -651,7 +651,7 @@
                         </button>
                         </form>
                         <p class="mt-3">
-                        Need a template? <a href="{{ asset('templates/student-import-template.xlsx') }}" target="_blank">Download here</a>.
+                        Need a template? <a href="{{ asset('templates/student-data.csv') }}" target="_blank">Download here</a>.
                         </p>
                     </div>
 
