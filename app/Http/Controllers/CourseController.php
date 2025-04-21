@@ -31,12 +31,13 @@ class CourseController extends Controller
 
         // Fetch common data
         $allLevel = StudentLevel::all();
+        $department = Department::all();
         $programmes = CourseStudyAll::orderBy('department', 'asc')->get();
         $assignedCourse = Instructor::where('instructor_id', $user->id)->paginate(10);
 
         // Handle view rendering based on user type status
         if (in_array($user->user_type_status, [1, 2])) {
-            return view('layout.course', compact('allLevel', 'programmes'));
+            return view('layout.course', compact('allLevel', 'programmes','department'));
         } elseif ($user->user_type_status == 3) {
             return view('layout.course-list-view-instructor', compact('assignedCourse'));
         }
@@ -451,6 +452,30 @@ class CourseController extends Controller
         }
     }
 
+    public function storeProgramme(Request $request)
+    {
+        $request->validate([
+            'dept' => 'required|string',
+            'dept_name' => 'required|string',
+            'dept_duration' => 'required|string',
+            'dept_abbr' => 'required|string',
+        ]);
+
+        // Save to CoursStudy
+        $courseStudy = new CourseStudy();
+        $courseStudy->dept = $request->dept;
+        $courseStudy->dept_name = $request->dept_name;
+        $courseStudy->dept_duration = $request->dept_duration;
+        $courseStudy->dept_abbr = $request->dept_abbr;
+        $courseStudy->save();
+
+        // Save only the programme to CourseStudyAll
+        $courseStudyAll = new CourseStudyAll();
+        $courseStudyAll->department = $request->dept_name;
+        $courseStudyAll->save();
+
+        return redirect()->route('course-setup')->with('success', 'Programme created successfully.');
+    }
 
 
 

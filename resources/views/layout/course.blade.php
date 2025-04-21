@@ -15,6 +15,8 @@
   <!-- Custom style CSS -->
   <link rel="stylesheet" href="{{asset('dashboard/assets/css/custom.css')}}">
   <link rel='shortcut icon' type='image/x-icon' href="{{asset('dashboard/assets/img/favicon.png')}}" />
+  
+
   <style>
     /* Success Alert */
     .alert.alert-success {
@@ -344,12 +346,12 @@
             <div class="row">
               <div class="col-12 col-md-6 col-lg-6">
                 <div class="card">
-                  <div class="card-header">
-                  <h4>Course Setup</h4>
-                  <a href="#"  class="btn btn-outline-primary">
-                      <i class="fas fa-print"></i> Create Programme
-                  </a>
-                  </div>
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">Course Curriculum</h4>
+                    <a href="#" class="btn btn-outline-primary">
+                        <i class="fas fa-book"></i> Create Course Curriculum
+                    </a>
+                </div>
                   @if(session('success'))
                     <div class="alert alert-success">
                       {{ session('success') }}
@@ -371,6 +373,11 @@
                                 <option value="{{ $d->department }}">{{ $d->department }}</option>
                             @endforeach
                         </select>
+                        <p>                           
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#createProgrammeModal">
+                            <i class="fas fa-plus"></i> Create Programme
+                        </a>
+                        </p>
                     </div>
                     @error('programme')
                         <span class="invalid-feedback">{{ $message }}</span>
@@ -413,6 +420,50 @@
             </div>
           </div>
         </section>
+
+        <!-- Modal -->
+<div class="modal fade" id="createProgrammeModal" tabindex="-1" aria-labelledby="createProgrammeLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form action="{{ route('programme.store') }}" method="POST">
+      @csrf
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="createProgrammeLabel">Create Programme</h5>
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal" aria-label="Close">
+    <i class="fas fa-times"></i>
+</button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label>Department</label>
+            <select name="dept" class="form-control" required>
+              @foreach($department as $d)
+                <option value="{{ $d->dept_name }}">{{ $d->dept_name }}</option>
+              @endforeach
+            </select>
+            
+          </div>
+          <div class="mb-3">
+            <label>Programme Name</label>
+            <input type="text" name="dept_name" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label>Programme Duration</label>
+            <input type="text" name="dept_duration" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label>Abbreviation</label>
+            <input type="text" name="dept_abbr" class="form-control" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Save Programme</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
         <div class="settingSidebar">
           <a href="javascript:void(0)" class="settingPanelToggle"> <i class="fa fa-spin fa-cog"></i>
           </a>
@@ -524,6 +575,7 @@
   <script src="{{asset('dashboard/assets/js/scripts.js')}}"></script>
   <!-- Custom JS File -->
   <script src="{{asset('dashboard/assets/js/custom.js')}}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 

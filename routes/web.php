@@ -154,6 +154,8 @@ Route::post('/reset-password', [CustomForgotPasswordController::class, 'resetPas
         //---course
         Route::get('course', [CourseController::class, 'courseSetup'])
         ->name('course-setup');
+        Route::post('/course/store', [CourseController::class, 'storeProgramme'])
+        ->name('programme.store');
         Route::get('course/list', [CourseController::class, 'courseList'])
         ->name('course-list');
         Route::get('course/add', [CourseController::class, 'courseAdd'])
