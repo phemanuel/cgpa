@@ -71,7 +71,13 @@ class CourseController extends Controller
                 ->get();           
 
                 if ($courses->isEmpty()) {
-                    return redirect()->back()->with('error', 'No course found for the selected filters.');
+                    return view('layout.course-list-view', [
+                        'courses' => $courses,
+                        'studentLevel' => $stdLevel,
+                        'programme' => $programme,
+                        'semester' => $semester,
+                    ])->with('error', 'No course found for the selected filters.');
+                    // return redirect()->back()->with('error', 'No course found for the selected filters.');
                 }
 
                 return view('layout.course-list-view', [

@@ -371,14 +371,20 @@
             <div class="col-12">
               <div class="card">
                 <div class="card-header">
-                  <h4>{{$programme}} {{$studentLevel}} level Course List for {{$semester}} semester. | <a href="javascript:void(0)" onClick="printAllStudents()" class="btn btn-outline-primary">
-        <i class="fas fa-print"></i> Print All
+                <h4>{{$programme}}-{{$studentLevel}}-{{$semester}} | <a href="javascript:void(0)" onClick="printAllStudents()" class="btn btn-outline-primary">
+                <i class="fas fa-print"></i> Print All
     </a></h4>
                   <div class="card-header-form">
                     <form>                    
                       <div class="input-group">
-                      <a href="{{ route('course-add', ['programme' => $programme, 'studentLevel' => $studentLevel, 'semester' => $semester]) }}" class="btn btn-primary">Add Course</a>
-                        <!-- <input type="text" class="form-control" placeholder="Search"> -->
+                      <a href="javascript:void(0)" 
+                        class="btn btn-primary" 
+                        data-bs-toggle="modal" 
+                        data-bs-target="#addCourseModal">
+                        <i class="fas fa-plus-circle"></i> Add Course
+                      </a>&nbsp;&nbsp;
+
+                        <input type="text" class="form-control" id="searchInput" placeholder="Search">
                         <!-- <div class="input-group-btn">
                           <button class="btn btn-primary"><i class="fas fa-search"></i></button>
                         </div> -->
@@ -543,10 +549,6 @@
     </table>
 </div>
 
-set up the modal content:
-
-html
-Copy code
 <!-- Basic Modal -->
 <div class="modal fade" id="basicModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
@@ -568,6 +570,107 @@ Copy code
     </div>
 </div>
 <!-- End Modal -->
+
+<div class="modal fade" id="addCourseModal" tabindex="-1" aria-labelledby="addCourseModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addCourseModalLabel">Add Course</h5>
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal" aria-label="Close">
+    <i class="fas fa-times"></i>
+</button>
+      </div>
+      <div class="modal-body" style="max-height: 75vh; overflow-y: auto;">
+        <form action="{{route('course-add.action')}}" method="POST">
+          @csrf
+
+          <!-- Programme -->
+          <div class="form-group">
+            <label>Programme</label>
+            <select name="programme" class="form-control">
+              <option value="{{$programme}}">{{$programme}}</option>
+            </select>
+            @error('programme')
+              <span class="invalid-feedback d-block">{{ $message }}</span>
+            @enderror
+          </div>
+
+          <!-- Academic Level -->
+          <div class="form-group">
+            <label>Academic Level</label>
+            <select name="stdLevel" class="form-control">
+              <option value="{{$studentLevel}}">{{$studentLevel}}</option>
+            </select>
+            @error('stdLevel')
+              <span class="invalid-feedback d-block">{{ $message }}</span>
+            @enderror
+          </div>
+
+          <!-- Semester -->
+          <div class="form-group">
+            <label>Semester</label>
+            <select name="semester" class="form-control">
+              <option value="{{$semester}}">{{$semester}}</option>
+            </select>
+            @error('semester')
+              <span class="invalid-feedback d-block">{{ $message }}</span>
+            @enderror
+          </div>
+
+          <!-- Academic Session -->
+          <div class="form-group">
+            <label>Academic Session</label>
+            <select name="acadSession" class="form-control">
+              @php
+                $currentYear = date('Y');
+                $startYear = 2018;
+              @endphp
+              @for ($year = $startYear; $year <= $currentYear; $year++)
+                <option value="{{ $year }}/{{ $year + 1 }}">{{ $year }}/{{ $year + 1 }}</option>
+              @endfor
+            </select>
+            @error('acadSession')
+              <span class="invalid-feedback d-block">{{ $message }}</span>
+            @enderror
+          </div>
+
+          <!-- Course Title -->
+          <div class="form-group">
+            <label>Course Title</label>
+            <input type="text" name="courseTitle" class="form-control">
+            @error('courseTitle')
+              <span class="invalid-feedback d-block">{{ $message }}</span>
+            @enderror
+          </div>
+
+          <!-- Course Code -->
+          <div class="form-group">
+            <label>Course Code</label>
+            <input type="text" name="courseCode" class="form-control">
+            @error('courseCode')
+              <span class="invalid-feedback d-block">{{ $message }}</span>
+            @enderror
+          </div>
+
+          <!-- Course Unit -->
+          <div class="form-group">
+            <label>Course Unit</label>
+            <input type="text" name="courseUnit" class="form-control">
+            @error('courseUnit')
+              <span class="invalid-feedback d-block">{{ $message }}</span>
+            @enderror
+          </div>
+
+          <!-- Submit -->
+          <div class="text-end mt-3">
+            <input class="btn btn-primary" type="submit" value="Submit" />
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
 
         <div class="settingSidebar">
           <a href="javascript:void(0)" class="settingPanelToggle"> <i class="fa fa-spin fa-cog"></i>
@@ -680,6 +783,7 @@ Copy code
   <script src="{{asset('dashboard/assets/js/scripts.js')}}"></script>
   <!-- Custom JS File -->
   <script src="{{asset('dashboard/assets/js/custom.js')}}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 
@@ -767,6 +871,18 @@ function printAllStudents() {
               console.error('Error:', error);
                 $('#modal-body-content').html('<p>Error loading instructor details.</p>');
             }
+        });
+    });
+</script>
+
+<script>
+    document.getElementById('searchInput').addEventListener('keyup', function () {
+        let searchValue = this.value.toLowerCase();
+        let rows = document.querySelectorAll('#courseListTable tbody tr');
+
+        rows.forEach(function (row) {
+            let text = row.textContent.toLowerCase();
+            row.style.display = text.includes(searchValue) ? '' : 'none';
         });
     });
 </script>

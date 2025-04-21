@@ -345,13 +345,17 @@
               <div class="col-12 col-md-6 col-lg-6">
                 <div class="card">
                   <div class="card-header">
-                  <h4>Add Course | 
-                  <a href="{{ route('course-list', [
-                        'programme' => $programme,
-                        'stdLevel' => $studentLevel,
-                        'semester' => $semester
-                    ]) }}">Course List</a>
-                  </h4>
+                  <div class="d-flex justify-content-between align-items-center mb-3">
+                      <h4 class="mb-0">Add Course</h4>
+                      <a href="{{ route('course-list', [
+                          'programme' => $programme,
+                          'stdLevel' => $studentLevel,
+                          'semester' => $semester
+                      ]) }}" class="btn btn-outline-secondary">
+                          <i class="fas fa-arrow-left"></i> Back to Course List
+                      </a>
+                  </div>
+
                   </div>
                   @if(session('success'))
                     <div class="alert alert-success">
