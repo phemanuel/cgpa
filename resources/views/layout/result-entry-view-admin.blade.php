@@ -406,23 +406,35 @@
           <div class="row">
             <div class="col-12">
               <div class="card">
-                <div class="card-header">
-                  <h4>Admin :: Result Entry for {{ $programme }} - {{ $stdLevel }} Level - {{$semester}} Semester |
-                  <a href="javascript:void(0)" onclick="printAllStudents()" class="btn btn-outline-primary">
-                        <i class="fas fa-print"></i> Print Score Sheet
-                    </a>
-                  </h4>
-                  <div class="card-header-form">
-                  <form>
-                        <div class="input-group">
+              <div class="card-header d-flex justify-content-between align-items-center flex-wrap">
+                <div style="font-size: 14px;">
+                    <h6 class="mb-2 mb-md-0">
+                        Admin :: Result Entry for {{ $programme }} - {{ $stdLevel }} Level - {{ $semester }} Semester
+                    </h6>
+                    <div class="mt-1">
+                        <a href="{{ route('result-entry') }}" class="btn btn-sm btn-secondary me-2">
+                            <i class="fas fa-arrow-left"></i> Back to Result Entry
+                        </a>
+                        <a href="javascript:void(0)" onclick="printAllStudents()" class="btn btn-sm btn-outline-primary">
+                            <i class="fas fa-print"></i> Print Score Sheet
+                        </a>
+                    </div>
+                </div>
+
+                <div class="card-header-form mt-3 mt-md-0">
+                    <form>
+                        <div class="input-group input-group-sm">
                             <input type="text" id="searchInput" class="form-control" placeholder="Search">
-                            <div class="input-group-btn">
-                                <button type="button" class="btn btn-primary" onclick="filterTable()"><i class="fas fa-search"></i></button>
+                            <div class="input-group-append">
+                                <!-- <button type="button" class="btn btn-primary" onclick="filterTable()">
+                                    <i class="fas fa-search"></i>
+                                </button> -->
                             </div>
                         </div>
                     </form>
-                  </div>
                 </div>
+            </div>
+
                 <div class="card-body p-0">
                   <div class="table-responsive">
                     <br>                    
