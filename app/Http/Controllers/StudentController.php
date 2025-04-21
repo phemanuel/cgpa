@@ -133,6 +133,27 @@ class StudentController extends Controller
 
     }
 
+    public function searchStudents(Request $request)
+    {
+        $search = $request->input('query');
+
+        $users = Registration::where('admission_no', 'like', "%$search%")
+            ->orWhere('student_full_name', 'like', "%$search%")
+            ->paginate(10);
+
+        if ($request->ajax()) {
+            $view = view('partials.student_rows', compact('users'))->render();
+            $pagination = $users->links()->render();
+
+            return response()->json([
+                'rows' => $view,
+                'pagination' => $pagination
+            ]);
+        }
+
+        return view('your-main-view', compact('users'));
+    }
+
 
     public function studentMigration()
     {

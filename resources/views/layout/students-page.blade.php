@@ -378,59 +378,45 @@
 
                         <form>
                         <div class="input-group">
-                            <input type="text" id="searchInput" class="form-control" placeholder="Search">
-                            <div class="input-group-btn">
+                        <input type="text" id="searchInput" class="form-control" placeholder="Search by Matric No or Name...">
+                            <!-- <div class="input-group-btn">
                                 <button type="button" class="btn btn-primary" onclick="filterTable()"><i class="fas fa-search"></i></button>
-                            </div>
+                            </div> -->
                         </div>
                     </form>
                     </div>
                 </div>
-
                 <div class="card-body p-0">
                   <div class="table-responsive">
-                    <table class="table table-striped" id="classListTable" class="display">
-                      <tr>  
-                        <th></th>         
-                      <th>#</th>             
-                        <th>Matric No</th>
-                        <th>Full Name</th>
-                        <th>Programme</th>
-                        <th>Admission Year</th>
-                        <!-- <th>Created On</th> -->
-                        <th>Action</th>
-                      </tr>
+                  
 
-                      @if ($users->count() > 0)
-			            @foreach ($users as $key => $rd)
-                      <tr> 
-                        <td></td>
-                        <td> <img 
-                            alt="Profile Picture" 
-                            src="{{ file_exists(public_path('uploads/' . $rd->picture_dir . '.jpg')) ? asset('uploads/' . $rd->picture_dir . '.jpg') : asset('uploads/blank.jpg') }}" 
-                            class="user-img-radious-style" 
-                            width="50" 
-                            height="50"></td> 
-                        <td>{{$rd->admission_no}}</td>
-                        <td>{{$rd->student_full_name}}</td>
-                        <td>{{$rd->course}}</td>                        
-                        <td><div class="badge badge-info">{{$rd->admission_year}}</div></td>
-                        <!-- <td>{{$rd->created_at}}</td> -->
-                        <td><a href="{{route('edit-student', ['id' => $rd->id])}}" class="btn btn-outline-primary"><i class="fas fa-edit"></i></a></td>
-                      </tr>  
-                      @endforeach
-		@else
-		<tr>
-			<td colspan="8">Users not available.</td>
-		</tr>
-		@endif                                   
-                    </table>
-                    &nbsp;&nbsp; {{ $users->links() }}
+                  <table class="table table-striped" id="classListTable">
+    <thead>
+        <tr>
+            <th></th>
+            <th>#</th>
+            <th>Matric No</th>
+            <th>Full Name</th>
+            <th>Programme</th>
+            <th>Admission Year</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody id="tableBody">
+        @include('partials.student_rows', ['users' => $users])
+    </tbody>
+</table>
+
+<div id="paginationLinks">
+    {{ $users->links() }}
+</div>
                   </div>
                 </div>
               </div>
             </div>
-          </div> 
+          </div>
+          
+          
         </section>
 
         <!-- student registration modal -->
@@ -786,44 +772,15 @@
   <!-- Template JS File -->
   <script src="{{asset('dashboard/assets/js/scripts.js')}}"></script>
   <!-- Custom JS File -->
-  <script src="{{asset('dashboard/assets/js/custom.js')}}"></script>  
+  <script src="{{asset('dashboard/assets/js/custom.js')}}"></script>
 </body>
+
+
 <!-- index.html  21 Nov 2019 03:47:04 GMT -->
 </html>
 
 <script src="{{asset('js/jquery.dataTables.min.js')}}"></script>
 <script src="{{asset('js/plugins-init/datatables.init.js')}}"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>  
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-    // JavaScript for filtering the table
-    function filterTable() {
-        const input = document.getElementById('searchInput').value.toLowerCase();
-        const table = document.getElementById('classListTable');
-        const rows = table.getElementsByTagName('tr');
-
-        for (let i = 1; i < rows.length; i++) { // Start from 1 to skip the header row
-            const cells = rows[i].getElementsByTagName('td');
-            let match = false;
-
-            // Loop through all cells in the row
-            for (let j = 0; j < cells.length; j++) {
-                if (cells[j] && cells[j].innerText.toLowerCase().includes(input)) {
-                    match = true;
-                    break;
-                }
-            }
-
-            // Toggle row visibility based on the match
-            rows[i].style.display = match ? '' : 'none';
-        }
-    }
-
-    // Optional: Add an event listener for real-time search
-    document.getElementById('searchInput').addEventListener('input', filterTable);
-</script>
 
 <script>
     $(document).ready(function () {
@@ -864,5 +821,19 @@
     });
 </script>
 
+<script>
+    document.getElementById('searchInput').addEventListener('input', function () {
+        const query = this.value;
 
-
+        fetch(`/admin/search-students?query=${encodeURIComponent(query)}`, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById('tableBody').innerHTML = data.rows;
+            document.getElementById('paginationLinks').innerHTML = data.pagination;
+        });
+    });
+</script>
