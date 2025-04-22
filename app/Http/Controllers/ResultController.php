@@ -2034,14 +2034,14 @@ class ResultController extends Controller
                                             ->where('semester', 'second')
                                             ->where('session1', $acadSession)
                                             ->where('course', $programme)
-                                            ->where('admission_no', $result->dmission_no) // Assuming student_id exists
+                                            ->where('admission_no', $result->admission_no) // Assuming student_id exists
                                             ->first();
 
                 $secondLevelData = ResultCompute::where('class', 200)
                                                 ->where('semester', 'second')
                                                 ->where('session1', $acadSession)
                                                 ->where('course', $programme)
-                                                ->where('admission_no', $result->dmission_no) // Assuming student_id exists
+                                                ->where('admission_no', $result->admission_no) // Assuming student_id exists
                                                 ->first();
 
                 // Fetch CGPA for the first and second levels
@@ -2070,6 +2070,9 @@ class ResultController extends Controller
                     $secondLevelData->total_course_unit_new = $totalCourseUnits;
                     $secondLevelData->save();
                 }
+                // Return with success message
+        return redirect()->route('result-compute')->with('success', 'Results Computed Successfully for all students.');
+        
             } elseif ($courseDuration == 3) {
                 // Fetch CGPA and grade points for 100, 200, and 300 level second semesters
                 $firstLevelData = ResultCompute::where('class', 100)
@@ -2083,14 +2086,14 @@ class ResultController extends Controller
                                                 ->where('semester', 'second')
                                                 ->where('session1', $acadSession)
                                                 ->where('course', $programme)
-                                                ->where('admission_no', $result->dmission_no) // Assuming student_id exists
+                                                ->where('admission_no', $result->admission_no) // Assuming student_id exists
                                                 ->first();
 
                 $thirdLevelData = ResultCompute::where('class', 300)
                                             ->where('semester', 'second')
                                             ->where('session1', $acadSession)
                                             ->where('course', $programme)
-                                            ->where('admission_no', $result->dmission_no) // Assuming student_id exists
+                                            ->where('admission_no', $result->admission_no) // Assuming student_id exists
                                             ->first();
 
                 // Fetch CGPAs for all 3 levels
