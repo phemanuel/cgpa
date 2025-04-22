@@ -481,12 +481,12 @@
                         type="text" 
                         name="scores[{{ $student->id }}][{{ $course->id }}]" 
                         class="form-control dynamic-score-input" 
-                        maxlength="4"
+                        maxlength="3"
                         value="{{ $formattedScore }}"
                         data-student-id="{{ $student->id }}"
                         data-course-id="{{ $course->id }}"
                         data-admission-no="{{ $student->admission_no }}"
-                        data-class="{{ $student->class }}"
+                        data-class="{{ $stdLevel }}"
                         data-semester="{{ $semester }}"
                         data-course-index="{{ $loop->index + 1 }}"
                     >
@@ -811,3 +811,53 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 </script>
+<script>
+    function showToast(message) {
+        const toast = document.createElement('div');
+        toast.className = 'toast align-items-center text-white bg-danger border-0 position-fixed bottom-0 end-0 m-3 show';
+        toast.style.zIndex = '1056';
+        toast.setAttribute('role', 'alert');
+        toast.setAttribute('aria-live', 'assertive');
+        toast.setAttribute('aria-atomic', 'true');
+        toast.innerHTML = `
+            <div class="d-flex">
+                <div class="toast-body">
+                    ${message}
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        `;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 4000);
+    }
+
+    document.querySelectorAll('.dynamic-score-input').forEach(input => {
+        input.addEventListener('input', function () {
+            let val = this.value;
+
+            // Remove non-digits
+            val = val.replace(/\D/g, '');
+            this.value = val;
+
+            // Limit to 3 digits
+            if (val.length > 3) {
+                this.value = val.slice(0, 3);
+            }
+
+            // Max value check
+            if (parseInt(this.value) > 100) {
+                showToast('Score must not exceed 100.');
+                this.value = '';
+            }
+        });
+
+        input.addEventListener('paste', function (e) {
+            let paste = (e.clipboardData || window.clipboardData).getData('text');
+            if (!/^\d{1,3}$/.test(paste) || parseInt(paste) > 100) {
+                e.preventDefault();
+                showToast('Invalid pasted value. Only numbers up to 100 allowed.');
+            }
+        });
+    });
+</script>
+

@@ -417,7 +417,18 @@
                                 <table class="table table-bordered align-middle">
                                     <tr>
                                         <td rowspan="4" style="width: 150px; text-align: center;">
-                                            <img src="{{ asset('uploads/' . $student['studpicture'] . '.jpg') }}" alt="Student Picture" class="img-thumbnail" style="max-width: 130px;">
+                                        @php
+                                            $imagePath = public_path('uploads/' . $student['studpicture'] . '.jpg');
+                                            $imageUrl = file_exists($imagePath) 
+                                                ? asset('uploads/' . $student['studpicture'] . '.jpg') 
+                                                : asset('uploads/blank.jpg');
+                                        @endphp
+
+                                        <img 
+                                            src="{{ $imageUrl }}" 
+                                            alt="Student Picture" 
+                                            class="img-thumbnail" 
+                                            style="max-width: 130px;">
                                         </td>
                                         <th>Full Name:</th>
                                         <td>{{ $student['stusurname'] }}</td>
@@ -643,7 +654,18 @@
                                 <table class="table table-bordered align-middle">
                                     <tr>
                                         <td rowspan="4" style="width: 150px; text-align: center;">
-                                            <img src="{{ asset('uploads/' . $student['studpicture'] . '.jpg') }}" alt="Student Picture" class="img-thumbnail" style="max-width: 130px;">
+                                        @php
+                                            $imagePath = public_path('uploads/' . $student['studpicture'] . '.jpg');
+                                            $imageUrl = file_exists($imagePath) 
+                                                ? asset('uploads/' . $student['studpicture'] . '.jpg') 
+                                                : asset('uploads/blank.jpg');
+                                        @endphp
+
+                                        <img 
+                                            src="{{ $imageUrl }}" 
+                                            alt="Student Picture" 
+                                            class="img-thumbnail" 
+                                            style="max-width: 130px;">
                                         </td>
                                         <th>Full Name:</th>
                                         <td>{{ $student['stusurname'] }}</td>

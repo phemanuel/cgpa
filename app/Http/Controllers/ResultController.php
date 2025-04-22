@@ -14,6 +14,7 @@ use App\Models\AdministratorControl;
 use App\Models\hod;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 class ResultController extends Controller
 {
@@ -256,7 +257,7 @@ class ResultController extends Controller
         }
 
         return view('layout.result-entry-view', compact(
-            'students', 'updatedResults', 'assignedCourse', 'courses', 'studentScores'
+            'students', 'updatedResults', 'assignedCourse', 'courses', 'studentScores', 'stdLevel', 'semester'
         ));
     }
 
@@ -418,6 +419,9 @@ class ResultController extends Controller
                 //     'result_id' => $result->id,
                 //     'course_index' => $courseIndex,
                 //     'score' => $validated['score'],
+                //     'admission_no' => $request->admission_no,
+                //     'class' => $request->class,
+                //     'semester' => $request->semester,
                 // ]);
 
                 return response()->json(['message' => 'Score saved successfully.']);
@@ -1733,7 +1737,7 @@ class ResultController extends Controller
     {
         // Log::info('Starting result computation...');
         $collegeInfo = AdministratorControl::first();
-        $courseStudy = CourseStudy::where('dept_name', $validatedData['programme'])->first();
+        $courseStudy = CourseStudy::where('dept_name', $programme)->first();
         $courseDuration = $courseStudy->dept_duration;
 
         // Check if result already computed
@@ -2002,131 +2006,129 @@ class ResultController extends Controller
                 $compute->sn = $index + 1;
                 $compute->save();
             }
-        }
+        }        
 
-        $this->calculateFinalCgpa($acadSession, $programme, $level, $semester,$courseDuration);
-        //return redirect()->route('result-compute')->with('success' , 'Result Computed Successfuly.');
+    // Return the success message
+    // return redirect()->route('result-compute')->with('success', 'Result Computed Successfully.');
+
+        $this->calculateFinalCgpa($acadSession, $programme, $level, $semester,$courseDuration);        
     }
 
     public function calculateFinalCgpa($acadSession, $programme, $level, $semester, $courseDuration)
     {
-        // Step 1: Determine which levels to fetch CGPA from based on the selected course duration and level
-        $levelsToFetch = $this->getLevelsToFetch($courseDuration, $level);
+        // Step 1: Get all the results for the students based on the session, level, and course
+        $results = Result::where('semester', $semester)
+                        ->where('class', $level)
+                        ->where('session1', $acadSession)
+                        ->where('course', $programme)
+                        ->get();
 
-        // Step 2: Fetch CGPAs for the relevant levels
-        $cgpas = [];
-        foreach ($levelsToFetch as $lvl) {
-            $cgpas[] = $this->getCgpa($acadSession, $programme, $lvl, $semester);
-        }
+        $totalStudent = $results->count();  // Get the total number of students
 
-        // Step 3: Fetch total grade points and course units for the relevant levels and second semester
-        $totalGradePoints = 0;
-        $totalCourseUnits = 0;
-        foreach ($levelsToFetch as $lvl) {
-            $result = $this->getTotalGradePointsAndUnits($acadSession, $programme, $lvl, $semester);
-            $totalGradePoints += $result['all_total_grade_point'];
-            $totalCourseUnits += $result['all_total_course_unit'];
-        }
+        // Step 2: Loop through each student result
+        foreach ($results as $result) {
+            // Step 3: Get the relevant CGPA and grade points based on duration and level
+            if ($courseDuration == 2) {
+                // Fetch CGPA and grade points for 100 level and 200 level second semesters
+                $firstLevelData = ResultCompute::where('class', 100)
+                                            ->where('semester', 'second')
+                                            ->where('session1', $acadSession)
+                                            ->where('course', $programme)
+                                            ->where('admission_no', $result->dmission_no) // Assuming student_id exists
+                                            ->first();
 
-        // Step 4: Calculate the total CGPA
-        if ($totalCourseUnits > 0) {
-            $finalCgpa = $totalGradePoints / $totalCourseUnits;
-        } else {
-            $finalCgpa = 0; // Handle division by zero if no course units are found
-        }
+                $secondLevelData = ResultCompute::where('class', 200)
+                                                ->where('semester', 'second')
+                                                ->where('session1', $acadSession)
+                                                ->where('course', $programme)
+                                                ->where('admission_no', $result->dmission_no) // Assuming student_id exists
+                                                ->first();
 
-        // Step 5: Determine the remark based on CGPA
-        $remark = $this->getRemarkForCgpa($finalCgpa);
+                // Fetch CGPA for the first and second levels
+                $cgpa100 = $firstLevelData ? $firstLevelData->cgpa : 0;
+                $cgpa200 = $secondLevelData ? $secondLevelData->cgpa : 0;
 
-        // Step 6: Save the CGPA and remarks for the selected level and semester
-        $this->saveCgpasAndRemark($acadSession, $programme, $level, $semester, $cgpas, $finalCgpa, $remark);
+                // Calculate total grade points and total course units for 100 and 200 level second semesters
+                $totalGradePoints100 = $firstLevelData ? $firstLevelData->all_total_grade_point : 0;
+                $totalCourseUnits100 = $firstLevelData ? $firstLevelData->all_total_course_unit : 0;
 
-        // Step 7: Redirect to the result computation page with success message
-        return redirect()->route('result-compute')->with('success', 'Result Computed Successfully.');
-    }
+                $totalGradePoints200 = $secondLevelData ? $secondLevelData->all_total_grade_point : 0;
+                $totalCourseUnits200 = $secondLevelData ? $secondLevelData->all_total_course_unit : 0;
 
-    private function getLevelsToFetch($courseDuration, $level)
-    {
-        // Step 1: Determine which levels need to be fetched based on course duration and selected level
-        if ($courseDuration == 2) {
-            if ($level == 200) {
-                return [100, 200];
-            } elseif ($level == 'NDII') {
-                return ['NDI', 'NDII'];
-            } elseif ($level == 'HNDII') {
-                return ['HNDI', 'HNDII'];
+                // Calculate the total CGPA (sum of grade points / sum of course units)
+                $totalGradePoints = $totalGradePoints100 + $totalGradePoints200;
+                $totalCourseUnits = $totalCourseUnits100 + $totalCourseUnits200;
+
+                $totalCgpa = ($totalCourseUnits > 0) ? $totalGradePoints / $totalCourseUnits : 0;
+
+                // Save the CGPAs for the 200 level second semester
+                if ($secondLevelData) {
+                    $secondLevelData->cgpa1 = $cgpa100;
+                    $secondLevelData->cgpa2 = $cgpa200;
+                    $secondLevelData->total_cgpa = $totalCgpa;
+                    $secondLevelData->total_grade_point_new = $totalGradePoints;
+                    $secondLevelData->total_course_unit_new = $totalCourseUnits;
+                    $secondLevelData->save();
+                }
+            } elseif ($courseDuration == 3) {
+                // Fetch CGPA and grade points for 100, 200, and 300 level second semesters
+                $firstLevelData = ResultCompute::where('class', 100)
+                                            ->where('semester', 'second')
+                                            ->where('session1', $acadSession)
+                                            ->where('course', $programme)
+                                            ->where('admission_no', $result->admission_no) // Assuming student_id exists
+                                            ->first();
+
+                $secondLevelData = ResultCompute::where('class', 200)
+                                                ->where('semester', 'second')
+                                                ->where('session1', $acadSession)
+                                                ->where('course', $programme)
+                                                ->where('admission_no', $result->dmission_no) // Assuming student_id exists
+                                                ->first();
+
+                $thirdLevelData = ResultCompute::where('class', 300)
+                                            ->where('semester', 'second')
+                                            ->where('session1', $acadSession)
+                                            ->where('course', $programme)
+                                            ->where('admission_no', $result->dmission_no) // Assuming student_id exists
+                                            ->first();
+
+                // Fetch CGPAs for all 3 levels
+                $cgpa100 = $firstLevelData ? $firstLevelData->cgpa : 0;
+                $cgpa200 = $secondLevelData ? $secondLevelData->cgpa : 0;
+                $cgpa300 = $thirdLevelData ? $thirdLevelData->cgpa : 0;
+
+                // Calculate total grade points and total course units for 100, 200, and 300 level second semesters
+                $totalGradePoints100 = $firstLevelData ? $firstLevelData->all_total_grade_point : 0;
+                $totalCourseUnits100 = $firstLevelData ? $firstLevelData->all_total_course_unit : 0;
+
+                $totalGradePoints200 = $secondLevelData ? $secondLevelData->all_total_grade_point : 0;
+                $totalCourseUnits200 = $secondLevelData ? $secondLevelData->all_total_course_unit : 0;
+
+                $totalGradePoints300 = $thirdLevelData ? $thirdLevelData->all_total_grade_point : 0;
+                $totalCourseUnits300 = $thirdLevelData ? $thirdLevelData->all_total_course_unit : 0;
+
+                // Calculate the total CGPA (sum of grade points / sum of course units)
+                $totalGradePoints = $totalGradePoints100 + $totalGradePoints200 + $totalGradePoints300;
+                $totalCourseUnits = $totalCourseUnits100 + $totalCourseUnits200 + $totalCourseUnits300;
+
+                $totalCgpa = ($totalCourseUnits > 0) ? $totalGradePoints / $totalCourseUnits : 0;
+
+                // Save the CGPAs for the 300 level second semester
+                if ($thirdLevelData) {
+                    $thirdLevelData->cgpa1 = $cgpa100;
+                    $thirdLevelData->cgpa2 = $cgpa200;
+                    $thirdLevelData->cgpa3 = $cgpa300;
+                    $thirdLevelData->total_cgpa = $totalCgpa;
+                    $thirdLevelData->total_grade_point_new = $totalGradePoints;
+                    $thirdLevelData->total_course_unit_new = $totalCourseUnits;
+                    $thirdLevelData->save();
+                }
             }
-        } elseif ($courseDuration == 3) {
-            if ($level == 300) {
-                return [100, 200, 300];
-            }
         }
 
-        // Default case (could be more specific depending on requirements)
-        return [$level];
-    }
-
-    private function getCgpa($acadSession, $programme, $level, $semester)
-    {
-        // Step 2: Query the database for the CGPA of the given level, programme, session, and semester
-        return DB::table('result_computes')
-            ->where('acad_session', $acadSession)
-            ->where('programme_id', $programme->id)
-            ->where('level', $level)
-            ->where('semester', $semester)
-            ->value('cgpa');
-    }
-
-    private function getTotalGradePointsAndUnits($acadSession, $programme, $level, $semester)
-    {
-        // Step 3: Query the database for total grade points and total course units for the given level and semester
-        return DB::table('result_computes')
-            ->where('acad_session', $acadSession)
-            ->where('programme_id', $programme->id)
-            ->where('level', $level)
-            ->where('semester', $semester)
-            ->selectRaw('SUM(grade_point) as all_total_grade_point, SUM(course_unit) as all_total_course_unit')
-            ->first();
-    }
-
-    private function getRemarkForCgpa($finalCgpa)
-    {
-        // Step 5: Determine the remark based on CGPA
-        if ($finalCgpa >= 4.50) {
-            return 'Excellent';
-        } elseif ($finalCgpa >= 3.50) {
-            return 'Good';
-        } elseif ($finalCgpa >= 2.40) {
-            return 'Fair';
-        } elseif ($finalCgpa >= 1.50) {
-            return 'Pass';
-        } else {
-            return 'Fail';
-        }
-    }
-
-    private function saveCgpasAndRemark($acadSession, $programme, $level, $semester, $cgpas, $finalCgpa, $remark)
-    {
-        // Step 6: Save CGPAs (cgpa1, cgpa2, cgpa3) and the final CGPA, along with the remark
-        $data = [
-            'acad_session' => $acadSession,
-            'programme_id' => $programme->id,
-            'level' => $level,
-            'semester' => $semester,
-            'cgpa1' => $cgpas[0] ?? null, // CGPA for year 1
-            'cgpa2' => $cgpas[1] ?? null, // CGPA for year 2
-            'cgpa3' => $cgpas[2] ?? null, // CGPA for year 3 (only for 3-year courses)
-            'all_total_grade_point' => $finalCgpa,   // Final calculated CGPA
-            'all_total_course_unit' => $finalCgpa,   // You can adjust this depending on your actual calculation logic
-            'cgpa_remark' => $remark      // Remark based on the CGPA
-        ];
-
-        // Insert or update the result in the result_computes table
-        DB::table('result_computes')
-            ->updateOrInsert(
-                ['acad_session' => $acadSession, 'programme_id' => $programme->id, 'level' => $level, 'semester' => $semester],
-                $data
-            );
+        // Return with success message
+        return redirect()->route('result-compute')->with('success', 'Results Computed Successfully for all students.');
     }
 
 
