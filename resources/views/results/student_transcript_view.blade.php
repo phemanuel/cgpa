@@ -2,11 +2,11 @@
 <html lang="en">
 
 
-<!-- basic-form.html  21 Nov 2019 03:54:41 GMT -->
+<!-- index.html  21 Nov 2019 03:44:50 GMT -->
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-  <title>E-Result :: Course</title>
+  <title>E-result :: Transcript</title>
   <!-- General CSS Files -->
   <link rel="stylesheet" href="{{asset('dashboard/assets/css/app.min.css')}}">
   <!-- Template CSS -->
@@ -15,33 +15,17 @@
   <!-- Custom style CSS -->
   <link rel="stylesheet" href="{{asset('dashboard/assets/css/custom.css')}}">
   <link rel='shortcut icon' type='image/x-icon' href="{{asset('dashboard/assets/img/favicon.png')}}" />
-  
-
   <style>
-    /* Success Alert */
-    .alert.alert-success {
-        background-color: #28a745; /* Green background color */
-        color: #fff; /* White text color */
-        padding: 10px; /* Padding around the text */
-        border-radius: 5px; /* Rounded corners */
+    .black-link {
+    color: black;
+    font-weight: bold;
     }
 
-    /* Error Alert */
-    .alert.alert-danger {
-        background-color: #dc3545; /* Red background color */
-        color: #fff; /* White text color */
-        padding: 10px; /* Padding around the text */
-        border-radius: 5px; /* Rounded corners */
+    .black-link:hover {
+        color: black;
+
     }
-</style>
-<style type="text/css">
-.style2 {
-	color: #006600;
-	font-weight: bold;
-}
-.style3 {font-weight: bold}
-.style7 {color: #0000FF; font-weight: bold; }
-</style>
+  </style>
 </head>
 
 <body>
@@ -79,7 +63,7 @@
       <div class="main-sidebar sidebar-style-2">
         <aside id="sidebar-wrapper">
           <div class="sidebar-brand">
-            <a href="{{route('dashboard')}}"> <img alt="image" src="{{asset('dashboard/assets/img/logo.png')}}" class="header-logo" /> <span
+            <a href="{{route('admin-dashboard')}}"> <img alt="image" src="{{asset('dashboard/assets/img/logo.png')}}" class="header-logo" /> <span
                 class="logo-name">E-Result</span>
             </a>
           </div>
@@ -89,7 +73,7 @@
             <li class="dropdown">
               <a href="{{ route('admin-dashboard') }}" class="nav-link"><i data-feather="home"></i><span>Dashboard</span></a>
             </li>
-            <li class="dropdown">
+            <li class="dropdown active">
               <a href="{{route('class-list')}}" class="nav-link"><i data-feather="list"></i><span>Class List</span></a>
             </li>
             <li class="dropdown">
@@ -110,7 +94,7 @@
                 <li><a class="nav-link" href="{{route('student-transcript')}}">Student Transcript</a></li>
               </ul>
             </li>
-            <li class="dropdown active">
+            <li class="dropdown">
               <a href="{{route('course-setup')}}" class="nav-link"><i data-feather="book"></i><span>Course</span></a>
             </li>
             <li class="dropdown">
@@ -140,7 +124,7 @@
             <li class="dropdown">
               <a href="{{ route('admin-dashboard') }}" class="nav-link"><i data-feather="home"></i><span>Dashboard</span></a>
             </li>
-            <li class="dropdown">
+            <li class="dropdown active">
               <a href="{{route('class-list')}}" class="nav-link"><i data-feather="list"></i><span>Class List</span></a>
             </li>
             <li class="dropdown">
@@ -161,7 +145,7 @@
                 <li><a class="nav-link" href="{{route('student-transcript')}}">Student Transcript</a></li>
               </ul>
             </li>
-            <li class="dropdown active">
+            <li class="dropdown">
               <a href="{{route('course-setup')}}" class="nav-link"><i data-feather="book"></i><span>Course</span></a>
             </li>
             <li class="dropdown">
@@ -191,7 +175,7 @@
             <li class="dropdown">
               <a href="{{ route('admin-dashboard') }}" class="nav-link"><i data-feather="home"></i><span>Dashboard</span></a>
             </li>
-            <li class="dropdown">
+            <li class="dropdown active">
               <a href="{{route('class-list')}}" class="nav-link"><i data-feather="list"></i><span>Class List</span></a>
             </li>            
             <li class="dropdown">
@@ -204,7 +188,7 @@
                 <li><a class="nav-link" href="{{route('cgpa-summary')}}">CGPA Summary</a></li>                
               </ul>
             </li>
-            <li class="dropdown active">
+            <li class="dropdown">
               <a href="{{route('course-setup')}}" class="nav-link"><i data-feather="book"></i><span>Course</span></a>
             </li>
             <li class="dropdown">
@@ -233,8 +217,7 @@
       <!-- Main Content -->
       <div class="main-content">
         <section class="section">
-          <div class="section-body">
-          <div class="row">
+        <div class="row">
                     <div class="col-12">
                       <nav aria-label="breadcrumb">
                         <ol class="breadcrumb bg-dark text-white-all d-flex justify-content-between overflow-auto" style="white-space: nowrap;">
@@ -343,16 +326,26 @@
                       </nav>
                     </div>
                   </div>
-            <div class="row">
-              <div class="col-12 col-md-6 col-lg-6">
-                <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h4 class="mb-0">Course Curriculum</h4>
-                    <!-- <a href="#" class="btn btn-outline-primary">
-                        <i class="fas fa-book"></i> Create Course Curriculum
-                    </a> -->
+        <div class="row ">
+              <div class="col-xl-3 col-lg-6">
+                <div class="card l-bg-green">
+                  <div class="card-statistic-3">
+                    <div class="card-icon card-icon-large"><i class="fa fa-award"></i></div>
+                    <div class="card-content">
+                      <h4 class="card-title">Transcript</h4>
+                      <span><strong></strong></span>
+                      <div class="progress mt-1 mb-1" data-height="8">
+                        <div class="progress-bar l-bg-purple" role="progressbar" data-width="" aria-valuenow=""
+                          aria-valuemin="0" aria-valuemax=""></div>
+                      </div>
+                      
+                    </div>
+                  </div>
                 </div>
-                  @if(session('success'))
+              </div> 
+              
+            </div>
+            @if(session('success'))
                     <div class="alert alert-success">
                       {{ session('success') }}
                     </div>
@@ -361,109 +354,86 @@
                       {{ session('error') }}
                     </div>
                     @endif	
-                  <div class="card-body">
-                  <form action="{{route('course-list')}}">
-                    <!-- @csrf                    -->
-
-                    <div class="form-group">
-                        <label>Programme</label>
-                        <select name="programme" id="" class="form-control">                            
-                            <!-- Loop through levels -->
-                            @foreach($programmes as $d)
-                                <option value="{{ $d->department }}">{{ $d->department }}</option>
-                            @endforeach
-                        </select>
-                        <p>                           
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#createProgrammeModal">
-                            <i class="fas fa-plus"></i> Create Programme
-                        </a>
-                        </p>
-                    </div>
-                    @error('programme')
-                        <span class="invalid-feedback">{{ $message }}</span>
-                    @enderror                   
-
-                    <div class="form-group">
-                        <label>Academic Level</label>
-                        <select name="stdLevel" id="" class="form-control">                            
-                            <!-- Loop through levels -->
-                            @foreach($allLevel as $d)
-                                <option value="{{ $d->level }}">{{ $d->level }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    @error('stdLevel')
-                        <span class="invalid-feedback">{{ $message }}</span>
-                    @enderror
-
-                    <div class="form-group">
-                        <label>Semester</label>
-                        <select name="semester" id="" class="form-control"> 
-                                <option value="FIRST">FIRST</option> 
-                                <option value="SECOND">SECOND</option>                          
-                        </select>
-                    </div>
-                    @error('semester')
-                        <span class="invalid-feedback">{{ $message }}</span>
-                    @enderror
-
-                    <div class="card-footer text-right">
-                        <input class="btn btn-primary mr-1" type="submit" value="Preview" />
-                        <!-- <input class="btn btn-secondary" type="reset" value="Reset" /> -->
-                    </div>
-                </form>
-
-                  
-                </div>               
-
-              </div>
+                    <div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4>
+                    {{$programme}} - {{$admissionYear}}
+                    <!-- <a href="javascript:void(0)" onclick="printAllStudents()" class="btn btn-outline-primary">
+                        <i class="fas fa-print"></i> Print All
+                    </a> -->
+                </h4>
+                <div class="card-header-form">
+                    <form>
+                        <div class="input-group">
+                        <input type="text" id="searchInput" class="form-control" placeholder="Search">
+                            <!-- <div class="input-group-btn">
+                                <button type="button" class="btn btn-primary" onclick="filterTable()"><i class="fas fa-search"></i></button>
+                            </div> -->
+                        </div>
+                    </form>
+                </div>
             </div>
-          </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                <table id="classListTable" class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Matric No</th>
+                            <th>Full Name</th>
+                            <th>Start Level</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($students as $index => $student)
+                        <tr>
+                        <td>
+                            @php
+                                $picture = public_path('uploads/' . $student->picture_dir . '.jpg');
+                                $pictureUrl = file_exists($picture) ? asset('uploads/' . $student->picture_dir . '.jpg') : asset('uploads/blank.jpg');
+                            @endphp
+                            <img src="{{ $pictureUrl }}" 
+                                alt="Student Picture" 
+                                style="width: 50px; height: 50px; object-fit: cover;">
+                        </td>
+                            <td>{{ $student->admission_no }}</td>
+                            <td>{{ $student->surname . ' ' . $student->first_name . ' ' . $student->other_name }}</td>
+                            <td>{{ $student->class }}</td>
+                            <td>
+                                <!-- Example action button -->
+                                <a href="{{ route('student-transcript.preview', [
+                                        'stdLevel' => $student->class, 
+                                        'acad_session' => $student->admission_year, 
+                                        'programme' => $student->course,
+                                        'admission_no' => $student->admission_no
+                                    ]) }}" 
+                                    class="btn btn-sm btn-primary">
+                                    View Transcript
+                                </a>
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="4" class="text-center">No students found.</td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+          
+          
         </section>
 
-        <!-- Modal -->
-<div class="modal fade" id="createProgrammeModal" tabindex="-1" aria-labelledby="createProgrammeLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <form action="{{ route('programme.store') }}" method="POST">
-      @csrf
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="createProgrammeLabel">Create Programme</h5>
-          <button type="button" class="btn btn-light" data-bs-dismiss="modal" aria-label="Close">
-    <i class="fas fa-times"></i>
-</button>
-        </div>
-        <div class="modal-body">
-          <div class="mb-3">
-            <label>Department</label>
-            <select name="dept" class="form-control" required>
-              @foreach($department as $d)
-                <option value="{{ $d->dept_name }}">{{ $d->dept_name }}</option>
-              @endforeach
-            </select>
-            
-          </div>
-          <div class="mb-3">
-            <label>Programme Name</label>
-            <input type="text" name="dept_name" class="form-control" required>
-          </div>
-          <div class="mb-3">
-            <label>Programme Duration</label>
-            <input type="text" name="dept_duration" class="form-control" required>
-          </div>
-          <div class="mb-3">
-            <label>Abbreviation</label>
-            <input type="text" name="dept_abbr" class="form-control" required>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-primary">Save Programme</button>
-        </div>
-      </div>
-    </form>
-  </div>
-</div>
-
+       
         <div class="settingSidebar">
           <a href="javascript:void(0)" class="settingPanelToggle"> <i class="fa fa-spin fa-cog"></i>
           </a>
@@ -565,8 +535,8 @@
       </footer>
     </div>
   </div>
-   <!-- General JS Scripts -->
-   <script src="{{asset('dashboard/assets/js/app.min.js')}}"></script>
+  <!-- General JS Scripts -->
+  <script src="{{asset('dashboard/assets/js/app.min.js')}}"></script>
   <!-- JS Libraies -->
   <script src="{{asset('dashboard/assets/bundles/apexcharts/apexcharts.min.js')}}"></script>
   <!-- Page Specific JS File -->
@@ -575,9 +545,108 @@
   <script src="{{asset('dashboard/assets/js/scripts.js')}}"></script>
   <!-- Custom JS File -->
   <script src="{{asset('dashboard/assets/js/custom.js')}}"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 
-<!-- basic-form.html  21 Nov 2019 03:54:41 GMT -->
+<!-- index.html  21 Nov 2019 03:47:04 GMT -->
 </html>
+<script>
+function printAllStudents() {
+    // Get the content of the hidden table
+    var printContents = document.getElementById('allStudentsTable').innerHTML;
+
+    // Create a hidden iframe
+    var iframe = document.createElement('iframe');
+    iframe.style.position = 'absolute';
+    iframe.style.top = '-10000px';
+    iframe.style.left = '-10000px';
+    document.body.appendChild(iframe);
+
+    // Write the content into the iframe
+    var doc = iframe.contentWindow.document;
+    doc.open();
+    doc.write(`
+        <html>
+            <head>
+                <title>Class List</title>
+                <style>
+                    body { font-family: Arial, sans-serif; margin: 20px; }
+                    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+                    th, td { border: 1px solid black; padding: 8px; text-align: left; }
+                    th { background-color: #f2f2f2; }
+                </style>
+            </head>
+            <body>                
+                ${printContents}
+            </body>
+        </html>
+    `);
+    doc.close();
+
+    // Trigger the print dialog
+    iframe.contentWindow.focus();
+    iframe.contentWindow.print();
+
+    // Remove the iframe after printing
+    setTimeout(() => {
+        document.body.removeChild(iframe);
+    }, 1000);
+}
+</script>
+
+<script>
+    // JavaScript for filtering the table
+    function filterTable() {
+        const input = document.getElementById('searchInput').value.toLowerCase();
+        const table = document.getElementById('classListTable');
+        const rows = table.getElementsByTagName('tr');
+
+        for (let i = 1; i < rows.length; i++) { // Start from 1 to skip the header row
+            const cells = rows[i].getElementsByTagName('td');
+            let match = false;
+
+            // Loop through all cells in the row
+            for (let j = 0; j < cells.length; j++) {
+                if (cells[j] && cells[j].innerText.toLowerCase().includes(input)) {
+                    match = true;
+                    break;
+                }
+            }
+
+            // Toggle row visibility based on the match
+            rows[i].style.display = match ? '' : 'none';
+        }
+    }
+
+    // Optional: Add an event listener for real-time search
+    document.getElementById('searchInput').addEventListener('input', filterTable);
+</script>
+
+<script>
+    // JavaScript for filtering the table
+    function filterTable() {
+        const input = document.getElementById('searchInput').value.toLowerCase();
+        const table = document.getElementById('classListTable');
+        const rows = table.getElementsByTagName('tr');
+
+        for (let i = 1; i < rows.length; i++) { // Start from 1 to skip the header row
+            const cells = rows[i].getElementsByTagName('td');
+            let match = false;
+
+            // Loop through all cells in the row
+            for (let j = 0; j < cells.length; j++) {
+                if (cells[j] && cells[j].innerText.toLowerCase().includes(input)) {
+                    match = true;
+                    break;
+                }
+            }
+
+            // Toggle row visibility based on the match
+            rows[i].style.display = match ? '' : 'none';
+        }
+    }
+
+    // Optional: Add an event listener for real-time search
+    document.getElementById('searchInput').addEventListener('input', filterTable);
+</script>
+

@@ -147,6 +147,10 @@ Route::post('/reset-password', [CustomForgotPasswordController::class, 'resetPas
         ->name('cgpa-summary');
         Route::get('result/transcript', [ResultController::class, 'studentTranscript'])
         ->name('student-transcript');
+        Route::post('result/transcript', [ResultController::class, 'studentTranscriptAction'])
+        ->name('student-transcript-action');
+        Route::get('result/transcript/preview', [ResultController::class, 'studentTranscriptPreview'])
+        ->name('student-transcript.preview');
         Route::post('/save-score', [ResultController::class, 'saveScore'])
         ->name('save.score');
         Route::get('/results/semester100/{acadSession}/{programme}/{level}/{semester}/{studentIndex?}', [ResultController::class, 'firstSemester100'])

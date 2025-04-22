@@ -2,11 +2,12 @@
 <html lang="en">
 
 
-<!-- basic-form.html  21 Nov 2019 03:54:41 GMT -->
+<!-- index.html  21 Nov 2019 03:44:50 GMT -->
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-  <title>E-Result :: Course</title>
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+  <title>E-Result :: Result</title>
   <!-- General CSS Files -->
   <link rel="stylesheet" href="{{asset('dashboard/assets/css/app.min.css')}}">
   <!-- Template CSS -->
@@ -16,31 +17,37 @@
   <link rel="stylesheet" href="{{asset('dashboard/assets/css/custom.css')}}">
   <link rel='shortcut icon' type='image/x-icon' href="{{asset('dashboard/assets/img/favicon.png')}}" />
   
-
   <style>
-    /* Success Alert */
-    .alert.alert-success {
-        background-color: #28a745; /* Green background color */
-        color: #fff; /* White text color */
-        padding: 10px; /* Padding around the text */
-        border-radius: 5px; /* Rounded corners */
+    .black-link {
+    color: black;
+    font-weight: bold;
     }
 
-    /* Error Alert */
-    .alert.alert-danger {
-        background-color: #dc3545; /* Red background color */
-        color: #fff; /* White text color */
-        padding: 10px; /* Padding around the text */
-        border-radius: 5px; /* Rounded corners */
+    .black-link:hover {
+        color: black;
+
     }
-</style>
-<style type="text/css">
-.style2 {
-	color: #006600;
-	font-weight: bold;
+  </style>
+  <style>
+    .form-control {
+    width: 70px; /* You can adjust this width based on your desired size */
+    text-align: center; /* Optional, to center the text in each input */
+    box-sizing: border-box; /* Ensures padding and borders are included in width */
 }
-.style3 {font-weight: bold}
-.style7 {color: #0000FF; font-weight: bold; }
+  </style>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+
+    .container {
+        width: 100%;
+    }
+
+    /* Remove any unwanted elements like the footer */
+    footer {
+        display: none;
+    }
 </style>
 </head>
 
@@ -59,7 +66,8 @@
               </a></li>
            
           </ul>
-        </div><ul class="navbar-nav navbar-right">        
+        </div>
+        <ul class="navbar-nav navbar-right">        
           <li class="dropdown"><a href="#" data-toggle="dropdown"
               class="nav-link dropdown-toggle nav-link-lg nav-link-user"> <img alt="image" src="{{ asset('profile_pictures/'. auth()->user()->image) }}" alt="Profile Picture"
                 class="user-img-radious-style"> <span class="d-sm-none d-lg-inline-block"></span></a>
@@ -79,7 +87,7 @@
       <div class="main-sidebar sidebar-style-2">
         <aside id="sidebar-wrapper">
           <div class="sidebar-brand">
-            <a href="{{route('dashboard')}}"> <img alt="image" src="{{asset('dashboard/assets/img/logo.png')}}" class="header-logo" /> <span
+            <a href="{{route('admin-dashboard')}}"> <img alt="image" src="{{asset('dashboard/assets/img/logo.png')}}" class="header-logo" /> <span
                 class="logo-name">E-Result</span>
             </a>
           </div>
@@ -99,7 +107,7 @@
                 <li><a class="nav-link" href="{{route('student-migration')}}">Student Migration</a></li>                
               </ul>
             </li>
-            <li class="dropdown">
+            <li class="dropdown active">
               <a href="#" class="nav-link menu-toggle nav-link has-dropdown"><i data-feather="clipboard"></i><span>Result</span></a>
               <ul class="dropdown-menu">
                 <li><a class="nav-link" href="{{route('result-entry')}}">Result Entry</a></li>
@@ -110,7 +118,7 @@
                 <li><a class="nav-link" href="{{route('student-transcript')}}">Student Transcript</a></li>
               </ul>
             </li>
-            <li class="dropdown active">
+            <li class="dropdown">
               <a href="{{route('course-setup')}}" class="nav-link"><i data-feather="book"></i><span>Course</span></a>
             </li>
             <li class="dropdown">
@@ -150,7 +158,7 @@
                 <li><a class="nav-link" href="{{route('student-migration')}}">Student Migration</a></li>                
               </ul>
             </li>
-            <li class="dropdown">
+            <li class="dropdown active">
               <a href="#" class="nav-link menu-toggle nav-link has-dropdown"><i data-feather="clipboard"></i><span>Result</span></a>
               <ul class="dropdown-menu">
                 <li><a class="nav-link" href="{{route('result-entry')}}">Result Entry</a></li>
@@ -161,7 +169,7 @@
                 <li><a class="nav-link" href="{{route('student-transcript')}}">Student Transcript</a></li>
               </ul>
             </li>
-            <li class="dropdown active">
+            <li class="dropdown">
               <a href="{{route('course-setup')}}" class="nav-link"><i data-feather="book"></i><span>Course</span></a>
             </li>
             <li class="dropdown">
@@ -194,7 +202,7 @@
             <li class="dropdown">
               <a href="{{route('class-list')}}" class="nav-link"><i data-feather="list"></i><span>Class List</span></a>
             </li>            
-            <li class="dropdown">
+            <li class="dropdown active">
               <a href="#" class="nav-link menu-toggle nav-link has-dropdown"><i data-feather="clipboard"></i><span>Result</span></a>
               <ul class="dropdown-menu">
                 <li><a class="nav-link" href="{{route('result-entry')}}">Result Entry</a></li>
@@ -204,14 +212,14 @@
                 <li><a class="nav-link" href="{{route('cgpa-summary')}}">CGPA Summary</a></li>                
               </ul>
             </li>
-            <li class="dropdown active">
+            <li class="dropdown">
               <a href="{{route('course-setup')}}" class="nav-link"><i data-feather="book"></i><span>Course</span></a>
             </li>
             <li class="dropdown">
               <a href="{{ route('admin-account-setting', ['id' => auth()->user()->id]) }}" class="nav-link"><i data-feather="settings"></i><span>Account Settings</span></a>
             </li>                 
             @elseif(auth()->user()->user_type_status == 4)            
-            <li class="dropdown">
+            <li class="dropdown active">
               <a href="{{ route('dashboard') }}" class="nav-link"><i data-feather="home"></i><span>Dashboard</span></a>
             </li>
             <li class="dropdown">
@@ -233,8 +241,8 @@
       <!-- Main Content -->
       <div class="main-content">
         <section class="section">
-          <div class="section-body">
-          <div class="row">
+        
+                    <div class="row">
                     <div class="col-12">
                       <nav aria-label="breadcrumb">
                         <ol class="breadcrumb bg-dark text-white-all d-flex justify-content-between overflow-auto" style="white-space: nowrap;">
@@ -342,17 +350,10 @@
                         </ol>
                       </nav>
                     </div>
-                  </div>
-            <div class="row">
-              <div class="col-12 col-md-6 col-lg-6">
-                <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h4 class="mb-0">Course Curriculum</h4>
-                    <!-- <a href="#" class="btn btn-outline-primary">
-                        <i class="fas fa-book"></i> Create Course Curriculum
-                    </a> -->
-                </div>
-                  @if(session('success'))
+                  </div>      
+                  
+          
+          @if(session('success'))
                     <div class="alert alert-success">
                       {{ session('success') }}
                     </div>
@@ -361,108 +362,69 @@
                       {{ session('error') }}
                     </div>
                     @endif	
-                  <div class="card-body">
-                  <form action="{{route('course-list')}}">
-                    <!-- @csrf                    -->
+          <div class="row">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-header">
+                  <h4>
+                  <a href="{{route('result-compute')}}"  class="btn btn-outline-primary">
+                      <i class="fas fa-print"></i> Back to Result Page
+                  </a>
+                  <!-- Print Current Page -->
+                  <a href="javascript:void(0)" onclick="printReport()" class="btn btn-outline-primary">
+                      <i class="fas fa-print"></i> Print Result
+                  </a>
 
-                    <div class="form-group">
-                        <label>Programme</label>
-                        <select name="programme" id="" class="form-control">                            
-                            <!-- Loop through levels -->
-                            @foreach($programmes as $d)
-                                <option value="{{ $d->department }}">{{ $d->department }}</option>
+                  <!-- Print All Results -->
+                  <!-- <a href="javascript:void(0)" onclick="printAllResults()" class="btn btn-outline-primary">
+                      <i class="fas fa-print"></i> Print All Results
+                  </a> -->
+                  </h4>
+                  <div class="card-header-form">                  
+                  {{-- Pagination --}}                        
+                  </div>
+                </div>
+                <div class="card-body p-0">
+                  <div class="table-responsive">
+                    <br>                   
+                    <div class="container">
+                        <h4></h4>
+                        <div class="container mt-4">
+                            <div class="text-center mb-4">
+                                <img src="{{ asset('dashboard/assets/img/logo.png') }}" alt="College Logo" style="height: 100px;">
+                                <h3 class="mt-2">{{ strtoupper('Oyo State College of Health Science and Technology') }}</h3>
+                                <p>Eleyele, Ibadan, Oyo State, Nigeria.</p>
+                            </div>
+
+                            @foreach ($allSemesters as $semester)
+                                <h3>{{ $semester['level'] }} - {{ $semester['semester'] }} Semester</h3>
+                                
+                                @foreach ($semester['studentData'] as $student)
+                                    <x-reports.student-report 
+                                        :student="$student" 
+                                        :semester="$semester" 
+                                        :grades="$grades" 
+                                        :hod="$hod" 
+                                    />
+                                @endforeach
                             @endforeach
-                        </select>
-                        <p>                           
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#createProgrammeModal">
-                            <i class="fas fa-plus"></i> Create Programme
-                        </a>
-                        </p>
+
+                            
+                        </div>  
+
+
+                        <br>
                     </div>
-                    @error('programme')
-                        <span class="invalid-feedback">{{ $message }}</span>
-                    @enderror                   
 
-                    <div class="form-group">
-                        <label>Academic Level</label>
-                        <select name="stdLevel" id="" class="form-control">                            
-                            <!-- Loop through levels -->
-                            @foreach($allLevel as $d)
-                                <option value="{{ $d->level }}">{{ $d->level }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    @error('stdLevel')
-                        <span class="invalid-feedback">{{ $message }}</span>
-                    @enderror
-
-                    <div class="form-group">
-                        <label>Semester</label>
-                        <select name="semester" id="" class="form-control"> 
-                                <option value="FIRST">FIRST</option> 
-                                <option value="SECOND">SECOND</option>                          
-                        </select>
-                    </div>
-                    @error('semester')
-                        <span class="invalid-feedback">{{ $message }}</span>
-                    @enderror
-
-                    <div class="card-footer text-right">
-                        <input class="btn btn-primary mr-1" type="submit" value="Preview" />
-                        <!-- <input class="btn btn-secondary" type="reset" value="Reset" /> -->
-                    </div>
-                </form>
-
-                  
-                </div>               
-
+                   
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
+          </div>   
+
         </section>
 
-        <!-- Modal -->
-<div class="modal fade" id="createProgrammeModal" tabindex="-1" aria-labelledby="createProgrammeLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <form action="{{ route('programme.store') }}" method="POST">
-      @csrf
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="createProgrammeLabel">Create Programme</h5>
-          <button type="button" class="btn btn-light" data-bs-dismiss="modal" aria-label="Close">
-    <i class="fas fa-times"></i>
-</button>
-        </div>
-        <div class="modal-body">
-          <div class="mb-3">
-            <label>Department</label>
-            <select name="dept" class="form-control" required>
-              @foreach($department as $d)
-                <option value="{{ $d->dept_name }}">{{ $d->dept_name }}</option>
-              @endforeach
-            </select>
-            
-          </div>
-          <div class="mb-3">
-            <label>Programme Name</label>
-            <input type="text" name="dept_name" class="form-control" required>
-          </div>
-          <div class="mb-3">
-            <label>Programme Duration</label>
-            <input type="text" name="dept_duration" class="form-control" required>
-          </div>
-          <div class="mb-3">
-            <label>Abbreviation</label>
-            <input type="text" name="dept_abbr" class="form-control" required>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-primary">Save Programme</button>
-        </div>
-      </div>
-    </form>
-  </div>
-</div>
 
         <div class="settingSidebar">
           <a href="javascript:void(0)" class="settingPanelToggle"> <i class="fa fa-spin fa-cog"></i>
@@ -565,8 +527,8 @@
       </footer>
     </div>
   </div>
-   <!-- General JS Scripts -->
-   <script src="{{asset('dashboard/assets/js/app.min.js')}}"></script>
+  <!-- General JS Scripts -->
+  <script src="{{asset('dashboard/assets/js/app.min.js')}}"></script>
   <!-- JS Libraies -->
   <script src="{{asset('dashboard/assets/bundles/apexcharts/apexcharts.min.js')}}"></script>
   <!-- Page Specific JS File -->
@@ -575,9 +537,67 @@
   <script src="{{asset('dashboard/assets/js/scripts.js')}}"></script>
   <!-- Custom JS File -->
   <script src="{{asset('dashboard/assets/js/custom.js')}}"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 
-<!-- basic-form.html  21 Nov 2019 03:54:41 GMT -->
+<!-- index.html  21 Nov 2019 03:47:04 GMT -->
 </html>
+<script>
+function printReport() {
+    const reportContent = document.getElementById('reportToPrint').innerHTML;
+
+    const printWindow = window.open('', '', 'height=800,width=1000');
+
+    printWindow.document.write(`
+        <html>
+        <head>
+            <title>Print Academic Report</title>
+            <link rel="stylesheet" href="{{ asset('dashboard/assets/css/bootstrap.min.css') }}">
+            <style>
+                body { font-family: Arial, sans-serif; margin: 20px; }
+                img { max-height: 130px; }
+                .table { width: 100%; border-collapse: collapse; }
+                .table td, .table th { border: 1px solid #000; padding: 4px; }
+                .text-center { text-align: center; }
+                .text-success { color: green; }
+                .text-danger { color: red; }
+                .card { border: 1px solid #ccc; padding: 15px; margin-bottom: 20px; }
+                .card-title { font-size: 18px; font-weight: bold; }
+            </style>
+        </head>
+        <body onload="window.print(); window.close();">
+            ${reportContent}
+        </body>
+        </html>
+    `);
+
+    printWindow.document.close();
+}
+</script>
+
+<script>
+    // Function to filter the table rows based on search input
+    function filterTable() {
+        const searchInput = document.getElementById('searchInput').value.toLowerCase();
+        const tableRows = document.querySelectorAll('.table-striped tbody tr'); // Get all rows in the table
+
+        tableRows.forEach(row => {
+            // Get the student name and matric no columns. These are in the first and second columns.
+            const studentName = row.cells[1].textContent.toLowerCase();  // Full Name column (second column)
+            const matricNo = row.cells[2].textContent.toLowerCase();  // Matric No column (third column)
+
+            // If the search term is found in the name or matric number, show the row. Otherwise, hide it.
+            if (studentName.includes(searchInput) || matricNo.includes(searchInput)) {
+                row.style.display = '';  // Show row
+            } else {
+                row.style.display = 'none';  // Hide row
+            }
+        });
+    }
+</script>
+
+
+
+
+
+

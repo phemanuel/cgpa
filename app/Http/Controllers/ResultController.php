@@ -2269,6 +2269,8 @@ class ResultController extends Controller
                 '200'  => ['First' => 'preview100First',  'Second' => 'preview300Second'],                
                 'NDI'  => ['First' => 'preview100First',  'Second' => 'preview100Second'],
                 'NDII' => ['First' => 'preview100First',  'Second' => 'preview300Second'],
+				'HNDI'  => ['First' => 'preview100First',  'Second' => 'preview100Second'],
+                'HNDII' => ['First' => 'preview100First',  'Second' => 'preview300Second'],
             ];
         }
         elseif($courseDuration == 3){
@@ -2276,9 +2278,7 @@ class ResultController extends Controller
                 $methodMap = [
                     '100'  => ['First' => 'preview100First',  'Second' => 'preview100Second'],
                     '200'  => ['First' => 'preview100First',  'Second' => 'preview100Second'],
-                    '300'  => ['First' => 'preview100First',  'Second' => 'preview300Second'],
-                    'NDI'  => ['First' => 'preview100First',  'Second' => 'preview100Second'],
-                    'NDII' => ['First' => 'preview100First',  'Second' => 'preview300Second'],
+                    '300'  => ['First' => 'preview100First',  'Second' => 'preview300Second'],                    
                 ];
         }
 
@@ -2583,5 +2583,123 @@ class ResultController extends Controller
         
         return view('layout.semester-result-summary-view', compact('results','programme','acadsession','stdLevel'));
     }
+
+    public function studentTranscript()
+    {
+        $user = auth()->user();
+        $rolePermission = $user->transcript;
+
+        if($rolePermission != 1) {
+            return redirect()->back()->with('error', 'You do not have permission to this module.');
+        }
+        
+        $programmes = CourseStudyAll::orderBy('department', 'asc')->get();
+        $allLevel = StudentLevel::all();        
+
+        return view('results.student_transcript', compact('programmes','allLevel'));
+    }
+
+    public function studentTranscriptAction(Request $request)
+    {
+        // Validate the request
+        $request->validate([
+            'programme' => 'required|string',
+            'acad_session' => 'required|integer'
+        ]);
+
+        $programme = $request->programme;
+        $admissionYear = $request->acad_session;
+        // Fetch students who match the given programme and admission year
+        $students = Registration::where('course', $programme)
+            ->where('admission_year', $admissionYear)
+            ->orderBy('admission_no', 'asc')
+            ->get();
+
+        // Return view with students
+        return view('results.student_transcript_view', compact('students','programme', 'admissionYear'));
+    }
+
+    public function studentTranscriptPreview(Request $request)
+    {
+        $validated = $request->validate([
+            'stdLevel' => 'required|string',
+            'acad_session' => 'required|string',
+            'programme' => 'required|string',
+            'admission_no' => 'required|string',
+        ]);
+    
+        $level = $validated['stdLevel'];
+        $acadSession = $validated['acad_session'];
+        $programme = $validated['programme'];
+        $admissionNo = $validated['admission_no'];
+    
+        $courseStudy = CourseStudy::where('dept_name', $programme)->first();
+        $courseDuration = $courseStudy->dept_duration;
+    
+        if ($courseDuration == 2 && $level == '100') {
+            $levels = ['100', '200'];
+        } elseif ($courseDuration == 2 && $level == 'NDI') {
+            $levels = ['NDI', 'NDII'];
+        } elseif ($courseDuration == 2 && $level == 'HNDI') {
+            $levels = ['HNDI', 'HNDII'];
+        } elseif ($courseDuration == 3 && $level == '100') {
+            $levels = ['100', '200', '300'];
+        }
+    
+        $semesters = ['First', 'Second'];
+        $allSemesters = [];
+    
+        foreach ($levels as $lvl) {
+            foreach ($semesters as $sem) {
+                $results = ResultCompute::where('course', $programme)
+                    ->where('session1', $acadSession)
+                    ->where('admission_no', $admissionNo)
+                    ->where('class', $lvl)
+                    ->where('semester', $sem)
+                    ->get();
+    
+                if ($results->isEmpty()) continue;
+    
+                $studentData = $results->map(function ($item) {
+                    return [
+                        'stusurname' => $item->student_full_name,
+                        'stuno' => $item->admission_no,
+                        'class' => $item->class,
+                        'coursekeep' => $item->course,
+                        'studpicture' => $item->picture_dir,
+                        'totalGradePoints' => $item->total_grade_point,
+                        'totalUnits' => $item->total_course_unit,
+                        'totalGPA' => $item->gpa,
+                        'letterGrade' => $item->subjectgrade1,
+                        'remarks' => $item->remark,
+                        'failedRemarks' => $item->failed_course,
+                        'ctitles' => array_map(fn($i) => $item->{"ctitle{$i}"} ?? null, range(1, 17)),
+                        'subjects' => array_map(fn($i) => $item->{"subject{$i}"} ?? null, range(1, 16)),
+                        'subjectGrades' => array_map(fn($i) => $item->{"subjectgrade{$i}"} ?? null, range(1, 17)),
+                        'units' => array_map(fn($i) => $item->{"unit{$i}"} ?? null, range(1, 18)),
+                        'scores' => array_map(fn($i) => $item->{"score{$i}"} ?? null, range(1, 19)),
+                    ];
+                });
+    
+                $allSemesters[] = [
+                    'level' => $lvl,
+                    'semester' => $sem,
+                    'studentData' => $studentData,
+                ];
+            }
+        }
+    
+        $grading = GradingSystem::first();
+        $hod = hod::where('course', $programme)->first();
+    
+        $grades = [
+            ['min' => $grading->grade01, 'max' => $grading->grade02, 'unit' => $grading->unit01, 'letter_grade' => $grading->lgrade1],
+            // ... same as earlier
+        ];
+    
+        return view('results.student_full_transcript', compact('allSemesters', 'grades', 'hod'));
+    
+    }
+
 
 }

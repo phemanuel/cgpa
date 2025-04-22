@@ -6,7 +6,7 @@
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-  <title>E-Result :: Course</title>
+  <title>E-Result :: Transcript</title>
   <!-- General CSS Files -->
   <link rel="stylesheet" href="{{asset('dashboard/assets/css/app.min.css')}}">
   <!-- Template CSS -->
@@ -15,8 +15,6 @@
   <!-- Custom style CSS -->
   <link rel="stylesheet" href="{{asset('dashboard/assets/css/custom.css')}}">
   <link rel='shortcut icon' type='image/x-icon' href="{{asset('dashboard/assets/img/favicon.png')}}" />
-  
-
   <style>
     /* Success Alert */
     .alert.alert-success {
@@ -99,7 +97,7 @@
                 <li><a class="nav-link" href="{{route('student-migration')}}">Student Migration</a></li>                
               </ul>
             </li>
-            <li class="dropdown">
+            <li class="dropdown active">
               <a href="#" class="nav-link menu-toggle nav-link has-dropdown"><i data-feather="clipboard"></i><span>Result</span></a>
               <ul class="dropdown-menu">
                 <li><a class="nav-link" href="{{route('result-entry')}}">Result Entry</a></li>
@@ -110,7 +108,7 @@
                 <li><a class="nav-link" href="{{route('student-transcript')}}">Student Transcript</a></li>
               </ul>
             </li>
-            <li class="dropdown active">
+            <li class="dropdown">
               <a href="{{route('course-setup')}}" class="nav-link"><i data-feather="book"></i><span>Course</span></a>
             </li>
             <li class="dropdown">
@@ -150,7 +148,7 @@
                 <li><a class="nav-link" href="{{route('student-migration')}}">Student Migration</a></li>                
               </ul>
             </li>
-            <li class="dropdown">
+            <li class="dropdown active">
               <a href="#" class="nav-link menu-toggle nav-link has-dropdown"><i data-feather="clipboard"></i><span>Result</span></a>
               <ul class="dropdown-menu">
                 <li><a class="nav-link" href="{{route('result-entry')}}">Result Entry</a></li>
@@ -161,7 +159,7 @@
                 <li><a class="nav-link" href="{{route('student-transcript')}}">Student Transcript</a></li>
               </ul>
             </li>
-            <li class="dropdown active">
+            <li class="dropdown">
               <a href="{{route('course-setup')}}" class="nav-link"><i data-feather="book"></i><span>Course</span></a>
             </li>
             <li class="dropdown">
@@ -194,7 +192,7 @@
             <li class="dropdown">
               <a href="{{route('class-list')}}" class="nav-link"><i data-feather="list"></i><span>Class List</span></a>
             </li>            
-            <li class="dropdown">
+            <li class="dropdown active">
               <a href="#" class="nav-link menu-toggle nav-link has-dropdown"><i data-feather="clipboard"></i><span>Result</span></a>
               <ul class="dropdown-menu">
                 <li><a class="nav-link" href="{{route('result-entry')}}">Result Entry</a></li>
@@ -204,7 +202,7 @@
                 <li><a class="nav-link" href="{{route('cgpa-summary')}}">CGPA Summary</a></li>                
               </ul>
             </li>
-            <li class="dropdown active">
+            <li class="dropdown">
               <a href="{{route('course-setup')}}" class="nav-link"><i data-feather="book"></i><span>Course</span></a>
             </li>
             <li class="dropdown">
@@ -346,12 +344,9 @@
             <div class="row">
               <div class="col-12 col-md-6 col-lg-6">
                 <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h4 class="mb-0">Course Curriculum</h4>
-                    <!-- <a href="#" class="btn btn-outline-primary">
-                        <i class="fas fa-book"></i> Create Course Curriculum
-                    </a> -->
-                </div>
+                  <div class="card-header">
+                  <h4>Student Transcript</h4>
+                  </div>
                   @if(session('success'))
                     <div class="alert alert-success">
                       {{ session('success') }}
@@ -361,10 +356,10 @@
                       {{ session('error') }}
                     </div>
                     @endif	
+                    
                   <div class="card-body">
-                  <form action="{{route('course-list')}}">
-                    <!-- @csrf                    -->
-
+                  <form action="{{route('student-transcript-action')}}" method="POST">
+                    @csrf      
                     <div class="form-group">
                         <label>Programme</label>
                         <select name="programme" id="" class="form-control">                            
@@ -373,42 +368,35 @@
                                 <option value="{{ $d->department }}">{{ $d->department }}</option>
                             @endforeach
                         </select>
-                        <p>                           
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#createProgrammeModal">
-                            <i class="fas fa-plus"></i> Create Programme
-                        </a>
-                        </p>
                     </div>
                     @error('programme')
                         <span class="invalid-feedback">{{ $message }}</span>
+                    @enderror
+
+                    @php
+                        $startYear = 2018;
+                        $currentYear = date('Y');
+                        $endYear = $currentYear + 1; // Include the current year in the loop
+                    @endphp
+                    <div class="form-group">
+                        <label>Admission Year</label>
+                        <select name="acad_session" id="acad_session" class="form-control">
+                        <option value="">Select Admission Year</option>
+                            @for ($year = $startYear; $year < $endYear; $year++)
+                                @php
+                                    $nextYear = $year + 1;
+                                @endphp
+                                <!-- <option value="{{ $year }}/{{ $nextYear }}">{{ $year }}/{{ $nextYear }}</option> -->
+                                <option value="{{ $year }}">{{ $year }}</option>
+                            @endfor
+                        </select>
+                    </div>
+                    @error('acad_session')
+                        <span class="invalid-feedback">{{ $message }}</span>
                     @enderror                   
 
-                    <div class="form-group">
-                        <label>Academic Level</label>
-                        <select name="stdLevel" id="" class="form-control">                            
-                            <!-- Loop through levels -->
-                            @foreach($allLevel as $d)
-                                <option value="{{ $d->level }}">{{ $d->level }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    @error('stdLevel')
-                        <span class="invalid-feedback">{{ $message }}</span>
-                    @enderror
-
-                    <div class="form-group">
-                        <label>Semester</label>
-                        <select name="semester" id="" class="form-control"> 
-                                <option value="FIRST">FIRST</option> 
-                                <option value="SECOND">SECOND</option>                          
-                        </select>
-                    </div>
-                    @error('semester')
-                        <span class="invalid-feedback">{{ $message }}</span>
-                    @enderror
-
                     <div class="card-footer text-right">
-                        <input class="btn btn-primary mr-1" type="submit" value="Preview" />
+                        <input class="btn btn-primary mr-1" type="submit" value="Proceed" />
                         <!-- <input class="btn btn-secondary" type="reset" value="Reset" /> -->
                     </div>
                 </form>
@@ -420,50 +408,6 @@
             </div>
           </div>
         </section>
-
-        <!-- Modal -->
-<div class="modal fade" id="createProgrammeModal" tabindex="-1" aria-labelledby="createProgrammeLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <form action="{{ route('programme.store') }}" method="POST">
-      @csrf
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="createProgrammeLabel">Create Programme</h5>
-          <button type="button" class="btn btn-light" data-bs-dismiss="modal" aria-label="Close">
-    <i class="fas fa-times"></i>
-</button>
-        </div>
-        <div class="modal-body">
-          <div class="mb-3">
-            <label>Department</label>
-            <select name="dept" class="form-control" required>
-              @foreach($department as $d)
-                <option value="{{ $d->dept_name }}">{{ $d->dept_name }}</option>
-              @endforeach
-            </select>
-            
-          </div>
-          <div class="mb-3">
-            <label>Programme Name</label>
-            <input type="text" name="dept_name" class="form-control" required>
-          </div>
-          <div class="mb-3">
-            <label>Programme Duration</label>
-            <input type="text" name="dept_duration" class="form-control" required>
-          </div>
-          <div class="mb-3">
-            <label>Abbreviation</label>
-            <input type="text" name="dept_abbr" class="form-control" required>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-primary">Save Programme</button>
-        </div>
-      </div>
-    </form>
-  </div>
-</div>
-
         <div class="settingSidebar">
           <a href="javascript:void(0)" class="settingPanelToggle"> <i class="fa fa-spin fa-cog"></i>
           </a>
@@ -575,7 +519,6 @@
   <script src="{{asset('dashboard/assets/js/scripts.js')}}"></script>
   <!-- Custom JS File -->
   <script src="{{asset('dashboard/assets/js/custom.js')}}"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 
