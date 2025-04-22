@@ -45,7 +45,8 @@
             <td></td>
             <td rowspan="6" style="text-align: center; vertical-align: middle;">
                 {{-- Show grade only in Second semester --}}
-                @if ($semester['semester'] === 'Second' && isset($student['cgpa']))
+                <!-- 3 year course 100-300 -->
+                @if ($semester['semester'] === 'Second' && $student['class'] == 100 && $student['courseDuration'] == 3  && isset($student['cgpa']))
                     @php $cgpa = $student['cgpa']; @endphp
                     <div style="font-size: 13px; margin-bottom: 8px;">
                         @if ($cgpa < 2.0)
@@ -60,6 +61,137 @@
                             <span class="badge bg-success text-white">Distinction</span>
                         @endif
                     </div>
+                <!-- ----------------------------- -->
+                @elseif ($semester['semester'] === 'Second' && $student['class'] == 200 && $student['courseDuration'] == 3  && isset($student['cgpa']))
+                    @php $cgpa = $student['cgpa']; @endphp
+                    <div style="font-size: 13px; margin-bottom: 8px;">
+                        @if ($cgpa < 2.0)
+                            <span class="badge bg-danger text-white">Fail</span>
+                        @elseif ($cgpa >= 2.0 && $cgpa <= 2.49)
+                            <span class="badge bg-warning text-white">Pass</span>
+                        @elseif ($cgpa >= 2.5 && $cgpa <= 2.9)
+                            <span class="badge bg-info text-white">Lower Credit</span>
+                        @elseif ($cgpa >= 3.0 && $cgpa <= 3.49)
+                            <span class="badge bg-primary text-white">Upper Credit</span>
+                        @elseif ($cgpa >= 3.5 && $cgpa <= 4.0)
+                            <span class="badge bg-success text-white">Distinction</span>
+                        @endif
+                    </div>
+                    <!-- ----------------------------- -->
+                    @elseif ($semester['semester'] === 'Second' && $student['class'] == 300 && $student['courseDuration'] == 3  && isset($student['totalcgpa']))
+                    @php $cgpa = $student['totalcgpa']; @endphp
+                    <div style="font-size: 13px; margin-bottom: 8px;">
+                        @if ($cgpa < 2.0)
+                            <span class="badge bg-danger text-white">Fail</span>
+                        @elseif ($cgpa >= 2.0 && $cgpa <= 2.49)
+                            <span class="badge bg-warning text-white">Pass</span>
+                        @elseif ($cgpa >= 2.5 && $cgpa <= 2.9)
+                            <span class="badge bg-info text-white">Lower Credit</span>
+                        @elseif ($cgpa >= 3.0 && $cgpa <= 3.49)
+                            <span class="badge bg-primary text-white">Upper Credit</span>
+                        @elseif ($cgpa >= 3.5 && $cgpa <= 4.0)
+                            <span class="badge bg-success text-white">Distinction</span>
+                        @endif
+                    </div>
+                    <!-- 2 year course 100-200 -->
+                @elseif ($semester['semester'] === 'Second' && $student['class'] == 100 && $student['courseDuration'] == 2  && isset($student['cgpa']))
+                    @php $cgpa = $student['cgpa']; @endphp
+                    <div style="font-size: 13px; margin-bottom: 8px;">
+                        @if ($cgpa < 2.0)
+                            <span class="badge bg-danger text-white">Fail</span>
+                        @elseif ($cgpa >= 2.0 && $cgpa <= 2.49)
+                            <span class="badge bg-warning text-white">Pass</span>
+                        @elseif ($cgpa >= 2.5 && $cgpa <= 2.9)
+                            <span class="badge bg-info text-white">Lower Credit</span>
+                        @elseif ($cgpa >= 3.0 && $cgpa <= 3.49)
+                            <span class="badge bg-primary text-white">Upper Credit</span>
+                        @elseif ($cgpa >= 3.5 && $cgpa <= 4.0)
+                            <span class="badge bg-success text-white">Distinction</span>
+                        @endif
+                    </div>
+                <!-- ----------------------------- -->
+                @elseif ($semester['semester'] === 'Second' && $student['class'] == 200 && $student['courseDuration'] == 2  && isset($student['totalcgpa']))
+                    @php $cgpa = $student['totalcgpa']; @endphp
+                    <div style="font-size: 13px; margin-bottom: 8px;">
+                        @if ($cgpa < 2.0)
+                            <span class="badge bg-danger text-white">Fail</span>
+                        @elseif ($cgpa >= 2.0 && $cgpa <= 2.49)
+                            <span class="badge bg-warning text-white">Pass</span>
+                        @elseif ($cgpa >= 2.5 && $cgpa <= 2.9)
+                            <span class="badge bg-info text-white">Lower Credit</span>
+                        @elseif ($cgpa >= 3.0 && $cgpa <= 3.49)
+                            <span class="badge bg-primary text-white">Upper Credit</span>
+                        @elseif ($cgpa >= 3.5 && $cgpa <= 4.0)
+                            <span class="badge bg-success text-white">Distinction</span>
+                        @endif
+                    </div>
+
+                    <!-- 2 year course NDI-NDII -->
+                @elseif ($semester['semester'] === 'Second' && $student['class'] == NDI && $student['courseDuration'] == 2  && isset($student['cgpa']))
+                    @php $cgpa = $student['cgpa']; @endphp
+                    <div style="font-size: 13px; margin-bottom: 8px;">
+                        @if ($cgpa < 2.0)
+                            <span class="badge bg-danger text-white">Fail</span>
+                        @elseif ($cgpa >= 2.0 && $cgpa <= 2.49)
+                            <span class="badge bg-warning text-white">Pass</span>
+                        @elseif ($cgpa >= 2.5 && $cgpa <= 2.9)
+                            <span class="badge bg-info text-white">Lower Credit</span>
+                        @elseif ($cgpa >= 3.0 && $cgpa <= 3.49)
+                            <span class="badge bg-primary text-white">Upper Credit</span>
+                        @elseif ($cgpa >= 3.5 && $cgpa <= 4.0)
+                            <span class="badge bg-success text-white">Distinction</span>
+                        @endif
+                    </div>
+                <!-- ----------------------------- -->
+                @elseif ($semester['semester'] === 'Second' && $student['class'] == NDII && $student['courseDuration'] == 2  && isset($student['totalcgpa']))
+                    @php $cgpa = $student['totalcgpa']; @endphp
+                    <div style="font-size: 13px; margin-bottom: 8px;">
+                        @if ($cgpa < 2.0)
+                            <span class="badge bg-danger text-white">Fail</span>
+                        @elseif ($cgpa >= 2.0 && $cgpa <= 2.49)
+                            <span class="badge bg-warning text-white">Pass</span>
+                        @elseif ($cgpa >= 2.5 && $cgpa <= 2.9)
+                            <span class="badge bg-info text-white">Lower Credit</span>
+                        @elseif ($cgpa >= 3.0 && $cgpa <= 3.49)
+                            <span class="badge bg-primary text-white">Upper Credit</span>
+                        @elseif ($cgpa >= 3.5 && $cgpa <= 4.0)
+                            <span class="badge bg-success text-white">Distinction</span>
+                        @endif
+                    </div>
+
+                     <!-- 2 year course HNDI-HNDII -->
+                @elseif ($semester['semester'] === 'Second' && $student['class'] == HNDI && $student['courseDuration'] == 2  && isset($student['cgpa']))
+                    @php $cgpa = $student['cgpa']; @endphp
+                    <div style="font-size: 13px; margin-bottom: 8px;">
+                        @if ($cgpa < 2.0)
+                            <span class="badge bg-danger text-white">Fail</span>
+                        @elseif ($cgpa >= 2.0 && $cgpa <= 2.49)
+                            <span class="badge bg-warning text-white">Pass</span>
+                        @elseif ($cgpa >= 2.5 && $cgpa <= 2.9)
+                            <span class="badge bg-info text-white">Lower Credit</span>
+                        @elseif ($cgpa >= 3.0 && $cgpa <= 3.49)
+                            <span class="badge bg-primary text-white">Upper Credit</span>
+                        @elseif ($cgpa >= 3.5 && $cgpa <= 4.0)
+                            <span class="badge bg-success text-white">Distinction</span>
+                        @endif
+                    </div>
+                <!-- ----------------------------- -->
+                @elseif ($semester['semester'] === 'Second' && $student['class'] == HNDII && $student['courseDuration'] == 2  && isset($student['totalcgpa']))
+                    @php $cgpa = $student['totalcgpa']; @endphp
+                    <div style="font-size: 13px; margin-bottom: 8px;">
+                        @if ($cgpa < 2.0)
+                            <span class="badge bg-danger text-white">Fail</span>
+                        @elseif ($cgpa >= 2.0 && $cgpa <= 2.49)
+                            <span class="badge bg-warning text-white">Pass</span>
+                        @elseif ($cgpa >= 2.5 && $cgpa <= 2.9)
+                            <span class="badge bg-info text-white">Lower Credit</span>
+                        @elseif ($cgpa >= 3.0 && $cgpa <= 3.49)
+                            <span class="badge bg-primary text-white">Upper Credit</span>
+                        @elseif ($cgpa >= 3.5 && $cgpa <= 4.0)
+                            <span class="badge bg-success text-white">Distinction</span>
+                        @endif
+                    </div>
+                    
                 @endif
 
                 {{-- Signature and HOD name --}}
@@ -77,7 +209,8 @@
             <td>{{ $student['totalUnits'] }}</td>
             <td></td>
         </tr>
-
+        
+        <!-- 3 year course -- 100-300 -->
         @if ($semester['semester'] === 'First' && $student['class'] == 100 && $student['courseDuration'] == 3)
             <tr>
                 <td><strong>GPA:</strong></td>
@@ -130,6 +263,42 @@
             </tr>
         @elseif ($semester['semester'] === 'Second' && $student['class'] == 300 && $student['courseDuration'] == 3)
             <tr>
+                <td><strong>CGPA(First):</strong></td>
+                <td>{{ $student['cgpa1'] ?? '-' }}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><strong>GPA(Second):</strong></td>
+                <td>{{ $student['cgpa2'] ?? '-' }}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><strong>GPA(Third):</strong></td>
+                <td>{{ $student['cgpa3'] ?? '-' }}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><strong>FINAL-CGPA:</strong></td>
+                <td>{{ $student['totalcgpa'] ?? '-' }}</td>
+                <td></td>
+            </tr>
+
+            <!-- end -->
+             <!-- 2 year course 100-200 -->
+        @elseif ($semester['semester'] === 'First' && $student['class'] == 100 && $student['courseDuration'] == 2)
+            <tr>
+                <td><strong>GPA:</strong></td>
+                <td>{{ $student['totalGPA'] ?? 'N/A' }}</td>
+                <td></td>
+            </tr>
+        @elseif ($semester['semester'] === 'First' && $student['class'] == 200 && $student['courseDuration'] == 2)
+            <tr>
+                <td><strong>GPA:</strong></td>
+                <td>{{ $student['totalGPA'] ?? 'N/A' }}</td>
+                <td></td>
+            </tr>        
+        @elseif ($semester['semester'] === 'Second' && $student['class'] == 100 && $student['courseDuration'] == 2)
+            <tr>
                 <td><strong>GPA 1:</strong></td>
                 <td>{{ $student['gpa1'] ?? '-' }}</td>
                 <td></td>
@@ -144,6 +313,130 @@
                 <td>{{ $student['cgpa'] ?? '-' }}</td>
                 <td></td>
             </tr>
+        @elseif ($semester['semester'] === 'Second' && $student['class'] == 200 && $student['courseDuration'] == 2)
+        <tr>
+                <td><strong>CGPA(First):</strong></td>
+                <td>{{ $student['cgpa1'] ?? '-' }}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><strong>GPA(Second):</strong></td>
+                <td>{{ $student['cgpa2'] ?? '-' }}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><strong>GPA(Third):</strong></td>
+                <td>{{ $student['cgpa3'] ?? '-' }}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><strong>FINAL-CGPA:</strong></td>
+                <td>{{ $student['totalcgpa'] ?? '-' }}</td>
+                <td></td>
+            </tr>    
+            <!-- end -->
+             <!-- 2 year course NDI-NDII -->
+        @elseif ($semester['semester'] === 'First' && $student['class'] == NDI && $student['courseDuration'] == 2)
+            <tr>
+                <td><strong>GPA:</strong></td>
+                <td>{{ $student['totalGPA'] ?? 'N/A' }}</td>
+                <td></td>
+            </tr>
+        @elseif ($semester['semester'] === 'First' && $student['class'] == NDII && $student['courseDuration'] == 2)
+            <tr>
+                <td><strong>GPA:</strong></td>
+                <td>{{ $student['totalGPA'] ?? 'N/A' }}</td>
+                <td></td>
+            </tr>        
+        @elseif ($semester['semester'] === 'Second' && $student['class'] == NDI && $student['courseDuration'] == 2)
+            <tr>
+                <td><strong>GPA 1:</strong></td>
+                <td>{{ $student['gpa1'] ?? '-' }}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><strong>GPA 2:</strong></td>
+                <td>{{ $student['gpa2'] ?? '-' }}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><strong>CGPA:</strong></td>
+                <td>{{ $student['cgpa'] ?? '-' }}</td>
+                <td></td>
+            </tr>
+        @elseif ($semester['semester'] === 'Second' && $student['class'] == NDII && $student['courseDuration'] == 2)
+        <tr>
+                <td><strong>CGPA(First):</strong></td>
+                <td>{{ $student['cgpa1'] ?? '-' }}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><strong>GPA(Second):</strong></td>
+                <td>{{ $student['cgpa2'] ?? '-' }}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><strong>GPA(Third):</strong></td>
+                <td>{{ $student['cgpa3'] ?? '-' }}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><strong>FINAL-CGPA:</strong></td>
+                <td>{{ $student['totalcgpa'] ?? '-' }}</td>
+                <td></td>
+            </tr>      
+            <!-- end -->
+             <!-- 2 year course HNDI-HNDII -->
+        @elseif ($semester['semester'] === 'First' && $student['class'] == HNDI && $student['courseDuration'] == 2)
+            <tr>
+                <td><strong>GPA:</strong></td>
+                <td>{{ $student['totalGPA'] ?? 'N/A' }}</td>
+                <td></td>
+            </tr>
+        @elseif ($semester['semester'] === 'First' && $student['class'] == HNDII && $student['courseDuration'] == 2)
+            <tr>
+                <td><strong>GPA:</strong></td>
+                <td>{{ $student['totalGPA'] ?? 'N/A' }}</td>
+                <td></td>
+            </tr>        
+        @elseif ($semester['semester'] === 'Second' && $student['class'] == HNDI && $student['courseDuration'] == 2)
+            <tr>
+                <td><strong>GPA 1:</strong></td>
+                <td>{{ $student['gpa1'] ?? '-' }}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><strong>GPA 2:</strong></td>
+                <td>{{ $student['gpa2'] ?? '-' }}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><strong>CGPA:</strong></td>
+                <td>{{ $student['cgpa'] ?? '-' }}</td>
+                <td></td>
+            </tr>
+        @elseif ($semester['semester'] === 'Second' && $student['class'] == HNDII && $student['courseDuration'] == 2)
+        <tr>
+                <td><strong>CGPA(First):</strong></td>
+                <td>{{ $student['cgpa1'] ?? '-' }}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><strong>GPA(Second):</strong></td>
+                <td>{{ $student['cgpa2'] ?? '-' }}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><strong>GPA(Third):</strong></td>
+                <td>{{ $student['cgpa3'] ?? '-' }}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><strong>FINAL-CGPA:</strong></td>
+                <td>{{ $student['totalcgpa'] ?? '-' }}</td>
+                <td></td>
+            </tr>       
+            <!-- end -->
         @endif
 
         <tr>
