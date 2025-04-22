@@ -909,6 +909,7 @@ class ResultController extends Controller
             $totalGradePointsCombined = $gpaPoints + $firstSemesterData[$index]['totalGradePoints'];
 
             $combinedGPA = ($gpaFirst + $gpa) / 2;
+            // $combinedGPA = ($totalGradePointsCombined / $totalCourseUnitsCombined);
             $combinedRemark = $combinedGPA < 1.5 ? 'Advised to withdraw' : ($totalFailedCoursesCombined > 3 ? 'Repeat' : 'No Remark');
 
             $studentData[$index]['combinedGPA'] = $combinedGPA;  // Store combined GPA in studentData
@@ -949,7 +950,7 @@ class ResultController extends Controller
                 $compute->gpa1 = $firstSemesterData[$index]['gpa']; // First semester GPA
                 $compute->gpa  = $data['totalGPA']; // Second semester GPA
                 $compute->gpa2 = $data['totalGPA']; // Second semester GPA
-                $compute->cgpa = round(($data['totalGPA'] + $firstSemesterData[$index]['gpa']) / 2, 2); // Combined CGPA
+                $compute->cgpa = number_format(($totalGradePointsCombined / $totalCourseUnitsCombined), 2); // Combined CGPA
                 
                 // Store combined data for both semesters
                 $compute->all_total_failed_course = $totalFailedCoursesCombined; // Total failed courses across both semesters
@@ -1449,8 +1450,8 @@ class ResultController extends Controller
                 $compute->gpa1 = $firstSemesterData[$index]['gpa']; // First semester GPA
                 $compute->gpa  = $data['totalGPA']; // Second semester GPA
                 $compute->gpa2 = $data['totalGPA']; // Second semester GPA
-                $compute->cgpa = round(($data['totalGPA'] + $firstSemesterData[$index]['gpa']) / 2, 2); // Combined CGPA
-                
+                // $compute->cgpa = round(($data['totalGPA'] + $firstSemesterData[$index]['gpa']) / 2, 2); // Combined CGPA
+                $compute->cgpa = number_format(($totalGradePointsCombined / $totalCourseUnitsCombined), 2);
                 // Store combined data for both semesters
                 $compute->all_total_failed_course = $totalFailedCoursesCombined; // Total failed courses across both semesters
                 $compute->all_total_course_unit = $totalCourseUnitsCombined; // Total course units across both semesters
@@ -1951,7 +1952,8 @@ class ResultController extends Controller
                 $compute->gpa1 = $firstSemesterData[$index]['gpa']; // First semester GPA
                 $compute->gpa  = $data['totalGPA']; // Second semester GPA
                 $compute->gpa2 = $data['totalGPA']; // Second semester GPA
-                $compute->cgpa = round(($data['totalGPA'] + $firstSemesterData[$index]['gpa']) / 2, 2); // Combined CGPA
+                // $compute->cgpa = round(($data['totalGPA'] + $firstSemesterData[$index]['gpa']) / 2, 2); // Combined CGPA
+                $compute->cgpa = number_format(($totalGradePointsCombined / $totalCourseUnitsCombined), 2);
                 
                 // Store combined data for both semesters
                 $compute->all_total_failed_course = $totalFailedCoursesCombined; // Total failed courses across both semesters
@@ -2011,7 +2013,9 @@ class ResultController extends Controller
     // Return the success message
     // return redirect()->route('result-compute')->with('success', 'Result Computed Successfully.');
 
-        $this->calculateFinalCgpa($acadSession, $programme, $level, $semester,$courseDuration);        
+        $this->calculateFinalCgpa($acadSession, $programme, $level, $semester,$courseDuration);    
+        // Return with success message
+        return redirect()->route('result-compute')->with('success', 'Results Computed Successfully.');    
     }
 
     public function calculateFinalCgpa($acadSession, $programme, $level, $semester, $courseDuration)
@@ -2028,20 +2032,20 @@ class ResultController extends Controller
         // Step 2: Loop through each student result
         foreach ($results as $result) {
             // Step 3: Get the relevant CGPA and grade points based on duration and level
-            if ($courseDuration == 2) {
+            if ($courseDuration == 2 and $level == 200) {
                 // Fetch CGPA and grade points for 100 level and 200 level second semesters
                 $firstLevelData = ResultCompute::where('class', 100)
                                             ->where('semester', 'second')
                                             ->where('session1', $acadSession)
                                             ->where('course', $programme)
-                                            ->where('admission_no', $result->admission_no) // Assuming student_id exists
+                                            ->where('admission_no', $result->admission_no) 
                                             ->first();
 
                 $secondLevelData = ResultCompute::where('class', 200)
                                                 ->where('semester', 'second')
                                                 ->where('session1', $acadSession)
                                                 ->where('course', $programme)
-                                                ->where('admission_no', $result->admission_no) // Assuming student_id exists
+                                                ->where('admission_no', $result->admission_no) 
                                                 ->first();
 
                 // Fetch CGPA for the first and second levels
@@ -2069,24 +2073,108 @@ class ResultController extends Controller
                     $secondLevelData->total_grade_point_new = $totalGradePoints;
                     $secondLevelData->total_course_unit_new = $totalCourseUnits;
                     $secondLevelData->save();
-                }
-                // Return with success message
-        return redirect()->route('result-compute')->with('success', 'Results Computed Successfully for all students.');
+                }                
         
-            } elseif ($courseDuration == 3) {
+            } elseif ($courseDuration == 2 and $level == NDII) {
+                // Fetch CGPA and grade points for NDI level and NDII level second semesters
+                $firstLevelData = ResultCompute::where('class', NDI)
+                                            ->where('semester', 'second')
+                                            ->where('session1', $acadSession)
+                                            ->where('course', $programme)
+                                            ->where('admission_no', $result->admission_no) 
+                                            ->first();
+
+                $secondLevelData = ResultCompute::where('class', NDII)
+                                                ->where('semester', 'second')
+                                                ->where('session1', $acadSession)
+                                                ->where('course', $programme)
+                                                ->where('admission_no', $result->admission_no) 
+                                                ->first();
+
+                // Fetch CGPA for the first and second levels
+                $cgpa100 = $firstLevelData ? $firstLevelData->cgpa : 0;
+                $cgpa200 = $secondLevelData ? $secondLevelData->cgpa : 0;
+
+                // Calculate total grade points and total course units for NDI and NDII level second semesters
+                $totalGradePoints100 = $firstLevelData ? $firstLevelData->all_total_grade_point : 0;
+                $totalCourseUnits100 = $firstLevelData ? $firstLevelData->all_total_course_unit : 0;
+
+                $totalGradePoints200 = $secondLevelData ? $secondLevelData->all_total_grade_point : 0;
+                $totalCourseUnits200 = $secondLevelData ? $secondLevelData->all_total_course_unit : 0;
+
+                // Calculate the total CGPA (sum of grade points / sum of course units)
+                $totalGradePoints = $totalGradePoints100 + $totalGradePoints200;
+                $totalCourseUnits = $totalCourseUnits100 + $totalCourseUnits200;
+
+                $totalCgpa = ($totalCourseUnits > 0) ? $totalGradePoints / $totalCourseUnits : 0;
+
+                // Save the CGPAs for the NDII level second semester
+                if ($secondLevelData) {
+                    $secondLevelData->cgpa1 = $cgpa100;
+                    $secondLevelData->cgpa2 = $cgpa200;
+                    $secondLevelData->total_cgpa = $totalCgpa;
+                    $secondLevelData->total_grade_point_new = $totalGradePoints;
+                    $secondLevelData->total_course_unit_new = $totalCourseUnits;
+                    $secondLevelData->save();
+                }                
+        
+            } elseif ($courseDuration == 2 and $level == HNDII) {
+                // Fetch CGPA and grade points for HNDI level and HNDII level second semesters
+                $firstLevelData = ResultCompute::where('class', HNDI)
+                                            ->where('semester', 'second')
+                                            ->where('session1', $acadSession)
+                                            ->where('course', $programme)
+                                            ->where('admission_no', $result->admission_no) 
+                                            ->first();
+
+                $secondLevelData = ResultCompute::where('class', HNDII)
+                                                ->where('semester', 'second')
+                                                ->where('session1', $acadSession)
+                                                ->where('course', $programme)
+                                                ->where('admission_no', $result->admission_no) 
+                                                ->first();
+
+                // Fetch CGPA for the first and second levels
+                $cgpa100 = $firstLevelData ? $firstLevelData->cgpa : 0;
+                $cgpa200 = $secondLevelData ? $secondLevelData->cgpa : 0;
+
+                // Calculate total grade points and total course units for HNDI and HNDII level second semesters
+                $totalGradePoints100 = $firstLevelData ? $firstLevelData->all_total_grade_point : 0;
+                $totalCourseUnits100 = $firstLevelData ? $firstLevelData->all_total_course_unit : 0;
+
+                $totalGradePoints200 = $secondLevelData ? $secondLevelData->all_total_grade_point : 0;
+                $totalCourseUnits200 = $secondLevelData ? $secondLevelData->all_total_course_unit : 0;
+
+                // Calculate the total CGPA (sum of grade points / sum of course units)
+                $totalGradePoints = $totalGradePoints100 + $totalGradePoints200;
+                $totalCourseUnits = $totalCourseUnits100 + $totalCourseUnits200;
+
+                $totalCgpa = ($totalCourseUnits > 0) ? $totalGradePoints / $totalCourseUnits : 0;
+
+                // Save the CGPAs for the HNDII level second semester
+                if ($secondLevelData) {
+                    $secondLevelData->cgpa1 = $cgpa100;
+                    $secondLevelData->cgpa2 = $cgpa200;
+                    $secondLevelData->total_cgpa = $totalCgpa;
+                    $secondLevelData->total_grade_point_new = $totalGradePoints;
+                    $secondLevelData->total_course_unit_new = $totalCourseUnits;
+                    $secondLevelData->save();
+                }                
+        
+            } elseif ($courseDuration == 3 and $level == 300) {
                 // Fetch CGPA and grade points for 100, 200, and 300 level second semesters
                 $firstLevelData = ResultCompute::where('class', 100)
                                             ->where('semester', 'second')
                                             ->where('session1', $acadSession)
                                             ->where('course', $programme)
-                                            ->where('admission_no', $result->admission_no) // Assuming student_id exists
+                                            ->where('admission_no', $result->admission_no) 
                                             ->first();
 
                 $secondLevelData = ResultCompute::where('class', 200)
                                                 ->where('semester', 'second')
                                                 ->where('session1', $acadSession)
                                                 ->where('course', $programme)
-                                                ->where('admission_no', $result->admission_no) // Assuming student_id exists
+                                                ->where('admission_no', $result->admission_no) 
                                                 ->first();
 
                 $thirdLevelData = ResultCompute::where('class', 300)
@@ -2129,9 +2217,7 @@ class ResultController extends Controller
                 }
             }
         }
-
-        // Return with success message
-        return redirect()->route('result-compute')->with('success', 'Results Computed Successfully for all students.');
+        
     }
 
 

@@ -11,6 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
+        //
         Schema::create('result_computes', function (Blueprint $table) {
             $table->id();
             $table->string('admission_no', 20); 
@@ -21,32 +22,34 @@ return new class extends Migration
             $table->string('semester', 20); 
             $table->string('picture_dir', 20)->nullable(); 
             $table->string('course', 100); 
-            $table->unsignedTinyInteger('sn', 5); 
+            $table->unsignedTinyInteger('sn')->nullable(); 
             $table->unsignedTinyInteger('no_of_course'); 
             $table->string('session1', 20); 
-            $table->decimal('gtotal', 5, 1)->nullable();
-            $table->decimal('gpa', 5, 1)->nullable();
+            $table->decimal('gtotal', 5, 2)->nullable();
+            $table->decimal('gpa', 5, 2)->nullable();
             $table->integer('total_course_unit')->nullable();
             $table->string('student_full_name', 100);
-            $table->decimal('gpa1', 5, 1)->nullable();
-            $table->decimal('gpa2', 5, 1)->nullable();
-            $table->decimal('cgpa', 5, 1)->nullable();
-            $table->decimal('cgpa1', 5, 1)->nullable();
-            $table->decimal('cgpa2', 5, 1)->nullable();
-            $table->decimal('cgpa3', 5, 1)->nullable();
-            $table->decimal('total_cgpa', 5, 1)->nullable();
+            $table->decimal('gpa1', 5, 2)->nullable();
+            $table->decimal('gpa2', 5, 2)->nullable();
+            $table->decimal('cgpa', 5, 2)->nullable();
+            $table->decimal('cgpa1', 5, 2)->nullable();
+            $table->decimal('cgpa2', 5, 2)->nullable();
+            $table->decimal('cgpa3', 5, 2)->nullable();
+            $table->decimal('total_cgpa', 5, 2)->nullable();
             $table->string('remark', 20)->nullable();
-            $table->unsignedTinyInteger('failed_course')->nullable();
-            $table->unsignedTinyInteger('failed_course1')->nullable();
-            $table->unsignedTinyInteger('failed_course2')->nullable();
+            $table->string('failed_course', 50)->nullable();
+            $table->string('failed_course1' , 10)->nullable();
+            $table->string('failed_course2' , 10)->nullable();
+            $table->unsignedTinyInteger('all_total_failed_course', 50)->nullable();
             $table->unsignedTinyInteger('total_failed_course')->nullable();
             $table->string('cgpa_remark', 20)->nullable();
-            $table->string('promoted', 20)->nullable();
-            $table->decimal('total_grade_point', 5, 1)->nullable();
-            $table->decimal('all_total_grade_point', 5, 1)->nullable();
+            $table->string('promoted', 10)->nullable();
+            $table->decimal('total_grade_point', 5, 2)->nullable();
+            $table->decimal('all_total_grade_point', 5, 2)->nullable();
             $table->unsignedTinyInteger('total_course_unit_new')->nullable();
             $table->unsignedTinyInteger('all_total_course_unit')->nullable();
-            $table->decimal('total_cgpa_new', 5, 1)->nullable();
+            $table->decimal('total_cgpa_new', 5, 2)->nullable();
+            $table->decimal('total_grade_point_new', 5, 2)->nullable();
             $table->string('total_remark', 20)->nullable();
 
             // Generate fields for scores and subjects
@@ -55,15 +58,15 @@ return new class extends Migration
             }
 
             for ($i = 1; $i <= 19; $i++) {
-                $table->decimal("ctotal{$i}", 5, 1)->nullable();                
+                $table->decimal("ctotal{$i}", 5, 2)->nullable();                
             }
 
             for ($i = 1; $i <= 17; $i++) {
-                $table->decimal("subjectgrade{$i}", 5)->nullable();                
+                $table->string("subjectgrade{$i}", 3)->nullable();                
             }
 
             for ($i = 1; $i <= 19; $i++) {               
-                $table->string("score{$i}", 5)->nullable(); 
+                $table->decimal("score{$i}", 5,2)->nullable(); 
             }
 
             // Generate fields for units
@@ -81,7 +84,6 @@ return new class extends Migration
             }
 
             $table->timestamps();
-
         });
     }
 
@@ -90,6 +92,7 @@ return new class extends Migration
      */
     public function down(): void
     {
+        //
         Schema::dropIfExists('result_computes');
     }
 };
