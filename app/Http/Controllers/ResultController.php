@@ -2660,7 +2660,7 @@ class ResultController extends Controller
     
                 if ($results->isEmpty()) continue;
     
-                $studentData = $results->map(function ($item) {
+                $studentData = $results->map(function ($item) use ($courseDuration) {
                     return [
                         'stusurname' => $item->student_full_name,
                         'stuno' => $item->admission_no,
@@ -2670,6 +2670,13 @@ class ResultController extends Controller
                         'totalGradePoints' => $item->total_grade_point,
                         'totalUnits' => $item->total_course_unit,
                         'totalGPA' => $item->gpa,
+                        'gpa1' => $item->gpa1 ?? 0.0,
+                        'gpa2' => $item->gpa2 ?? 0.0,
+                        'cgpa' => $item->cgpa ?? 0.0,
+                        'cgpa1' => $item->cgpa1 ?? 0.0,
+                        'cgpa2' => $item->cgpa2 ?? 0.0,
+                        'cgpa3' => $item->cgpa3 ?? 0.0,
+                        'totalcgpa' => $item->total_cgpa ?? 0.0,
                         'letterGrade' => $item->subjectgrade1,
                         'remarks' => $item->remark,
                         'failedRemarks' => $item->failed_course,
@@ -2678,6 +2685,7 @@ class ResultController extends Controller
                         'subjectGrades' => array_map(fn($i) => $item->{"subjectgrade{$i}"} ?? null, range(1, 17)),
                         'units' => array_map(fn($i) => $item->{"unit{$i}"} ?? null, range(1, 18)),
                         'scores' => array_map(fn($i) => $item->{"score{$i}"} ?? null, range(1, 19)),
+                        'courseDuration' => $courseDuration, 
                     ];
                 });
     
@@ -2694,7 +2702,11 @@ class ResultController extends Controller
     
         $grades = [
             ['min' => $grading->grade01, 'max' => $grading->grade02, 'unit' => $grading->unit01, 'letter_grade' => $grading->lgrade1],
-            // ... same as earlier
+            ['min' => $grading->grade11, 'max' => $grading->grade12, 'unit' => $grading->unit02, 'letter_grade' => $grading->lgrade2],
+            ['min' => $grading->grade21, 'max' => $grading->grade22, 'unit' => $grading->unit03, 'letter_grade' => $grading->lgrade3],
+            ['min' => $grading->grade31, 'max' => $grading->grade32, 'unit' => $grading->unit04, 'letter_grade' => $grading->lgrade4],
+            ['min' => $grading->grade41, 'max' => $grading->grade42, 'unit' => $grading->unit05, 'letter_grade' => $grading->lgrade5],
+            ['min' => $grading->grade51, 'max' => $grading->grade52, 'unit' => $grading->unit06, 'letter_grade' => $grading->lgrade6],
         ];
     
         return view('results.student_full_transcript', compact('allSemesters', 'grades', 'hod'));

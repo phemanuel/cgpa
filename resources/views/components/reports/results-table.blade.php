@@ -38,35 +38,134 @@
 
                 {{-- GPA Summary --}}
                 <table class="table table-bordered table-sm mt-4">
-                    <tbody>
-                        <tr>
-                            <td><strong>Total Grade Points:</strong></td>
-                            <td>{{ $student['totalGradePoints'] }}</td>
-                            <td></td>
-                            <td rowspan="3">
-                                <img src="{{ asset('signature/' . $hod->sign) }}" width="160" height="60">
-                            </td>
-                        </tr>
-                        <tr><td><strong>Total Units:</strong></td><td>{{ $student['totalUnits'] }}</td><td></td></tr>
-                        <tr><td><strong>GPA:</strong></td><td>{{ $student['totalGPA'] ?? 'N/A' }}</td><td></td></tr>
-                        <tr>
-                            <td><strong>Remark:</strong></td>
-                            <td>
-                                <span class="{{ $student['remarks'] === 'PASSED ALL' ? 'text-success' : 'text-danger' }}">
-                                    {{ $student['remarks'] }}
-                                </span>
-                            </td>
-                            <td></td>
-                            <td style="text-align: center;">{{ $hod->hod_name }}</td>
-                        </tr>
-                        @if (!empty($student['failedRemarks']))
-                        <tr>
-                            <td><strong>Courses with Carryover:</strong></td>
-                            <td colspan="3">{{ $student['failedRemarks'] }}</td>
-                        </tr>
+    <tbody>
+        <tr>
+            <td><strong>Total Grade Points:</strong></td>
+            <td>{{ $student['totalGradePoints'] }}</td>
+            <td></td>
+            <td rowspan="6" style="text-align: center; vertical-align: middle;">
+                {{-- Show grade only in Second semester --}}
+                @if ($semester['semester'] === 'Second' && isset($student['cgpa']))
+                    @php $cgpa = $student['cgpa']; @endphp
+                    <div style="font-size: 13px; margin-bottom: 8px;">
+                        @if ($cgpa < 2.0)
+                            <span class="badge bg-danger text-white">Fail</span>
+                        @elseif ($cgpa >= 2.0 && $cgpa <= 2.49)
+                            <span class="badge bg-warning text-white">Pass</span>
+                        @elseif ($cgpa >= 2.5 && $cgpa <= 2.9)
+                            <span class="badge bg-info text-white">Lower Credit</span>
+                        @elseif ($cgpa >= 3.0 && $cgpa <= 3.49)
+                            <span class="badge bg-primary text-white">Upper Credit</span>
+                        @elseif ($cgpa >= 3.5 && $cgpa <= 4.0)
+                            <span class="badge bg-success text-white">Distinction</span>
                         @endif
-                    </tbody>
-                </table>
+                    </div>
+                @endif
+
+                {{-- Signature and HOD name --}}
+                <div style="margin-top: 8px;">
+                    <img src="{{ asset('signature/' . $hod->sign) }}" width="160" height="60">
+                </div>
+                <div style="font-size: 13px; margin-top: 5px;">
+                    <strong>{{ $hod->hod_name }}</strong>
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td><strong>Total Units:</strong></td>
+            <td>{{ $student['totalUnits'] }}</td>
+            <td></td>
+        </tr>
+
+        @if ($semester['semester'] === 'First' && $student['class'] == 100 && $student['courseDuration'] == 3)
+            <tr>
+                <td><strong>GPA:</strong></td>
+                <td>{{ $student['totalGPA'] ?? 'N/A' }}</td>
+                <td></td>
+            </tr>
+        @elseif ($semester['semester'] === 'First' && $student['class'] == 200 && $student['courseDuration'] == 3)
+            <tr>
+                <td><strong>GPA:</strong></td>
+                <td>{{ $student['totalGPA'] ?? 'N/A' }}</td>
+                <td></td>
+            </tr>
+        @elseif ($semester['semester'] === 'First' && $student['class'] == 300 && $student['courseDuration'] == 3)
+            <tr>
+                <td><strong>GPA:</strong></td>
+                <td>{{ $student['totalGPA'] ?? 'N/A' }}</td>
+                <td></td>
+            </tr>
+        @elseif ($semester['semester'] === 'Second' && $student['class'] == 100 && $student['courseDuration'] == 3)
+            <tr>
+                <td><strong>GPA 1:</strong></td>
+                <td>{{ $student['gpa1'] ?? '-' }}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><strong>GPA 2:</strong></td>
+                <td>{{ $student['gpa2'] ?? '-' }}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><strong>CGPA:</strong></td>
+                <td>{{ $student['cgpa'] ?? '-' }}</td>
+                <td></td>
+            </tr>
+        @elseif ($semester['semester'] === 'Second' && $student['class'] == 200 && $student['courseDuration'] == 3)
+            <tr>
+                <td><strong>GPA 1:</strong></td>
+                <td>{{ $student['gpa1'] ?? '-' }}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><strong>GPA 2:</strong></td>
+                <td>{{ $student['gpa2'] ?? '-' }}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><strong>CGPA:</strong></td>
+                <td>{{ $student['cgpa'] ?? '-' }}</td>
+                <td></td>
+            </tr>
+        @elseif ($semester['semester'] === 'Second' && $student['class'] == 300 && $student['courseDuration'] == 3)
+            <tr>
+                <td><strong>GPA 1:</strong></td>
+                <td>{{ $student['gpa1'] ?? '-' }}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><strong>GPA 2:</strong></td>
+                <td>{{ $student['gpa2'] ?? '-' }}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><strong>CGPA:</strong></td>
+                <td>{{ $student['cgpa'] ?? '-' }}</td>
+                <td></td>
+            </tr>
+        @endif
+
+        <tr>
+            <td><strong>Remark:</strong></td>
+            <td>
+                <span class="{{ $student['remarks'] === 'PASSED ALL' ? 'text-success' : 'text-danger' }}">
+                    {{ $student['remarks'] }}
+                </span>
+            </td>
+            <td></td>
+            <td></td>
+        </tr>
+
+        @if (!empty($student['failedRemarks']))
+        <tr>
+            <td><strong>Courses with Carryover:</strong></td>
+            <td colspan="3">{{ $student['failedRemarks'] }}</td>
+        </tr>
+        @endif
+    </tbody>
+</table>
+
             </div>
         </div>
     </div>
