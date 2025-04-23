@@ -420,7 +420,9 @@
                     @enderror
 
                     <div class="card-footer text-right">
-                        <input class="btn btn-primary mr-1" type="submit" value="Proceed" />
+                    <button type="submit" class="btn btn-primary mr-1">
+                        <i class="fas fa-arrow-right"></i> Proceed
+                    </button>
                         <!-- <input class="btn btn-secondary" type="reset" value="Reset" /> -->
                     </div>
                 </form>

@@ -210,7 +210,7 @@ class CourseController extends Controller
             'stdLevel' => 'required|string',
             'semester' => 'required|string',
             'acadSession' => 'required|string',
-            'courseTitle' => 'required|string|unique:course,course_title,' . $id, // Ignore unique check for the current course
+            'courseTitle' => 'required|string', 
             'courseCode' => 'required|string',
             'courseUnit' => 'required|numeric',
         ]);

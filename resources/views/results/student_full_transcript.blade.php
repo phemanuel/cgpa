@@ -49,6 +49,32 @@
         display: none;
     }
 </style>
+<style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    img { max-height: 130px; }
+    .table { width: 100%; border-collapse: collapse; }
+    .table td, .table th { border: 1px solid #000; padding: 4px; }
+    .text-center { text-align: center; }
+    .text-success { color: green; }
+    .text-danger { color: red; }
+    .card { border: 1px solid #ccc; padding: 15px; margin-bottom: 20px; }
+    .card-title { font-size: 18px; font-weight: bold; }
+
+    /* PRINT STYLES */
+    @media print {
+        .print-page {
+            page-break-after: always;
+            break-after: page;
+            display: block; 
+            border: 2px dashed red;
+        }
+
+        .print-page:last-child {
+            page-break-after: auto;
+            break-after: auto;
+        }
+    }
+</style>
 </head>
 
 <body>
@@ -367,12 +393,12 @@
               <div class="card">
                 <div class="card-header">
                   <h4>
-                  <a href="{{route('result-compute')}}"  class="btn btn-outline-primary">
-                      <i class="fas fa-print"></i> Back to Result Page
+                  <a href="{{route('student-transcript')}}"  class="btn btn-outline-primary">
+                      <i class="fas fa-print"></i> Back to Transcript Page
                   </a>
                   <!-- Print Current Page -->
                   <a href="javascript:void(0)" onclick="printReport()" class="btn btn-outline-primary">
-                      <i class="fas fa-print"></i> Print Result
+                      <i class="fas fa-print"></i> Print Transcript
                   </a>
 
                   <!-- Print All Results -->
@@ -397,7 +423,7 @@
                             </div>
 
                             @foreach ($allSemesters as $semester)
-                                <h3>{{ $semester['level'] }} - {{ $semester['semester'] }} Semester</h3>
+                                <!-- <h3>{{ $semester['level'] }} - {{ $semester['semester'] }} Semester</h3> -->
                                 
                                 @foreach ($semester['studentData'] as $student)
                                     <x-reports.student-report 
@@ -412,8 +438,6 @@
                             
                         </div>  
 
-
-                        <br>
                     </div>
 
                    
@@ -425,6 +449,39 @@
 
         </section>
 
+        <!-- Hidden Container -->
+        <div id="reportToPrint" style="display: none;">
+    <div class="container mt-4">
+
+        <!-- <div class="text-center mb-4">
+            <img src="{{ asset('dashboard/assets/img/logo.png') }}" alt="College Logo" style="height: 100px;">
+            <h3 class="mt-2">{{ strtoupper('Oyo State College of Health Science and Technology') }}</h3>
+            <p>Eleyele, Ibadan, Oyo State, Nigeria.</p>
+        </div> -->
+
+        @foreach ($allSemesters as $semester)
+            @foreach ($semester['studentData'] as $student)
+                <div class="print-page">
+                  <div class="text-center mb-4">
+                      <img src="{{ asset('dashboard/assets/img/logo.png') }}" alt="College Logo" style="height: 100px;">
+                      <h3 class="mt-2">{{ strtoupper('Oyo State College of Health Science and Technology') }}</h3>
+                      <p>Eleyele, Ibadan, Oyo State, Nigeria.</p>
+                  </div>
+                    <x-reports.student-report1 
+                        :student="$student" 
+                        :semester="$semester" 
+                        :grades="$grades" 
+                        :hod="$hod" 
+                    />
+                </div>
+            @endforeach
+        @endforeach
+
+    </div>
+</div>
+
+
+  </div>
 
         <div class="settingSidebar">
           <a href="javascript:void(0)" class="settingPanelToggle"> <i class="fa fa-spin fa-cog"></i>
@@ -551,7 +608,7 @@ function printReport() {
     printWindow.document.write(`
         <html>
         <head>
-            <title>Print Academic Report</title>
+            <title>Academic Report</title>
             <link rel="stylesheet" href="{{ asset('dashboard/assets/css/bootstrap.min.css') }}">
             <style>
                 body { font-family: Arial, sans-serif; margin: 20px; }
@@ -594,6 +651,39 @@ function printReport() {
             }
         });
     }
+</script>
+
+<script>
+function printReport() {
+    const reportContent = document.getElementById('reportToPrint').innerHTML;
+
+    const printWindow = window.open('', '', 'height=800,width=1000');
+
+    printWindow.document.write(`
+        <html>
+        <head>
+            <title>Print Academic Report</title>
+            <link rel="stylesheet" href="{{ asset('dashboard/assets/css/bootstrap.min.css') }}">
+            <style>
+                body { font-family: Arial, sans-serif; margin: 20px; }
+                img { max-height: 130px; }
+                .table { width: 100%; border-collapse: collapse; }
+                .table td, .table th { border: 1px solid #000; padding: 4px; }
+                .text-center { text-align: center; }
+                .text-success { color: green; }
+                .text-danger { color: red; }
+                .card { border: 1px solid #ccc; padding: 15px; margin-bottom: 20px; }
+                .card-title { font-size: 18px; font-weight: bold; }
+            </style>
+        </head>
+        <body onload="window.print(); window.close();">
+            ${reportContent}
+        </body>
+        </html>
+    `);
+
+    printWindow.document.close();
+}
 </script>
 
 

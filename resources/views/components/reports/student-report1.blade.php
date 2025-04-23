@@ -1,7 +1,9 @@
 @props(['student', 'semester', 'grades', 'hod'])
 
 {{-- Begin Student Report --}}
-<div class="card mb-4">
+<div style="page-break-after: always;">
+    {{-- Existing report content here --}}
+    <div class="card mb-4">
     <div class="card-body">
     
 
@@ -34,4 +36,6 @@
 </div>
 
 {{-- Results --}}
-@include('components.reports.results-table', ['student' => $student, 'grades' => $grades, 'hod' => $hod])
+@include('components.reports.results-table1', ['student' => $student, 'grades' => $grades, 'hod' => $hod])
+</div>
+

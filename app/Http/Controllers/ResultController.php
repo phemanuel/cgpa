@@ -2713,5 +2713,10 @@ class ResultController extends Controller
     
     }
 
+    public function cgpaSummary()
+    {
+        return redirect()->route('page-development'); 
+    }
+
 
 }

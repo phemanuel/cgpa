@@ -364,7 +364,7 @@
                         <label>Programme</label>
                         <select name="programme" id="" class="form-control">
                             <option value="{{$course->course}}">{{$course->course}}</option>
-                        </select>
+                        </select> 
                     </div>
                     @error('programme')
                         <span class="invalid-feedback">{{ $message }}</span>
