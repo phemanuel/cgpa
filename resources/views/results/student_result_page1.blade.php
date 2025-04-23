@@ -655,11 +655,11 @@
                                     <tr>
                                         <td rowspan="4" style="width: 150px; text-align: center;">
                                         @php
-                                            $imagePath = public_path('uploads/' . $student['studpicture'] . '.jpg');
-                                            $imageUrl = file_exists($imagePath) 
-                                                ? asset('uploads/' . $student['studpicture'] . '.jpg') 
-                                                : asset('uploads/blank.jpg');
-                                        @endphp
+                        $imagePath = public_path('uploads/' . $student['studpicture'] . '.jpg');
+                        $imageUrl = file_exists($imagePath) 
+                            ? asset('uploads/' . $student['studpicture'] . '.jpg') 
+                            : asset('uploads/blank.jpg');
+                    @endphp
 
                                         <img 
                                             src="{{ $imageUrl }}" 

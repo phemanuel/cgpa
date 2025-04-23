@@ -675,11 +675,11 @@
                                     <tr>
                                         <td rowspan="4" style="width: 150px; text-align: center;">
                                         @php
-                                            $imagePath = public_path('uploads/' . $student['studpicture'] . '.jpg');
-                                            $imageUrl = file_exists($imagePath) 
-                                                ? asset('uploads/' . $student['studpicture'] . '.jpg') 
-                                                : asset('uploads/blank.jpg');
-                                        @endphp
+                        $imagePath = public_path('uploads/' . $student['studpicture'] . '.jpg');
+                        $imageUrl = file_exists($imagePath) 
+                            ? asset('uploads/' . $student['studpicture'] . '.jpg') 
+                            : asset('uploads/blank.jpg');
+                    @endphp
 
                                         <img 
                                             src="{{ $imageUrl }}" 
@@ -754,53 +754,74 @@
                                                     <tr>
                                                         <td style="font-size: 13px;"><strong>Total Grade Points:</strong></td>
                                                         <td style="font-size: 13px;">{{ $student['totalGradePoints'] }}</td>
-                                                        <td style="font-size: 13px;"><strong>Remark:</strong></td>
-                                                        <td style="font-size: 13px;"><span class="{{ $student['remarks'] === 'PASSED ALL' ? 'text-success' : 'text-danger' }}">{{ $student['remarks'] }} </span></td>
+                                                        <td style="font-size: 13px;"><strong>Total Grade Point:</strong></td>
+                                                        <td style="text-align: center; font-size: 13px;">{{$student['total_grade_point_new']}}</td>                                                        
                                                     </tr>
                                                     <tr>
                                                         <td style="font-size: 13px;"><strong>Total Units:</strong></td>
                                                         <td style="font-size: 13px;">{{ $student['totalUnits'] }}</td>
-                                                        <td style="font-size: 13px;"><strong>Grade:</strong></td>
-                                                        <td style="font-size: 13px;">
-                                                            @php
-                                                                $cgpa = $student['totalCGPA'];
-                                                            @endphp
-
-                                                            @if($cgpa < 2.0)
-                                                                <span class="badge bg-danger">Fail</span>
-                                                            @elseif($cgpa >= 2.0 && $cgpa <= 2.49)
-                                                                <span class="badge bg-warning text-dark">Pass</span>
-                                                            @elseif($cgpa >= 2.5 && $cgpa <= 2.9)
-                                                                <span class="badge bg-info text-dark">Lower Credit</span>
-                                                            @elseif($cgpa >= 3.0 && $cgpa <= 3.49)
-                                                                <span class="badge bg-primary">Upper Credit</span>
-                                                            @elseif($cgpa >= 3.5 && $cgpa <= 4.0)
-                                                                <span class="badge bg-success">Distinction</span>
-                                                            @endif
-                                                        </td>
+                                                        <td style="font-size: 13px;"><strong>Total Course Unit:</strong></td>
+                                                        <td style="text-align: center; font-size: 13px;">{{$student['total_course_unit_new']}}</td>                                                                                                                
                                                     </tr>
                                                     <tr>
                                                         <td style="font-size: 13px;"><strong>GPA(First):</strong></td>
                                                         <td style="font-size: 13px;">{{ $student['totalGPA'] ?? 'N/A' }}</td>
-                                                        <td><strong></strong></td>
-                                                        <td rowspan="2" style="text-align: center; font-size: 13px;"><img src="{{asset('signature/' . $hod->sign)}}" alt="Hod Signature" width="160" height="60"></td>
+                                                        <td><strong>Remark:</strong></td>
+                                                        <td style="font-size: 13px;"><span class="{{ $student['remarks'] === 'PASSED ALL' ? 'text-success' : 'text-danger' }}">{{ $student['remarks'] }} </span></td>
+                                                        
                                                     </tr>
                                                     <tr>
-                                                        <td font-size: 13px;><strong>GPA(Second):</strong></td>
-                                                        <td font-size: 13px;>{{ $student['totalGPA2'] ?? 'N/A' }}</td>
-                                                        <td>&nbsp;</td>
+                                                        <td style="font-size: 13px;"><strong>GPA(Second):</strong></td>
+                                                        <td style="font-size: 13px;">{{ $student['totalGPA2'] ?? 'N/A' }}</td>
+                                                        <td><strong>Grade:</strong></td>
+                                                        <td style="font-size: 13px;">
+                                                            @php
+                                                                $cgpa = $student['totalCGPANEW'];
+                                                            @endphp
+
+                                                            @if($cgpa < 2.0)
+                                                                <span class="badge bg-danger text-white">Fail</span>
+                                                            @elseif($cgpa >= 2.0 && $cgpa <= 2.49)
+                                                                <span class="badge bg-warning text-white">Pass</span>
+                                                            @elseif($cgpa >= 2.5 && $cgpa <= 2.9)
+                                                                <span class="badge bg-info text-white">Lower Credit</span>
+                                                            @elseif($cgpa >= 3.0 && $cgpa <= 3.49)
+                                                                <span class="badge bg-primary text-white">Upper Credit</span>
+                                                            @elseif($cgpa >= 3.5 && $cgpa <= 4.0)
+                                                                <span class="badge bg-success text-white">Distinction</span>
+                                                            @endif                                                        </td> 
                                                     </tr>                                
                                                     <tr>
-                                                        <td font-size: 13px;><strong>CGPA:</strong></td>
-                                                        <td font-size: 13px;>{{ $student['totalCGPA'] ?? 'N/A' }}</td>
+                                                        <td colspan="4" style="font-size: 13px;"><div align="center"><strong>OVERALL SUMMARY</strong></div></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="font-size: 13px;"><strong>CGPA(300):</strong></td>
+                                                        <td style="font-size: 13px;">{{ $student['totalCGPA'] ?? 'N/A' }}</td>
+                                                        <td>&nbsp;</td>
+                                                        <td style="text-align: center; font-size: 13px;">&nbsp;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="font-size: 13px;"><strong>CGPA(200):</strong></td>
+                                                        <td style="font-size: 13px;">{{ $student['cgpa2'] ?? 'N/A' }}</td>
+                                                        <td>&nbsp;</td>
+                                                        <td rowspan="2" style="text-align: center; font-size: 13px;"><img src="{{asset('signature/' . $hod->sign)}}" alt="Hod Signature" width="160" height="60" /></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="font-size: 13px;"><strong>CGPA(100):</strong></td>
+                                                        <td style="font-size: 13px;">{{ $student['cgpa1'] ?? 'N/A' }}</td>
+                                                        <td>&nbsp;</td>
+                                                  </tr>
+                                                    <tr>
+                                                        <td style="font-size: 13px;"><strong>FINAL-CGPA:</strong></td>
+                                                        <td style="font-size: 13px;"><strong>{{ $student['totalCGPANEW'] ?? 'N/A' }}</strong> </td>
                                                         <td>&nbsp;</td>
                                                         <td style="text-align: center; font-size: 13px;">{{ $hod->hod_name }}</td>
                                                     </tr>
                                                     
                                                     @if (!empty($student['failedRemarks']))
                                                     <tr>
-                                                        <td><strong>Courses with Carryover:</strong></td>
-                                                        <td colspan="3" style="font-size: 13px;">{{ $student['failedRemarks'] }}</td>
+                                                        <td style="font-size: 13px;">&nbsp;</td>
+                                                        <td colspan="3" style="font-size: 13px;">&nbsp;</td>
                                                     </tr>
                                                     @endif
                                                 </tbody>

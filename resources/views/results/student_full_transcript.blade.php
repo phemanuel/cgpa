@@ -7,7 +7,7 @@
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
   <meta name="csrf-token" content="{{ csrf_token() }}">
-  <title>E-Result :: Result</title>
+  <title>E-Result :: Student Transcript</title>
   <!-- General CSS Files -->
   <link rel="stylesheet" href="{{asset('dashboard/assets/css/app.min.css')}}">
   <!-- Template CSS -->
@@ -608,7 +608,7 @@ function printReport() {
     printWindow.document.write(`
         <html>
         <head>
-            <title>Academic Report</title>
+            <title>Student Transcript</title>
             <link rel="stylesheet" href="{{ asset('dashboard/assets/css/bootstrap.min.css') }}">
             <style>
                 body { font-family: Arial, sans-serif; margin: 20px; }
@@ -653,38 +653,7 @@ function printReport() {
     }
 </script>
 
-<script>
-function printReport() {
-    const reportContent = document.getElementById('reportToPrint').innerHTML;
 
-    const printWindow = window.open('', '', 'height=800,width=1000');
-
-    printWindow.document.write(`
-        <html>
-        <head>
-            <title>Print Academic Report</title>
-            <link rel="stylesheet" href="{{ asset('dashboard/assets/css/bootstrap.min.css') }}">
-            <style>
-                body { font-family: Arial, sans-serif; margin: 20px; }
-                img { max-height: 130px; }
-                .table { width: 100%; border-collapse: collapse; }
-                .table td, .table th { border: 1px solid #000; padding: 4px; }
-                .text-center { text-align: center; }
-                .text-success { color: green; }
-                .text-danger { color: red; }
-                .card { border: 1px solid #ccc; padding: 15px; margin-bottom: 20px; }
-                .card-title { font-size: 18px; font-weight: bold; }
-            </style>
-        </head>
-        <body onload="window.print(); window.close();">
-            ${reportContent}
-        </body>
-        </html>
-    `);
-
-    printWindow.document.close();
-}
-</script>
 
 
 
