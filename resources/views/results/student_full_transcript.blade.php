@@ -476,6 +476,10 @@
                 </div>
             @endforeach
         @endforeach
+        {{-- Grading System & Classification --}}
+    <div class="col-md-4">
+        @include('components.reports.grading-classification', ['grades' => $grades])
+    </div>
 
     </div>
 </div>
