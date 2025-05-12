@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('class', 20); 
             $table->string('semester', 20); 
             $table->string('picture_dir', 20)->nullable(); 
-            $table->string('course', 100); 
+            $table->string('course', 50); 
             $table->unsignedTinyInteger('sn')->nullable(); 
             $table->unsignedTinyInteger('no_of_course'); 
             $table->string('session1', 20); 
@@ -54,7 +54,7 @@ return new class extends Migration
 
             // Generate fields for scores and subjects
             for ($i = 1; $i <= 19; $i++) {               
-                $table->string("subject{$i}", 60)->nullable(); 
+                $table->text("subject{$i}")->nullable(); 
             }
 
             for ($i = 1; $i <= 19; $i++) {
@@ -76,7 +76,7 @@ return new class extends Migration
 
             // Generate fields for course titles
             for ($i = 1; $i <= 17; $i++) {
-                $table->string("ctitle{$i}", 100)->nullable();
+                $table->text("ctitle{$i}")->nullable();
             }
 
             for ($i = 1; $i <= 15; $i++) {               

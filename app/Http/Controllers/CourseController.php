@@ -411,7 +411,8 @@ class CourseController extends Controller
         ]);
 
         // Check if there is an existing record in the instructor table for this course
-        $courseAssignment = Instructor::where('course_id', $request->assignId)->first();
+        $courseAssignment = Instructor::where('course_id', $request->assignId)        
+        ->first();
 
         // Retrieve the selected instructor
         $instructor = User::find($request->instructorId);

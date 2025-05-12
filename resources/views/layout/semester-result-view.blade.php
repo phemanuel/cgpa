@@ -368,7 +368,7 @@
                 <div class="card-header">
                   <h4>
                   <a href="{{route('semester-result')}}"  class="btn btn-outline-primary">
-                      <i class="fas fa-print"></i> Back to Semester Result Page
+                  <i class="fas fa-arrow-left"></i> Back to Semester Result Page
                   </a>                 
                   <button class="btn btn-success"
                       onclick="exportTableToCSV('{{ $programme . '-' . $stdLevel . '-' . str_replace('/', '-', $acadsession) . '-' . $semester . '-' . date('Y-m-d') }}.csv')">

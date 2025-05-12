@@ -365,10 +365,10 @@
           <div class="row">
             <div class="col-12">
               <div class="card">
-                <div class="card-header">
+                <div class="card-header"> 
                   <h4>
                   <a href="{{route('semester-summary')}}"  class="btn btn-outline-primary">
-                      <i class="fas fa-print"></i> Back to Semester Summary Page
+                  <i class="fas fa-arrow-left"></i> Back to Semester Summary Page
                   </a>                 
                   <button class="btn btn-success"
                       onclick="exportTableToCSV('{{ $programme . '-' . $stdLevel . '-' . str_replace('/', '-', $acadsession) . '-' . date('Y-m-d') }}.csv')">

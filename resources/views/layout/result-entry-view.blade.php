@@ -400,10 +400,13 @@
             <div class="col-12">
               <div class="card">
                 <div class="card-header">
-                  <h4>Instructor :: Result Entry for {{ $assignedCourse->programme }} - {{ $assignedCourse->level }} Level - {{$assignedCourse->semester}} Semester
+                  <h4>Instructor :: Result Entry for {{ $assignedCourse->programme }}-{{ $assignedCourse->level }}-{{$assignedCourse->semester}}
                   <a href="javascript:void(0)" onclick="printAllStudents()" class="btn btn-outline-primary">
                         <i class="fas fa-print"></i> Print Score Sheet
                     </a>
+                    <a href="{{route('result-entry')}}"  class="btn btn-outline-primary">
+                    <i class="fas fa-arrow-left"></i> Back to Result Entry Page
+                  </a>
                   </h4>
                   <div class="card-header-form">
                   <form>
@@ -420,7 +423,9 @@
                   <div class="table-responsive">
                     <br>                   
                     <div class="container custom-width" style="overflow: auto; max-height: 500px;">
-                        <h4>{{ $assignedCourse->course_title }} - {{ $assignedCourse->course_code }} - {{$assignedCourse->course_unit}}</h4>
+                    <h4 style="color: green; font-weight: bold;">
+    {{ $assignedCourse->course_title }} - {{ $assignedCourse->course_code }} - {{ $assignedCourse->course_unit }}
+</h4>
                         <form method="POST" action="">
                                 @csrf
                                 <div class="table-wrapper">

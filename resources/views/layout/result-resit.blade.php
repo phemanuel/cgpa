@@ -2,11 +2,11 @@
 <html lang="en">
 
 
-<!-- basic-form.html  21 Nov 2019 03:54:41 GMT -->
+<!-- index.html  21 Nov 2019 03:44:50 GMT -->
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-  <title>E-Result :: Result</title>
+  <title>E-result :: Resit</title>
   <!-- General CSS Files -->
   <link rel="stylesheet" href="{{asset('dashboard/assets/css/app.min.css')}}">
   <!-- Template CSS -->
@@ -16,30 +16,16 @@
   <link rel="stylesheet" href="{{asset('dashboard/assets/css/custom.css')}}">
   <link rel='shortcut icon' type='image/x-icon' href="{{asset('dashboard/assets/img/favicon.png')}}" />
   <style>
-    /* Success Alert */
-    .alert.alert-success {
-        background-color: #28a745; /* Green background color */
-        color: #fff; /* White text color */
-        padding: 10px; /* Padding around the text */
-        border-radius: 5px; /* Rounded corners */
+    .black-link {
+    color: black;
+    font-weight: bold;
     }
 
-    /* Error Alert */
-    .alert.alert-danger {
-        background-color: #dc3545; /* Red background color */
-        color: #fff; /* White text color */
-        padding: 10px; /* Padding around the text */
-        border-radius: 5px; /* Rounded corners */
+    .black-link:hover {
+        color: black;
+
     }
-</style>
-<style type="text/css">
-.style2 {
-	color: #006600;
-	font-weight: bold;
-}
-.style3 {font-weight: bold}
-.style7 {color: #0000FF; font-weight: bold; }
-</style>
+  </style>
 </head>
 
 <body>
@@ -77,7 +63,7 @@
       <div class="main-sidebar sidebar-style-2">
         <aside id="sidebar-wrapper">
           <div class="sidebar-brand">
-            <a href="{{route('dashboard')}}"> <img alt="image" src="{{asset('dashboard/assets/img/logo.png')}}" class="header-logo" /> <span
+            <a href="{{route('admin-dashboard')}}"> <img alt="image" src="{{asset('dashboard/assets/img/logo.png')}}" class="header-logo" /> <span
                 class="logo-name">E-Result</span>
             </a>
           </div>
@@ -87,7 +73,7 @@
             <li class="dropdown">
               <a href="{{ route('admin-dashboard') }}" class="nav-link"><i data-feather="home"></i><span>Dashboard</span></a>
             </li>
-            <li class="dropdown">
+            <li class="dropdown active">
               <a href="{{route('class-list')}}" class="nav-link"><i data-feather="list"></i><span>Class List</span></a>
             </li>
             <li class="dropdown">
@@ -97,7 +83,7 @@
                 <li><a class="nav-link" href="{{route('student-migration')}}">Student Migration</a></li>                
               </ul>
             </li>
-            <li class="dropdown active">
+            <li class="dropdown">
               <a href="#" class="nav-link menu-toggle nav-link has-dropdown"><i data-feather="clipboard"></i><span>Result</span></a>
               <ul class="dropdown-menu">
                 <li><a class="nav-link" href="{{route('result-entry')}}">Result Entry</a></li>
@@ -138,7 +124,7 @@
             <li class="dropdown">
               <a href="{{ route('admin-dashboard') }}" class="nav-link"><i data-feather="home"></i><span>Dashboard</span></a>
             </li>
-            <li class="dropdown">
+            <li class="dropdown active">
               <a href="{{route('class-list')}}" class="nav-link"><i data-feather="list"></i><span>Class List</span></a>
             </li>
             <li class="dropdown">
@@ -148,7 +134,7 @@
                 <li><a class="nav-link" href="{{route('student-migration')}}">Student Migration</a></li>                
               </ul>
             </li>
-            <li class="dropdown active">
+            <li class="dropdown">
               <a href="#" class="nav-link menu-toggle nav-link has-dropdown"><i data-feather="clipboard"></i><span>Result</span></a>
               <ul class="dropdown-menu">
                 <li><a class="nav-link" href="{{route('result-entry')}}">Result Entry</a></li>
@@ -189,10 +175,10 @@
             <li class="dropdown">
               <a href="{{ route('admin-dashboard') }}" class="nav-link"><i data-feather="home"></i><span>Dashboard</span></a>
             </li>
-            <li class="dropdown">
+            <li class="dropdown active">
               <a href="{{route('class-list')}}" class="nav-link"><i data-feather="list"></i><span>Class List</span></a>
             </li>            
-            <li class="dropdown active">
+            <li class="dropdown">
               <a href="#" class="nav-link menu-toggle nav-link has-dropdown"><i data-feather="clipboard"></i><span>Result</span></a>
               <ul class="dropdown-menu">
                 <li><a class="nav-link" href="{{route('result-entry')}}">Result Entry</a></li>
@@ -231,8 +217,7 @@
       <!-- Main Content -->
       <div class="main-content">
         <section class="section">
-          <div class="section-body">
-          <div class="row">
+        <div class="row">
                     <div class="col-12">
                       <nav aria-label="breadcrumb">
                         <ol class="breadcrumb bg-dark text-white-all d-flex justify-content-between overflow-auto" style="white-space: nowrap;">
@@ -341,13 +326,26 @@
                       </nav>
                     </div>
                   </div>
-            <div class="row">
-              <div class="col-12 col-md-6 col-lg-6">
-                <div class="card">
-                  <div class="card-header">
-                  <h4>Result Entry</h4>
+        <div class="row ">
+              <div class="col-xl-3 col-lg-6">
+                <div class="card l-bg-green">
+                  <div class="card-statistic-3">
+                    <div class="card-icon card-icon-large"><i class="fa fa-award"></i></div>
+                    <div class="card-content">
+                      <h4 class="card-title">Result Resit</h4>
+                      <span><strong></strong></span>
+                      <div class="progress mt-1 mb-1" data-height="8">
+                        <div class="progress-bar l-bg-purple" role="progressbar" data-width="" aria-valuenow=""
+                          aria-valuemin="0" aria-valuemax=""></div>
+                      </div>
+                      
+                    </div>
                   </div>
-                  @if(session('success'))
+                </div>
+              </div> 
+              
+            </div>
+            @if(session('success'))
                     <div class="alert alert-success">
                       {{ session('success') }}
                     </div>
@@ -356,81 +354,87 @@
                       {{ session('error') }}
                     </div>
                     @endif	
-                    
-                  <div class="card-body">
-                  <form action="{{route('result-entry-admin.view')}}" method="GET">
-                    <!-- @csrf  -->
-
-                    <div class="form-group">
-                        <label>Programme</label>
-                        <select name="programme" id="programme" class="form-control">                            
-                            <!-- Loop through levels -->
-                            @foreach($programmes as $d)
-                                <option value="{{ $d->department }}">{{ $d->department }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    @error('programme')
-                        <span class="invalid-feedback">{{ $message }}</span>
-                    @enderror
-
-                    <div class="form-group">
-                        <label>Admission Year</label>
-                        <select name="acad_session" id="acad_session" class="form-control">
-                            @php
-                                $currentYear = date('Y');
-                            @endphp
-                            @for ($year = 2018; $year <= $currentYear; $year++)
-                                <option value="{{ $year }}">{{ $year }}</option>
-                            @endfor
-                        </select>
-                    </div>
-                    @error('acad_session')
-                        <span class="invalid-feedback">{{ $message }}</span>
-                    @enderror
-
-                    <div class="form-group">
-                        <label>Academic Level</label>
-                        <select name="stdLevel" id="stdLevel" class="form-control">                            
-                            <!-- Loop through levels -->
-                            @foreach($allLevel as $d)
-                                <option value="{{ $d->level }}">{{ $d->level }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    @error('stdLevel')
-                        <span class="invalid-feedback">{{ $message }}</span>
-                    @enderror
-
-                    <div class="form-group">
-                        <label>Semester</label>
-                        <select name="semester" id="semester" class="form-control">
-                                <option value="FIRST">FIRST</option>
-                                <option value="SECOND">SECOND</option>                           
-                        </select>
-                    </div>
-                    @error('semester')
-                        <span class="invalid-feedback">{{ $message }}</span>
-                    @enderror
-
-                    <div class="card-footer text-right">
-                    <button type="submit" class="btn btn-primary mr-1">
-                        <i class="fas fa-arrow-right"></i> Proceed
-                    </button>
-                    <a href="#" class="btn btn-info mr-1" id="previewBtn">
-                    <i class="fa-redo-alt"></i> Resit Menu 
-                    </a>
-                        <!-- <input class="btn btn-secondary" type="reset" value="Reset" /> -->
-                    </div>
-                </form>
-
-                  
-                </div>               
-
-              </div>
+                    <div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4>
+                    {{$programme}} - {{$acadSession}} | <a href="{{route('result-entry')}}"><i class="fas fa-arrow-left"></i> Back to Result Entry</a>
+                    <!-- <a href="javascript:void(0)" onclick="printAllStudents()" class="btn btn-outline-primary">
+                        <i class="fas fa-print"></i> Print All
+                    </a> -->
+                </h4>
+                <div class="card-header-form">
+                    <form>
+                        <div class="input-group">
+                        <input type="text" id="searchInput" class="form-control" placeholder="Search">
+                            <!-- <div class="input-group-btn">
+                                <button type="button" class="btn btn-primary" onclick="filterTable()"><i class="fas fa-search"></i></button>
+                            </div> -->
+                        </div>
+                    </form>
+                </div>
             </div>
-          </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                <table id="classListTable" class="table table-bordered">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Matric No</th>
+            <th>Full Name</th>
+            <th>Current Level/Semester</th>
+            <th>Failed Courses (Prev Level/Semester)</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach($studentsWithFailedCourses as $index => $entry)
+            <tr>
+                <td>{{ $index + 1 }}</td>
+                <td>{{ $entry['student']->admission_no }}</td>
+                <td>{{ $entry['student']->surname }} {{ $entry['student']->first_name }}</td>
+                <td>{{ $currentLevel ?? 'N/A' }} / {{ $currentSemester ?? 'N/A' }}</td>
+                <td>
+                    <strong>{{ $entry['previous_level'] }}/{{ $entry['previous_semester'] }}</strong><br>
+                    <ul>
+                        @foreach($entry['failed_courses'] as $course)
+                            <li>{{ $course }}</li>
+                        @endforeach
+                    </ul>
+                </td>
+                <td>
+                    <!-- Example action: View or Resit link -->
+                    <form action="{{ route('resit.process') }}" method="POST" style="display: inline-block;">
+                      @csrf
+                      <input type="hidden" name="admission_no" value="{{ $entry['student']->admission_no }}">
+                      <input type="hidden" name="currentLevel" value="{{ $currentLevel }}">
+                      <input type="hidden" name="currentSemester" value="{{ $currentSemester }}">
+                      <input type="hidden" name="programme" value="{{ $programme }}">
+                      <input type="hidden" name="acadSession" value="{{ $acadSession}}">
+                      
+                      <button type="submit" class="btn btn-sm btn-primary">
+                          <i class="fas fa-plus-circle"></i> Add Resit
+                      </button>
+                  </form>
+                </td>
+            </tr>
+        @endforeach
+    </tbody>
+</table>
+
+
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+          
+          
         </section>
+
+       
         <div class="settingSidebar">
           <a href="javascript:void(0)" class="settingPanelToggle"> <i class="fa fa-spin fa-cog"></i>
           </a>
@@ -532,8 +536,8 @@
       </footer>
     </div>
   </div>
-   <!-- General JS Scripts -->
-   <script src="{{asset('dashboard/assets/js/app.min.js')}}"></script>
+  <!-- General JS Scripts -->
+  <script src="{{asset('dashboard/assets/js/app.min.js')}}"></script>
   <!-- JS Libraies -->
   <script src="{{asset('dashboard/assets/bundles/apexcharts/apexcharts.min.js')}}"></script>
   <!-- Page Specific JS File -->
@@ -545,35 +549,105 @@
 </body>
 
 
-<!-- basic-form.html  21 Nov 2019 03:54:41 GMT -->
+<!-- index.html  21 Nov 2019 03:47:04 GMT -->
 </html>
 <script>
-    document.getElementById('previewBtn').addEventListener('click', function(e) {
-        e.preventDefault(); // Prevent default anchor behavior
-        console.log('Preview button clicked'); // Debugging line
+function printAllStudents() {
+    // Get the content of the hidden table
+    var printContents = document.getElementById('allStudentsTable').innerHTML;
 
-        // Get the selected parameters (check if the element exists)
-        const programme = document.getElementById('programme');
-        const acadSession = document.getElementById('acad_session');
-        const stdLevel = document.getElementById('stdLevel');
-        const semester = document.getElementById('semester');
+    // Create a hidden iframe
+    var iframe = document.createElement('iframe');
+    iframe.style.position = 'absolute';
+    iframe.style.top = '-10000px';
+    iframe.style.left = '-10000px';
+    document.body.appendChild(iframe);
 
-        // Ensure the elements exist before trying to get their values
-        if (!programme || !acadSession || !stdLevel || !semester) {
-            console.error('One or more elements not found!');
-            return;
-        }
+    // Write the content into the iframe
+    var doc = iframe.contentWindow.document;
+    doc.open();
+    doc.write(`
+        <html>
+            <head>
+                <title>Class List</title>
+                <style>
+                    body { font-family: Arial, sans-serif; margin: 20px; }
+                    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+                    th, td { border: 1px solid black; padding: 8px; text-align: left; }
+                    th { background-color: #f2f2f2; }
+                </style>
+            </head>
+            <body>                
+                ${printContents}
+            </body>
+        </html>
+    `);
+    doc.close();
 
-        // Log the selected values to debug
-        console.log(`Programme: ${programme.value}, Session: ${acadSession.value}, Level: ${stdLevel.value}, Semester: ${semester.value}`);
+    // Trigger the print dialog
+    iframe.contentWindow.focus();
+    iframe.contentWindow.print();
 
-        // Construct the URL dynamically
-        const url = `{{ route('result-resit') }}?programme=${programme.value}&acad_session=${acadSession.value}&stdLevel=${stdLevel.value}&semester=${semester.value}`;
-
-        // Log the constructed URL
-        console.log('Constructed URL:', url);
-
-        // Redirect the user to the generated URL
-        window.location.href = url;
-    });
+    // Remove the iframe after printing
+    setTimeout(() => {
+        document.body.removeChild(iframe);
+    }, 1000);
+}
 </script>
+
+<script>
+    // JavaScript for filtering the table
+    function filterTable() {
+        const input = document.getElementById('searchInput').value.toLowerCase();
+        const table = document.getElementById('classListTable');
+        const rows = table.getElementsByTagName('tr');
+
+        for (let i = 1; i < rows.length; i++) { // Start from 1 to skip the header row
+            const cells = rows[i].getElementsByTagName('td');
+            let match = false;
+
+            // Loop through all cells in the row
+            for (let j = 0; j < cells.length; j++) {
+                if (cells[j] && cells[j].innerText.toLowerCase().includes(input)) {
+                    match = true;
+                    break;
+                }
+            }
+
+            // Toggle row visibility based on the match
+            rows[i].style.display = match ? '' : 'none';
+        }
+    }
+
+    // Optional: Add an event listener for real-time search
+    document.getElementById('searchInput').addEventListener('input', filterTable);
+</script>
+
+<script>
+    // JavaScript for filtering the table
+    function filterTable() {
+        const input = document.getElementById('searchInput').value.toLowerCase();
+        const table = document.getElementById('classListTable');
+        const rows = table.getElementsByTagName('tr');
+
+        for (let i = 1; i < rows.length; i++) { // Start from 1 to skip the header row
+            const cells = rows[i].getElementsByTagName('td');
+            let match = false;
+
+            // Loop through all cells in the row
+            for (let j = 0; j < cells.length; j++) {
+                if (cells[j] && cells[j].innerText.toLowerCase().includes(input)) {
+                    match = true;
+                    break;
+                }
+            }
+
+            // Toggle row visibility based on the match
+            rows[i].style.display = match ? '' : 'none';
+        }
+    }
+
+    // Optional: Add an event listener for real-time search
+    document.getElementById('searchInput').addEventListener('input', filterTable);
+</script>
+

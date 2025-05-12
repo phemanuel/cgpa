@@ -151,6 +151,10 @@ Route::post('/reset-password', [CustomForgotPasswordController::class, 'resetPas
         ->name('student-transcript-action');
         Route::get('result/transcript/preview', [ResultController::class, 'studentTranscriptPreview'])
         ->name('student-transcript.preview');
+        Route::get('result/resit', [ResultController::class, 'resultResit'])
+        ->name('result-resit');
+        Route::post('/resit/process', [ResultController::class, 'processResit'])
+        ->name('resit.process');
         Route::post('/save-score', [ResultController::class, 'saveScore'])
         ->name('save.score');
         Route::get('/results/semester100/{acadSession}/{programme}/{level}/{semester}/{studentIndex?}', [ResultController::class, 'firstSemester100'])

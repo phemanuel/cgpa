@@ -441,64 +441,64 @@
                     <div class="container custom-width" style="overflow: auto; max-height: 500px;">
                         <h4></h4>
                         <form method="POST" action="">
-                                @csrf
-                                <div class="table-wrapper">
-                                <table class="table table-bordered" id="classListTable" width="100%">
-    <thead>
-        <tr>
-            <th></th>
-            <th class="sticky-col">Admission No</th>
-            <th class="sticky-name">Name</th>
-            @foreach ($courses as $course)
-                <th>
-                    {{ $course->course_title }} <br>
-                    <strong><small><span style="color:green">{{ $course->course_code }}</span></small> -
-                    <small><span style="color:red">{{ $course->course_unit }}</span></small>
-                </th>
-            @endforeach
-        </tr>
-    </thead>
-    <tbody>
-        @foreach ($students as $key => $student)
-            <tr>
-                <td>{{$key + 1}}</td>
-                <td class="sticky-col">{{ $student->admission_no }}</td>
-                <td class="sticky-name">{{ $student->surname }} {{ $student->first_name }} {{ $student->other_name }}</td>
+    @csrf
+    <div class="table-wrapper">
+        <table class="table table-bordered" id="classListTable" width="100%">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th class="sticky-col">Admission No</th>
+                    <th class="sticky-name">Name</th>
+                    @foreach ($courses as $course)
+                        <th>
+                            {{ $course['course_title'] }} <br>
+                            <strong><small><span style="color:green">{{ $course['course_code'] }}</span></small></strong> -
+                            <small><span style="color:red">{{ $course['course_unit'] }}</span></small>
+                        </th>
+                    @endforeach
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($students as $key => $student)
+                    <tr>
+                        <td>{{ $key + 1 }}</td>
+                        <td class="sticky-col">{{ $student->admission_no }}</td>
+                        <td class="sticky-name">
+                            {{ $student->surname }} {{ $student->first_name }} {{ $student->other_name }}
+                        </td>
 
-                @foreach ($courses as $course)
-                    @php
-                        // Get the score for the student and course from the $studentScores array
-                        $score = $studentScores[$student->admission_no][$course->id] ?? 0;
-                    @endphp
-                    
-                    <td>
-                    @php
-                        // Format the score to remove the decimal part if it's a whole number
-                        $formattedScore = (float)$score == (int)$score ? (int)$score : $score;
-                    @endphp
+                        @foreach ($courses as $course)
+                            @php
+                                $index = $course['index']; // Adjust to use 'index' from the course array
+                                $score = $studentScores[$student->admission_no][$index] ?? 0;
+                                $formattedScore = (float)$score == (int)$score ? (int)$score : $score;
+                            @endphp
 
-                    <input 
-                        type="text" 
-                        name="scores[{{ $student->id }}][{{ $course->id }}]" 
-                        class="form-control dynamic-score-input" 
-                        maxlength="3"
-                        value="{{ $formattedScore }}"
-                        data-student-id="{{ $student->id }}"
-                        data-course-id="{{ $course->id }}"
-                        data-admission-no="{{ $student->admission_no }}"
-                        data-class="{{ $stdLevel }}"
-                        data-semester="{{ $semester }}"
-                        data-course-index="{{ $loop->index + 1 }}"
-                    >
-                    </td>
+                            <td>
+                                <input 
+                                    type="text" 
+                                    name="scores[{{ $student->id }}][{{ $index }}]" 
+                                    class="form-control dynamic-score-input" 
+                                    maxlength="3"
+                                    value="{{ $formattedScore }}"
+                                    data-student-id="{{ $student->id }}"
+                                    data-course-id="{{ $index }}"
+                                    data-admission-no="{{ $student->admission_no }}"
+                                    data-class="{{ $stdLevel }}"
+                                    data-semester="{{ $semester }}"
+                                    data-course-index="{{ $index }}"
+                                    placeholder="{{ $course['is_failed'] ? $course['course_title'] : '' }}" {{-- Show course title for failed courses --}}
+                                >
+                            </td>
+                        @endforeach
+                    </tr>
                 @endforeach
-            </tr>
-        @endforeach
-    </tbody>
-</table>
-                                </div>
-                                <!-- <button type="submit" class="btn btn-primary">Save Results</button> -->
-                            </form>
+            </tbody>
+        </table>
+    </div>
+</form>
+
+
                         <br>
                     </div>
                     
@@ -511,50 +511,56 @@
            <!-- Hidden Table for Printing All Students -->
             <div id="allStudentsTable" style="display: none;">
             <h4>Score Sheet for {{ $programme }} - {{ $stdLevel }} Level - {{$semester}} Semester </h4>
-            <table class="table table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th>Admission No</th>
-                                                <th>Name</th>
-                                                <!-- <th>Level</th>
-                                                <th>Semester</th> -->
-                                                @foreach ($courses as $course)
-                                                    <th>
-                                                        {{ $course->course_title }} <br>
-                                                        <strong><small><span style="color:green">{{ $course->course_code }}</span></small> -
-                                                        <small><span style="color:red">{{ $course->course_unit }}</span></small>
-                                                      </strong>
-                                                    </th>
-                                                @endforeach
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($students as $student)
-                                                <tr>
-                                                    <td>{{ $student->admission_no }}</td>
-                                                    <td>{{ $student->surname }} {{ $student->first_name }} {{ $student->other_name }}</td>
-                                                    <!-- <td>{{ $student->class }}</td>
-                                                    <td>{{ $semester }}</td> -->
+            <table class="table table-bordered" id="classListTable" width="100%">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th class="sticky-col">Admission No</th>
+                    <th class="sticky-name">Name</th>
+                    @foreach ($courses as $course)
+                        <th>
+                            {{ $course->course_title }} <br>
+                            <strong><small><span style="color:green">{{ $course->course_code }}</span></small></strong> -
+                            <small><span style="color:red">{{ $course->course_unit }}</span></small>
+                        </th>
+                    @endforeach
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($students as $key => $student)
+                    <tr>
+                        <td>{{ $key + 1 }}</td>
+                        <td class="sticky-col">{{ $student->admission_no }}</td>
+                        <td class="sticky-name">
+                            {{ $student->surname }} {{ $student->first_name }} {{ $student->other_name }}
+                        </td>
 
-                                                    @foreach ($courses as $course)
-                                                        @php
-                                                            // Get the score for the student and course from the $studentScores array
-                                                            $score = $studentScores[$student->admission_no][$course->id] ?? 0;
-                                                        @endphp
-                                                        
-                                                        <td>
-                                                        @php
-                                                            // Format the score to remove the decimal part if it's a whole number
-                                                            $formattedScore = (float)$score == (int)$score ? (int)$score : $score;
-                                                        @endphp
-                                                       {{ $formattedScore}}
-                                                        
-                                                        </td>
-                                                    @endforeach
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
+                        @foreach ($courses as $course)
+                            @php
+                                $index = $course->index ?? $loop->index + 1; // default to loop index if no `index` exists
+                                $score = $studentScores[$student->admission_no][$index] ?? 0;
+                                $formattedScore = (float)$score == (int)$score ? (int)$score : $score;
+                            @endphp
+
+                            <td>
+                                <input 
+                                    type="text" 
+                                    name="scores[{{ $student->id }}][{{ $loop->index + 1 }}]" 
+                                    class="form-control dynamic-score-input" 
+                                    maxlength="3"
+                                    value="{{ $formattedScore }}"
+                                    data-student-id="{{ $student->id }}"
+                                    data-course-index="{{ $loop->index + 1 }}"
+                                    data-admission-no="{{ $student->admission_no }}"
+                                    data-class="{{ $stdLevel }}"
+                                    data-semester="{{ $semester }}"
+                                >
+                            </td>
+                        @endforeach
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
 
             </div>
           
