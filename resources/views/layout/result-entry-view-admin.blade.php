@@ -1039,9 +1039,9 @@ $(document).on('click', '#saveResitScoresBtn', function () {
     $('#failedCoursesBody tr').each(function () {
         let input = $(this).find('input[name^="resit_score"]');
         let indexMatch = input.attr('name').match(/\[(\d+)\]/);
-        let resitScore = input.val();
+        let resitScore = input.val().trim();
 
-        if (indexMatch && resitScore) {
+        if (indexMatch && resitScore !== '') {
             resitScores.push({
                 index: indexMatch[1],
                 resit_score: resitScore
@@ -1050,21 +1050,11 @@ $(document).on('click', '#saveResitScoresBtn', function () {
     });
 
     // Get additional student info from hidden inputs
-    let studentId = $('#studentId').val();
-    let studentName = $('#studentName').val();
-    let level = $('#studentLevel').val();
-    let semester = $('#studentSemester').val();
-    let admissionYear = $('#studentAdmissionYear').val();
-
-    // ✅ DEBUG LOG
-    console.log({
-        resit_scores: resitScores,
-        student_id: studentId,
-        student_name: studentName,
-        level: level,
-        semester: semester,
-        admission_year: admissionYear
-    });
+    let studentId = $('#studentId').val().trim();
+    let studentName = $('#studentName').val().trim();
+    let level = $('#studentLevel').val().trim();
+    let semester = $('#studentSemester').val().trim();
+    let admissionYear = $('#studentAdmissionYear').val().trim();
 
     if (resitScores.length > 0) {
         $.ajax({
@@ -1080,16 +1070,18 @@ $(document).on('click', '#saveResitScoresBtn', function () {
                 admission_year: admissionYear
             },
             success: function (response) {
-                console.log("AJAX Response:", response);
                 if (response.success) {
                     alert("Resit scores saved successfully!");
-                    $('#resitModal').modal('hide');
+
+                    // ✅ Reload the page
+                    location.reload(); // This will reload the page, effectively closing the modal and refreshing the data
+
                 } else {
                     alert("Error saving resit scores.");
                 }
             },
             error: function (xhr, status, error) {
-                console.log("AJAX Error:", status, error);
+                console.error("AJAX Error:", status, error);
                 alert("An error occurred while saving resit scores.");
             }
         });
@@ -1098,6 +1090,8 @@ $(document).on('click', '#saveResitScoresBtn', function () {
     }
 });
 </script>
+
+
 
 
 

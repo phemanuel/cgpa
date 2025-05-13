@@ -3171,33 +3171,44 @@ class ResultController extends Controller
 
     public function saveResitScores(Request $request)
     {
-        // Log entire request payload for debugging
-        Log::info('Incoming Resit Scores Request:', $request->all());
+       \Log::info('Incoming Resit Scores Request:', $request->all());
 
-        // Validate the request data
-        $request->validate([
+        $validated = $request->validate([
             'resit_scores' => 'required|array',
-            'resit_scores.*.index' => 'required|integer', // Validate index
-            'resit_scores.*.resit_score' => 'required|numeric|min:0|max:100', // Validate resit score
+            'resit_scores.*.index' => 'required|integer',
+            'resit_scores.*.resit_score' => 'required|numeric|min:0|max:100',
+            'student_id' => 'required|string',
+            'level' => 'required|string',
+            'semester' => 'required|string',
+            'admission_year' => 'required|string',
         ]);
 
-        // Log validated resit scores only
-        Log::info('Validated Resit Scores:', ['resit_scores' => $request->resit_scores]);
+        $studentId = $validated['student_id'];
+        $level = $validated['level'];
+        $semester = $validated['semester'];
+        $admissionYear = $validated['admission_year'];
 
-        // Log student meta info
-        Log::info('Student Meta Info:', [
-            'student_id' => $request->student_id,
-            'student_name' => $request->student_name,
-            'level' => $request->level,
-            'semester' => $request->semester,
-            'admission_year' => $request->admission_year,
-        ]);
+        foreach ($validated['resit_scores'] as $resitData) {
+            $columnName = 'score' . $resitData['index'];
+            $resitScore = $resitData['resit_score'];
 
-        // (Optional) You can return the data for quick frontend test
-        return response()->json([
-            'success' => true,
-            'received' => $request->all()
-        ]);
+            // Ensure the column name is valid to avoid SQL injection
+            if (!preg_match('/^score\d+$/', $columnName)) {
+                continue; // skip invalid column
+            }
+
+            // Update the specific score column dynamically
+            DB::table('results')
+                ->where('admission_no', $studentId)
+                ->where('class', $level)
+                ->where('semester', $semester)
+                ->where('session1', $admissionYear)
+                ->update([
+                    $columnName => $resitScore,
+                ]);
+        }
+
+        return response()->json(['success' => true, 'message' => 'Resit scores updated successfully.']);
     }
 
 
