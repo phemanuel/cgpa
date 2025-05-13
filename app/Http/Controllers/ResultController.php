@@ -268,12 +268,14 @@ class ResultController extends Controller
     {
         $levelOrder = ['NDI', 'NDII', 'HNDI', 'HNDII', '100', '200', '300'];
         $currentIndex = array_search($stdLevel, $levelOrder);
-        $prevSemester = $semester === 'Second' ? 'First' : 'Second';
 
-        if ($semester === 'First' && $currentIndex > 0) {
-            $prevLevel = $levelOrder[$currentIndex - 1];
+        if ($semester === 'First') {
+            // If it's the First semester, go back to previous level's Second semester
             $prevSemester = 'Second';
+            $prevLevel = $currentIndex > 0 ? $levelOrder[$currentIndex - 1] : null;
         } else {
+            // If it's Second semester, previous semester is First of the same level
+            $prevSemester = 'First';
             $prevLevel = $stdLevel;
         }
 
@@ -286,142 +288,142 @@ class ResultController extends Controller
         $user = auth()->user();
 
         // Validate incoming parameters
-        $validated = $request->validate([
-            'acad_session' => 'required',
-            'programme' => 'required|string|exists:course_study_all,department',
-            'stdLevel' => 'required|string|in:100,200,300,NDI,NDII,HNDI,HNDII',
-            'semester' => 'required',
-        ]);
+    $validated = $request->validate([
+        'acad_session' => 'required',
+        'programme' => 'required|string|exists:course_study_all,department',
+        'stdLevel' => 'required|string|in:100,200,300,NDI,NDII,HNDI,HNDII',
+        'semester' => 'required',
+    ]);
 
-        $admissionYear = $validated['acad_session'];
-        $programme = $validated['programme'];
-        $stdLevel = $validated['stdLevel'];
-        $semester = $validated['semester'];
-        $year = $validated['acad_session'];
+    $admissionYear = $validated['acad_session'];
+    $programme = $validated['programme'];
+    $stdLevel = $validated['stdLevel'];
+    $semester = $validated['semester'];
 
-        // Check curriculum
-        $curriculumExist = Course::where('course', $programme)->exists();
-        if (!$curriculumExist) {
-            return redirect()->back()->with('error', 'Curriculum for this course is unavailable.');
+    // Get the curriculum courses for the current level and semester
+    $curriculumCourses = Course::where('course', $programme)
+        ->where('level', $stdLevel)
+        ->where('semester', $semester)
+        ->get();
+
+    $totalCourses = $curriculumCourses->count(); // Total number of courses for this level and semester
+
+    // Proceed with the rest of the logic
+    $students = Registration::where('course', $programme)
+        ->where('admission_year', $admissionYear)
+        ->get();
+
+    if ($students->isEmpty()) {
+        return redirect()->back()->with('error', 'No students found for the selected programme, level, and academic session.');
+    }   
+
+    $studentsWithFailedCourses = []; // Array to store students with failed courses
+
+    foreach ($students as $student) {
+    // Get the previous level and semester using the new function
+    list($previousLevel, $previousSemester) = $this->getPreviousLevelAndSemester($stdLevel, $semester);   
+
+    // Check if student has failed courses
+    $failedCourses = DB::table('result_computes')
+        ->where('admission_no', $student->admission_no)
+        ->where('class', $previousLevel)
+        ->where('semester', $previousSemester)
+        ->where('session1', $admissionYear)
+        ->first();
+        
+        if ($failedCourses && !empty($failedCourses->failed_course)) {
+            // Add student to the failed courses array
+            $failedCoursesList = array_map('trim', explode(',', $failedCourses->failed_course));
+            $studentsWithFailedCourses[$student->admission_no] = $failedCoursesList;      
+
+            // Log the student's failed courses
+            // Log::info("Student {$student->admission_no} has failed the following courses: " . implode(', ', $failedCoursesList));
+        } else {
+            // Log::info("No failed courses found for student {$student->admission_no}");
         }
+    }
 
-        // Get registered students
-        $students = Registration::where('course', $programme)
-            ->where('admission_year', $year)
-            ->get();
+    $existingResults = Result::where('course', $programme)
+        ->where('class', $stdLevel)
+        ->where('session1', $admissionYear)
+        ->where('semester', $semester)
+        ->get();
 
-        if ($students->isEmpty()) {
-            return redirect()->back()->with('error', 'No students found for the selected programme, level, and academic session.');
+    // New result entry creation for students without results
+    $existingAdmissionNumbers = $existingResults->pluck('admission_no')->toArray();
+    foreach ($students as $student) {
+        if (!in_array($student->admission_no, $existingAdmissionNumbers)) {
+            $resultData = new Result();
+            $resultData->admission_no = $student->admission_no;
+            $resultData->surname = $student->surname;
+            $resultData->first_name = $student->first_name;
+            $resultData->other_name = $student->other_name;
+            $resultData->semester = $semester;
+            $resultData->course = $programme;
+            $resultData->class = $stdLevel;
+            $resultData->session1 = $admissionYear;
+            $resultData->picture_dir = $student->picture_dir;
+
+            $courseIndex = 1;
+
+            // Add curriculum courses
+            foreach ($curriculumCourses as $course) {
+                $resultData->{'subject' . $courseIndex} = $course->course_title;
+                $resultData->{'ctitle' . $courseIndex} = $course->course_code;
+                $resultData->{'unit' . $courseIndex} = $course->course_unit;
+                $resultData->{'score' . $courseIndex} = 0;
+                $courseIndex++;
+            }
+
+            $resultData->no_of_course = $courseIndex - 1;
+            $resultData->save();
+
+            $existingResults->push($resultData);
         }
+    }
 
-        // Get assigned courses (for creating new records only)
-        $curriculumCourses = Course::where('course', $programme)
-            ->where('level', $stdLevel)
-            ->where('semester', $semester)
-            ->get();
+    // Compile the list of courses and student scores
+    $currentCourses = collect();
+    $maxSubjects = 0;
 
-        // Get failed courses (for handling previous semester failures)
-        $failedCourses = Result::where('course', $programme)
-            ->where('class', $stdLevel)
-            ->where('session1', $year)
-            ->where('semester', $semester)
-            ->where('score', '<', 40) // assuming a passing score is 40
-            ->get();
+    foreach ($existingResults as $result) {
+        for ($i = 1; $i <= $totalCourses; $i++) {
+            $subject = $result->{'subject' . $i} ?? null;
+            $ctitle = $result->{'ctitle' . $i} ?? null;
+            $unit = $result->{'unit' . $i} ?? null;
 
-        // Combine the new courses with the failed courses
-        $totalCourses = $curriculumCourses->count();
-        $failedCourseIndices = $failedCourses->pluck('subject_index')->toArray(); // assuming you have a 'subject_index'
-
-        // Add the courses to the result array
-        $courses = $curriculumCourses->map(function ($course, $index) use ($totalCourses, $failedCourseIndices) {
-            return [
-                'course_title' => $course->course_title,
-                'course_code' => $course->course_code,
-                'course_unit' => $course->course_unit,
-                'index' => $index + 1, // Adjust to 1-based index
-                'is_failed' => in_array($index + 1, $failedCourseIndices), // Check if this course was failed
-            ];
-        });
-
-        // Get existing results
-        $existingResults = Result::where('course', $programme)
-            ->where('class', $stdLevel)
-            ->where('session1', $year)
-            ->where('semester', $semester)
-            ->get();
-
-        // If results exist, ensure new students are added
-        if ($existingResults->isNotEmpty()) {
-            $existingAdmissionNumbers = $existingResults->pluck('admission_no')->toArray();
-
-            foreach ($students as $student) {
-                if (!in_array($student->admission_no, $existingAdmissionNumbers)) {
-                    // Create result entry for student
-                    $resultData = new Result();
-                    $resultData->admission_no = $student->admission_no;
-                    $resultData->surname = $student->surname;
-                    $resultData->first_name = $student->first_name;
-                    $resultData->other_name = $student->other_name;
-                    $resultData->semester = $semester;
-                    $resultData->course = $programme;
-                    $resultData->class = $stdLevel;
-                    $resultData->session1 = $year;
-                    $resultData->picture_dir = $student->picture_dir;
-
-                    $courseIndex = 1;
-                    foreach ($curriculumCourses as $course) {
-                        $resultData->{'subject' . $courseIndex} = $course->course_title;
-                        $resultData->{'ctitle' . $courseIndex} = $course->course_code;
-                        $resultData->{'unit' . $courseIndex} = $course->course_unit;
-                        $resultData->{'score' . $courseIndex} = 0;
-                        $courseIndex++;
-                    }
-
-                    $resultData->no_of_course = $curriculumCourses->count();
-                    $resultData->save();
-
-                    $existingResults->push($resultData);
-                }
+            if ($subject && $ctitle !== 'REPEAT') {
+                $maxSubjects = max($maxSubjects, $i);
+                $currentCourses->push((object)[
+                    'course_title' => $subject,
+                    'course_code' => $ctitle,
+                    'course_unit' => $unit,
+                    'index' => $i,
+                    'is_failed' => false,
+                ]);
             }
-
-            // Dynamically determine all unique courses (including failed ones already added)
-            $maxSubjects = 0;
-            foreach ($existingResults as $result) {
-                for ($i = 1; $i <= 20; $i++) {
-                    if (!empty($result->{'subject' . $i})) {
-                        $maxSubjects = max($maxSubjects, $i);
-                    }
-                }
-            }
-
-            $courses = collect();
-            $firstResult = $existingResults->first();
-            for ($i = 1; $i <= $maxSubjects; $i++) {
-                if (!empty($firstResult->{'subject' . $i})) {
-                    $courses->push((object)[
-                        'course_title' => $firstResult->{'subject' . $i},
-                        'course_code' => $firstResult->{'ctitle' . $i},
-                        'course_unit' => $firstResult->{'unit' . $i},
-                        'index' => $i,
-                    ]);
-                }
-            }
-
-            // Prepare result scores
-            $studentScores = [];
-            foreach ($existingResults as $result) {
-                for ($i = 1; $i <= $maxSubjects; $i++) {
-                    $studentScores[$result->admission_no][$i] = $result->{'score' . $i} ?? 0;
-                }
-            }
-
-            return view('layout.result-entry-view-admin', compact(
-                'students', 'existingResults', 'courses', 'studentScores',
-                'programme', 'admissionYear', 'stdLevel', 'semester'
-            ));
         }
+    }
 
-        // No result exists yet, so create for all students
+    $currentCourses = $currentCourses->unique('course_code')->values();
+    $studentScores = [];
+    foreach ($existingResults as $result) {
+        for ($i = 1; $i <= $maxSubjects; $i++) {
+            $studentScores[$result->admission_no][$i] = $result->{'score' . $i} ?? 0;
+        }
+    }
+
+    $courses = $currentCourses;
+
+    // Pass failed courses data to the view
+    return view('layout.result-entry-view-admin', compact(
+        'students', 'existingResults', 'courses', 'studentScores',
+        'programme', 'admissionYear', 'stdLevel', 'semester', 'totalCourses', 'studentsWithFailedCourses',
+        'admissionYear'
+    ));     
+        
+
+        // === 10. Create result entry for all (first-time) ===
         foreach ($students as $student) {
             $resultData = new Result();
             $resultData->admission_no = $student->admission_no;
@@ -435,6 +437,7 @@ class ResultController extends Controller
             $resultData->picture_dir = $student->picture_dir;
 
             $courseIndex = 1;
+
             foreach ($curriculumCourses as $course) {
                 $resultData->{'subject' . $courseIndex} = $course->course_title;
                 $resultData->{'ctitle' . $courseIndex} = $course->course_code;
@@ -443,17 +446,43 @@ class ResultController extends Controller
                 $courseIndex++;
             }
 
-            $resultData->no_of_course = $curriculumCourses->count();
+            if (isset($studentsWithFailedCourses[$student->admission_no])) {
+                foreach ($studentsWithFailedCourses[$student->admission_no] as $failedCourseTitle) {
+                    $resultData->{'subject' . $courseIndex} = $failedCourseTitle;
+                    $resultData->{'ctitle' . $courseIndex} = 'REPEAT';
+                    $resultData->{'unit' . $courseIndex} = 0;
+                    $resultData->{'score' . $courseIndex} = 0;
+                    $courseIndex++;
+                }
+            }
+
+            $resultData->no_of_course = $courseIndex - 1;
             $resultData->save();
         }
 
-        // For fresh creation, use curriculumCourses
+        // Final course list to display
         $courses = $curriculumCourses;
 
         return view('layout.result-entry-view-admin', compact(
             'students', 'courses', 'programme', 'admissionYear', 'stdLevel', 'semester'
         ));
     }
+
+    private function getPreviousLevel($currentLevel)
+    {
+        $map = [
+            '100' => null,
+            'NDI' => null,
+            '200' => '100',
+            'NDII' => 'NDI',
+            '300' => '200',
+            'HNDI' => 'null',
+            'HNDII' => 'HNDI',
+        ];
+
+        return $map[$currentLevel] ?? null;
+    }
+
 
     public function saveScore(Request $request)
     {
@@ -3059,6 +3088,83 @@ class ResultController extends Controller
             }
         
         }
+    }
+
+    public function fetchFailedCourses(Request $request)
+    {
+        $admissionNo = $request->admission_no;
+        $level = $request->level; // current level
+        $semester = $request->semester; // current semester
+        $admissionYear = $request->admissionYear;
+
+        // Log incoming request data
+        \Log::info("Fetching failed courses for student:", [
+            'admission_no' => $admissionNo,
+            'level' => $level,
+            'semester' => $semester,
+            'admissionYear' => $admissionYear
+        ]);
+
+        // Determine previous level and semester
+        [$prevLevel, $prevSemester] = $this->getPreviousLevelAndSemester($level, $semester);
+
+        // Step 1: Get failed courses from the previous result
+        $previousResult = DB::table('result_computes')
+            ->where('admission_no', $admissionNo)
+            ->where('class', $prevLevel)
+            ->where('semester', $prevSemester)
+            ->where('session1', $admissionYear)
+            ->first();
+
+        // Log the previous result
+        \Log::info("Previous Result:", ['previousResult' => $previousResult]);
+
+        if (!$previousResult || empty($previousResult->failed_course)) {
+            return response()->json(['failedCourses' => []]);
+        }
+
+        $failedCourses = array_map('trim', explode(',', $previousResult->failed_course));
+
+        // Step 2: Get current result to find index of course codes
+        $currentResult = DB::table('results')
+            ->where('admission_no', $admissionNo)
+            ->where('class', $level)
+            ->where('semester', $semester)
+            ->where('session1', $admissionYear)
+            ->first();
+
+        // Log the current result
+        \Log::info("Current Result:", ['currentResult' => $currentResult]);
+
+        if (!$currentResult) {
+            return response()->json(['failedCourses' => []]);
+        }
+
+        $filtered = [];
+
+        foreach ($failedCourses as $failedCourse) {
+            for ($i = 1; $i <= 20; $i++) {
+                $ctitleKey = 'ctitle' . $i;
+                $scoreKey = 'score' . $i;
+
+                if (
+                    isset($currentResult->$ctitleKey) &&
+                    strtoupper(trim($currentResult->$ctitleKey)) === strtoupper($failedCourse)
+                ) {
+                    $filtered[] = [
+                        'course_code' => $failedCourse,
+                        'current_score' => $currentResult->$scoreKey,
+                        'index' => $i,
+                    ];
+                    break;
+                }
+            }
+        }
+
+        // Log the filtered results
+        \Log::info("Filtered Failed Courses:", ['filtered' => $filtered]);
+
+        return response()->json(['failedCourses' => $filtered]);
     }
 
 

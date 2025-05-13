@@ -127,6 +127,8 @@ Route::post('/reset-password', [CustomForgotPasswordController::class, 'resetPas
         ->name('result-entry-admin.view');
         Route::get('result/entry/{id}', [ResultController::class, 'resultEntryView'])
         ->name('result-entry.view');
+        Route::get('/fetch-failed-courses', [ResultController::class, 'fetchFailedCourses'])
+        ->name('fetchFailedCourses');
         Route::get('result/compute', [ResultController::class, 'resultCompute'])
         ->name('result-compute');
         Route::post('result/compute', [ResultController::class, 'resultComputeAction'])

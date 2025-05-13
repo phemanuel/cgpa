@@ -409,7 +409,7 @@
               <div class="card-header d-flex justify-content-between align-items-center flex-wrap">
                 <div style="font-size: 14px;">
                     <h6 class="mb-2 mb-md-0">
-                        Admin :: Result Entry for {{ $programme }} - {{ $stdLevel }} Level - {{ $semester }} Semester
+                        Admin :: Result Entry for {{$admissionYear}} - {{ $programme }} - {{ $stdLevel }} Level - {{ $semester }} Semester
                     </h6>
                     <div class="mt-1">
                         <a href="{{ route('result-entry') }}" class="btn btn-sm btn-secondary me-2">
@@ -440,24 +440,34 @@
                     <br>                    
                     <div class="container custom-width" style="overflow: auto; max-height: 500px;">
                         <h4></h4>
-                        <form method="POST" action="">
+                 <form method="POST" action="">
     @csrf
+
     <div class="table-wrapper">
         <table class="table table-bordered" id="classListTable" width="100%">
             <thead>
                 <tr>
-                    <th></th>
+                    <th>#</th>
                     <th class="sticky-col">Admission No</th>
                     <th class="sticky-name">Name</th>
+
                     @foreach ($courses as $course)
                         <th>
-                            {{ $course['course_title'] }} <br>
-                            <strong><small><span style="color:green">{{ $course['course_code'] }}</span></small></strong> -
-                            <small><span style="color:red">{{ $course['course_unit'] }}</span></small>
+                            {{ $course->course_title }}<br>
+                            <strong>
+                                <small>
+                                    <span style="color:green">{{ $course->course_code }}</span>
+                                </small>
+                            </strong> - 
+                            <small>
+                                <span style="color:red">{{ $course->course_unit }}</span>
+                            </small>
                         </th>
                     @endforeach
+                    <th>Action</th> <!-- Column for the resit button -->
                 </tr>
             </thead>
+
             <tbody>
                 @foreach ($students as $key => $student)
                     <tr>
@@ -469,7 +479,7 @@
 
                         @foreach ($courses as $course)
                             @php
-                                $index = $course['index']; // Adjust to use 'index' from the course array
+                                $index = $course->index;
                                 $score = $studentScores[$student->admission_no][$index] ?? 0;
                                 $formattedScore = (float)$score == (int)$score ? (int)$score : $score;
                             @endphp
@@ -480,17 +490,34 @@
                                     name="scores[{{ $student->id }}][{{ $index }}]" 
                                     class="form-control dynamic-score-input" 
                                     maxlength="3"
-                                    value="{{ $formattedScore }}"
+                                    value="{{ old("scores.{$student->id}.{$index}", $formattedScore) }}"
                                     data-student-id="{{ $student->id }}"
                                     data-course-id="{{ $index }}"
                                     data-admission-no="{{ $student->admission_no }}"
                                     data-class="{{ $stdLevel }}"
                                     data-semester="{{ $semester }}"
                                     data-course-index="{{ $index }}"
-                                    placeholder="{{ $course['is_failed'] ? $course['course_title'] : '' }}" {{-- Show course title for failed courses --}}
+                                    placeholder="Score"
                                 >
                             </td>
                         @endforeach
+
+                        <!-- Add button to update resit score for students with failed courses -->
+                        <td>
+                            @if (isset($studentsWithFailedCourses[$student->admission_no]))
+                                <button 
+                                    type="button" 
+                                    class="btn btn-success open-resit-modal" 
+                                    data-student-id="{{ $student->admission_no }}" 
+                                    data-student-name="{{ $student->surname }} {{ $student->first_name }} {{ $student->other_name }}"
+                                    data-level="{{ $stdLevel }}" 
+                                    data-semester="{{ $semester }}"
+                                    data-admissionYear="{{ $admissionYear }}"
+                                >
+                                    Update Resit Score
+                                </button>
+                            @endif
+                        </td>
                     </tr>
                 @endforeach
             </tbody>
@@ -507,25 +534,34 @@
               </div>
             </div>
           </div>  
-          
+
+              
            <!-- Hidden Table for Printing All Students -->
             <div id="allStudentsTable" style="display: none;">
             <h4>Score Sheet for {{ $programme }} - {{ $stdLevel }} Level - {{$semester}} Semester </h4>
             <table class="table table-bordered" id="classListTable" width="100%">
             <thead>
                 <tr>
-                    <th></th>
+                    <th>#</th>
                     <th class="sticky-col">Admission No</th>
                     <th class="sticky-name">Name</th>
+
                     @foreach ($courses as $course)
                         <th>
-                            {{ $course->course_title }} <br>
-                            <strong><small><span style="color:green">{{ $course->course_code }}</span></small></strong> -
-                            <small><span style="color:red">{{ $course->course_unit }}</span></small>
+                            {{ $course->course_title }}<br>
+                            <strong>
+                                <small>
+                                    <span style="color:green">{{ $course->course_code }}</span>
+                                </small>
+                            </strong> - 
+                            <small>
+                                <span style="color:red">{{ $course->course_unit }}</span>
+                            </small>
                         </th>
                     @endforeach
                 </tr>
             </thead>
+
             <tbody>
                 @foreach ($students as $key => $student)
                     <tr>
@@ -537,7 +573,7 @@
 
                         @foreach ($courses as $course)
                             @php
-                                $index = $course->index ?? $loop->index + 1; // default to loop index if no `index` exists
+                                $index = $course->index;
                                 $score = $studentScores[$student->admission_no][$index] ?? 0;
                                 $formattedScore = (float)$score == (int)$score ? (int)$score : $score;
                             @endphp
@@ -545,15 +581,17 @@
                             <td>
                                 <input 
                                     type="text" 
-                                    name="scores[{{ $student->id }}][{{ $loop->index + 1 }}]" 
+                                    name="scores[{{ $student->id }}][{{ $index }}]" 
                                     class="form-control dynamic-score-input" 
                                     maxlength="3"
-                                    value="{{ $formattedScore }}"
+                                    value="{{ old("scores.{$student->id}.{$index}", $formattedScore) }}"
                                     data-student-id="{{ $student->id }}"
-                                    data-course-index="{{ $loop->index + 1 }}"
+                                    data-course-id="{{ $index }}"
                                     data-admission-no="{{ $student->admission_no }}"
                                     data-class="{{ $stdLevel }}"
                                     data-semester="{{ $semester }}"
+                                    data-course-index="{{ $index }}"
+                                    placeholder="Score"
                                 >
                             </td>
                         @endforeach
@@ -562,9 +600,40 @@
             </tbody>
         </table>
 
-            </div>
-          
+            </div>        
+
+      
         </section>
+
+                    <!-- Modal -->
+<div class="modal fade" id="resitModal" tabindex="-1" aria-labelledby="resitModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="resitModalLabel">Update Resit Score</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <h6 id="studentInfo"></h6>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Course Code</th>
+              <th>Current Score</th>
+              <th>Resit Score</th>
+            </tr>
+          </thead>
+          <tbody id="failedCoursesBody">
+            <!-- Populated via JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- End modal -->
         <div class="settingSidebar">
           <a href="javascript:void(0)" class="settingPanelToggle"> <i class="fa fa-spin fa-cog"></i>
           </a>
@@ -866,4 +935,70 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 </script>
+
+<script>
+$$(document).on('click', '.open-resit-modal', function () {
+    let studentId = $(this).data('student-id');
+    let studentName = $(this).data('student-name');
+    let level = $(this).data('level');
+    let semester = $(this).data('semester');
+    let admissionYear = $(this).data('admissionYear');
+
+    $('#studentInfo').text('Admission No: ' + studentId + ' | Name: ' + studentName);
+
+    // Log the request data
+    console.log("Sending AJAX request with data:", {
+        admission_no: studentId,
+        level: level,
+        semester: semester,
+        admissionYear: admissionYear
+    });
+
+    // AJAX call to fetch result data
+    $.ajax({
+        url: '{{ route("fetchFailedCourses") }}',
+        type: 'GET',
+        data: {
+            admission_no: studentId,
+            level: level,
+            semester: semester,
+            admissionYear: admissionYear,
+        },
+        success: function (response) {
+            // Log the response data
+            console.log("AJAX Response:", response);
+
+            let rows = '';
+            $.each(response.failedCourses, function (index, item) {
+                rows += `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${item.course_code}</td>
+                        <td>${item.current_score}</td>
+                        <td>
+                            <input 
+                                type="number" 
+                                class="form-control" 
+                                name="resit_score[${item.index}]" 
+                                data-course-code="${item.course_code}" 
+                                min="0" 
+                                max="100"
+                                required
+                            >
+                        </td>
+                    </tr>
+                `;
+            });
+            $('#failedCoursesBody').html(rows);
+            $('#resitModal').modal('show');
+        },
+        error: function (xhr, status, error) {
+            // Log any AJAX errors
+            console.log("AJAX Error:", status, error);
+        }
+    });
+});
+
+</script>
+
 
