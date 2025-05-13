@@ -507,12 +507,12 @@
                             @if (isset($studentsWithFailedCourses[$student->admission_no]))
                                 <button 
                                     type="button" 
-                                    class="btn btn-success open-resit-modal" 
+                                    class="btn btn-success openResitModal" data-toggle="modal" data-target="#resitModal" 
                                     data-student-id="{{ $student->admission_no }}" 
                                     data-student-name="{{ $student->surname }} {{ $student->first_name }} {{ $student->other_name }}"
                                     data-level="{{ $stdLevel }}" 
                                     data-semester="{{ $semester }}"
-                                    data-admissionYear="{{ $admissionYear }}"
+                                    data-admissionyear="{{ $admissionYear }}"
                                 >
                                     Update Resit Score
                                 </button>
@@ -605,35 +605,50 @@
       
         </section>
 
-                    <!-- Modal -->
-<div class="modal fade" id="resitModal" tabindex="-1" aria-labelledby="resitModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="resitModalLabel">Update Resit Score</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <h6 id="studentInfo"></h6>
-        <table class="table table-bordered">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Course Code</th>
-              <th>Current Score</th>
-              <th>Resit Score</th>
-            </tr>
-          </thead>
-          <tbody id="failedCoursesBody">
-            <!-- Populated via JS -->
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-</div>
 
+<!-- Modal Structure -->
+<div class="modal fade" id="resitModal" tabindex="-1" role="dialog" aria-labelledby="resitModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title" id="resitModalLabel">Resit Scores</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="studentInfo" class="font-weight-bold text-white bg-dark p-3 mb-3 rounded"></p>
+                <input type="hidden" id="studentId" value="" >
+                <input type="hidden" id="studentName" value="" >
+                <input type="hidden" id="studentLevel" value="" >
+                <input type="hidden" id="studentSemester" value="" >
+                <input type="hidden" id="studentAdmissionYear" value="" >
+                <table class="table table-bordered table-striped table-hover">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>#</th>
+                            <th>Course</th>
+                            <th>Course Code</th>
+                            <th>Current Score</th>
+                            <th>Resit Score</th>
+                        </tr>
+                    </thead>
+                    <tbody id="failedCoursesBody">
+                        <!-- Dynamic rows go here -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="saveResitScoresBtn">Save Resit Scores</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- End modal -->
+
+
+
         <div class="settingSidebar">
           <a href="javascript:void(0)" class="settingPanelToggle"> <i class="fa fa-spin fa-cog"></i>
           </a>
@@ -750,7 +765,8 @@
 
 <!-- index.html  21 Nov 2019 03:47:04 GMT -->
 </html>
-
+<!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     // JavaScript for filtering the table
     function filterTable() {
@@ -937,14 +953,14 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 
 <script>
-$$(document).on('click', '.open-resit-modal', function () {
+$(document).on('click', '.openResitModal', function () {
     let studentId = $(this).data('student-id');
     let studentName = $(this).data('student-name');
     let level = $(this).data('level');
     let semester = $(this).data('semester');
-    let admissionYear = $(this).data('admissionYear');
+    let admissionYear = $(this).data('admissionyear');
 
-    $('#studentInfo').text('Admission No: ' + studentId + ' | Name: ' + studentName);
+    $('#studentInfo').text('Admission No: ' + studentId + ' | Name: ' + studentName + ' | Level: ' + level+ ' | Semester: ' + semester+ ' | Admission Year: ' + admissionYear);
 
     // Log the request data
     console.log("Sending AJAX request with data:", {
@@ -954,7 +970,6 @@ $$(document).on('click', '.open-resit-modal', function () {
         admissionYear: admissionYear
     });
 
-    // AJAX call to fetch result data
     $.ajax({
         url: '{{ route("fetchFailedCourses") }}',
         type: 'GET',
@@ -965,7 +980,6 @@ $$(document).on('click', '.open-resit-modal', function () {
             admissionYear: admissionYear,
         },
         success: function (response) {
-            // Log the response data
             console.log("AJAX Response:", response);
 
             let rows = '';
@@ -973,6 +987,7 @@ $$(document).on('click', '.open-resit-modal', function () {
                 rows += `
                     <tr>
                         <td>${index + 1}</td>
+                        <td>${item.subject}</td>
                         <td>${item.course_code}</td>
                         <td>${item.current_score}</td>
                         <td>
@@ -989,16 +1004,103 @@ $$(document).on('click', '.open-resit-modal', function () {
                     </tr>
                 `;
             });
+
             $('#failedCoursesBody').html(rows);
+
+            // ✅ Use the outer variables directly
+            $('#studentId').val(studentId);
+            $('#studentName').val(studentName);
+            $('#studentLevel').val(level);
+            $('#studentSemester').val(semester);
+            $('#studentAdmissionYear').val(admissionYear);
+
+            console.log("Hidden fields set:", {
+                studentId,
+                studentName,
+                level,
+                semester,
+                admissionYear
+            });
+
             $('#resitModal').modal('show');
         },
         error: function (xhr, status, error) {
-            // Log any AJAX errors
             console.log("AJAX Error:", status, error);
         }
     });
 });
-
 </script>
+
+
+<script>
+$(document).on('click', '#saveResitScoresBtn', function () {
+    let resitScores = [];
+
+    $('#failedCoursesBody tr').each(function () {
+        let input = $(this).find('input[name^="resit_score"]');
+        let indexMatch = input.attr('name').match(/\[(\d+)\]/);
+        let resitScore = input.val();
+
+        if (indexMatch && resitScore) {
+            resitScores.push({
+                index: indexMatch[1],
+                resit_score: resitScore
+            });
+        }
+    });
+
+    // Get additional student info from hidden inputs
+    let studentId = $('#studentId').val();
+    let studentName = $('#studentName').val();
+    let level = $('#studentLevel').val();
+    let semester = $('#studentSemester').val();
+    let admissionYear = $('#studentAdmissionYear').val();
+
+    // ✅ DEBUG LOG
+    console.log({
+        resit_scores: resitScores,
+        student_id: studentId,
+        student_name: studentName,
+        level: level,
+        semester: semester,
+        admission_year: admissionYear
+    });
+
+    if (resitScores.length > 0) {
+        $.ajax({
+            url: '{{ route("saveResitScores") }}',
+            type: 'POST',
+            data: {
+                _token: '{{ csrf_token() }}',
+                resit_scores: resitScores,
+                student_id: studentId,
+                student_name: studentName,
+                level: level,
+                semester: semester,
+                admission_year: admissionYear
+            },
+            success: function (response) {
+                console.log("AJAX Response:", response);
+                if (response.success) {
+                    alert("Resit scores saved successfully!");
+                    $('#resitModal').modal('hide');
+                } else {
+                    alert("Error saving resit scores.");
+                }
+            },
+            error: function (xhr, status, error) {
+                console.log("AJAX Error:", status, error);
+                alert("An error occurred while saving resit scores.");
+            }
+        });
+    } else {
+        alert("Please enter resit scores before saving.");
+    }
+});
+</script>
+
+
+
+
 
 

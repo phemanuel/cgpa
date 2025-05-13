@@ -3098,12 +3098,12 @@ class ResultController extends Controller
         $admissionYear = $request->admissionYear;
 
         // Log incoming request data
-        \Log::info("Fetching failed courses for student:", [
-            'admission_no' => $admissionNo,
-            'level' => $level,
-            'semester' => $semester,
-            'admissionYear' => $admissionYear
-        ]);
+        // \Log::info("Fetching failed courses for student:", [
+        //     'admission_no' => $admissionNo,
+        //     'level' => $level,
+        //     'semester' => $semester,
+        //     'admissionYear' => $admissionYear
+        // ]);
 
         // Determine previous level and semester
         [$prevLevel, $prevSemester] = $this->getPreviousLevelAndSemester($level, $semester);
@@ -3117,7 +3117,7 @@ class ResultController extends Controller
             ->first();
 
         // Log the previous result
-        \Log::info("Previous Result:", ['previousResult' => $previousResult]);
+        // \Log::info("Previous Result:", ['previousResult' => $previousResult]);
 
         if (!$previousResult || empty($previousResult->failed_course)) {
             return response()->json(['failedCourses' => []]);
@@ -3134,7 +3134,7 @@ class ResultController extends Controller
             ->first();
 
         // Log the current result
-        \Log::info("Current Result:", ['currentResult' => $currentResult]);
+        // \Log::info("Current Result:", ['currentResult' => $currentResult]);
 
         if (!$currentResult) {
             return response()->json(['failedCourses' => []]);
@@ -3146,6 +3146,7 @@ class ResultController extends Controller
             for ($i = 1; $i <= 20; $i++) {
                 $ctitleKey = 'ctitle' . $i;
                 $scoreKey = 'score' . $i;
+                $subjectKey = 'subject'. $i;
 
                 if (
                     isset($currentResult->$ctitleKey) &&
@@ -3154,6 +3155,7 @@ class ResultController extends Controller
                     $filtered[] = [
                         'course_code' => $failedCourse,
                         'current_score' => $currentResult->$scoreKey,
+                        'subject' => $currentResult->$subjectKey,
                         'index' => $i,
                     ];
                     break;
@@ -3162,10 +3164,42 @@ class ResultController extends Controller
         }
 
         // Log the filtered results
-        \Log::info("Filtered Failed Courses:", ['filtered' => $filtered]);
+        // \Log::info("Filtered Failed Courses:", ['filtered' => $filtered]);
 
         return response()->json(['failedCourses' => $filtered]);
     }
+
+    public function saveResitScores(Request $request)
+    {
+        // Log entire request payload for debugging
+        Log::info('Incoming Resit Scores Request:', $request->all());
+
+        // Validate the request data
+        $request->validate([
+            'resit_scores' => 'required|array',
+            'resit_scores.*.index' => 'required|integer', // Validate index
+            'resit_scores.*.resit_score' => 'required|numeric|min:0|max:100', // Validate resit score
+        ]);
+
+        // Log validated resit scores only
+        Log::info('Validated Resit Scores:', ['resit_scores' => $request->resit_scores]);
+
+        // Log student meta info
+        Log::info('Student Meta Info:', [
+            'student_id' => $request->student_id,
+            'student_name' => $request->student_name,
+            'level' => $request->level,
+            'semester' => $request->semester,
+            'admission_year' => $request->admission_year,
+        ]);
+
+        // (Optional) You can return the data for quick frontend test
+        return response()->json([
+            'success' => true,
+            'received' => $request->all()
+        ]);
+    }
+
 
 
 }
