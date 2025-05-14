@@ -503,21 +503,23 @@
                         @endforeach
 
                         <!-- Add button to update resit score for students with failed courses -->
-                        <td>
-                            @if (isset($studentsWithFailedCourses[$student->admission_no]))
-                                <button 
-                                    type="button" 
-                                    class="btn btn-success openResitModal" data-toggle="modal" data-target="#resitModal" 
-                                    data-student-id="{{ $student->admission_no }}" 
-                                    data-student-name="{{ $student->surname }} {{ $student->first_name }} {{ $student->other_name }}"
-                                    data-level="{{ $stdLevel }}" 
-                                    data-semester="{{ $semester }}"
-                                    data-admissionyear="{{ $admissionYear }}"
-                                >
-                                    Update Resit Score
-                                </button>
-                            @endif
-                        </td>
+                        <td style="min-width: 160px;">
+                          @if (isset($studentsWithFailedCourses[$student->admission_no]))
+                              <button 
+                                  type="button" 
+                                  class="btn btn-success btn-sm w-100 openResitModal" 
+                                  data-toggle="modal" 
+                                  data-target="#resitModal" 
+                                  data-student-id="{{ $student->admission_no }}" 
+                                  data-student-name="{{ $student->surname }} {{ $student->first_name }} {{ $student->other_name }}"
+                                  data-level="{{ $stdLevel }}" 
+                                  data-semester="{{ $semester }}"
+                                  data-admissionyear="{{ $admissionYear }}"
+                              >
+                                  Update Resit Score
+                              </button>
+                          @endif
+                      </td>
                     </tr>
                 @endforeach
             </tbody>
@@ -797,8 +799,17 @@
 
 <script>
 function printAllStudents() {
-    // Get the content of the hidden table
-    var printContents = document.getElementById('allStudentsTable').innerHTML;
+    // Clone the table
+    var originalTable = document.getElementById('classListTable');
+    var clonedTable = originalTable.cloneNode(true);
+
+    // Convert input fields to plain text
+    let inputs = clonedTable.querySelectorAll('input');
+    inputs.forEach(function(input) {
+        let td = input.parentElement;
+        let value = input.value;
+        td.innerText = value || '-';
+    });
 
     // Create a hidden iframe
     var iframe = document.createElement('iframe');
@@ -807,7 +818,7 @@ function printAllStudents() {
     iframe.style.left = '-10000px';
     document.body.appendChild(iframe);
 
-    // Write the content into the iframe
+    // Write content into the iframe
     var doc = iframe.contentWindow.document;
     doc.open();
     doc.write(`
@@ -816,28 +827,29 @@ function printAllStudents() {
                 <title>Score Sheet</title>
                 <style>
                     body { font-family: Arial, sans-serif; margin: 20px; }
-                    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-                    th, td { border: 1px solid black; padding: 8px; text-align: left; }
+                    table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 12px; }
+                    th, td { border: 1px solid black; padding: 6px; text-align: left; }
                     th { background-color: #f2f2f2; }
                 </style>
             </head>
             <body>                
-                ${printContents}
+                ${clonedTable.outerHTML}
             </body>
         </html>
     `);
     doc.close();
 
-    // Trigger the print dialog
+    // Print
     iframe.contentWindow.focus();
     iframe.contentWindow.print();
 
-    // Remove the iframe after printing
+    // Clean up
     setTimeout(() => {
         document.body.removeChild(iframe);
     }, 1000);
 }
 </script>
+
 <script>
 document.addEventListener('DOMContentLoaded', () => {
     const inputs = document.querySelectorAll('.dynamic-score-input');
