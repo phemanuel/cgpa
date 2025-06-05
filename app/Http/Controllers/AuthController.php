@@ -122,6 +122,15 @@ class AuthController extends Controller
             if ($user->user_status == 'Active') {
                 // Email is verified, proceed with login
                 $request->session()->regenerate();
+                //---Log Activity------
+                if (auth()->check()) {
+                    \App\Models\LogActivity::create([
+                        'user_id' => auth()->id(),
+                        'ip_address' => request()->ip(),
+                        'activity' => 'New login by ' . auth()->user()->last_name . ' '. auth()->user()->first_name,
+                        'activity_date' => now(),
+                    ]);
+                }
                 if($user->user_type == 'Superadmin'){
                     return redirect()->route('admin-dashboard');
                 }

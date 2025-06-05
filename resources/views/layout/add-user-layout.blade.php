@@ -357,7 +357,7 @@
                     </div>
                     @endif	
                   <div class="card-body">
-                <form action="{{route('add-user.action')}}" method="post" enctype="multipart/form-data">
+                <form id="registerForm" action="{{route('add-user.action')}}" method="post" enctype="multipart/form-data">
                       @csrf   
                       
                       <div class="form-group">
@@ -373,7 +373,7 @@
                       <div class="form-group">
                     <label>User Type</label>
                     <select name="userType" id="userType" class="form-control" required>
-                      @if(auth()->user()->user_type_status() == 1)
+                      @if(auth()->user()->user_type_status == 1)
                         <option value="Superadmin">Superadmin</option>
                         @endif
                         <option value="Admin">Admin</option>
@@ -422,20 +422,28 @@
                 @enderror
 
                 <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" class="form-control" name="password" value="" required>
+                    <label>Password (Minimum of 8 characters)</label>
+                    <input type="password" class="form-control" name="password" id="password" required>
+                    <span id="passwordError" class="text-danger" style="display: none;"></span>
                 </div>
+                
                 @error('password')
                     <span class="invalid-feedback">{{ $message }}</span>
                 @enderror
 
                 <div class="form-group">
                     <label>Confirm Password</label>
-                    <input type="password" class="form-control" name="password_confirmation" value="" required>
+                    <input type="password" class="form-control" name="password_confirmation" id="password_confirmation" value="" required>
+                </div>
+
+                <!-- Show Password Toggle -->
+                <div class="form-group form-check">
+                    <input type="checkbox" class="form-check-input" id="showPasswordToggle">
+                    <label class="form-check-label" for="showPasswordToggle">Show Password</label>
                 </div>
 
                 <div class="form-group">
-                    <label>Profile Picture</label>
+                    <label>Profile Picture(Optional)</label>
                     <input type="file" class="form-control" name="image">
                 </div>
                 @error('image')
@@ -657,6 +665,21 @@
 </html>
 
 <script>
+    document.getElementById('registerForm').addEventListener('submit', function (e) {
+        const password = document.getElementById('password').value;
+        const errorSpan = document.getElementById('passwordError');
+
+        if (password.length < 8) {
+            e.preventDefault(); // Prevent form from submitting
+            errorSpan.textContent = 'Password must be at least 8 characters long.';
+            errorSpan.style.display = 'block';
+        } else {
+            errorSpan.style.display = 'none'; // Hide error if valid
+        }
+    });
+</script>
+
+<script>
     // Wait for the DOM to be ready
     document.addEventListener('DOMContentLoaded', function () {
         // Get the userType select element and the department container
@@ -678,5 +701,39 @@
         } else {
             departmentContainer.style.display = 'block';
         }
+    });
+</script>
+<script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const form = document.getElementById('registerForm');
+                        const passwordInput = document.getElementById('password');
+                        const passwordError = document.getElementById('passwordError');
+
+                        form.addEventListener('submit', function (e) {
+                            const password = passwordInput.value;
+
+                            if (password.length < 8) {
+                                e.preventDefault(); // Stop form submission
+                                passwordError.textContent = 'Password must be at least 8 characters long.';
+                                passwordError.style.display = 'block';
+                                passwordInput.focus(); // 👈 Focus the field
+                            } else {
+                                passwordError.style.display = 'none';
+                            }
+                        });
+                    });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const showPasswordToggle = document.getElementById('showPasswordToggle');
+        const passwordField = document.getElementById('password');
+        const confirmPasswordField = document.getElementById('password_confirmation');
+
+        showPasswordToggle.addEventListener('change', function () {
+            const type = this.checked ? 'text' : 'password';
+            passwordField.type = type;
+            confirmPasswordField.type = type;
+        });
     });
 </script>

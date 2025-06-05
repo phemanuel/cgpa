@@ -621,19 +621,26 @@ class DashboardController extends Controller
     }
 
     public function addUserAction(Request $request)
-    {
+    {        
+        
         try {
             // Validate the input data
             $validatedData = $request->validate([
                 'last_name' => 'required|string|max:255',
                 'first_name' => 'required|string|max:255',
-                'email' => 'required|email|unique:users',
+                'email' => 'required|email',
                 'password' => 'required|string|min:8|confirmed',
                 'userType' => 'required|string',
                 'user_status' => 'required|string',
                 'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
                 'department' => 'nullable|string'
             ]);
+
+            //---Check if email exist---
+            $emailExist = User::where('email', $validatedData['email'])->first();
+            if($emailExist){
+                return redirect()->back()->with('error', 'The email entered has been used already, provide a different email.');
+            }
 
             $email_token = Str::random(40);
 
