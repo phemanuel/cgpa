@@ -1161,7 +1161,7 @@ class ResultController extends Controller
                     \App\Models\LogActivity::create([
                         'user_id' => auth()->id(),
                         'ip_address' => request()->ip(),
-                        'activity' => 'Student results computed by ' . auth()->user()->last_name . ' '. auth()->user()->first_name,
+                        'activity' => "Student results for {$acadSession} {$programme} {$level} {$semester} computed by " . auth()->user()->last_name . ' ' . auth()->user()->first_name,
                         'activity_date' => now(),
                     ]);
                 }
@@ -1388,6 +1388,15 @@ class ResultController extends Controller
             $compute->save();  
 
         }
+        //---Log Activity------
+                if (auth()->check()) {
+                    \App\Models\LogActivity::create([
+                        'user_id' => auth()->id(),
+                        'ip_address' => request()->ip(),
+                        'activity' => "Student results for {$acadSession} {$programme} {$level} {$semester} computed by " . auth()->user()->last_name . ' ' . auth()->user()->first_name,
+                        'activity_date' => now(),
+                    ]);
+                }
         return redirect()->route('result-compute')->with('success' , 'Result Computed Successfuly.');
         
     }
@@ -1664,7 +1673,15 @@ class ResultController extends Controller
                 $compute->save();
             }
         }
-
+        //---Log Activity------
+                if (auth()->check()) {
+                    \App\Models\LogActivity::create([
+                        'user_id' => auth()->id(),
+                        'ip_address' => request()->ip(),
+                        'activity' => "Student results for {$acadSession} {$programme} {$level} {$semester} computed by " . auth()->user()->last_name . ' ' . auth()->user()->first_name,
+                        'activity_date' => now(),
+                    ]);
+                }
         return redirect()->route('result-compute')->with('success' , 'Result Computed Successfuly.');
     }
 
@@ -1888,6 +1905,15 @@ class ResultController extends Controller
             $compute->save();  
 
         }
+        //---Log Activity------
+                if (auth()->check()) {
+                    \App\Models\LogActivity::create([
+                        'user_id' => auth()->id(),
+                        'ip_address' => request()->ip(),
+                        'activity' => "Student results for {$acadSession} {$programme} {$level} {$semester} computed by " . auth()->user()->last_name . ' ' . auth()->user()->first_name,
+                        'activity_date' => now(),
+                    ]);
+                }
         return redirect()->route('result-compute')->with('success' , 'Result Computed Successfuly.');
         
     }
@@ -2171,7 +2197,17 @@ class ResultController extends Controller
     // Return the success message
     // return redirect()->route('result-compute')->with('success', 'Result Computed Successfully.');
 
-        $this->calculateFinalCgpa($acadSession, $programme, $level, $semester,$courseDuration);    
+        $this->calculateFinalCgpa($acadSession, $programme, $level, $semester,$courseDuration);  
+        
+        //---Log Activity------
+                if (auth()->check()) {
+                    \App\Models\LogActivity::create([
+                        'user_id' => auth()->id(),
+                        'ip_address' => request()->ip(),
+                        'activity' => "Student results for {$acadSession} {$programme} {$level} {$semester} computed by " . auth()->user()->last_name . ' ' . auth()->user()->first_name,
+                        'activity_date' => now(),
+                    ]);
+                }
         // Return with success message
         return redirect()->route('result-compute')->with('success', 'Results Computed Successfully.');    
     }
@@ -2388,6 +2424,11 @@ class ResultController extends Controller
             'semester'      => 'required|string',
         ]);
 
+        $acadSession = $request->acad_session;
+        $programme = $request->programme;
+        $level = $request->stdLevel;
+        $semester = $request->semester;
+
         $deleted = ResultCompute::where('course', $request->programme)
                     ->where('session1', $request->acad_session)
                     ->where('class', $request->stdLevel)
@@ -2395,6 +2436,15 @@ class ResultController extends Controller
                     ->delete();
 
         if ($deleted) {
+            //---Log Activity------
+                if (auth()->check()) {
+                    \App\Models\LogActivity::create([
+                        'user_id' => auth()->id(),
+                        'ip_address' => request()->ip(),
+                        'activity' => "Student results for {$acadSession} {$programme} {$level} {$semester} deleted by " . auth()->user()->last_name . ' ' . auth()->user()->first_name,
+                        'activity_date' => now(),
+                    ]);
+                }
             return response()->json(['status' => 'success', 'message' => 'Results deleted successfully.']);
         } else {
             return response()->json(['status' => 'error', 'message' => 'No matching results found.'], 404);
@@ -2503,6 +2553,16 @@ class ResultController extends Controller
                 ['min' => $grading->grade51, 'max' => $grading->grade52, 'unit' => $grading->unit06, 'letter_grade' => $grading->lgrade6],
             ];
 
+            //---Log Activity------
+                if (auth()->check()) {
+                    \App\Models\LogActivity::create([
+                        'user_id' => auth()->id(),
+                        'ip_address' => request()->ip(),
+                        'activity' => "Student results for {$acadSession} {$programme} {$level} {$semester} viewed by " . auth()->user()->last_name . ' ' . auth()->user()->first_name,
+                        'activity_date' => now(),
+                    ]);
+                }
+
             // Render the view with the fetched data
             return view('results.student_result_page', [
                 'results' => $results,
@@ -2572,6 +2632,16 @@ class ResultController extends Controller
                 ['min' => $grading->grade41, 'max' => $grading->grade42, 'unit' => $grading->unit05, 'letter_grade' => $grading->lgrade5],
                 ['min' => $grading->grade51, 'max' => $grading->grade52, 'unit' => $grading->unit06, 'letter_grade' => $grading->lgrade6],
             ];
+
+            //---Log Activity------
+                if (auth()->check()) {
+                    \App\Models\LogActivity::create([
+                        'user_id' => auth()->id(),
+                        'ip_address' => request()->ip(),
+                        'activity' => "Student results for {$acadSession} {$programme} {$level} {$semester} viewed by " . auth()->user()->last_name . ' ' . auth()->user()->first_name,
+                        'activity_date' => now(),
+                    ]);
+                }
 
             // Render the view with the fetched data
             return view('results.student_result_page1', [
@@ -2649,6 +2719,16 @@ class ResultController extends Controller
                 ['min' => $grading->grade51, 'max' => $grading->grade52, 'unit' => $grading->unit06, 'letter_grade' => $grading->lgrade6],
             ];
 
+            //---Log Activity------
+                if (auth()->check()) {
+                    \App\Models\LogActivity::create([
+                        'user_id' => auth()->id(),
+                        'ip_address' => request()->ip(),
+                        'activity' => "Student results for {$acadSession} {$programme} {$level} {$semester} viewed by " . auth()->user()->last_name . ' ' . auth()->user()->first_name,
+                        'activity_date' => now(),
+                    ]);
+                }
+
             // Render the view with the fetched data
             return view('results.student_result_page2', [
                 'results' => $results,
@@ -2700,7 +2780,16 @@ class ResultController extends Controller
         $acadsession = $validated['acad_session'];
         $stdLevel = $validated['stdLevel'];
         $semester = $validated['semester'];
-    
+        
+        //---Log Activity------
+                if (auth()->check()) {
+                    \App\Models\LogActivity::create([
+                        'user_id' => auth()->id(),
+                        'ip_address' => request()->ip(),
+                        'activity' => "Semester results for {$acadsession} {$programme} {$stdLevel} {$semester} viewed by " . auth()->user()->last_name . ' ' . auth()->user()->first_name,
+                        'activity_date' => now(),
+                    ]);
+                }
         
         return view('layout.semester-result-view', compact('results','programme','semester','acadsession','stdLevel'));
     }
@@ -2736,8 +2825,18 @@ class ResultController extends Controller
 
         $programme = $validated['programme'];
         $acadsession = $validated['acad_session'];
-        $stdLevel = $validated['stdLevel'];       
-    
+        $stdLevel = $validated['stdLevel']; 
+        $semester = 'Second';      
+        
+        //---Log Activity------
+                if (auth()->check()) {
+                    \App\Models\LogActivity::create([
+                        'user_id' => auth()->id(),
+                        'ip_address' => request()->ip(),
+                        'activity' => "Semester results summary for {$acadsession} {$programme} {$stdLevel} {$semester} viewed by " . auth()->user()->last_name . ' ' . auth()->user()->first_name,
+                        'activity_date' => now(),
+                    ]);
+                }
         
         return view('layout.semester-result-summary-view', compact('results','programme','acadsession','stdLevel'));
     }
@@ -2772,6 +2871,16 @@ class ResultController extends Controller
             ->where('admission_year', $admissionYear)
             ->orderBy('admission_no', 'asc')
             ->get();
+
+            //---Log Activity------
+                if (auth()->check()) {
+                    \App\Models\LogActivity::create([
+                        'user_id' => auth()->id(),
+                        'ip_address' => request()->ip(),
+                        'activity' => "Student Transcript for {$admissionYear} {$programme} viewed by " . auth()->user()->last_name . ' ' . auth()->user()->first_name,
+                        'activity_date' => now(),
+                    ]);
+                }
 
         // Return view with students
         return view('results.student_transcript_view', compact('students','programme', 'admissionYear'));
@@ -2866,6 +2975,17 @@ class ResultController extends Controller
             ['min' => $grading->grade41, 'max' => $grading->grade42, 'unit' => $grading->unit05, 'letter_grade' => $grading->lgrade5],
             ['min' => $grading->grade51, 'max' => $grading->grade52, 'unit' => $grading->unit06, 'letter_grade' => $grading->lgrade6],
         ];
+
+
+         //---Log Activity------
+                if (auth()->check()) {
+                    \App\Models\LogActivity::create([
+                        'user_id' => auth()->id(),
+                        'ip_address' => request()->ip(),
+                        'activity' => "Student({$admissionNo}) Transcript viewed by " . auth()->user()->last_name . ' ' . auth()->user()->first_name,
+                        'activity_date' => now(),
+                    ]);
+                }
     
         return view('results.student_full_transcript', compact('allSemesters', 'grades', 'hod'));
     
@@ -3044,9 +3164,19 @@ class ResultController extends Controller
         $result->no_of_course = ($result->no_of_course ?? 0) + $added;
         $result->save();
 
-        if ($added === 0) {
+        if ($added === 0) { 
             return back()->with('error', 'All failed courses from the previous level/semester have already been added.');
         }
+
+        //---Log Activity------
+                if (auth()->check()) {
+                    \App\Models\LogActivity::create([
+                        'user_id' => auth()->id(),
+                        'ip_address' => request()->ip(),
+                        'activity' => "Student result resit ($added failed course(s) added successfully to {$currentLevel}/{$currentSemester}) by " . auth()->user()->last_name . ' ' . auth()->user()->first_name,
+                        'activity_date' => now(),
+                    ]);
+                }
         
         return back()->with('success', "$added failed course(s) added successfully to {$currentLevel}/{$currentSemester}.");
     }
@@ -3285,6 +3415,15 @@ class ResultController extends Controller
                     $columnName => $resitScore,
                 ]);
         }
+        //---Log Activity------
+                if (auth()->check()) {
+                    \App\Models\LogActivity::create([
+                        'user_id' => auth()->id(),
+                        'ip_address' => request()->ip(),
+                        'activity' => "Student({$studentId}) resit scores updated by " . auth()->user()->last_name . ' ' . auth()->user()->first_name,
+                        'activity_date' => now(),
+                    ]);
+                }
 
         return response()->json(['success' => true, 'message' => 'Resit scores updated successfully.']);
     }
