@@ -50,6 +50,15 @@ class StudentController extends Controller
             $userCount = Registration::count();
             $programmes = CourseStudyAll::orderBy('department', 'asc')->get();
             $allLevel = StudentLevel::all();
+            //---Log Activity------
+                if (auth()->check()) {
+                    \App\Models\LogActivity::create([
+                        'user_id' => auth()->id(),
+                        'ip_address' => request()->ip(),
+                        'activity' => 'Student List viewed by ' . auth()->user()->last_name . ' '. auth()->user()->first_name,
+                        'activity_date' => now(),
+                    ]);
+                }
             return view('layout.students-page', compact('users','userCount', 'programmes', 'allLevel'));
         } catch (\Exception $e) {
             // Handle any exceptions that may occur
@@ -124,6 +133,15 @@ class StudentController extends Controller
             'acad_session' => $request->admission_year . "/" . ($request->admission_year + 1),
             'migrate_status' => 0,
         ]);
+        //---Log Activity------
+                if (auth()->check()) {
+                    \App\Models\LogActivity::create([
+                        'user_id' => auth()->id(),
+                        'ip_address' => request()->ip(),
+                        'activity' => 'New student created by ' . auth()->user()->last_name . ' '. auth()->user()->first_name,
+                        'activity_date' => now(),
+                    ]);
+                }
 
         return redirect()->route('student-registration')->with('success', 'Student data saved successfuly.');
         // return response()->json(['success' => true]);
@@ -169,6 +187,15 @@ class StudentController extends Controller
                 // $type = "success";
                 // $message = "CSV Data Imported into the Database";
                 // Redirect back with success message
+                //---Log Activity------
+                if (auth()->check()) {
+                    \App\Models\LogActivity::create([
+                        'user_id' => auth()->id(),
+                        'ip_address' => request()->ip(),
+                        'activity' => 'New students imported by ' . auth()->user()->last_name . ' '. auth()->user()->first_name,
+                        'activity_date' => now(),
+                    ]);
+                }
             return redirect()->route('student-registration')->with('success', 'Student Data imported successfully.');
             } else {
                 // Log or handle missing data

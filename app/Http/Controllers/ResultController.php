@@ -35,7 +35,15 @@ class ResultController extends Controller
         }
 
         $grading = GradingSystem::first();
-
+        //---Log Activity------
+                if (auth()->check()) {
+                    \App\Models\LogActivity::create([
+                        'user_id' => auth()->id(),
+                        'ip_address' => request()->ip(),
+                        'activity' => 'Grading System viewed by ' . auth()->user()->last_name . ' '. auth()->user()->first_name,
+                        'activity_date' => now(),
+                    ]);
+                }
         return view('layout.grading', compact('grading'));
     }
 
@@ -112,6 +120,16 @@ class ResultController extends Controller
                 'lgrade6' => $validated['lgrade6'],
             ]);
 
+            //---Log Activity------
+                if (auth()->check()) {
+                    \App\Models\LogActivity::create([
+                        'user_id' => auth()->id(),
+                        'ip_address' => request()->ip(),
+                        'activity' => 'Grading system updated by ' . auth()->user()->last_name . ' '. auth()->user()->first_name,
+                        'activity_date' => now(),
+                    ]);
+                }
+
             return redirect()->route('grading')->with('success', 'Grading System updated successfully.');
 
         } catch (\Exception $e) {
@@ -153,6 +171,16 @@ class ResultController extends Controller
             if($assignedCourse->count() == 0) {
                 return redirect()->back()->with('error','You have not been assigned to any courses.');
             }
+
+            //---Log Activity------
+                if (auth()->check()) {
+                    \App\Models\LogActivity::create([
+                        'user_id' => auth()->id(),
+                        'ip_address' => request()->ip(),
+                        'activity' => 'Result entry viewed by ' . auth()->user()->last_name . ' '. auth()->user()->first_name,
+                        'activity_date' => now(),
+                    ]);
+                }
 
             return view('layout.result-entry', compact('assignedCourse'));
         }
@@ -259,6 +287,15 @@ class ResultController extends Controller
         $stdLevel = $assignedCourse->level;
         $semester = $assignedCourse->semester;
 
+        //---Log Activity------
+                if (auth()->check()) {
+                    \App\Models\LogActivity::create([
+                        'user_id' => auth()->id(),
+                        'ip_address' => request()->ip(),
+                        'activity' => 'Result entry viewed by ' . auth()->user()->last_name . ' '. auth()->user()->first_name,
+                        'activity_date' => now(),
+                    ]);
+                }
         return view('layout.result-entry-view', compact(
             'students', 'updatedResults', 'assignedCourse', 'courses', 'studentScores', 'stdLevel', 'semester'
         ));
@@ -463,6 +500,16 @@ class ResultController extends Controller
         // Final course list to display
         $courses = $curriculumCourses;
 
+        //---Log Activity------
+                if (auth()->check()) {
+                    \App\Models\LogActivity::create([
+                        'user_id' => auth()->id(),
+                        'ip_address' => request()->ip(),
+                        'activity' => 'Result entry viewed by ' . auth()->user()->last_name . ' '. auth()->user()->first_name,
+                        'activity_date' => now(),
+                    ]);
+                }
+
         return view('layout.result-entry-view-admin', compact(
             'students', 'courses', 'programme', 'admissionYear', 'stdLevel', 'semester'
         ));
@@ -494,6 +541,12 @@ class ResultController extends Controller
                 'score' => 'required|numeric|min:0|max:100',
             ]);
 
+            $course = Course::where('id', $validated['course_id'])->first();
+            $courseTitle = $course->course_title;
+            $courseCode = $course->course_code;
+            $admissionNo = $request->admission_no;
+            $currentScore = $request->score;
+
             // Log information about the incoming request
             Log::info('Processing score update.', $validated);
 
@@ -508,7 +561,15 @@ class ResultController extends Controller
                 $result->{$courseIndex} = $validated['score'];
                 $result->save();
 
-            
+            //---Log Activity------
+                if (auth()->check()) {
+                    \App\Models\LogActivity::create([
+                        'user_id' => auth()->id(),
+                        'ip_address' => request()->ip(),
+                        'activity' => "{$admissionNo} Student score({$currentScore}) for {$courseTitle}({$courseCode}) updated by " . auth()->user()->last_name . ' '. auth()->user()->first_name,
+                        'activity_date' => now(),
+                    ]);
+                }
 
                 return response()->json(['message' => 'Score saved successfully.']);
             }            
@@ -807,9 +868,18 @@ class ResultController extends Controller
                 }
             }
             $compute->sn = $index + 1;
-            $compute->save();  
+            $compute->save();            
 
         }
+        //---Log Activity------
+                if (auth()->check()) {
+                    \App\Models\LogActivity::create([
+                        'user_id' => auth()->id(),
+                        'ip_address' => request()->ip(),
+                        'activity' => "Student results for {$acadSession} {$programme} {$level} {$semester} computed by " . auth()->user()->last_name . ' ' . auth()->user()->first_name,
+                        'activity_date' => now(),
+                    ]);
+                }
         return redirect()->route('result-compute')->with('success' , 'Result Computed Successfuly.');
         
     }
@@ -1086,7 +1156,15 @@ class ResultController extends Controller
                 $compute->save();
             }
         }
-
+        //---Log Activity------
+                if (auth()->check()) {
+                    \App\Models\LogActivity::create([
+                        'user_id' => auth()->id(),
+                        'ip_address' => request()->ip(),
+                        'activity' => 'Student results computed by ' . auth()->user()->last_name . ' '. auth()->user()->first_name,
+                        'activity_date' => now(),
+                    ]);
+                }
         return redirect()->route('result-compute')->with('success' , 'Result Computed Successfuly.');
     }
 

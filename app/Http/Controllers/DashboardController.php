@@ -1085,6 +1085,16 @@ class DashboardController extends Controller
                 return redirect()->back()->with('error', 'No students found for the selected filters.');
             }
 
+            //---Log Activity------
+                if (auth()->check()) {
+                    \App\Models\LogActivity::create([
+                        'user_id' => auth()->id(),
+                        'ip_address' => request()->ip(),
+                        'activity' => 'Class List viewed by ' . auth()->user()->last_name . ' '. auth()->user()->first_name,
+                        'activity_date' => now(),
+                    ]);
+                }
+
             return view('layout.class-list-view', [
                 'students' => $students,
                 'studentLevel' => $stdLevel,
