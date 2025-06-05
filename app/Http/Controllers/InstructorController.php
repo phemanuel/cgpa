@@ -165,7 +165,15 @@ class InstructorController extends Controller
             if ($assignment) {
                 // Update the user's department in the `users` table
                 $instructorInfo->update(['department' => $request->department]);
-    
+                //---Log Activity------
+                if (auth()->check()) {
+                    \App\Models\LogActivity::create([
+                        'user_id' => auth()->id(),
+                        'ip_address' => request()->ip(),
+                        'activity' => "{$courseInfo->course_title} assigned to {$instructorInfo->last_name} {$instructorInfo->first_name} by " . auth()->user()->last_name . ' ' . auth()->user()->first_name,
+                        'activity_date' => now(),
+                    ]);
+                }
                 return redirect()->route('instructor-assign', ['id' => $request->instructorId])
                     ->with('success', 'Course assigned successfully!');
             } else {
@@ -215,6 +223,15 @@ class InstructorController extends Controller
             'instructor_id' => $newInstructor->id,
             'instructor_name' => $instructorName,
         ]);        
+        //---Log Activity------
+                if (auth()->check()) {
+                    \App\Models\LogActivity::create([
+                        'user_id' => auth()->id(),
+                        'ip_address' => request()->ip(),
+                        'activity' => "{$course->course_title} re-assigned to {$instructorName} by " . auth()->user()->last_name . ' ' . auth()->user()->first_name,
+                        'activity_date' => now(),
+                    ]);
+                }
 
         return redirect()->route('instructor-assign',['id' => $newInstructor->id ])->with('success', 'Course re-assigned successfully.');
     }
@@ -248,6 +265,16 @@ class InstructorController extends Controller
         $instructorCourse = Instructor::where('id', $id)->first();  
         $instructorId = $instructorCourse->instructor_id;      
         $instructorCourse->delete();
+
+        //---Log Activity------
+                if (auth()->check()) {
+                    \App\Models\LogActivity::create([
+                        'user_id' => auth()->id(),
+                        'ip_address' => request()->ip(),
+                        'activity' => "{$instructorCourse->course_title} unassigned from {$instructorCourse->instructor_name} by " . auth()->user()->last_name . ' ' . auth()->user()->first_name,
+                        'activity_date' => now(),
+                    ]);
+                }
 
         // Redirect back to the course list with success message and parameters
         return redirect()->route('instructor-assign', [
