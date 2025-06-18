@@ -2515,8 +2515,8 @@ class ResultController extends Controller
 
             // Check if the results are empty
             if ($results->isEmpty()) {
-                // \Log::info('No results found for the given parameters.');
-                return redirect()->route('result-compute-preview')->with('message', 'No results found.');
+                \Log::info('No results found for the given parameters.');
+                return redirect()->route('result-compute-preview')->with('error', 'No results found.');
             }
 
             // Map the data into a format for the view

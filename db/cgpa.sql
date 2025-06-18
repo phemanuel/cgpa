@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 05, 2025 at 04:52 PM
+-- Generation Time: Jun 18, 2025 at 09:55 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -1149,8 +1149,31 @@ CREATE TABLE `instructors` (
 --
 
 INSERT INTO `instructors` (`id`, `instructor_id`, `instructor_name`, `course_id`, `course_title`, `course_code`, `course_unit`, `department`, `programme`, `semester`, `level`, `session1`, `assign_status`, `created_at`, `updated_at`) VALUES
-(1, 0, 'Adeyinka Temiloluwa', 198, 'CITIZENSHIP EDUCATION', 'GST 101', 2.00, 'MEDICAL LABORATORY SCIENCE', 'Certificate for  Medical Laboratory Technicians(MLT)', 'FIRST', '100', '2024/2025', 'Active', '2025-04-08 05:06:40', '2025-04-08 05:06:40'),
+(1, 2, 'Adeyinka Temiloluwa', 198, 'CITIZENSHIP EDUCATION', 'GST 101', 2.00, 'MEDICAL LABORATORY SCIENCE', 'Certificate for  Medical Laboratory Technicians(MLT)', 'FIRST', '100', '2024/2025', 'Active', '2025-04-08 05:06:40', '2025-04-08 05:06:40'),
 (3, 2, 'Adeyinka Temiloluwa', 3, 'ANATOMY  AND PHYSIOLOGY 1', 'CHE 212', 2.00, 'COMMUNITY HEALTH', 'Diploma in Community Health(CHEW)', 'FIRST', '100', '2024/2025', 'Active', '2025-04-23 20:02:35', '2025-04-23 20:02:35');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `log_activities`
+--
+
+CREATE TABLE `log_activities` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `ip_address` varchar(255) NOT NULL,
+  `activity` text NOT NULL,
+  `activity_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `log_activities`
+--
+
+INSERT INTO `log_activities` (`id`, `user_id`, `ip_address`, `activity`, `activity_date`, `created_at`, `updated_at`) VALUES
+(1, 1, '127.0.0.1', 'New login by Akinyooye Akinfemi', '2025-06-19 02:54:44', '2025-06-19 02:54:44', '2025-06-19 02:54:44');
 
 -- --------------------------------------------------------
 
@@ -1199,7 +1222,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (28, '2025_01_01_184357_create_instructors_table', 13),
 (29, '2025_04_22_130500_resultcompute', 14),
 (30, '2025_04_22_131626_change_failed_course_column_type', 15),
-(31, '2025_04_22_132002_resultcompute', 16);
+(31, '2025_04_22_132002_resultcompute', 16),
+(32, '2025_06_05_141815_create_log_activities_table', 17);
 
 -- --------------------------------------------------------
 
@@ -9116,6 +9140,12 @@ ALTER TABLE `instructors`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `log_activities`
+--
+ALTER TABLE `log_activities`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `migrations`
 --
 ALTER TABLE `migrations`
@@ -9286,10 +9316,16 @@ ALTER TABLE `instructors`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
+-- AUTO_INCREMENT for table `log_activities`
+--
+ALTER TABLE `log_activities`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT for table `payment_transactions`
