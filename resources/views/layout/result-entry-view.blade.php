@@ -472,6 +472,9 @@
                         data-admission-no="{{ $student->admission_no }}"
                         data-class="{{ $stdLevel }}"
                         data-semester="{{ $assignedCourse->semester }}"
+                        data-course-title="{{ $assignedCourse->course_title }}"
+                        data-course-code="{{ $assignedCourse->course_code }}"
+                        data-course-unit="{{ $assignedCourse->course_unit }}"
                         data-course-index="{{ $loop->index + 1 }}"
                         @if ($course->course_title == $assignedCourse->course_title)
                             style="background-color: yellow;" 
@@ -751,6 +754,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const admissionNo = field.dataset.admissionNo;
             const className = field.dataset.class;
             const semester = field.dataset.semester;
+            const courseTitle = field.dataset.courseTitle;
+            const courseCode = field.dataset.courseCode;
+            const courseUnit = field.dataset.courseUnit;
             const courseIndex = field.dataset.courseIndex; // Retrieve the course index
             const score = field.value;
 
@@ -777,6 +783,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         admission_no: admissionNo,
                         class: className,
                         semester: semester,
+                        course_title: courseTitle,
+                        course_unit: courseUnit,
+                        course_code: courseCode,
                         course_index: courseIndex, // Pass course index to the server
                         score: score
                     })

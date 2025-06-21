@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 18, 2025 at 09:55 PM
+-- Generation Time: Jun 21, 2025 at 04:04 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -1022,6 +1022,13 @@ CREATE TABLE `failed_logins` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `failed_logins`
+--
+
+INSERT INTO `failed_logins` (`id`, `ip_address`, `email`, `created_at`, `updated_at`) VALUES
+(1, '127.0.0.1', 'gbolagade2001@yahoo.com', '2025-06-21 00:39:09', '2025-06-21 00:39:09');
+
 -- --------------------------------------------------------
 
 --
@@ -1133,7 +1140,7 @@ CREATE TABLE `instructors` (
   `course_id` bigint(20) UNSIGNED NOT NULL,
   `course_title` varchar(100) NOT NULL,
   `course_code` varchar(10) NOT NULL,
-  `course_unit` decimal(3,2) NOT NULL,
+  `course_unit` int(2) NOT NULL,
   `department` varchar(50) NOT NULL,
   `programme` varchar(200) NOT NULL,
   `semester` varchar(10) NOT NULL,
@@ -1149,8 +1156,12 @@ CREATE TABLE `instructors` (
 --
 
 INSERT INTO `instructors` (`id`, `instructor_id`, `instructor_name`, `course_id`, `course_title`, `course_code`, `course_unit`, `department`, `programme`, `semester`, `level`, `session1`, `assign_status`, `created_at`, `updated_at`) VALUES
-(1, 2, 'Adeyinka Temiloluwa', 198, 'CITIZENSHIP EDUCATION', 'GST 101', 2.00, 'MEDICAL LABORATORY SCIENCE', 'Certificate for  Medical Laboratory Technicians(MLT)', 'FIRST', '100', '2024/2025', 'Active', '2025-04-08 05:06:40', '2025-04-08 05:06:40'),
-(3, 2, 'Adeyinka Temiloluwa', 3, 'ANATOMY  AND PHYSIOLOGY 1', 'CHE 212', 2.00, 'COMMUNITY HEALTH', 'Diploma in Community Health(CHEW)', 'FIRST', '100', '2024/2025', 'Active', '2025-04-23 20:02:35', '2025-04-23 20:02:35');
+(1, 2, 'Adeyinka Temiloluwa', 198, 'CITIZENSHIP EDUCATION', 'GST 101', 2, 'MEDICAL LABORATORY SCIENCE', 'Certificate for  Medical Laboratory Technicians(MLT)', 'FIRST', '100', '2024/2025', 'Active', '2025-04-08 05:06:40', '2025-04-08 05:06:40'),
+(3, 2, 'Adeyinka Temiloluwa', 3, 'ANATOMY  AND PHYSIOLOGY 1', 'CHE 212', 2, 'COMMUNITY HEALTH', 'Diploma in Community Health(CHEW)', 'FIRST', '100', '2024/2025', 'Active', '2025-04-23 20:02:35', '2025-04-23 20:02:35'),
+(4, 6, 'Gbolagade Abiodun', 193, 'INTRODUCTION TO IT I', 'CSC 101', 2, 'MEDICAL LABORATORY SCIENCE', 'Certificate for  Medical Laboratory Technicians(MLT)', 'FIRST', '100', '2024/2025', 'Active', '2025-06-19 02:57:51', '2025-06-19 02:57:51'),
+(5, 6, 'Gbolagade Abiodun', 192, 'COMMUNICATION SKILLS I', 'ELS 101', 2, 'MEDICAL LABORATORY SCIENCE', 'Certificate for  Medical Laboratory Technicians(MLT)', 'FIRST', '100', '2024/2025', 'Active', '2025-06-21 00:35:27', '2025-06-21 00:35:27'),
+(6, 6, 'Gbolagade Abiodun', 12, 'CITIZENSHIP EDUCATION', 'GNS 111', 1, 'COMMUNITY HEALTH', 'Diploma in Community Health(CHEW)', 'FIRST', '100', '2024/2025', 'Active', '2025-06-21 00:47:48', '2025-06-21 00:47:48'),
+(7, 6, 'Gbolagade Abiodun', 2, 'PROFESSIONAL ETHICS', 'CHE 211', 1, 'COMMUNITY HEALTH', 'Diploma in Community Health(CHEW)', 'FIRST', '100', '2024/2025', 'Active', '2025-06-21 20:58:17', '2025-06-21 20:58:17');
 
 -- --------------------------------------------------------
 
@@ -1173,7 +1184,86 @@ CREATE TABLE `log_activities` (
 --
 
 INSERT INTO `log_activities` (`id`, `user_id`, `ip_address`, `activity`, `activity_date`, `created_at`, `updated_at`) VALUES
-(1, 1, '127.0.0.1', 'New login by Akinyooye Akinfemi', '2025-06-19 02:54:44', '2025-06-19 02:54:44', '2025-06-19 02:54:44');
+(1, 1, '127.0.0.1', 'New login by Akinyooye Akinfemi', '2025-06-19 02:54:44', '2025-06-19 02:54:44', '2025-06-19 02:54:44'),
+(2, 6, '127.0.0.1', 'New login by Gbolagade Abiodun', '2025-06-19 02:59:17', '2025-06-19 02:59:17', '2025-06-19 02:59:17'),
+(3, 1, '127.0.0.1', 'New login by Akinyooye Akinfemi', '2025-06-19 02:59:47', '2025-06-19 02:59:47', '2025-06-19 02:59:47'),
+(4, 6, '127.0.0.1', 'New login by Gbolagade Abiodun', '2025-06-19 03:00:20', '2025-06-19 03:00:20', '2025-06-19 03:00:20'),
+(5, 1, '127.0.0.1', 'New login by Akinyooye Akinfemi', '2025-06-20 23:48:45', '2025-06-20 23:48:45', '2025-06-20 23:48:45'),
+(6, 1, '127.0.0.1', 'Class List viewed by Akinyooye Akinfemi', '2025-06-21 00:12:55', '2025-06-21 00:12:55', '2025-06-21 00:12:55'),
+(7, 6, '127.0.0.1', 'New login by Gbolagade Abiodun', '2025-06-21 00:39:27', '2025-06-21 00:39:27', '2025-06-21 00:39:27'),
+(8, 6, '127.0.0.1', 'Result entry viewed by Gbolagade Abiodun', '2025-06-21 00:40:04', '2025-06-21 00:40:04', '2025-06-21 00:40:04'),
+(9, 6, '127.0.0.1', 'Result entry viewed by Gbolagade Abiodun', '2025-06-21 00:40:16', '2025-06-21 00:40:16', '2025-06-21 00:40:16'),
+(10, 1, '127.0.0.1', 'New login by Akinyooye Akinfemi', '2025-06-21 00:41:27', '2025-06-21 00:41:27', '2025-06-21 00:41:27'),
+(11, 6, '127.0.0.1', 'New login by Gbolagade Abiodun', '2025-06-21 00:46:39', '2025-06-21 00:46:39', '2025-06-21 00:46:39'),
+(12, 6, '127.0.0.1', 'Result entry viewed by Gbolagade Abiodun', '2025-06-21 00:46:45', '2025-06-21 00:46:45', '2025-06-21 00:46:45'),
+(13, 6, '127.0.0.1', 'Result entry viewed by Gbolagade Abiodun', '2025-06-21 00:46:47', '2025-06-21 00:46:47', '2025-06-21 00:46:47'),
+(14, 1, '127.0.0.1', 'New login by Akinyooye Akinfemi', '2025-06-21 00:47:19', '2025-06-21 00:47:19', '2025-06-21 00:47:19'),
+(15, 6, '127.0.0.1', 'New login by Gbolagade Abiodun', '2025-06-21 00:49:52', '2025-06-21 00:49:52', '2025-06-21 00:49:52'),
+(16, 6, '127.0.0.1', 'Result entry viewed by Gbolagade Abiodun', '2025-06-21 00:50:05', '2025-06-21 00:50:05', '2025-06-21 00:50:05'),
+(17, 6, '127.0.0.1', 'Result entry viewed by Gbolagade Abiodun', '2025-06-21 00:50:07', '2025-06-21 00:50:07', '2025-06-21 00:50:07'),
+(18, 6, '127.0.0.1', 'MSW2024001 Student score(44) for CITIZENSHIP EDUCATION(GNS 111) updated by Gbolagade Abiodun', '2025-06-21 00:50:27', '2025-06-21 00:50:27', '2025-06-21 00:50:27'),
+(19, 6, '127.0.0.1', 'MSW2024002 Student score(65) for CITIZENSHIP EDUCATION(GNS 111) updated by Gbolagade Abiodun', '2025-06-21 00:50:37', '2025-06-21 00:50:37', '2025-06-21 00:50:37'),
+(20, 6, '127.0.0.1', 'MSW2024001 Student score(60) for CITIZENSHIP EDUCATION(GNS 111) updated by Gbolagade Abiodun', '2025-06-21 00:50:41', '2025-06-21 00:50:41', '2025-06-21 00:50:41'),
+(21, 1, '127.0.0.1', 'New login by Akinyooye Akinfemi', '2025-06-21 00:51:26', '2025-06-21 00:51:26', '2025-06-21 00:51:26'),
+(22, 1, '127.0.0.1', 'Grading System viewed by Akinyooye Akinfemi', '2025-06-21 00:52:07', '2025-06-21 00:52:07', '2025-06-21 00:52:07'),
+(23, 1, '127.0.0.1', 'MSW2024001 Student score(55) for PROFESSIONAL ETHICS(CHE 211) updated by Akinyooye Akinfemi', '2025-06-21 01:03:44', '2025-06-21 01:03:44', '2025-06-21 01:03:44'),
+(24, 1, '127.0.0.1', 'MSW2024001 Student score(60) for ANATOMY  AND PHYSIOLOGY 1(CHE 212) updated by Akinyooye Akinfemi', '2025-06-21 01:04:09', '2025-06-21 01:04:09', '2025-06-21 01:04:09'),
+(25, 1, '127.0.0.1', 'MSW2024002 Student score(67) for PROFESSIONAL ETHICS(CHE 211) updated by Akinyooye Akinfemi', '2025-06-21 01:04:13', '2025-06-21 01:04:13', '2025-06-21 01:04:13'),
+(26, 1, '127.0.0.1', 'MSW2024002 Student score(87) for ANATOMY  AND PHYSIOLOGY 1(CHE 212) updated by Akinyooye Akinfemi', '2025-06-21 01:04:17', '2025-06-21 01:04:17', '2025-06-21 01:04:17'),
+(27, 1, '127.0.0.1', 'MSW2024001 Student score(55) for PROFESSIONAL ETHICS(CHE 211) updated by Akinyooye Akinfemi', '2025-06-21 01:05:15', '2025-06-21 01:05:15', '2025-06-21 01:05:15'),
+(28, 1, '127.0.0.1', 'MSW2024001 Student score(66) for ANATOMY  AND PHYSIOLOGY 1(CHE 212) updated by Akinyooye Akinfemi', '2025-06-21 01:05:16', '2025-06-21 01:05:16', '2025-06-21 01:05:16'),
+(29, 1, '127.0.0.1', 'MSW2024002 Student score(76) for PROFESSIONAL ETHICS(CHE 211) updated by Akinyooye Akinfemi', '2025-06-21 01:05:19', '2025-06-21 01:05:19', '2025-06-21 01:05:19'),
+(30, 1, '127.0.0.1', 'MSW2024002 Student score(56) for ANATOMY  AND PHYSIOLOGY 1(CHE 212) updated by Akinyooye Akinfemi', '2025-06-21 01:05:31', '2025-06-21 01:05:31', '2025-06-21 01:05:31'),
+(31, 1, '127.0.0.1', 'MSW2024001 Student score(67) for BEHAVIOUR CHANGE COMMUNICATION(CHE 213) updated by Akinyooye Akinfemi', '2025-06-21 01:05:33', '2025-06-21 01:05:33', '2025-06-21 01:05:33'),
+(32, 1, '127.0.0.1', 'MSW2024002 Student score(55) for BEHAVIOUR CHANGE COMMUNICATION(CHE 213) updated by Akinyooye Akinfemi', '2025-06-21 01:05:36', '2025-06-21 01:05:36', '2025-06-21 01:05:36'),
+(33, 1, '127.0.0.1', 'MSW2024001 Student score(60) for HUMAN NUTRITION(CHE 214) updated by Akinyooye Akinfemi', '2025-06-21 01:05:38', '2025-06-21 01:05:38', '2025-06-21 01:05:38'),
+(34, 1, '127.0.0.1', 'MSW2024002 Student score(61) for HUMAN NUTRITION(CHE 214) updated by Akinyooye Akinfemi', '2025-06-21 01:05:41', '2025-06-21 01:05:41', '2025-06-21 01:05:41'),
+(35, 1, '127.0.0.1', 'MSW2024001 Student score(51) for INTRODUCTION TO PRIMARY HEALTH CARE(CHE 215) updated by Akinyooye Akinfemi', '2025-06-21 01:05:43', '2025-06-21 01:05:43', '2025-06-21 01:05:43'),
+(36, 1, '127.0.0.1', 'MSW2024002 Student score(52) for INTRODUCTION TO PRIMARY HEALTH CARE(CHE 215) updated by Akinyooye Akinfemi', '2025-06-21 01:05:46', '2025-06-21 01:05:46', '2025-06-21 01:05:46'),
+(37, 1, '127.0.0.1', 'MSW2024001 Student score(78) for INTRODUCTION TO PSYCHOLOGY(GNS411) updated by Akinyooye Akinfemi', '2025-06-21 01:05:47', '2025-06-21 01:05:47', '2025-06-21 01:05:47'),
+(38, 1, '127.0.0.1', 'MSW2024002 Student score(67) for INTRODUCTION TO PSYCHOLOGY(GNS411) updated by Akinyooye Akinfemi', '2025-06-21 01:05:51', '2025-06-21 01:05:51', '2025-06-21 01:05:51'),
+(39, 1, '127.0.0.1', 'MSW2024001 Student score(66) for INTRODUCTION TO ENVIRONMETAL HEALTH(EHT 111) updated by Akinyooye Akinfemi', '2025-06-21 01:05:53', '2025-06-21 01:05:53', '2025-06-21 01:05:53'),
+(40, 1, '127.0.0.1', 'MSW2024002 Student score(56) for INTRODUCTION TO ENVIRONMETAL HEALTH(EHT 111) updated by Akinyooye Akinfemi', '2025-06-21 01:05:54', '2025-06-21 01:05:54', '2025-06-21 01:05:54'),
+(41, 1, '127.0.0.1', 'MSW2024001 Student score(71) for INTRODUCTION TO COMPUTER(COM 111) updated by Akinyooye Akinfemi', '2025-06-21 01:05:56', '2025-06-21 01:05:56', '2025-06-21 01:05:56'),
+(42, 1, '127.0.0.1', 'MSW2024002 Student score(67) for INTRODUCTION TO COMPUTER(COM 111) updated by Akinyooye Akinfemi', '2025-06-21 01:05:59', '2025-06-21 01:05:59', '2025-06-21 01:05:59'),
+(43, 1, '127.0.0.1', 'MSW2024001 Student score(56) for INTRODUCTION TO MEDICAL SOCIOLOGY(GNS 213) updated by Akinyooye Akinfemi', '2025-06-21 01:06:00', '2025-06-21 01:06:00', '2025-06-21 01:06:00'),
+(44, 1, '127.0.0.1', 'MSW2024002 Student score(67) for INTRODUCTION TO MEDICAL SOCIOLOGY(GNS 213) updated by Akinyooye Akinfemi', '2025-06-21 01:06:02', '2025-06-21 01:06:02', '2025-06-21 01:06:02'),
+(45, 1, '127.0.0.1', 'MSW2024001 Student score(87) for GEOGRAPHY(FOT 111) updated by Akinyooye Akinfemi', '2025-06-21 01:06:03', '2025-06-21 01:06:03', '2025-06-21 01:06:03'),
+(46, 1, '127.0.0.1', 'MSW2024002 Student score(59) for GEOGRAPHY(FOT 111) updated by Akinyooye Akinfemi', '2025-06-21 01:06:05', '2025-06-21 01:06:05', '2025-06-21 01:06:05'),
+(47, 1, '127.0.0.1', 'MSW2024001 Student score(66) for CITIZENSHIP EDUCATION(GNS 111) updated by Akinyooye Akinfemi', '2025-06-21 01:06:07', '2025-06-21 01:06:07', '2025-06-21 01:06:07'),
+(48, 1, '127.0.0.1', 'MSW2024002 Student score(56) for CITIZENSHIP EDUCATION(GNS 111) updated by Akinyooye Akinfemi', '2025-06-21 01:06:09', '2025-06-21 01:06:09', '2025-06-21 01:06:09'),
+(49, 1, '127.0.0.1', 'Student results for 2024 Diploma in Community Health(CHEW) 100 First computed by Akinyooye Akinfemi', '2025-06-21 01:07:48', '2025-06-21 01:07:48', '2025-06-21 01:07:48'),
+(50, 1, '127.0.0.1', 'Student results for 2024 Diploma in Community Health(CHEW) 100 FIRST deleted by Akinyooye Akinfemi', '2025-06-21 01:08:05', '2025-06-21 01:08:05', '2025-06-21 01:08:05'),
+(51, 1, '127.0.0.1', 'Student results for 2024 Diploma in Community Health(CHEW) 100 First computed by Akinyooye Akinfemi', '2025-06-21 01:08:14', '2025-06-21 01:08:14', '2025-06-21 01:08:14'),
+(52, 1, '127.0.0.1', 'Student results for 2024 Diploma in Community Health(CHEW) 100 First viewed by Akinyooye Akinfemi', '2025-06-21 01:08:25', '2025-06-21 01:08:25', '2025-06-21 01:08:25'),
+(53, 1, '127.0.0.1', 'Student results for 2024 Diploma in Community Health(CHEW) 100 First viewed by Akinyooye Akinfemi', '2025-06-21 01:09:18', '2025-06-21 01:09:18', '2025-06-21 01:09:18'),
+(54, 1, '127.0.0.1', 'Semester results for 2024 Diploma in Community Health(CHEW) 100 FIRST viewed by Akinyooye Akinfemi', '2025-06-21 01:11:36', '2025-06-21 01:11:36', '2025-06-21 01:11:36'),
+(55, 1, '127.0.0.1', 'Semester results for 2024 Diploma in Community Health(CHEW) 100 FIRST viewed by Akinyooye Akinfemi', '2025-06-21 01:12:26', '2025-06-21 01:12:26', '2025-06-21 01:12:26'),
+(56, 1, '127.0.0.1', 'New login by Akinyooye Akinfemi', '2025-06-21 03:10:22', '2025-06-21 03:10:22', '2025-06-21 03:10:22'),
+(57, 1, '127.0.0.1', 'New login by Akinyooye Akinfemi', '2025-06-21 20:13:07', '2025-06-21 20:13:07', '2025-06-21 20:13:07'),
+(58, 1, '127.0.0.1', 'MSW2024001 Student score(55) for PROFESSIONAL ETHICS(CHE 211) updated by Akinyooye Akinfemi', '2025-06-21 20:20:20', '2025-06-21 20:20:20', '2025-06-21 20:20:20'),
+(59, 1, '127.0.0.1', 'MSW2024002 Student score(60) for PROFESSIONAL ETHICS(CHE 211) updated by Akinyooye Akinfemi', '2025-06-21 20:23:02', '2025-06-21 20:23:02', '2025-06-21 20:23:02'),
+(60, 1, '127.0.0.1', 'MSW2024001 Student score(45) for PROFESSIONAL ETHICS(CHE 211) updated by Akinyooye Akinfemi', '2025-06-21 20:52:52', '2025-06-21 20:52:52', '2025-06-21 20:52:52'),
+(61, 1, '127.0.0.1', 'MSW2024001 Student score(50) for PROFESSIONAL ETHICS(CHE 211) updated by Akinyooye Akinfemi', '2025-06-21 20:53:12', '2025-06-21 20:53:12', '2025-06-21 20:53:12'),
+(62, 1, '127.0.0.1', 'MSW2024001 Student score(67) for BEHAVIOUR CHANGE COMMUNICATION(CHE 213) updated by Akinyooye Akinfemi', '2025-06-21 20:53:17', '2025-06-21 20:53:17', '2025-06-21 20:53:17'),
+(63, 1, '127.0.0.1', 'MSW2024002 Student score(76) for BEHAVIOUR CHANGE COMMUNICATION(CHE 213) updated by Akinyooye Akinfemi', '2025-06-21 20:53:20', '2025-06-21 20:53:20', '2025-06-21 20:53:20'),
+(64, 1, '127.0.0.1', 'MSW2024001 Student score(87) for HUMAN NUTRITION(CHE 214) updated by Akinyooye Akinfemi', '2025-06-21 20:53:22', '2025-06-21 20:53:22', '2025-06-21 20:53:22'),
+(65, 1, '127.0.0.1', 'MSW2024002 Student score(56) for HUMAN NUTRITION(CHE 214) updated by Akinyooye Akinfemi', '2025-06-21 20:53:24', '2025-06-21 20:53:24', '2025-06-21 20:53:24'),
+(66, 1, '127.0.0.1', 'MSW2024001 Student score(87) for INTRODUCTION TO PRIMARY HEALTH CARE(CHE 215) updated by Akinyooye Akinfemi', '2025-06-21 20:53:25', '2025-06-21 20:53:25', '2025-06-21 20:53:25'),
+(67, 1, '127.0.0.1', 'MSW2024001 Student score(77) for INTRODUCTION TO PRIMARY HEALTH CARE(CHE 215) updated by Akinyooye Akinfemi', '2025-06-21 20:53:28', '2025-06-21 20:53:28', '2025-06-21 20:53:28'),
+(68, 1, '127.0.0.1', 'MSW2024002 Student score(79) for INTRODUCTION TO PRIMARY HEALTH CARE(CHE 215) updated by Akinyooye Akinfemi', '2025-06-21 20:53:30', '2025-06-21 20:53:30', '2025-06-21 20:53:30'),
+(69, 6, '127.0.0.1', 'New login by Gbolagade Abiodun', '2025-06-21 20:58:39', '2025-06-21 20:58:39', '2025-06-21 20:58:39'),
+(70, 6, '127.0.0.1', 'Result entry viewed by Gbolagade Abiodun', '2025-06-21 20:58:49', '2025-06-21 20:58:49', '2025-06-21 20:58:49'),
+(71, 6, '127.0.0.1', 'Result entry viewed by Gbolagade Abiodun', '2025-06-21 20:58:54', '2025-06-21 20:58:54', '2025-06-21 20:58:54'),
+(72, 6, '127.0.0.1', 'Result entry viewed by Gbolagade Abiodun', '2025-06-21 21:02:28', '2025-06-21 21:02:28', '2025-06-21 21:02:28'),
+(73, 6, '127.0.0.1', 'MSW2024002 Student score(51) for PROFESSIONAL ETHICS(CHE 211) updated by Gbolagade Abiodun', '2025-06-21 21:02:34', '2025-06-21 21:02:34', '2025-06-21 21:02:34'),
+(74, 6, '127.0.0.1', 'MSW2024001 Student score(55) for PROFESSIONAL ETHICS(CHE 211) updated by Gbolagade Abiodun', '2025-06-21 21:02:45', '2025-06-21 21:02:45', '2025-06-21 21:02:45'),
+(75, 6, '127.0.0.1', 'Result entry viewed by Gbolagade Abiodun', '2025-06-21 21:03:04', '2025-06-21 21:03:04', '2025-06-21 21:03:04'),
+(76, 6, '127.0.0.1', 'Result entry viewed by Gbolagade Abiodun', '2025-06-21 21:03:09', '2025-06-21 21:03:09', '2025-06-21 21:03:09'),
+(77, 6, '127.0.0.1', 'MSW2024001 Student score(59) for CITIZENSHIP EDUCATION(GNS 111) updated by Gbolagade Abiodun', '2025-06-21 21:03:17', '2025-06-21 21:03:17', '2025-06-21 21:03:17'),
+(78, 6, '127.0.0.1', 'MSW2024002 Student score(65) for CITIZENSHIP EDUCATION(GNS 111) updated by Gbolagade Abiodun', '2025-06-21 21:03:19', '2025-06-21 21:03:19', '2025-06-21 21:03:19'),
+(79, 6, '127.0.0.1', 'Result entry viewed by Gbolagade Abiodun', '2025-06-21 21:03:20', '2025-06-21 21:03:20', '2025-06-21 21:03:20'),
+(80, 6, '127.0.0.1', 'Result entry viewed by Gbolagade Abiodun', '2025-06-21 21:03:24', '2025-06-21 21:03:24', '2025-06-21 21:03:24');
 
 -- --------------------------------------------------------
 
@@ -8682,18 +8772,8 @@ INSERT INTO `results` (`id`, `admission_no`, `surname`, `first_name`, `other_nam
 (3439, 'DIH2020056', 'TAIWO', 'CHRISTIANA', 'MODUPEOLUWA', '100', 'First', '20200437', 'Professional Diploma in Health Information Management', 10, '2020', 0.0, 'Entrepreneurship', 0.0, 'Health Information Management 1', 0.0, 'Fundamentals of Medical Practice', 0.0, 'Communication in Health Information Management', 0.0, 'Mathematics for Health Information Management', 0.0, 'Human Anatomy and Physiology 1', 0.0, 'Descriptive Statistics 1', 0.0, 'Introduction to Computers', 0.0, 'Use of English 1', 0.0, 'Use of Library', 0.0, '', 0.0, '', 0.0, '', 0.0, '', 0.0, '', 0.0, '', 0.0, '', 0.0, '', 0.0, '', 2, 3, 2, 3, 2, 3, 2, 3, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 'EED 126', 'HIT 111', 'HIT 112', 'HIT 113', 'HIS 111', 'HIS 113', 'STA 114', 'COM 111', 'GNS 101', 'LIS 101', '', '', '', '', '', '', '', '', NULL, NULL),
 (3440, 'DIH2020057', 'TEGAN', 'RASHIDAT', 'ARINOLA', '100', 'First', '20200323', 'Professional Diploma in Health Information Management', 10, '2020', 0.0, 'Entrepreneurship', 0.0, 'Health Information Management 1', 0.0, 'Fundamentals of Medical Practice', 0.0, 'Communication in Health Information Management', 0.0, 'Mathematics for Health Information Management', 0.0, 'Human Anatomy and Physiology 1', 0.0, 'Descriptive Statistics 1', 0.0, 'Introduction to Computers', 0.0, 'Use of English 1', 0.0, 'Use of Library', 0.0, '', 0.0, '', 0.0, '', 0.0, '', 0.0, '', 0.0, '', 0.0, '', 0.0, '', 0.0, '', 2, 3, 2, 3, 2, 3, 2, 3, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 'EED 126', 'HIT 111', 'HIT 112', 'HIT 113', 'HIS 111', 'HIS 113', 'STA 114', 'COM 111', 'GNS 101', 'LIS 101', '', '', '', '', '', '', '', '', NULL, NULL),
 (3441, 'DIH2020058', 'WAHAB', 'ROFIAT', 'ADEBOLA', '100', 'First', '20200359', 'Professional Diploma in Health Information Management', 10, '2020', 0.0, 'Entrepreneurship', 0.0, 'Health Information Management 1', 0.0, 'Fundamentals of Medical Practice', 0.0, 'Communication in Health Information Management', 0.0, 'Mathematics for Health Information Management', 0.0, 'Human Anatomy and Physiology 1', 0.0, 'Descriptive Statistics 1', 0.0, 'Introduction to Computers', 0.0, 'Use of English 1', 0.0, 'Use of Library', 0.0, '', 0.0, '', 0.0, '', 0.0, '', 0.0, '', 0.0, '', 0.0, '', 0.0, '', 0.0, '', 2, 3, 2, 3, 2, 3, 2, 3, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 'EED 126', 'HIT 111', 'HIT 112', 'HIT 113', 'HIS 111', 'HIS 113', 'STA 114', 'COM 111', 'GNS 101', 'LIS 101', '', '', '', '', '', '', '', '', NULL, NULL),
-(3445, 'MSW2024001', 'ADEPOJU', 'MATHEW', 'KOLADE', '100', 'FIRST', '2024001', 'Diploma in Community Health(CHEW)', 12, '2024', 30.0, 'PROFESSIONAL ETHICS', 65.0, 'ANATOMY  AND PHYSIOLOGY 1', 66.0, 'BEHAVIOUR CHANGE COMMUNICATION', 45.0, 'HUMAN NUTRITION', 87.0, 'INTRODUCTION TO PRIMARY HEALTH CARE', 76.0, 'INTRODUCTION TO PSYCHOLOGY', 56.0, 'INTRODUCTION TO ENVIRONMETAL HEALTH', 98.0, 'INTRODUCTION TO COMPUTER', 65.0, 'INTRODUCTION TO MEDICAL SOCIOLOGY', 66.0, 'GEOGRAPHY', 52.0, 'CITIZENSHIP EDUCATION', 55.0, 'USE OF ENGLISH', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 2, 2, 2, 2, 1, 2, 2, 2, 1, 1, 2, NULL, NULL, NULL, NULL, NULL, NULL, 'CHE 211', 'CHE 212', 'CHE 213', 'CHE 214', 'CHE 215', 'GNS411', 'EHT 111', 'COM 111', 'GNS 213', 'FOT 111', 'GNS 111', 'GNS 101', NULL, NULL, NULL, NULL, NULL, NULL, '2025-04-19 07:49:51', '2025-04-23 19:50:16'),
-(3446, 'MSW2024002', 'ALAMU', 'IFEOLUWA', 'TOPE', '100', 'FIRST', '2024002', 'Diploma in Community Health(CHEW)', 12, '2024', 65.0, 'PROFESSIONAL ETHICS', 35.0, 'ANATOMY  AND PHYSIOLOGY 1', 71.0, 'BEHAVIOUR CHANGE COMMUNICATION', 92.0, 'HUMAN NUTRITION', 83.0, 'INTRODUCTION TO PRIMARY HEALTH CARE', 59.0, 'INTRODUCTION TO PSYCHOLOGY', 50.0, 'INTRODUCTION TO ENVIRONMETAL HEALTH', 61.0, 'INTRODUCTION TO COMPUTER', 52.0, 'INTRODUCTION TO MEDICAL SOCIOLOGY', 46.0, 'GEOGRAPHY', 78.0, 'CITIZENSHIP EDUCATION', 80.0, 'USE OF ENGLISH', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 2, 2, 2, 2, 1, 2, 2, 2, 1, 1, 2, NULL, NULL, NULL, NULL, NULL, NULL, 'CHE 211', 'CHE 212', 'CHE 213', 'CHE 214', 'CHE 215', 'GNS411', 'EHT 111', 'COM 111', 'GNS 213', 'FOT 111', 'GNS 111', 'GNS 101', NULL, NULL, NULL, NULL, NULL, NULL, '2025-04-19 07:49:51', '2025-04-23 19:50:22'),
-(3451, 'MSW2024001', 'ADEPOJU', 'MATHEW', 'KOLADE', '100', 'SECOND', '2024001', 'Diploma in Community Health(CHEW)', 9, '2024', 55.0, 'SYMPTOMATOLOGY', 67.0, 'POPULATION DYNAMICS AND FAMILY PLANNING', 54.0, 'CLINICAL SKILLS 1', 76.0, 'SCIENCE LABORATORY TECHNOLOGY', 56.0, 'IMMUNITY AND IMMUNIZATION', 98.0, 'CONTROL OF COMMUNICABLE DISEASES', 67.0, 'ACCIDENT AND EMERGENCY', 66.0, 'SUPERVISED CLINICAL EXPERIENCE  1', 56.0, 'COMMUNICATION IN ENGLISH', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 3, 3, 3, 2, 2, 2, 3, 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'CHE 221', 'CHE 222', 'CHE 223', 'STB 211', 'CHE 224', 'CHE 225', 'CHE 226', 'CHE 227', 'GNS 102', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-04-22 04:15:34', '2025-04-22 04:31:21'),
-(3452, 'MSW2024002', 'ALAMU', 'IFEOLUWA', 'TOPE', '100', 'SECOND', '2024002', 'Diploma in Community Health(CHEW)', 9, '2024', 56.0, 'SYMPTOMATOLOGY', 76.0, 'POPULATION DYNAMICS AND FAMILY PLANNING', 87.0, 'CLINICAL SKILLS 1', 59.0, 'SCIENCE LABORATORY TECHNOLOGY', 87.0, 'IMMUNITY AND IMMUNIZATION', 56.0, 'CONTROL OF COMMUNICABLE DISEASES', 55.0, 'ACCIDENT AND EMERGENCY', 77.0, 'SUPERVISED CLINICAL EXPERIENCE  1', 56.0, 'COMMUNICATION IN ENGLISH', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 3, 3, 3, 2, 2, 2, 3, 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'CHE 221', 'CHE 222', 'CHE 223', 'STB 211', 'CHE 224', 'CHE 225', 'CHE 226', 'CHE 227', 'GNS 102', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-04-22 04:15:34', '2025-04-22 04:31:49'),
-(3457, 'MSW2024001', 'ADEPOJU', 'MATHEW', 'KOLADE', '200', 'FIRST', '2024001', 'Diploma in Community Health(CHEW)', 11, '2024', 78.0, 'Anatomy and Physiology II', 67.0, 'Oral Health', 87.0, 'Community Mental Health', 65.0, 'Reproductive Health', 56.0, 'Child Health', 98.0, 'School Health Programme', 56.0, 'Control of Non-Communicable Diseases', 65.0, 'Introduction to physical chemistry', 76.0, 'Community Linkage and Development', 55.0, 'Care and Management of HIV and AIDS', 53.0, 'Occupational Health and Safety', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 2, 2, 2, 3, 2, 2, 1, 3, 2, 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'CHE231', 'CHE 232', 'CHE 233', 'CHE 234', 'CHE 235', 'CHE 236', 'CHE 237', 'BCH 111', 'CHE 238', 'CHE 239', 'CHE 240', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-04-22 04:29:41', '2025-04-22 04:49:52'),
-(3458, 'MSW2024002', 'ALAMU', 'IFEOLUWA', 'TOPE', '200', 'FIRST', '2024002', 'Diploma in Community Health(CHEW)', 11, '2024', 67.0, 'Anatomy and Physiology II', 72.0, 'Oral Health', 63.0, 'Community Mental Health', 56.0, 'Reproductive Health', 87.0, 'Child Health', 67.0, 'School Health Programme', 69.0, 'Control of Non-Communicable Diseases', 59.0, 'Introduction to physical chemistry', 58.0, 'Community Linkage and Development', 55.0, 'Care and Management of HIV and AIDS', 56.0, 'Occupational Health and Safety', NULL, NULL, NULL, NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 2, 2, 2, 3, 2, 2, 1, 3, 2, 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'CHE231', 'CHE 232', 'CHE 233', 'CHE 234', 'CHE 235', 'CHE 236', 'CHE 237', 'BCH 111', 'CHE 238', 'CHE 239', 'CHE 240', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-04-22 04:29:41', '2025-04-22 04:50:13'),
-(3459, 'MSW2024001', 'ADEPOJU', 'MATHEW', 'KOLADE', '200', 'SECOND', '2024001', 'Diploma in Community Health(CHEW)', 9, '2024', 66.0, 'Clinical Skills II', 76.0, 'Maternal Health', 56.0, 'Modified Essential Newborn care', 83.0, 'Community Ear,Nose and throat care', 63.0, 'Community Eye care', 78.0, 'Use of standing Orders', 56.0, 'Introduction to pharamacology', 55.0, 'Nigerian Health System', 66.0, 'Supervised Clinical Experience II', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 3, 4, 3, 2, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'CHE 241', 'CHE 242', 'CHE 243', 'CHE 244', 'CHE 245', 'CHE 246', 'GNP 123', 'CHE 247', 'CHE 248', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-04-22 04:31:05', '2025-04-22 04:52:10'),
-(3460, 'MSW2024002', 'ALAMU', 'IFEOLUWA', 'TOPE', '200', 'SECOND', '2024002', 'Diploma in Community Health(CHEW)', 9, '2024', 54.0, 'Clinical Skills II', 65.0, 'Maternal Health', 78.0, 'Modified Essential Newborn care', 56.0, 'Community Ear,Nose and throat care', 77.0, 'Community Eye care', 66.0, 'Use of standing Orders', 65.0, 'Introduction to pharamacology', 65.0, 'Nigerian Health System', 76.0, 'Supervised Clinical Experience II', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 3, 4, 3, 2, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'CHE 241', 'CHE 242', 'CHE 243', 'CHE 244', 'CHE 245', 'CHE 246', 'GNP 123', 'CHE 247', 'CHE 248', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-04-22 04:31:05', '2025-04-22 05:00:29'),
-(3461, 'MSW2024001', 'ADEPOJU', 'MATHEW', 'KOLADE', '300', 'FIRST', '2024001', 'Diploma in Community Health(CHEW)', 8, '2024', 65.0, 'Care of Older Persons', 76.0, 'Care of Persons with special needs', 56.0, 'Health Statistics', 76.0, 'Essential Medicines', 56.0, 'Human Resources for Health', 76.0, 'Research Methodology', 56.0, 'Community Based Newborn Care', 88.0, 'Supervised Community Based Experience (SCBE)', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 2, 2, 2, 1, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'CHE 251', 'CHE 252', 'CHE 253', 'CHE 254', 'CHE 255', 'CHE 256', 'CHE 257', 'CHE 258', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-04-22 05:00:50', '2025-04-22 05:01:04'),
-(3462, 'MSW2024002', 'ALAMU', 'IFEOLUWA', 'TOPE', '300', 'FIRST', '2024002', 'Diploma in Community Health(CHEW)', 8, '2024', 67.0, 'Care of Older Persons', 56.0, 'Care of Persons with special needs', 78.0, 'Health Statistics', 79.0, 'Essential Medicines', 91.0, 'Human Resources for Health', 67.0, 'Research Methodology', 59.0, 'Community Based Newborn Care', 67.0, 'Supervised Community Based Experience (SCBE)', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 2, 2, 2, 1, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'CHE 251', 'CHE 252', 'CHE 253', 'CHE 254', 'CHE 255', 'CHE 256', 'CHE 257', 'CHE 258', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-04-22 05:00:50', '2025-04-22 05:01:16'),
-(3463, 'MSW2024001', 'ADEPOJU', 'MATHEW', 'KOLADE', '300', 'SECOND', '2024001', 'Diploma in Community Health(CHEW)', 6, '2024', 76.0, 'Primary Health Care Management', 67.0, 'Referral System and Outreach Services', 87.0, 'Accounting System in Primary Health Care', 56.0, 'Health Management Information System', 76.0, 'Entrepreneurship Education', 87.0, 'Research project', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 2, 1, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'CHE 261', 'CHE 262', 'CHE 263', 'CHE 264', 'BUS 213', 'CHE 265', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-04-22 05:01:31', '2025-04-22 05:01:41'),
-(3464, 'MSW2024002', 'ALAMU', 'IFEOLUWA', 'TOPE', '300', 'SECOND', '2024002', 'Diploma in Community Health(CHEW)', 6, '2024', 56.0, 'Primary Health Care Management', 78.0, 'Referral System and Outreach Services', 87.0, 'Accounting System in Primary Health Care', 98.0, 'Health Management Information System', 56.0, 'Entrepreneurship Education', 66.0, 'Research project', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 2, 1, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'CHE 261', 'CHE 262', 'CHE 263', 'CHE 264', 'BUS 213', 'CHE 265', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-04-22 05:01:31', '2025-04-22 05:01:48');
+(3471, 'MSW2024001', 'ADEPOJU', 'MATHEW', 'KOLADE', '100', 'FIRST', '2024001', 'Diploma in Community Health(CHEW)', 12, '2024', 55.0, 'PROFESSIONAL ETHICS', 55.0, 'ANATOMY  AND PHYSIOLOGY 1', 67.0, 'BEHAVIOUR CHANGE COMMUNICATION', 87.0, 'HUMAN NUTRITION', 77.0, 'INTRODUCTION TO PRIMARY HEALTH CARE', 0.0, 'INTRODUCTION TO PSYCHOLOGY', 0.0, 'INTRODUCTION TO ENVIRONMETAL HEALTH', 0.0, 'INTRODUCTION TO COMPUTER', 0.0, 'INTRODUCTION TO MEDICAL SOCIOLOGY', 0.0, 'GEOGRAPHY', 59.0, 'CITIZENSHIP EDUCATION', 0.0, 'USE OF ENGLISH', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 2, 2, 2, 2, 1, 2, 2, 2, 1, 1, 2, NULL, NULL, NULL, NULL, NULL, NULL, 'CHE 211', 'CHE 212', 'CHE 213', 'CHE 214', 'CHE 215', 'GNS411', 'EHT 111', 'COM 111', 'GNS 213', 'FOT 111', 'GNS 111', 'GNS 101', NULL, NULL, NULL, NULL, NULL, NULL, '2025-06-21 03:13:18', '2025-06-21 21:03:17'),
+(3472, 'MSW2024002', 'ALAMU', 'IFEOLUWA', 'TOPE', '100', 'FIRST', '2024002', 'Diploma in Community Health(CHEW)', 12, '2024', 51.0, 'PROFESSIONAL ETHICS', 60.0, 'ANATOMY  AND PHYSIOLOGY 1', 76.0, 'BEHAVIOUR CHANGE COMMUNICATION', 56.0, 'HUMAN NUTRITION', 79.0, 'INTRODUCTION TO PRIMARY HEALTH CARE', 0.0, 'INTRODUCTION TO PSYCHOLOGY', 0.0, 'INTRODUCTION TO ENVIRONMETAL HEALTH', 0.0, 'INTRODUCTION TO COMPUTER', 0.0, 'INTRODUCTION TO MEDICAL SOCIOLOGY', 0.0, 'GEOGRAPHY', 65.0, 'CITIZENSHIP EDUCATION', 0.0, 'USE OF ENGLISH', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 2, 2, 2, 2, 1, 2, 2, 2, 1, 1, 2, NULL, NULL, NULL, NULL, NULL, NULL, 'CHE 211', 'CHE 212', 'CHE 213', 'CHE 214', 'CHE 215', 'GNS411', 'EHT 111', 'COM 111', 'GNS 213', 'FOT 111', 'GNS 111', 'GNS 101', NULL, NULL, NULL, NULL, NULL, NULL, '2025-06-21 03:13:18', '2025-06-21 21:03:19');
 
 -- --------------------------------------------------------
 
@@ -8991,7 +9071,8 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `department`, `last_name`, `first_name`, `email`, `email_verified_at`, `password`, `phone_no`, `user_type`, `user_status`, `user_type_status`, `email_verified_status`, `login_attempts`, `remember_token`, `class_list`, `result`, `result_entry`, `result_compute`, `semester_result`, `semester_summary`, `cgpa_summary`, `student_transcript`, `course_setup`, `score_sheet`, `access_setup`, `admins`, `instructors`, `students`, `student`, `student_registration`, `student_migration`, `hod_setup`, `grading_system`, `transcript`, `image`, `created_at`, `updated_at`) VALUES
 (1, NULL, 'Akinyooye', 'Akinfemi', 'admin@gmail.com', '2024-12-21 19:44:24', '$2y$12$x5zAbUJ8ncVsTOEa/zK2hetsVWi5qpjJtEImD/I0eDMwHg/paZ5De', '23409073829919', 'Superadmin', 'Active', '1', 1, 0, NULL, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, '67f40b760277e.jpg', NULL, '2025-04-08 00:29:26'),
 (2, 'PUBLIC HEALTH NURSING', 'Adeyinka', 'Temiloluwa', 'instructor@gmail.com', NULL, '$2y$12$30IXqKdCKpnzdvvHsZLJVOEM40h28OANUiDxriwwsqB.JqKFIgeLq', '23408123456789', 'Instructor', 'Active', '3', NULL, NULL, NULL, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, '67f40bdb7f366.jpg', NULL, '2025-04-08 00:31:07'),
-(5, NULL, 'Peter', 'Miracle', 'miracle.kingsbranding@gmail.com', NULL, '$2y$12$bSAUoAaykZIgcdv.irBxie8y.adbpsQEFbWvctvOHTa8ieW7.bkJu', NULL, 'Admin', 'Active', '2', 1, 0, NULL, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, '67f40b8b6e593.jpg', '2024-12-27 23:15:13', '2025-04-08 00:29:47');
+(5, NULL, 'Peter', 'Miracle', 'miracle.kingsbranding@gmail.com', NULL, '$2y$12$bSAUoAaykZIgcdv.irBxie8y.adbpsQEFbWvctvOHTa8ieW7.bkJu', NULL, 'Admin', 'Active', '2', 1, 0, NULL, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, '67f40b8b6e593.jpg', '2024-12-27 23:15:13', '2025-04-08 00:29:47'),
+(6, 'MEDICAL LABORATORY SCIENCE', 'Gbolagade', 'Abiodun', 'gbolagade2001@yahoo.com', NULL, '$2y$12$PrA3iQmAkHSTSAR3r3D0T.virmhP8zKNGhG/b3IYavjHiEVHe8p9S', NULL, 'Instructor', 'Active', '3', 1, 0, NULL, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 'blank.jpg', '2025-06-19 02:57:13', '2025-06-21 00:39:27');
 
 -- --------------------------------------------------------
 
@@ -9295,7 +9376,7 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT for table `failed_logins`
 --
 ALTER TABLE `failed_logins`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `grading_system`
@@ -9313,13 +9394,13 @@ ALTER TABLE `hods`
 -- AUTO_INCREMENT for table `instructors`
 --
 ALTER TABLE `instructors`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `log_activities`
 --
 ALTER TABLE `log_activities`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=81;
 
 --
 -- AUTO_INCREMENT for table `migrations`
@@ -9349,7 +9430,7 @@ ALTER TABLE `registrations`
 -- AUTO_INCREMENT for table `results`
 --
 ALTER TABLE `results`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3465;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3473;
 
 --
 -- AUTO_INCREMENT for table `result_computes`
@@ -9385,7 +9466,7 @@ ALTER TABLE `transcript_uploads`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `user_clearances`

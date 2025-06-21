@@ -325,59 +325,59 @@ class ResultController extends Controller
         $user = auth()->user();
 
         // Validate incoming parameters
-    $validated = $request->validate([
-        'acad_session' => 'required',
-        'programme' => 'required|string|exists:course_study_all,department',
-        'stdLevel' => 'required|string|in:100,200,300,NDI,NDII,HNDI,HNDII',
-        'semester' => 'required',
-    ]);
+        $validated = $request->validate([
+            'acad_session' => 'required',
+            'programme' => 'required|string|exists:course_study_all,department',
+            'stdLevel' => 'required|string|in:100,200,300,NDI,NDII,HNDI,HNDII',
+            'semester' => 'required',
+        ]);
 
-    $admissionYear = $validated['acad_session'];
-    $programme = $validated['programme'];
-    $stdLevel = $validated['stdLevel'];
-    $semester = $validated['semester'];
+        $admissionYear = $validated['acad_session'];
+        $programme = $validated['programme'];
+        $stdLevel = $validated['stdLevel'];
+        $semester = $validated['semester'];
 
-    // Get the curriculum courses for the current level and semester
-    $curriculumCourses = Course::where('course', $programme)
-        ->where('level', $stdLevel)
-        ->where('semester', $semester)
-        ->get();
+        // Get the curriculum courses for the current level and semester
+        $curriculumCourses = Course::where('course', $programme)
+            ->where('level', $stdLevel)
+            ->where('semester', $semester)
+            ->get();
 
-    $totalCourses = $curriculumCourses->count(); // Total number of courses for this level and semester
+        $totalCourses = $curriculumCourses->count(); // Total number of courses for this level and semester
 
-    // Proceed with the rest of the logic
-    $students = Registration::where('course', $programme)
-        ->where('admission_year', $admissionYear)
-        ->get();
+        // Proceed with the rest of the logic
+        $students = Registration::where('course', $programme)
+            ->where('admission_year', $admissionYear)
+            ->get();
 
-    if ($students->isEmpty()) {
-        return redirect()->back()->with('error', 'No students found for the selected programme, level, and academic session.');
-    }   
+        if ($students->isEmpty()) {
+            return redirect()->back()->with('error', 'No students found for the selected programme, level, and academic session.');
+        }   
 
-    $studentsWithFailedCourses = []; // Array to store students with failed courses
+        $studentsWithFailedCourses = []; // Array to store students with failed courses
 
-    foreach ($students as $student) {
-    // Get the previous level and semester using the new function
-    list($previousLevel, $previousSemester) = $this->getPreviousLevelAndSemester($stdLevel, $semester);   
+        foreach ($students as $student) {
+        // Get the previous level and semester using the new function
+        list($previousLevel, $previousSemester) = $this->getPreviousLevelAndSemester($stdLevel, $semester);   
 
-    // Check if student has failed courses
-    $failedCourses = DB::table('result_computes')
-        ->where('admission_no', $student->admission_no)
-        ->where('class', $previousLevel)
-        ->where('semester', $previousSemester)
-        ->where('session1', $admissionYear)
-        ->first();
-        
-        if ($failedCourses && !empty($failedCourses->failed_course)) {
-            // Add student to the failed courses array
-            $failedCoursesList = array_map('trim', explode(',', $failedCourses->failed_course));
-            $studentsWithFailedCourses[$student->admission_no] = $failedCoursesList;      
+        // Check if student has failed courses
+        $failedCourses = DB::table('result_computes')
+            ->where('admission_no', $student->admission_no)
+            ->where('class', $previousLevel)
+            ->where('semester', $previousSemester)
+            ->where('session1', $admissionYear)
+            ->first();
+            
+            if ($failedCourses && !empty($failedCourses->failed_course)) {
+                // Add student to the failed courses array
+                $failedCoursesList = array_map('trim', explode(',', $failedCourses->failed_course));
+                $studentsWithFailedCourses[$student->admission_no] = $failedCoursesList;      
 
-            // Log the student's failed courses
-            // Log::info("Student {$student->admission_no} has failed the following courses: " . implode(', ', $failedCoursesList));
-        } else {
-            // Log::info("No failed courses found for student {$student->admission_no}");
-        }
+                // Log the student's failed courses
+                // Log::info("Student {$student->admission_no} has failed the following courses: " . implode(', ', $failedCoursesList));
+            } else {
+                // Log::info("No failed courses found for student {$student->admission_no}");
+            }
     }
 
     $existingResults = Result::where('course', $programme)
@@ -538,17 +538,20 @@ class ResultController extends Controller
                 'student_id' => 'required|integer',
                 'course_id' => 'required|integer',
                 'course_index' => 'required|integer',
+                'course_title' => 'required|string',
+                'course_unit' => 'required|integer',
+                'course_code' => 'required|string',
                 'score' => 'required|numeric|min:0|max:100',
             ]);
 
-            $course = Course::where('id', $validated['course_id'])->first();
-            $courseTitle = $course->course_title;
-            $courseCode = $course->course_code;
+            // Log information about the incoming request
+            Log::info('Processing score update.', $validated);            
+            $courseTitle = $validated['course_title'];
+            $courseCode = $validated['course_code'];
             $admissionNo = $request->admission_no;
             $currentScore = $request->score;
 
-            // Log information about the incoming request
-            Log::info('Processing score update.', $validated);
+            
 
             // Find the result entry
             $result = Result::where('admission_no', $request->admission_no)

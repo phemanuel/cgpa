@@ -496,6 +496,9 @@
                                     data-admission-no="{{ $student->admission_no }}"
                                     data-class="{{ $stdLevel }}"
                                     data-semester="{{ $semester }}"
+                                    data-course-title="{{ $course->course_title }}"
+                                    data-course-code="{{ $course->course_code }}"
+                                    data-course-unit="{{ $course->course_unit }}"
                                     data-course-index="{{ $index }}"
                                     placeholder="Score"
                                 >
@@ -513,7 +516,7 @@
                                   data-student-id="{{ $student->admission_no }}" 
                                   data-student-name="{{ $student->surname }} {{ $student->first_name }} {{ $student->other_name }}"
                                   data-level="{{ $stdLevel }}" 
-                                  data-semester="{{ $semester }}"
+                                  data-semester="{{ $semester }}"                                  
                                   data-admissionyear="{{ $admissionYear }}"
                               >
                                   Update Resit Score
@@ -592,7 +595,7 @@
                                     data-admission-no="{{ $student->admission_no }}"
                                     data-class="{{ $stdLevel }}"
                                     data-semester="{{ $semester }}"
-                                    data-course-index="{{ $index }}"
+                                    data-course-index="{{ $index }}"                                     
                                     placeholder="Score"
                                 >
                             </td>
@@ -862,6 +865,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const admissionNo = field.dataset.admissionNo;
             const className = field.dataset.class;
             const semester = field.dataset.semester;
+            const courseTitle = field.dataset.courseTitle;
+            const courseCode = field.dataset.courseCode;
+            const courseUnit = field.dataset.courseUnit;
             const courseIndex = field.dataset.courseIndex; // Retrieve the course index
             const score = field.value;
 
@@ -888,6 +894,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         admission_no: admissionNo,
                         class: className,
                         semester: semester,
+                        course_title: courseTitle,
+                        course_unit: courseUnit,
+                        course_code: courseCode,
                         course_index: courseIndex, // Pass course index to the server
                         score: score
                     })
@@ -970,6 +979,7 @@ $(document).on('click', '.openResitModal', function () {
     let studentName = $(this).data('student-name');
     let level = $(this).data('level');
     let semester = $(this).data('semester');
+    
     let admissionYear = $(this).data('admissionyear');
 
     $('#studentInfo').text('Admission No: ' + studentId + ' | Name: ' + studentName + ' | Level: ' + level+ ' | Semester: ' + semester+ ' | Admission Year: ' + admissionYear);
@@ -980,6 +990,7 @@ $(document).on('click', '.openResitModal', function () {
         level: level,
         semester: semester,
         admissionYear: admissionYear
+       
     });
 
     $.ajax({
