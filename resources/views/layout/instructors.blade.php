@@ -427,7 +427,7 @@
                               @endforeach
                           @else
                           <tr>
-                              <td colspan="5">Users not available.</td>
+                              <td colspan="5">Instructors not available.</td>
                           </tr>
                           @endif                                   
                       </tbody>

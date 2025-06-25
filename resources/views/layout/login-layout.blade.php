@@ -77,13 +77,20 @@
         @error('email')
 									<span class="invalid-feedback">{{ $message }}</span>
 				@enderror
-				<div class="form-row">
-					<label for="password">Password</label>
-					<input type="password" name="password" id="password" class="input-text" required>
-				</div>	
-        @error('password')
-									<span class="invalid-feedback">{{ $message }}</span>
-				@enderror
+				<div class="form-group position-relative">
+                            <label>Password </label>
+                            <div class="input-group">
+                                <input type="password" id="password" name="password" class="form-control">
+                                <div class="input-group-append">
+                                    <span class="input-group-text" onclick="togglePassword('password', this)" style="cursor:pointer;">
+                                        👁️
+                                    </span>
+                                </div>
+                            </div>
+                            @error('password')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
         <p><a href="{{ route('password.request') }}">Forgot Password?</a> </p>			
 				<div class="form-row-last">
 					<input type="submit" name="Login" class="register" value="Login">					
@@ -99,3 +106,12 @@
 		
 </body>
 </html>
+
+<script>
+function togglePassword(fieldId, iconElement) {
+    const input = document.getElementById(fieldId);
+    const isPassword = input.type === "password";
+    input.type = isPassword ? "text" : "password";
+    iconElement.innerText = isPassword ? "🙈" : "👁️";
+}
+</script>

@@ -51,8 +51,15 @@
           </ul>
         </div>
         <ul class="navbar-nav navbar-right">        
-          <li class="dropdown"><a href="#" data-toggle="dropdown"
-              class="nav-link dropdown-toggle nav-link-lg nav-link-user"> <img alt="image" src="{{ asset('dashboard/assets/img/blank.jpg') }}" alt="Profile Picture"
+          @php
+				$userImage = auth()->user()->image;
+				$imageFile = public_path('profile-pictures/' . $userImage);
+				$finalImage = (!empty($userImage) && file_exists($imageFile))
+					? 'profile-pictures/' . $userImage
+					: 'profile-pictures/blank.jpg';
+			@endphp
+		  <li class="dropdown"><a href="#" data-toggle="dropdown"
+              class="nav-link dropdown-toggle nav-link-lg nav-link-user"> <img alt="image" src="{{ asset($finalImage) }}"  alt="Profile Picture"
                 class="user-img-radious-style"> <span class="d-sm-none d-lg-inline-block"></span></a>
             <div class="dropdown-menu dropdown-menu-right pullDown">
               <div class="dropdown-title">Hello {{auth()->user()->first_name}}</div> 
@@ -71,7 +78,7 @@
         <aside id="sidebar-wrapper">
           <div class="sidebar-brand">
             <a href="{{route('dashboard')}}"> <img alt="image" src="{{asset('dashboard/assets/img/logo.png')}}" class="header-logo" /> <span
-                class="logo-name">E-Transcript</span>
+                class="logo-name">E-Result</span>
             </a>
           </div>
           <ul class="sidebar-menu">
@@ -351,28 +358,92 @@
                     </div>
                     @endif	
                   <div class="card-body">
-                    <form action="#" method="post">
-                     
-                    <div class="form-group">
-                      <label>Email Address</label>
-                      <p>{{ auth()->user()->email }}</p>
-                    </div>
-                    <div class="form-group">
-                    <label>Last Name</label>
-                    <p>{{ auth()->user()->last_name }}</p>
-                </div> 
-                <div class="form-group">
-                    <label>First Name</label>
-                    <p>{{ auth()->user()->first_name }}</p>
-                </div> 
+                    <form action="{{ route('account-setting.action') }}" method="post" enctype="multipart/form-data">
+                        @csrf
 
-                <div class="form-group">                                      
-This feature is getting ready for delivery. We will notify you as soon as it is available 
-                </div> 
+                        <div class="form-group">
+                            <label>Email Address</label>
+                            <p>{{ auth()->user()->email }}</p>
+                        </div>
 
-                  </div>
-                  
+                        <div class="form-group">
+                            <label>Last Name</label>
+                            <input type="text" name="lastName" class="form-control" placeholder="Last Name" value="{{ old('lastName', auth()->user()->last_name) }}">
+                            @error('lastName')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div> 
+
+                        <div class="form-group">
+                            <label>First Name</label>
+                            <input type="text" name="firstName" class="form-control" placeholder="First Name" value="{{ old('firstName', auth()->user()->first_name) }}">
+                            @error('firstName')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div> 
+
+                        <div class="form-group">
+                            <label>Phone No</label>
+                            <input type="text" name="phoneNo" class="form-control" placeholder="Phone No" value="{{ old('phoneNo', auth()->user()->phone_no) }}">
+                            @error('phoneNo')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                        <div class="form-group"> 
+                            <label>Profile Picture (Leave empty if you are not changing your profile picture.)</label>                                     
+                            <input type="file" name="profilePicture" class="form-control">
+                            @error('profilePicture')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div> 
+
+                        @php
+                            $userImage = auth()->user()->image;
+                            $imageFile = public_path('profile_pictures/' . $userImage);
+                            $finalImage = (!empty($userImage) && file_exists($imageFile))
+                                ? 'profile_pictures/' . $userImage
+                                : 'profile_pictures/blank.jpg';
+                        @endphp
+
+                        <p>
+                            <img src="{{ asset($finalImage) }}" alt="Profile Picture" width="100" height="100">
+                        </p>
+
+                        <hr>
+
+                        <div class="form-group position-relative">
+                            <label>New Password (Leave empty if you are not changing your password.)</label>
+                            <div class="input-group">
+                                <input type="password" id="password" name="password" class="form-control">
+                                <div class="input-group-append">
+                                    <span class="input-group-text" onclick="togglePassword('password', this)" style="cursor:pointer;">
+                                        👁️
+                                    </span>
+                                </div>
+                            </div>
+                            @error('password')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                        <div class="form-group position-relative">
+                            <label>Re-enter Password</label>
+                            <div class="input-group">
+                                <input type="password" id="password_confirmation" name="password_confirmation" class="form-control">
+                                <div class="input-group-append">
+                                    <span class="input-group-text" onclick="togglePassword('password_confirmation', this)" style="cursor:pointer;">
+                                        👁️
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-footer text-right">
+                            <input class="btn btn-primary mr-1" type="submit" value="Update" />
+                        </div>
                     </form>
+
                   
                 </div>               
 
@@ -491,6 +562,15 @@ This feature is getting ready for delivery. We will notify you as soon as it is 
   <script src="{{asset('dashboard/assets/js/scripts.js')}}"></script>
   <!-- Custom JS File -->
   <script src="{{asset('dashboard/assets/js/custom.js')}}"></script>
+
+  <script>
+function togglePassword(fieldId, iconElement) {
+    const input = document.getElementById(fieldId);
+    const isPassword = input.type === "password";
+    input.type = isPassword ? "text" : "password";
+    iconElement.innerText = isPassword ? "🙈" : "👁️";
+}
+</script>
 </body>
 
 

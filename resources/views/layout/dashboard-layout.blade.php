@@ -45,8 +45,15 @@
           </ul>
         </div>
         <ul class="navbar-nav navbar-right">        
-          <li class="dropdown"><a href="#" data-toggle="dropdown"
-              class="nav-link dropdown-toggle nav-link-lg nav-link-user"> <img alt="image" src="{{ asset('dashboard/assets/img/blank.jpg') }}" alt="Profile Picture"
+          @php
+				$userImage = auth()->user()->image;
+				$imageFile = public_path('profile-pictures/' . $userImage);
+				$finalImage = (!empty($userImage) && file_exists($imageFile))
+					? 'profile-pictures/' . $userImage
+					: 'profile-pictures/blank.jpg';
+			@endphp
+		  <li class="dropdown"><a href="#" data-toggle="dropdown"
+              class="nav-link dropdown-toggle nav-link-lg nav-link-user"> <img alt="image" src="{{ asset($finalImage) }}"  alt="Profile Picture"
                 class="user-img-radious-style"> <span class="d-sm-none d-lg-inline-block"></span></a>
             <div class="dropdown-menu dropdown-menu-right pullDown">
               <div class="dropdown-title">Hello {{auth()->user()->first_name}}</div> 

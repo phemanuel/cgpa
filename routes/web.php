@@ -58,6 +58,8 @@ Route::post('/reset-password', [CustomForgotPasswordController::class, 'resetPas
         // Profile routes
         Route::get('account-setting/{id}', [AuthController::class, 'profileUpdate'])
         ->name('account-setting');
+        Route::post('account-setting/update', [AuthController::class, 'profileUpdateAction'])
+        ->name('account-setting.action');
         Route::get('profile-picture', [AuthController::class, 'profilePicture'])
         ->name('profile-picture');
         Route::post('profile-picture/update', [AuthController::class, 'profilePictureUpdate'])

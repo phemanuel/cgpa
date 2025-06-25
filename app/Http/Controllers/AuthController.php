@@ -19,6 +19,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Session;
 use Intervention\Image\ImageManagerStatic as Image;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
+use Illuminate\Support\Facades\Storage;
 //use Image;
 
 class AuthController extends Controller
@@ -171,44 +172,62 @@ class AuthController extends Controller
     //----update user profile
     public function profileUpdate(Request $request, string $id)
     {
-        return view('auth.account-setting');
-        // try {
-        //     $validatedData = $request->validate([
-        //         'last_name' => 'required|string|max:255',
-        //         'first_name' => 'required|string|max:255',
-        //     ]);        
-            
-
-        //     $user = User::findOrFail($id);
-        //     $user->full_name = $validatedData['full_name'];
-        //     $user->user_phone = $validatedData['user_phone'];
-        //     $user->country_code = $validatedData['country_code'];
-        //     $user->user_name = $validatedData['user_name'];
-        //     $user->user_about = $validatedData['user_about'];
-        //     $user->user_category = $validatedData['user_category'];
-        //     $user->user_url = 'https://meetme.kingsconsult.com.ng/'.$uniqueUsername;
-        //     $user->user_name_link =  $uniqueUsername;
-        
-        //     $user->save();
-        
-        //     return redirect()->route('user-about')->with('success', 'Profile update successful.');
-        // } catch (\Exception $e) {
-        //     // Handle the exception, log the error, and return with an error message
-        //     \Log::error('Error updating user profile: ' . $e->getMessage());
-            
-        //     $errorMessage = 'Error updating user profile: ' . $e->getMessage();
-        //     Log::error($errorMessage);
-
-        //     return redirect()->route('user-about')->with('error', $errorMessage);
-        //     //return redirect()->route('user-about')->with('error', 'An error occurred while updating your profile. Please try again.');
-        // }
+        return view('auth.account-setting');        
         
     
     }
 
+    public function profileUpdateAction(Request $request)
+    {
+        $user = Auth::user();
+
+        // Validate input
+        $request->validate([
+            'firstName' => 'required|string|max:255',
+            'lastName' => 'required|string|max:255',
+            'phoneNo' => 'nullable|string|max:20',
+            'profilePicture' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'password' => 'nullable|string|min:6|confirmed' 
+        ]);
+
+        try {
+            // Handle profile picture
+            if ($request->hasFile('profilePicture')) {
+                $file = $request->file('profilePicture');
+                $filename = time() . '_' . $file->getClientOriginalName();
+                $file->move(public_path('profile_pictures'), $filename);
+                $user->image = $filename;
+            } elseif (!$user->image || !file_exists(public_path('profile_pictures/' . $user->image))) {
+                $user->image = 'blank.jpg';
+            }
+
+            // Update personal info
+            $user->first_name = $request->input('firstName');
+            $user->last_name = $request->input('lastName');
+            $user->phone_no = $request->input('phoneNo');
+
+            // Check if user wants to update password
+            if ($request->filled('password')) {
+                $user->password = Hash::make($request->input('password'));
+                $user->save();
+
+                // Log out after password change
+                Auth::logout();
+                return redirect()->route('login')->with('success', 'Password changed successfully. Please login again.');
+            }
+
+            $user->save();
+            return redirect()->back()->with('success', 'Account settings updated successfully.');
+
+        } catch (\Exception $e) {
+            \Log::error('Error updating account settings: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'An error occurred while updating your profile.');
+        }
+    }
+
     public function profileUpdateAdmin(Request $request, string $id)
     {
-        return view('auth.admin-account-setting');
+        return view('auth.account-setting');
     
     }
 
