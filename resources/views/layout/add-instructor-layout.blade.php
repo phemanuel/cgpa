@@ -32,6 +32,14 @@
         border-radius: 5px; /* Rounded corners */
     }
 </style>
+<style type="text/css">
+.style2 {
+	color: #006600;
+	font-weight: bold;
+}
+.style3 {font-weight: bold}
+.style7 {color: #0000FF; font-weight: bold; }
+</style>
 </head>
 
 <body>
@@ -49,21 +57,13 @@
               </a></li>
            
           </ul>
-        </div>
-        <ul class="navbar-nav navbar-right">        
-          @php
-				$userImage = auth()->user()->image;
-				$imageFile = public_path('profile-pictures/' . $userImage);
-				$finalImage = (!empty($userImage) && file_exists($imageFile))
-					? 'profile-pictures/' . $userImage
-					: 'profile-pictures/blank.jpg';
-			@endphp
-		  <li class="dropdown"><a href="#" data-toggle="dropdown"
-              class="nav-link dropdown-toggle nav-link-lg nav-link-user"> <img alt="image" src="{{ asset($finalImage) }}"  alt="Profile Picture"
+        </div><ul class="navbar-nav navbar-right">        
+          <li class="dropdown"><a href="#" data-toggle="dropdown"
+              class="nav-link dropdown-toggle nav-link-lg nav-link-user"> <img alt="image" src="{{ asset('profile_pictures/'. auth()->user()->image) }}" alt="Profile Picture"
                 class="user-img-radious-style"> <span class="d-sm-none d-lg-inline-block"></span></a>
             <div class="dropdown-menu dropdown-menu-right pullDown">
               <div class="dropdown-title">Hello {{auth()->user()->first_name}}</div> 
-              <a href="{{ route('account-setting', ['id' => auth()->user()->id]) }}" class="dropdown-item has-icon"> <i class="fas fa-cog"></i>
+              <a href="{{ route('admin-account-setting', ['id' => auth()->user()->id]) }}" class="dropdown-item has-icon"> <i class="fas fa-cog"></i>
                 Account Settings
               </a>
               <div class="dropdown-divider"></div>
@@ -82,7 +82,6 @@
             </a>
           </div>
           @include('partials.sidebar')
-    
         </aside>
       </div>
       <!-- Main Content -->
@@ -202,9 +201,9 @@
               <div class="col-12 col-md-6 col-lg-6">
                 <div class="card">
                   <div class="card-header">
-                    <h4>Payment</h4>
+                    <h4>Add User | <a href="{{route('users')}}">Users List</a> | <a href="{{route('instructors')}}">Instructors List</a></h4>
                   </div>
-                  <!-- @if(session('success'))
+                  @if(session('success'))
                     <div class="alert alert-success">
                       {{ session('success') }}
                     </div>
@@ -212,35 +211,201 @@
                     <div class="alert alert-danger">
                       {{ session('error') }}
                     </div>
-                    @endif	 -->
-                  <div class="card-body">                 
-                        <div class="form-group">
-                      <label></label>
-                      <table width="100%" border="0" cellpadding="4" cellspacing="4">
-             <tr>
-              <td> 
-              @if($ResponseCode == "00")
-                    <div class="alert alert-success">
-                    {{$transaction_message}}
-                    </div>
-                  @else
-                    <div class="alert alert-danger">
-                    {{$transaction_message}}
-                    </div>
-                    @endif	            
-              
-              <p class="style27"><strong>Amount :</strong> =N={{number_format($amount,2)}} </p>
-              <p class="style27"><strong>Amount Due :</strong> =N={{number_format($amount_due,2)}} </p>
-                <p class="style27"><strong>Reason :</strong> {{$ResponseDesc}}</p>
-                <p class="style27"><strong>Response Code :</strong> {{$ResponseCode}}</p>
-                <p class="style27"><strong>Transaction Reference :</strong> {{$transactionID}} </p>
-                <p class="style27"><strong>Payment Reference :</strong> {{$flicks_transref}} </p>
-               <p class="style8">Kindly send a mail to <a href="mailto:payment@oyschst.edu.ng" target="_blank">payment@oyschst.edu.ng</a></p></td>
-              </tr>
-          </table>           
-                    </div>
-                  </div>                  
-                   
+                    @endif	
+                  <div class="card-body">
+                <form id="registerForm" action="{{route('add-instructor.action')}}" method="post" enctype="multipart/form-data">
+                      @csrf   
+                      
+                      <div class="form-group">
+                    <label>User Status</label>
+                    <select name="user_status" id="" class="form-control" required>
+                        <option value="Active">Active</option>
+                        <option value="Inactive">Inactive</option>                       
+                    </select>
+                </div>
+                @error('user_status')
+                    <span class="invalid-feedback">{{ $message }}</span>
+                @enderror
+                      <div class="form-group">
+                    <label>User Type</label>
+                    <select name="userType" id="userType" class="form-control" required>
+                      <!-- @if(auth()->user()->user_type_status == 1)
+                        <option value="Superadmin">Superadmin</option>
+                        @endif -->
+                        <!-- <option value="Admin">Admin</option> -->
+                        <option value="Instructor">Instructor</option>
+                        <!-- <option value="Student">Student</option> -->
+                    </select>
+                </div>
+                @error('userType')
+                    <span class="invalid-feedback">{{ $message }}</span>
+                @enderror
+
+                <div class="form-group" id="departmentContainer" style="display: none;">
+                    <label>Department</label>
+                    <select name="department" id="department" class="form-control">
+                        @foreach($allDepartment as $d)
+                            <option value="{{$d->dept_name}}">{{$d->dept_name}}</option>
+                        @endforeach
+                    </select>
+                </div>
+                @error('department')
+                    <span class="invalid-feedback">{{ $message }}</span>
+                @enderror
+
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" class="form-control" name="email" value="{{ old('email') }}" required>
+                </div>
+                @error('email')
+                    <span class="invalid-feedback">{{ $message }}</span>
+                @enderror
+
+                <div class="form-group">
+                    <label>Last Name</label>
+                    <input type="text" class="form-control" name="last_name" value="{{ old('last_name') }}" required>
+                </div>
+                @error('last_name')
+                    <span class="invalid-feedback">{{ $message }}</span>
+                @enderror
+
+                <div class="form-group">
+                    <label>First Name</label>
+                    <input type="text" class="form-control" name="first_name" value="{{ old('first_name') }}" required>
+                </div>
+                @error('first_name')
+                    <span class="invalid-feedback">{{ $message }}</span>
+                @enderror
+
+                <div class="form-group">
+                    <label>Phone No</label>
+                    <input type="text" class="form-control" name="phone_no" value="{{ old('phone_no') }}" required>
+                </div>
+                @error('phone_no')
+                    <span class="invalid-feedback">{{ $message }}</span>
+                @enderror
+
+                <div class="form-group">
+                    <label>Password (Minimum of 8 characters)</label>
+                    <input type="password" class="form-control" name="password" id="password" required>
+                    <span id="passwordError" class="text-danger" style="display: none;"></span>
+                </div>
+                
+                @error('password')
+                    <span class="invalid-feedback">{{ $message }}</span>
+                @enderror
+
+                <div class="form-group">
+                    <label>Confirm Password</label>
+                    <input type="password" class="form-control" name="password_confirmation" id="password_confirmation" value="" required>
+                </div>
+
+                <!-- Show Password Toggle -->
+                <div class="form-group form-check">
+                    <input type="checkbox" class="form-check-input" id="showPasswordToggle">
+                    <label class="form-check-label" for="showPasswordToggle">Show Password</label>
+                </div>
+
+                <div class="form-group">
+                    <label>Profile Picture(Optional)</label>
+                    <input type="file" class="form-control" name="image">
+                </div>
+                @error('image')
+                    <span class="invalid-feedback">{{ $message }}</span>
+                @enderror
+                <hr>
+                <h5>User Roles</h5>
+                <span class="style2">Module</span> : <span class="style7">Sub-module</span>
+                <table width="516" class="table table-bordered">
+                    <tr>
+                      <td width="31"><input type="checkbox" name="classList" id="classList" /></td>
+                      <td width="214"><span class="style2"><i class="fas fa-list"></i> ClassList</span></td>
+                      <td width="42"><input name="courseSetup" type="checkbox" class="style3" id="courseSetup" /></td>
+                      <td width="209"><span class="style2"><i class="fas fa-cogs"></i> Course Setup</span></td>
+                    </tr>
+                    <tr>
+                      <td><input type="checkbox" name="scoreSheet" id="scoreSheet" /></td>
+                      <td><span class="style2"><i class="fas fa-chart-bar"></i> Score Sheet</span></td>
+                      <!-- <td><input name="gradingSystem" type="checkbox" id="gradingSystem" /></td>
+                      <td><span class="style2"><i class="fas fa-ruler"></i> Grading System</span></td> -->
+                    </tr>
+                    <!-- <tr>
+                      <td><input type="checkbox" name="transcript" id="transcript" /></td>
+                      <td><span class="style2"><i class="fas fa-file-signature"></i>Transcript Request</span></td>
+                      <td><input name="hodSetup" type="checkbox" id="hodSetup" /></td>
+                      <td><span class="style2"><i class="fas fa-user-tie"></i> Hod Setup</span></td>
+                    </tr> -->
+                    <tr>
+                      <td><input type="checkbox" name="result" id="result" /></td>
+                      <td><span class="style2"><i class="fas fa-file-alt"></i> Result Module</span></td>
+                      <td><input type="checkbox" name="accessSetup" id="accessSetup" /></td>
+                      <td><span class="style2"><i class="fas fa-unlock"></i> Access Setup</span></td>
+                    </tr>
+                    <tr>
+                      <td><input type="checkbox" name="resultEntry" id="resultEntry" /></td>
+                      <td><span class="style7"><i class="fas fa-keyboard"></i> Result Entry</span></td>
+                      <!-- <td><input type="checkbox" name="admins" id="admins" /></td>
+                      <td><span class="style7"><i class="fas fa-user-shield"></i> Admins</span></td> -->
+                      <td><input type="checkbox" name="instructors" id="instructors" /></td>
+                      <td><span class="style7"><i class="fas fa-chalkboard-teacher"> Instructors</span></td>
+                    </tr>
+                    <tr>
+                      <!-- <td><input type="checkbox" name="resultCompute" id="resultCompute" /></td>
+                      <td><span class="style7"><i class="fas fa-calculator"></i> Result Compute</span></td> -->
+                      <!-- <td><input type="checkbox" name="instructors" id="instructors" /></td>
+                      <td><span class="style7"><i class="fas fa-chalkboard-teacher"> Instructors</span></td> -->
+                    </tr>
+                    <tr>
+                      <!-- <td><input type="checkbox" name="semesterResult" id="semesterResult" /></td>
+                      <td><span class="style7"><i class="fas fa-clipboard"></i> Semester Result</span></td>
+                      <td><input type="checkbox" name="students" id="students" /></td>
+                      <td><span class="style7"><i class="fas fa-user-graduate"> Students</span></td> -->
+                    </tr>
+                    <tr>
+                      <!-- <td><input type="checkbox" name="semesterSummary" id="semesterSummary" /></td>
+                      <td><span class="style7"><i class="fas fa-chart-line"></i> Semester Result Summary</span></td>
+                      <td>&nbsp;</td>
+                      <td>&nbsp;</td> -->
+                    </tr>
+                    <tr>
+                      <!-- <td><input type="checkbox" name="cgpaSummary" id="cgpaSummary" /></td>
+                      <td><span class="style7"><i class="fas fa-graduation-cap"></i> CGPA Summary</span></td>
+                      <td>&nbsp;</td>
+                      <td>&nbsp;</td> -->
+                    </tr>
+                    <tr>
+                      <!-- <td><input type="checkbox" name="studentTranscript" id="studentTranscript" /></td>
+                      <td><span class="style7"><i class="fas fa-file-signature"></i>Transcript</span></td>
+                      <td>&nbsp;</td>
+                      <td>&nbsp;</td> -->
+                    </tr>
+                    <tr>
+                      <td><input name="student" type="checkbox" id="student" /></td>
+                      <td><span class="style2"><i class="fas fa-user-graduate"></i> Student Module</span></td>
+                      <td>&nbsp;</td>
+                      <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                      <td><input name="studentRegistration" type="checkbox" id="studentRegistration" /></td>
+                      <td><span class="style7"><i class="fas fa-user-plus"></i> Student Registration</span></td>
+                      <td>&nbsp;</td>
+                      <td>&nbsp;</td>
+                    </tr>
+                    <!-- <tr>
+                      <td><input name="studentMigration" type="checkbox" id="studentMigration" /></td>
+                      <td><span class="style7"><i class="fas fa-exchange-alt"></i> Student Migration</span></td>
+                      <td>&nbsp;</td>
+                      <td>&nbsp;</td>
+                    </tr> -->
+                  </table>
+
+
+                  </div>
+                  <div class="card-footer text-right"> 
+                    <input class="btn btn-primary mr-1" type="submit" value="Submit"></input>
+                    <!-- <input class="btn btn-secondary" type="reset" value="Reset"></input> -->
+                  </div>
+                    </form>
                   
                 </div>               
 
@@ -364,3 +529,77 @@
 
 <!-- basic-form.html  21 Nov 2019 03:54:41 GMT -->
 </html>
+
+<script>
+    document.getElementById('registerForm').addEventListener('submit', function (e) {
+        const password = document.getElementById('password').value;
+        const errorSpan = document.getElementById('passwordError');
+
+        if (password.length < 8) {
+            e.preventDefault(); // Prevent form from submitting
+            errorSpan.textContent = 'Password must be at least 8 characters long.';
+            errorSpan.style.display = 'block';
+        } else {
+            errorSpan.style.display = 'none'; // Hide error if valid
+        }
+    });
+</script>
+
+<script>
+    // Wait for the DOM to be ready
+    document.addEventListener('DOMContentLoaded', function () {
+        // Get the userType select element and the department container
+        var userTypeSelect = document.getElementById('userType');
+        var departmentContainer = document.getElementById('departmentContainer');
+
+        // Event listener to check changes in the userType select
+        userTypeSelect.addEventListener('change', function () {
+            if (userTypeSelect.value === 'Instructor') {
+                departmentContainer.style.display = 'block';  // Show department dropdown if Instructor
+            } else {
+                departmentContainer.style.display = 'none';   // Hide department dropdown for other user types
+            }
+        });
+
+        // Initial check on page load to ensure correct visibility
+        if (userTypeSelect.value !== 'Instructor') {
+            departmentContainer.style.display = 'none';
+        } else {
+            departmentContainer.style.display = 'block';
+        }
+    });
+</script>
+<script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const form = document.getElementById('registerForm');
+                        const passwordInput = document.getElementById('password');
+                        const passwordError = document.getElementById('passwordError');
+
+                        form.addEventListener('submit', function (e) {
+                            const password = passwordInput.value;
+
+                            if (password.length < 8) {
+                                e.preventDefault(); // Stop form submission
+                                passwordError.textContent = 'Password must be at least 8 characters long.';
+                                passwordError.style.display = 'block';
+                                passwordInput.focus(); // 👈 Focus the field
+                            } else {
+                                passwordError.style.display = 'none';
+                            }
+                        });
+                    });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const showPasswordToggle = document.getElementById('showPasswordToggle');
+        const passwordField = document.getElementById('password');
+        const confirmPasswordField = document.getElementById('password_confirmation');
+
+        showPasswordToggle.addEventListener('change', function () {
+            const type = this.checked ? 'text' : 'password';
+            passwordField.type = type;
+            confirmPasswordField.type = type;
+        });
+    });
+</script>

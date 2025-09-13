@@ -239,7 +239,7 @@
                         <ol class="breadcrumb bg-dark text-white-all d-flex justify-content-between overflow-auto" style="white-space: nowrap;">
                   @if(auth()->user()->user_type_status == 1)
                   <li class="breadcrumb-item active">
-                    <a href="{{route('dashboard')}}"><i class="fas fa-home"></i> Dashboard</a>
+                    <a href="{{route('admin-dashboard')}}"><i class="fas fa-home"></i> Dashboard</a>
                   </li>
                   <li class="breadcrumb-item">
                     <a href="{{route('class-list')}}"><i class="fas fa-chalkboard-teacher"></i> Class List</a>
@@ -273,7 +273,7 @@
                   </li> 
                   @elseif(auth()->user()->user_type_status == 2)
                   <li class="breadcrumb-item active">
-                    <a href="{{route('dashboard')}}"><i class="fas fa-home"></i> Dashboard</a>
+                    <a href="{{route('admin-dashboard')}}"><i class="fas fa-home"></i> Dashboard</a>
                   </li>
                   <li class="breadcrumb-item">
                     <a href="{{route('class-list')}}"><i class="fas fa-chalkboard-teacher"></i> Class List</a>
@@ -307,7 +307,7 @@
                   </li> 
                   @elseif(auth()->user()->user_type_status == 3)
                   <li class="breadcrumb-item active">
-                    <a href="{{route('dashboard')}}"><i class="fas fa-home"></i> Dashboard</a>
+                    <a href="{{route('admin-dashboard')}}"><i class="fas fa-home"></i> Dashboard</a>
                   </li>
                   <li class="breadcrumb-item">
                     <a href="{{route('class-list')}}"><i class="fas fa-chalkboard-teacher"></i> Class List</a>
@@ -323,7 +323,7 @@
                   </li>
                   @elseif(auth()->user()->user_type_status == 4)
                   <li class="breadcrumb-item active">
-                    <a href="{{route('dashboard')}}"><i class="fas fa-home"></i> Dashboard</a>
+                    <a href="{{route('admin-dashboard')}}"><i class="fas fa-home"></i> Dashboard</a>
                   </li>                  
                   <li class="breadcrumb-item" aria-current="page">
                     <a href="{{route('student-result')}}"><i class="fas fa-poll"></i> Result</a>                   

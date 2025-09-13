@@ -6,6 +6,7 @@
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>E-Result :: Result</title>
   <!-- General CSS Files -->
   <link rel="stylesheet" href="{{asset('dashboard/assets/css/app.min.css')}}">
@@ -81,151 +82,7 @@
                 class="logo-name">E-Result</span>
             </a>
           </div>
-          <ul class="sidebar-menu">
-            <li class="menu-header">Main</li>
-            @if(auth()->user()->user_type_status == 1)
-            <li class="dropdown">
-              <a href="{{ route('admin-dashboard') }}" class="nav-link"><i data-feather="home"></i><span>Dashboard</span></a>
-            </li>
-            <li class="dropdown">
-              <a href="{{route('class-list')}}" class="nav-link"><i data-feather="list"></i><span>Class List</span></a>
-            </li>
-            <li class="dropdown">
-              <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="user"></i><span>Student</span></a>
-              <ul class="dropdown-menu">
-                <li><a class="nav-link" href="{{route('student-registration')}}">Student Registration</a></li>
-                <li><a class="nav-link" href="{{route('student-migration')}}">Student Migration</a></li>                
-              </ul>
-            </li>
-            <li class="dropdown active">
-              <a href="#" class="nav-link menu-toggle nav-link has-dropdown"><i data-feather="clipboard"></i><span>Result</span></a>
-              <ul class="dropdown-menu">
-                <li><a class="nav-link" href="{{route('result-entry')}}">Result Entry</a></li>
-                <li><a class="nav-link" href="{{route('result-compute')}}">Result Computation</a></li>
-                <li><a class="nav-link" href="{{route('semester-result')}}">Semester Result</a></li>
-                <li><a class="nav-link" href="{{route('semester-summary')}}">Semester Result Summary</a></li>
-                <li><a class="nav-link" href="{{route('cgpa-summary')}}">CGPA Summary</a></li>
-                <li><a class="nav-link" href="{{route('student-transcript')}}">Student Transcript</a></li>
-              </ul>
-            </li>
-            <li class="dropdown">
-              <a href="{{route('course-setup')}}" class="nav-link"><i data-feather="book"></i><span>Course</span></a>
-            </li>
-            <li class="dropdown">
-              <a href="{{route('hod-setup')}}" class="nav-link"><i data-feather="briefcase"></i><span>HOD</span></a>
-            </li>
-            <li class="dropdown">
-              <a href="{{route('grading')}}" class="nav-link"><i data-feather="slack"></i><span>Grading System</span></a>
-            </li>
-            <li class="dropdown">
-              <a href="{{route('score-sheet')}}" class="nav-link"><i data-feather="file-text"></i><span>Score Sheet</span></a>
-            </li>
-            <li class="dropdown">
-              <a href="{{ route('transcript-request') }}" class="nav-link"><i data-feather="archive"></i><span>Transcript Requests</span></a>
-            </li>
-            <li class="dropdown">
-              <a href="{{ route('admin-account-setting', ['id' => auth()->user()->id]) }}" class="nav-link"><i data-feather="settings"></i><span>Account Settings</span></a>
-            </li>
-            <li class="dropdown">
-              <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="users"></i><span>Users</span></a>
-              <ul class="dropdown-menu">
-                <li><a class="nav-link" href="{{route('users')}}">Admins</a></li>
-                <li><a class="nav-link" href="{{route('instructors')}}">Instructors</a></li> 
-                <li><a class="nav-link" href="{{route('student')}}">Students</a></li>                
-              </ul>
-            </li>           
-            @elseif(auth()->user()->user_type_status == 2)
-            <li class="dropdown">
-              <a href="{{ route('admin-dashboard') }}" class="nav-link"><i data-feather="home"></i><span>Dashboard</span></a>
-            </li>
-            <li class="dropdown">
-              <a href="{{route('class-list')}}" class="nav-link"><i data-feather="list"></i><span>Class List</span></a>
-            </li>
-            <li class="dropdown">
-              <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="user"></i><span>Student</span></a>
-              <ul class="dropdown-menu">
-                <li><a class="nav-link" href="{{route('student-registration')}}">Student Registration</a></li>
-                <li><a class="nav-link" href="{{route('student-migration')}}">Student Migration</a></li>                
-              </ul>
-            </li>
-            <li class="dropdown active">
-              <a href="#" class="nav-link menu-toggle nav-link has-dropdown"><i data-feather="clipboard"></i><span>Result</span></a>
-              <ul class="dropdown-menu">
-                <li><a class="nav-link" href="{{route('result-entry')}}">Result Entry</a></li>
-                <li><a class="nav-link" href="{{route('result-compute')}}">Result Computation</a></li>
-                <li><a class="nav-link" href="{{route('semester-result')}}">Semester Result</a></li>
-                <li><a class="nav-link" href="{{route('semester-summary')}}">Semester Result Summary</a></li>
-                <li><a class="nav-link" href="{{route('cgpa-summary')}}">CGPA Summary</a></li>
-                <li><a class="nav-link" href="{{route('student-transcript')}}">Student Transcript</a></li>
-              </ul>
-            </li>
-            <li class="dropdown">
-              <a href="{{route('course-setup')}}" class="nav-link"><i data-feather="book"></i><span>Course</span></a>
-            </li>
-            <li class="dropdown">
-              <a href="{{route('hod-setup')}}" class="nav-link"><i data-feather="briefcase"></i><span>HOD</span></a>
-            </li>
-            <li class="dropdown">
-              <a href="{{route('grading')}}" class="nav-link"><i data-feather="slack"></i><span>Grading System</span></a>
-            </li>
-            <li class="dropdown">
-              <a href="{{route('score-sheet')}}" class="nav-link"><i data-feather="file-text"></i><span>Score Sheet</span></a>
-            </li>
-            <li class="dropdown">
-              <a href="{{ route('transcript-request') }}" class="nav-link"><i data-feather="archive"></i><span>Transcript Requests</span></a>
-            </li>
-            <li class="dropdown">
-              <a href="{{ route('admin-account-setting', ['id' => auth()->user()->id]) }}" class="nav-link"><i data-feather="settings"></i><span>Account Settings</span></a>
-            </li>
-            <li class="dropdown">
-              <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="users"></i><span>Users</span></a>
-              <ul class="dropdown-menu">
-                <li><a class="nav-link" href="{{route('users')}}">Admins</a></li>
-                <li><a class="nav-link" href="{{route('instructors')}}">Instructors</a></li> 
-                <li><a class="nav-link" href="{{route('student')}}">Students</a></li>                
-              </ul>
-            </li> 
-            @elseif(auth()->user()->user_type_status == 3)  
-            <li class="dropdown">
-              <a href="{{ route('admin-dashboard') }}" class="nav-link"><i data-feather="home"></i><span>Dashboard</span></a>
-            </li>
-            <li class="dropdown">
-              <a href="{{route('class-list')}}" class="nav-link"><i data-feather="list"></i><span>Class List</span></a>
-            </li>            
-            <li class="dropdown active">
-              <a href="#" class="nav-link menu-toggle nav-link has-dropdown"><i data-feather="clipboard"></i><span>Result</span></a>
-              <ul class="dropdown-menu">
-                <li><a class="nav-link" href="{{route('result-entry')}}">Result Entry</a></li>
-                <li><a class="nav-link" href="{{route('result-compute')}}">Result Computation</a></li>
-                <li><a class="nav-link" href="{{route('semester-result')}}">Semester Result</a></li>
-                <li><a class="nav-link" href="{{route('semester-summary')}}">Semester Result Summary</a></li>
-                <li><a class="nav-link" href="{{route('cgpa-summary')}}">CGPA Summary</a></li>                
-              </ul>
-            </li>
-            <li class="dropdown">
-              <a href="{{route('course-setup')}}" class="nav-link"><i data-feather="book"></i><span>Course</span></a>
-            </li>
-            <li class="dropdown">
-              <a href="{{ route('admin-account-setting', ['id' => auth()->user()->id]) }}" class="nav-link"><i data-feather="settings"></i><span>Account Settings</span></a>
-            </li>                 
-            @elseif(auth()->user()->user_type_status == 4)            
-            <li class="dropdown">
-              <a href="{{ route('dashboard') }}" class="nav-link"><i data-feather="home"></i><span>Dashboard</span></a>
-            </li>
-            <li class="dropdown">
-              <a href="{{route('student-result')}}" class="nav-link"><i data-feather="clipboard"></i><span>Result</span></a>
-            </li>
-            <li class="dropdown">
-              <a href="{{ route('user-request') }}" class="nav-link"><i data-feather="archive"></i><span>Request Transcript</span></a>
-            </li>
-            <li class="dropdown">
-              <a href="{{ route('account-setting', ['id' => auth()->user()->id]) }}" class="nav-link"><i data-feather="settings"></i><span>Account Settings</span></a>
-            </li>
-            <li class="dropdown">
-              <a href="{{ route('contact-us') }}" class="nav-link"><i data-feather="mail"></i><span>Contact Us</span></a>
-            </li>
-            @endif
-          </ul>
+          @include('partials.sidebar')
         </aside>
       </div>
       <!-- Main Content -->
@@ -238,7 +95,7 @@
                         <ol class="breadcrumb bg-dark text-white-all d-flex justify-content-between overflow-auto" style="white-space: nowrap;">
                   @if(auth()->user()->user_type_status == 1)
                   <li class="breadcrumb-item active">
-                    <a href="{{route('dashboard')}}"><i class="fas fa-home"></i> Dashboard</a>
+                    <a href="{{route('admin-dashboard')}}"><i class="fas fa-home"></i> Dashboard</a>
                   </li>
                   <li class="breadcrumb-item">
                     <a href="{{route('class-list')}}"><i class="fas fa-chalkboard-teacher"></i> Class List</a>
@@ -272,7 +129,7 @@
                   </li> 
                   @elseif(auth()->user()->user_type_status == 2)
                   <li class="breadcrumb-item active">
-                    <a href="{{route('dashboard')}}"><i class="fas fa-home"></i> Dashboard</a>
+                    <a href="{{route('admin-dashboard')}}"><i class="fas fa-home"></i> Dashboard</a>
                   </li>
                   <li class="breadcrumb-item">
                     <a href="{{route('class-list')}}"><i class="fas fa-chalkboard-teacher"></i> Class List</a>
@@ -306,7 +163,7 @@
                   </li> 
                   @elseif(auth()->user()->user_type_status == 3)
                   <li class="breadcrumb-item active">
-                    <a href="{{route('dashboard')}}"><i class="fas fa-home"></i> Dashboard</a>
+                    <a href="{{route('admin-dashboard')}}"><i class="fas fa-home"></i> Dashboard</a>
                   </li>
                   <li class="breadcrumb-item">
                     <a href="{{route('class-list')}}"><i class="fas fa-chalkboard-teacher"></i> Class List</a>
@@ -322,7 +179,7 @@
                   </li>
                   @elseif(auth()->user()->user_type_status == 4)
                   <li class="breadcrumb-item active">
-                    <a href="{{route('dashboard')}}"><i class="fas fa-home"></i> Dashboard</a>
+                    <a href="{{route('admin-dashboard')}}"><i class="fas fa-home"></i> Dashboard</a>
                   </li>                  
                   <li class="breadcrumb-item" aria-current="page">
                     <a href="{{route('student-result')}}"><i class="fas fa-poll"></i> Result</a>                   
@@ -344,8 +201,13 @@
             <div class="row">
               <div class="col-12 col-md-6 col-lg-6">
                 <div class="card">
-                  <div class="card-header">
-                  <h4>Result Entry</h4>
+                  <div class="card-header d-flex justify-content-between align-items-center">
+                      <h4 class="mb-0">Result Entry</h4>
+                      <!-- Button -->
+                        <button type="button" class="btn btn-sm btn-outline-primary" 
+                                data-toggle="modal" data-target="#summaryModal">
+                            <i class="fa fa-list"></i> Summary
+                        </button>
                   </div>
                   @if(session('success'))
                     <div class="alert alert-success">
@@ -417,6 +279,9 @@
                     <button type="submit" class="btn btn-primary mr-1">
                         <i class="fas fa-arrow-right"></i> Proceed
                     </button>
+                    <a href="#" class="btn btn-danger" id="deleteResultsBtn">
+                        <i class="fas fa-trash"></i> Delete Results
+                    </a>
                     <a href="#" class="btn btn-info mr-1" id="previewBtn">
                     <i class="fa-redo-alt"></i> Resit Menu 
                     </a>
@@ -532,6 +397,44 @@
       </footer>
     </div>
   </div>
+
+
+  <!-- Summary Modal -->
+<div class="modal fade" id="summaryModal" tabindex="-1" aria-labelledby="summaryModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="summaryModalLabel">Result Entry Summary</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+          <!-- Academic Session Selector -->
+          <div class="mb-3">
+              <label for="sessionFilter" class="mr-2">Select Session</label>
+              <select id="sessionFilter" name="session1" class="form-control">
+                  <option value="">-- Select Academic Session --</option>
+                  @php $currentYear = date('Y'); @endphp
+                  @for ($year = 2018; $year <= $currentYear; $year++)
+                      <option value="{{ $year }}">{{ $year }}</option>
+                  @endfor
+              </select>
+          </div>
+
+          <!-- Results content -->
+          <div id="summaryContent" class="mt-3">
+              <div class="text-center p-3">
+                  <i class="fa fa-info-circle"></i> Select a session to view summary
+              </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
    <!-- General JS Scripts -->
    <script src="{{asset('dashboard/assets/js/app.min.js')}}"></script>
   <!-- JS Libraies -->
@@ -576,4 +479,68 @@
         // Redirect the user to the generated URL
         window.location.href = url;
     });
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('deleteResultsBtn').addEventListener('click', function (e) {
+        e.preventDefault();
+
+        if (!confirm("Are you sure you want to delete all results for the selected criteria? This action cannot be undone.")) {
+            return;
+        }
+
+        const programme = document.getElementById('programme').value;
+        const acad_session = document.getElementById('acad_session').value;
+        const stdLevel = document.getElementById('stdLevel').value;
+        const semester = document.getElementById('semester').value;
+
+        fetch("{{ route('admin.results.delete') }}", {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({
+                programme: programme,
+                admission_year: acad_session,
+                level: stdLevel,
+                semester: semester
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert(data.message);
+            location.reload();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert("Something went wrong. Could not delete results.");
+        });
+    });
+});
+</script>
+<script>
+$(document).on('change', '#sessionFilter', function() {
+    let session = $(this).val();
+
+    if (!session) {
+        $('#summaryContent').html('<div class="alert alert-warning">Please select a session.</div>');
+        return;
+    }
+
+    $('#summaryContent').html('<div class="text-center p-3"><i class="fa fa-spinner fa-spin"></i> Loading...</div>');
+
+    $.ajax({
+        url: "{{ route('admin.results.summary') }}",
+        type: "GET",
+        data: { session1: session },
+        success: function(response) {
+            $('#summaryContent').html(response);
+        },
+        error: function(xhr) {
+            console.log(xhr.responseText);
+            $('#summaryContent').html('<div class="alert alert-danger">Unable to load summary.</div>');
+        }
+    });
+});
 </script>

@@ -6,7 +6,8 @@
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-  <title>@yield('pageTitle')</title>
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+  <title>E-Result :: Result</title>
   <!-- General CSS Files -->
   <link rel="stylesheet" href="{{asset('dashboard/assets/css/app.min.css')}}">
   <!-- Template CSS -->
@@ -32,6 +33,14 @@
         border-radius: 5px; /* Rounded corners */
     }
 </style>
+<style type="text/css">
+.style2 {
+	color: #006600;
+	font-weight: bold;
+}
+.style3 {font-weight: bold}
+.style7 {color: #0000FF; font-weight: bold; }
+</style>
 </head>
 
 <body>
@@ -49,21 +58,13 @@
               </a></li>
            
           </ul>
-        </div>
-        <ul class="navbar-nav navbar-right">        
-          @php
-				$userImage = auth()->user()->image;
-				$imageFile = public_path('profile-pictures/' . $userImage);
-				$finalImage = (!empty($userImage) && file_exists($imageFile))
-					? 'profile-pictures/' . $userImage
-					: 'profile-pictures/blank.jpg';
-			@endphp
-		  <li class="dropdown"><a href="#" data-toggle="dropdown"
-              class="nav-link dropdown-toggle nav-link-lg nav-link-user"> <img alt="image" src="{{ asset($finalImage) }}"  alt="Profile Picture"
+        </div><ul class="navbar-nav navbar-right">        
+          <li class="dropdown"><a href="#" data-toggle="dropdown"
+              class="nav-link dropdown-toggle nav-link-lg nav-link-user"> <img alt="image" src="{{ asset('profile_pictures/'. auth()->user()->image) }}" alt="Profile Picture"
                 class="user-img-radious-style"> <span class="d-sm-none d-lg-inline-block"></span></a>
             <div class="dropdown-menu dropdown-menu-right pullDown">
               <div class="dropdown-title">Hello {{auth()->user()->first_name}}</div> 
-              <a href="{{ route('account-setting', ['id' => auth()->user()->id]) }}" class="dropdown-item has-icon"> <i class="fas fa-cog"></i>
+              <a href="{{ route('admin-account-setting', ['id' => auth()->user()->id]) }}" class="dropdown-item has-icon"> <i class="fas fa-cog"></i>
                 Account Settings
               </a>
               <div class="dropdown-divider"></div>
@@ -82,7 +83,6 @@
             </a>
           </div>
           @include('partials.sidebar')
-    
         </aside>
       </div>
       <!-- Main Content -->
@@ -201,10 +201,15 @@
             <div class="row">
               <div class="col-12 col-md-6 col-lg-6">
                 <div class="card">
-                  <div class="card-header">
-                    <h4>Payment</h4>
+                  <div class="card-header d-flex justify-content-between align-items-center">
+                      <h4 class="mb-0">Result Entry</h4>
+                      <!-- Button -->
+                        <button type="button" class="btn btn-sm btn-outline-primary" 
+                                data-toggle="modal" data-target="#summaryModal">
+                            <i class="fa fa-list"></i> Summary
+                        </button>
                   </div>
-                  <!-- @if(session('success'))
+                  @if(session('success'))
                     <div class="alert alert-success">
                       {{ session('success') }}
                     </div>
@@ -212,35 +217,35 @@
                     <div class="alert alert-danger">
                       {{ session('error') }}
                     </div>
-                    @endif	 -->
-                  <div class="card-body">                 
-                        <div class="form-group">
-                      <label></label>
-                      <table width="100%" border="0" cellpadding="4" cellspacing="4">
-             <tr>
-              <td> 
-              @if($ResponseCode == "00")
-                    <div class="alert alert-success">
-                    {{$transaction_message}}
+                    @endif	
+                    
+                  <div class="card-body">
+                  <form action="" method="GET">
+                    <!-- @csrf  -->                   
+
+                    <div class="form-group">
+                        <label>Admission Year</label>
+                        <select name="acad_session" id="acad_session" class="form-control">
+                            @php
+                                $currentYear = date('Y');
+                            @endphp
+                            @for ($year = 2018; $year <= $currentYear; $year++)
+                                <option value="{{ $year }}">{{ $year }}</option>
+                            @endfor
+                        </select>
                     </div>
-                  @else
-                    <div class="alert alert-danger">
-                    {{$transaction_message}}
+                    @error('acad_session')
+                        <span class="invalid-feedback">{{ $message }}</span>
+                    @enderror                    
+
+                    <div class="card-footer text-right">
+                    <button type="submit" class="btn btn-primary mr-1">
+                        <i class="fas fa-arrow-right"></i> Proceed
+                    </button>
+                    
                     </div>
-                    @endif	            
-              
-              <p class="style27"><strong>Amount :</strong> =N={{number_format($amount,2)}} </p>
-              <p class="style27"><strong>Amount Due :</strong> =N={{number_format($amount_due,2)}} </p>
-                <p class="style27"><strong>Reason :</strong> {{$ResponseDesc}}</p>
-                <p class="style27"><strong>Response Code :</strong> {{$ResponseCode}}</p>
-                <p class="style27"><strong>Transaction Reference :</strong> {{$transactionID}} </p>
-                <p class="style27"><strong>Payment Reference :</strong> {{$flicks_transref}} </p>
-               <p class="style8">Kindly send a mail to <a href="mailto:payment@oyschst.edu.ng" target="_blank">payment@oyschst.edu.ng</a></p></td>
-              </tr>
-          </table>           
-                    </div>
-                  </div>                  
-                   
+                </form>
+
                   
                 </div>               
 
@@ -349,6 +354,50 @@
       </footer>
     </div>
   </div>
+
+
+  <!-- Summary Modal -->
+<div class="modal fade" id="summaryModal" tabindex="-1" aria-labelledby="summaryModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="summaryModalLabel">Programmes Summary</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+          <!-- Academic Session Selector -->
+          <div class="mb-3">
+              <form id="summaryForm" class="form-inline mb-3">
+          <label for="sessionFilter" class="mr-2">Select Session</label>
+          <select id="sessionFilter" name="session1" class="form-control mr-2">
+            <option value="">-- Select Academic Session --</option>
+            @php $currentYear = date('Y'); @endphp
+            @for ($year = 2018; $year <= $currentYear; $year++)
+                <option value="{{ $year }}">{{ $year }}</option>
+            @endfor
+          </select>
+          <button type="submit" class="btn btn-primary">
+            <i class="fa fa-search"></i> Load Summary
+          </button>
+        </form>
+          </div>
+
+          <!-- Results content -->
+          <div id="summaryContent" class="mt-3">
+              <div class="text-center p-3">
+                  <i class="fa fa-info-circle"></i> Select a session to view summary
+              </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
    <!-- General JS Scripts -->
    <script src="{{asset('dashboard/assets/js/app.min.js')}}"></script>
   <!-- JS Libraies -->
@@ -364,3 +413,99 @@
 
 <!-- basic-form.html  21 Nov 2019 03:54:41 GMT -->
 </html>
+<script>
+    document.getElementById('previewBtn').addEventListener('click', function(e) {
+        e.preventDefault(); // Prevent default anchor behavior
+        console.log('Preview button clicked'); // Debugging line
+
+        // Get the selected parameters (check if the element exists)
+        const programme = document.getElementById('programme');
+        const acadSession = document.getElementById('acad_session');
+        const stdLevel = document.getElementById('stdLevel');
+        const semester = document.getElementById('semester');
+
+        // Ensure the elements exist before trying to get their values
+        if (!programme || !acadSession || !stdLevel || !semester) {
+            console.error('One or more elements not found!');
+            return;
+        }
+
+        // Log the selected values to debug
+        console.log(`Programme: ${programme.value}, Session: ${acadSession.value}, Level: ${stdLevel.value}, Semester: ${semester.value}`);
+
+        // Construct the URL dynamically
+        const url = `{{ route('result-resit') }}?programme=${programme.value}&acad_session=${acadSession.value}&stdLevel=${stdLevel.value}&semester=${semester.value}`;
+
+        // Log the constructed URL
+        console.log('Constructed URL:', url);
+
+        // Redirect the user to the generated URL
+        window.location.href = url;
+    });
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('deleteResultsBtn').addEventListener('click', function (e) {
+        e.preventDefault();
+
+        if (!confirm("Are you sure you want to delete all results for the selected criteria? This action cannot be undone.")) {
+            return;
+        }
+
+        const programme = document.getElementById('programme').value;
+        const acad_session = document.getElementById('acad_session').value;
+        const stdLevel = document.getElementById('stdLevel').value;
+        const semester = document.getElementById('semester').value;
+
+        fetch("{{ route('admin.results.delete') }}", {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({
+                programme: programme,
+                admission_year: acad_session,
+                level: stdLevel,
+                semester: semester
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert(data.message);
+            location.reload();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert("Something went wrong. Could not delete results.");
+        });
+    });
+});
+</script>
+<script>
+$(document).on('submit', '#summaryForm', function(e) {
+    e.preventDefault(); // prevent form from refreshing page
+
+    let session = $('#sessionFilter').val();
+
+    if (!session) {
+        $('#summaryContent').html('<div class="alert alert-warning">Please select a session.</div>');
+        return;
+    }
+
+    $('#summaryContent').html('<div class="text-center p-3"><i class="fa fa-spinner fa-spin"></i> Loading...</div>');
+
+    $.ajax({
+        url: "{{ route('admin.results.summary') }}", // ensure prefix admin is included
+        type: "GET",
+        data: { session1: session },
+        success: function(response) {
+            $('#summaryContent').html(response);
+        },
+        error: function(xhr) {
+            console.log(xhr.responseText);
+            $('#summaryContent').html('<div class="alert alert-danger">Unable to load summary.</div>');
+        }
+    });
+});
+</script>

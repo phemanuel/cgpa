@@ -89,10 +89,18 @@ Route::post('/reset-password', [CustomForgotPasswordController::class, 'resetPas
         ->name('add-user'); 
         Route::post('user/add', [DashboardController::class, 'addUserAction'])
         ->name('add-user.action'); 
+        Route::get('instructor/add', [DashboardController::class, 'addInstructor'])
+        ->name('add-instructor'); 
+        Route::post('instructor/add', [DashboardController::class, 'addInstructorAction'])
+        ->name('add-instructor.action'); 
         Route::get('user/edit/{id}', [DashboardController::class, 'editUser'])
         ->name('edit-user');
         Route::put('user/edit/{id}', [DashboardController::class, 'editUserAction'])
         ->name('edit-user.action'); 
+        Route::get('instructor/edit/{id}', [DashboardController::class, 'editInstructor'])
+        ->name('edit-instructor');
+        Route::put('instructor/edit/{id}', [DashboardController::class, 'editInstructorAction'])
+        ->name('edit-instructor.action'); 
         Route::get('student/edit/{id}', [DashboardController::class, 'editStudent'])
         ->name('edit-student');
         Route::put('student/edit/{id}', [DashboardController::class, 'editStudentAction'])
@@ -127,6 +135,8 @@ Route::post('/reset-password', [CustomForgotPasswordController::class, 'resetPas
         ->name('result-entry-admin');
         Route::get('result/entry/view', [ResultController::class, 'resultEntryAdminView'])
         ->name('result-entry-admin.view');
+        Route::delete('/admin/delete-results', [ResultController::class, 'deleteResults'])
+        ->name('admin.results.delete');
         Route::get('result/entry/{id}', [ResultController::class, 'resultEntryView'])
         ->name('result-entry.view');
         Route::get('/fetch-failed-courses', [ResultController::class, 'fetchFailedCourses'])
@@ -165,6 +175,10 @@ Route::post('/reset-password', [CustomForgotPasswordController::class, 'resetPas
         ->name('save.score');
         Route::get('/results/semester100/{acadSession}/{programme}/{level}/{semester}/{studentIndex?}', [ResultController::class, 'firstSemester100'])
         ->name('results.semester100');
+         Route::get('all-result/summary', [ResultController::class, 'resultEntrySummary'])
+        ->name('admin.results.summary');
+        Route::get('all-result/fetch', [ResultController::class, 'fetchResultSummary'])
+        ->name('fetch.results.summary');
         //---course
         Route::get('course', [CourseController::class, 'courseSetup'])
         ->name('course-setup');

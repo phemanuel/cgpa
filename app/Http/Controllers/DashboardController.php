@@ -629,6 +629,122 @@ class DashboardController extends Controller
                 'last_name' => 'required|string|max:255',
                 'first_name' => 'required|string|max:255',
                 'email' => 'required|email',
+                'phone_no' => 'required|string',
+                'password' => 'required|string|min:8|confirmed',
+                'userType' => 'required|string',
+                'user_status' => 'required|string',
+                'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+                'department' => 'nullable|string'
+            ]);
+
+            //---Check if email exist---
+            $emailExist = User::where('email', $validatedData['email'])->first();
+            if($emailExist){
+                return redirect()->back()->with('error', 'The email entered has been used already, provide a different email.');
+            }
+
+            $email_token = Str::random(40);
+
+            // Prepare role data based on the checkboxes
+            $roles = [
+                'class_list' => $request->has('classList') ? 1 : 0,
+                'course_setup' => $request->has('courseSetup') ? 1 : 0,
+                'score_sheet' => $request->has('scoreSheet') ? 1 : 0,
+                'grading_system' => $request->has('gradingSystem') ? 1 : 0,
+                'access_setup' => $request->has('accessSetup') ? 1 : 0,
+                'admins' => $request->has('admins') ? 1 : 0,
+                'instructors' => $request->has('instructors') ? 1 : 0,
+                'students' => $request->has('students') ? 1 : 0,
+                'hod_setup' => $request->has('hodSetup') ? 1 : 0,
+                'result' => $request->has('result') ? 1 : 0,
+                'student' => $request->has('student') ? 1 : 0,
+                'result_entry' => $request->has('resultEntry') ? 1 : 0,
+                'student_registration' => $request->has('studentRegistration') ? 1 : 0,
+                'result_compute' => $request->has('resultCompute') ? 1 : 0,
+                'student_migration' => $request->has('studentMigration') ? 1 : 0,
+                'semester_result' => $request->has('semesterResult') ? 1 : 0,
+                'semester_summary' => $request->has('semesterSummary') ? 1 : 0,
+                'cgpa_summary' => $request->has('cgpaSummary') ? 1 : 0,
+                'student_transcript' => $request->has('studentTranscript') ? 1 : 0,
+                'transcript' => $request->has('transcript') ? 1 : 0,
+            ];
+
+            if($validatedData['userType'] == 'Superadmin') {
+                $userTypeStatus = 1;
+            }
+            elseif($validatedData['userType'] == 'Admin') {
+                $userTypeStatus = 2;
+            }
+            elseif($validatedData['userType'] == 'Instructor') {
+                $userTypeStatus = 3;
+            }
+            elseif($validatedData['userType'] == 'Student') {
+                $userTypeStatus = 4;
+            }
+            
+            if ($request->hasFile('image')) {
+                // Generate a unique file name
+            $imageFile = $request->file('image');
+            $generatedFileName = uniqid() . '.' . $imageFile->getClientOriginalExtension();
+
+            // Save the file to the public/signature directory
+            $imageFile->move(public_path('profile_pictures'), $generatedFileName);
+            }
+            else{
+                $generatedFileName = "blank.jpg";
+            }
+            
+            // Merge validated data with roles
+            $userData = array_merge($validatedData, $roles, [
+                'password' => Hash::make($validatedData['password']),
+                'email_verified_status' => 1,
+                'login_attempts' => 0,
+                'remember_token' => $email_token,
+                'user_type' => $validatedData['userType'],
+                'user_status' => $validatedData['user_status'],
+                'user_type_status' => $userTypeStatus,
+                'image' => $generatedFileName,
+                'department' => $validatedData['department'],
+            ]);
+            
+            // Create the user with roles
+            $user = User::create($userData);
+            if($validatedData['userType'] == 'Superadmin'){
+                return redirect()->route('users')->with('success', 'Admin has been created successfully.');
+            }
+            elseif($validatedData['userType'] == 'Admin'){
+                return redirect()->route('users')->with('success', 'Admin has been created successfully.');
+            }
+            elseif($validatedData['userType'] == 'Instructor'){
+                return redirect()->route('instructors')->with('success', 'Instructor has been created successfully.');
+            }            
+        } catch (ValidationException $e) {
+            // Validation failed. Redirect back with validation errors.
+            return redirect()->back()->withErrors($e->errors())->withInput();
+        } catch (Exception $e) {
+            // Log the error
+            Log::error('Error during user registration: ' . $e->getMessage());
+
+            return redirect()->back()->with('error', 'An error occurred during registration. Please try again.');
+        }
+    }
+
+    public function addInstructor()
+    {   
+        $allDepartment = Department::all(); 
+        return view('layout.add-instructor-layout', compact('allDepartment'));
+    }
+
+    public function addInstructorAction(Request $request)
+    {        
+        
+        try {
+            // Validate the input data
+            $validatedData = $request->validate([
+                'last_name' => 'required|string|max:255',
+                'first_name' => 'required|string|max:255',
+                'email' => 'required|email',
+                'phone_no' => 'required|string',
                 'password' => 'required|string|min:8|confirmed',
                 'userType' => 'required|string',
                 'user_status' => 'required|string',
@@ -736,6 +852,14 @@ class DashboardController extends Controller
         return view('auth.edit-user',compact('user', 'allDepartment'));
     }
 
+    public function editInstructor($id)
+    {
+        $user = User::findorFail($id);
+        $allDepartment = Department::all(); 
+
+        return view('layout.edit-instructor-layout',compact('user', 'allDepartment'));
+    }
+
     public function editStudent($id)
     {
         $user = Registration::findorFail($id);
@@ -745,25 +869,130 @@ class DashboardController extends Controller
     }
 
     public function editUserAction(Request $request, $id)
-    {
-        // $validatedData = $request->validate([
-        //     'last_name' => 'required|string|max:255',
-        //     'first_name' => 'required|string|max:255',
-        //     'user_status' => 'required|string',
-        //     'email' => 'required|email|unique:users,email,' . $id, 
-        //     'password' => 'nullable|string|min:8|confirmed', 
-        //     'userType' => 'required|string',                 
-        //     'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        //     'department' => 'nullable|string'
-        // ]);
-
-        // return response()->json($validatedData);
+    {        
         try {
             // Validate the input data
             $validatedData = $request->validate([
                 'last_name' => 'required|string|max:255',
                 'first_name' => 'required|string|max:255',
                 'user_status' => 'required|string',
+                'phone_no' => 'required|string',
+                'email' => 'required|email|unique:users,email,' . $id, 
+                'password' => 'nullable|string|min:8|confirmed', 
+                'userType' => 'required|string',                 
+                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'department' => 'nullable|string'
+            ]);
+
+            // Find the user by ID
+            $user = User::findOrFail($id);
+
+            // If the password is provided, hash it before updating
+            if ($request->filled('password')) {
+                $validatedData['password'] = Hash::make($validatedData['password']);
+            } else {
+                // If password is not provided, retain the current password
+                unset($validatedData['password']);
+            }
+
+            // Prepare role data based on the checkboxes
+            $roles = [
+                'class_list' => $request->has('classList') ? 1 : 0,
+                'course_setup' => $request->has('courseSetup') ? 1 : 0,
+                'score_sheet' => $request->has('scoreSheet') ? 1 : 0,
+                'grading_system' => $request->has('gradingSystem') ? 1 : 0,
+                'access_setup' => $request->has('accessSetup') ? 1 : 0,
+                'admins' => $request->has('admins') ? 1 : 0,
+                'instructors' => $request->has('instructors') ? 1 : 0,
+                'students' => $request->has('students') ? 1 : 0,
+                'hod_setup' => $request->has('hodSetup') ? 1 : 0,
+                'result' => $request->has('result') ? 1 : 0,
+                'student' => $request->has('student') ? 1 : 0,
+                'result_entry' => $request->has('resultEntry') ? 1 : 0,
+                'student_registration' => $request->has('studentRegistration') ? 1 : 0,
+                'result_compute' => $request->has('resultCompute') ? 1 : 0,
+                'student_migration' => $request->has('studentMigration') ? 1 : 0,
+                'semester_result' => $request->has('semesterResult') ? 1 : 0,
+                'semester_summary' => $request->has('semesterSummary') ? 1 : 0,
+                'cgpa_summary' => $request->has('cgpaSummary') ? 1 : 0,
+                'student_transcript' => $request->has('studentTranscript') ? 1 : 0,
+                'transcript' => $request->has('transcript') ? 1 : 0,
+            ];
+
+                // Handle image file if uploaded
+            if ($request->hasFile('image')) {
+                // Delete the old simage file if it exists
+                $oldImagePath = public_path('profile_pictures/' . $user->image);
+                if (File::exists($oldImagePath)) {
+                    File::delete($oldImagePath);
+                } 
+                // Save the new image file
+                $imageFile = $request->file('image');
+                $generatedFileName = uniqid() . '.' . $imageFile->getClientOriginalExtension();
+                $imageFile->move(public_path('profile_pictures'), $generatedFileName);
+
+                // Update the image field in the database
+                $userImage = ['image' => $generatedFileName] ;
+            }
+            else{
+                $userImage = ['image' => $user->image] ;
+            }
+
+            if ($validatedData['userType'] == 'Superadmin') {
+                $userType = ['user_type' => 'Superadmin'];
+                $userTypeStatus = ['user_type_status' => 1];
+                $department = "";                
+            } elseif ($validatedData['userType'] == 'Admin') {
+                $userType = ['user_type' => 'Admin'];
+                $userTypeStatus = ['user_type_status' => 2];   
+                $department = "";             
+            } elseif ($validatedData['userType'] == 'Instructor') {
+                $userType = ['user_type' => 'Instructor'];
+                $userTypeStatus = ['user_type_status' => 3];
+                $department = ['department' => $validatedData['department']];
+            } elseif ($validatedData['userType'] == 'Student') {
+                $userType = ['user_type' => 'Student'];
+                $userTypeStatus = ['user_type_status' => 4];
+                $department = ""; 
+            }
+
+            // Merge roles and user type status with the validated data
+            $userData = array_merge($validatedData, $roles, $userTypeStatus,$userType,$userImage);
+
+            // Update the user with new data (including roles)
+            $user->update($userData);
+
+            if($validatedData['userType'] == 'Superadmin'){
+                return redirect()->route('users')->with('success', 'Admin has been updated successfully.');
+            }
+            elseif($validatedData['userType'] == 'Admin'){
+                return redirect()->route('users')->with('success', 'Admin has been updated successfully.');
+            }
+            elseif($validatedData['userType'] == 'Instructor'){
+                return redirect()->route('instructors')->with('success', 'Instructor has been updated successfully.');
+            }           
+            
+        } catch (ValidationException $e) {
+            // Validation failed. Redirect back with validation errors.
+            Log::error('Error during user update: ' . $e->getMessage());
+            return redirect()->back()->withErrors($e->errors())->withInput();
+        } catch (Exception $e) {
+            // Log the error
+            Log::error('Error during user update: ' . $e->getMessage());
+
+            return redirect()->back()->with('error', 'An error occurred during the update. Please try again.');
+        }
+    }
+
+    public function editInstructorAction(Request $request, $id)
+    {        
+        try {
+            // Validate the input data
+            $validatedData = $request->validate([
+                'last_name' => 'required|string|max:255',
+                'first_name' => 'required|string|max:255',
+                'user_status' => 'required|string',
+                'phone_no' => 'required|string',
                 'email' => 'required|email|unique:users,email,' . $id, 
                 'password' => 'nullable|string|min:8|confirmed', 
                 'userType' => 'required|string',                 

@@ -2,11 +2,11 @@
 <html lang="en">
 
 
-<!-- index.html  21 Nov 2019 03:44:50 GMT -->
+<!-- basic-form.html  21 Nov 2019 03:54:41 GMT -->
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-  <title>E-Result :: Instructors</title>
+  <title>E-Result :: Edit User</title>
   <!-- General CSS Files -->
   <link rel="stylesheet" href="{{asset('dashboard/assets/css/app.min.css')}}">
   <!-- Template CSS -->
@@ -16,22 +16,29 @@
   <link rel="stylesheet" href="{{asset('dashboard/assets/css/custom.css')}}">
   <link rel='shortcut icon' type='image/x-icon' href="{{asset('dashboard/assets/img/favicon.png')}}" />
   <style>
-    .black-link {
-    color: black;
-    font-weight: bold;
+    /* Success Alert */
+    .alert.alert-success {
+        background-color: #28a745; /* Green background color */
+        color: #fff; /* White text color */
+        padding: 10px; /* Padding around the text */
+        border-radius: 5px; /* Rounded corners */
     }
 
-    .black-link:hover {
-        color: black;
-
+    /* Error Alert */
+    .alert.alert-danger {
+        background-color: #dc3545; /* Red background color */
+        color: #fff; /* White text color */
+        padding: 10px; /* Padding around the text */
+        border-radius: 5px; /* Rounded corners */
     }
-  </style>
-  <style type="text/css">
-
-.style1 {font-family: Calibri}
-.style5 {font-family: Calibri; font-weight: bold; font-size: 18px; }
-.style11 {font-family: Calibri; font-size: 14px; font-weight: bold; }
-
+</style>
+<style type="text/css">
+.style2 {
+	color: #006600;
+	font-weight: bold;
+}
+.style3 {font-weight: bold}
+.style7 {color: #0000FF; font-weight: bold; }
 </style>
 </head>
 
@@ -70,7 +77,7 @@
       <div class="main-sidebar sidebar-style-2">
         <aside id="sidebar-wrapper">
           <div class="sidebar-brand">
-            <a href="{{route('admin-dashboard')}}"> <img alt="image" src="{{asset('dashboard/assets/img/logo.png')}}" class="header-logo" /> <span
+            <a href="{{route('dashboard')}}"> <img alt="image" src="{{asset('dashboard/assets/img/logo.png')}}" class="header-logo" /> <span
                 class="logo-name">E-Result</span>
             </a>
           </div>
@@ -80,7 +87,8 @@
       <!-- Main Content -->
       <div class="main-content">
         <section class="section">
-        <div class="row">
+          <div class="section-body">
+          <div class="row">
                     <div class="col-12">
                       <nav aria-label="breadcrumb">
                         <ol class="breadcrumb bg-dark text-white-all d-flex justify-content-between overflow-auto" style="white-space: nowrap;">
@@ -189,19 +197,11 @@
                       </nav>
                     </div>
                   </div>
-        
-                  <div class="col-12">
-                    <div class="card">
-                        <h5><span style="color:red;">This course is already assigned to an instructor. 
-                            Please confirm if you want to reassign to another instructor</span></h5>
-                    </div>
-                </div>
-
-                    <div class="row">
+            <div class="row">
               <div class="col-12 col-md-6 col-lg-6">
                 <div class="card">
                   <div class="card-header">
-                  <h4>Course Assign</h4>
+                  <h4>Edit User | <a href="{{route('instructors')}}">Instructors List</a></h4>
                   </div>
                   @if(session('success'))
                     <div class="alert alert-success">
@@ -212,117 +212,279 @@
                       {{ session('error') }}
                     </div>
                     @endif	
-                    
                   <div class="card-body">
-                  <form action="{{route('instructor-reassign.action')}}" method="POST">
-                    @csrf                   
+                  <form action="{{ route('edit-instructor.action', ['id' => $user->id]) }}" method="post" enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
+                    <div class="form-group">
+                        <label>User Status</label>
+                        <select name="user_status" id="" class="form-control" required>
+                            <option value="Active" {{ $user->user_status == 'Active' ? 'selected' : '' }}>Active</option>
+                            <option value="Inactive" {{ $user->user_status == 'Inactive' ? 'selected' : '' }}>Inactive</option>                            
+                        </select>
+                    </div>
+                @error('user_status')
+                    <span class="invalid-feedback">{{ $message }}</span>
+                @enderror
 
-                    <table class="table table-bordered">
-                    <tr>
-                            <td>&nbsp;</td>
-                            <td colspan="2">
-                                <span class="style5" style="color:green;">
-                                    <i class="fas fa-chalkboard-teacher"></i> Current Assigned Instructor
-                                </span>
+                    <div class="form-group">
+                        <label>User Type</label>
+                        <select name="userType" id="" class="form-control" required>
+                            <!-- <option value="Superadmin" {{ $user->user_type == 'Superadmin' ? 'selected' : '' }}>Superadmin</option>
+                            <option value="Admin" {{ $user->user_type == 'Admin' ? 'selected' : '' }}>Admin</option> -->
+                            <option value="Instructor" {{ $user->user_type == 'Instructor' ? 'selected' : '' }}>Instructor</option>
+                            <!-- <option value="Student" {{ $user->user_type == 'Student' ? 'selected' : '' }}>Student</option> -->
+                        </select>
+                    </div>
+                @error('userType')
+                    <span class="invalid-feedback">{{ $message }}</span>
+                @enderror
+
+                @if($user->user_type_status == 3)
+                <div class="form-group">
+                    <label>Department</label>
+                    <select name="department" id="department" class="form-control">
+                        @if(isset($user->department))
+                            <option value="{{ $user->department }}" selected>{{ $user->department }}</option>
+                        @endif
+                        @foreach($allDepartment as $d)
+                            @if(!isset($user->department) || $user->department !== $d->dept_name)
+                                <option value="{{ $d->dept_name }}">{{ $d->dept_name }}</option>
+                            @endif
+                        @endforeach
+                    </select>
+                </div>
+                @endif
+                @error('department')
+                    <span class="invalid-feedback">{{ $message }}</span>
+                @enderror
+
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" class="form-control" name="email" value="{{ old('email', $user->email) }}" disabled>
+                    </div>
+                    @error('email')
+                        <span class="invalid-feedback">{{ $message }}</span>
+                    @enderror
+
+                    <div class="form-group">
+                        <label>Last Name</label>
+                        <input type="text" class="form-control" name="last_name" value="{{ old('last_name', $user->last_name) }}" required>
+                    </div>
+                    @error('last_name')
+                        <span class="invalid-feedback">{{ $message }}</span>
+                    @enderror
+
+                    <div class="form-group">
+                        <label>First Name</label>
+                        <input type="text" class="form-control" name="first_name" value="{{ old('first_name', $user->first_name) }}" required>
+                    </div>
+                    @error('first_name')
+                        <span class="invalid-feedback">{{ $message }}</span>
+                    @enderror
+
+                    <div class="form-group">
+                    <label>Phone No</label>
+                    <input type="text" class="form-control" name="phone_no" value="{{ old('first_name', $user->phone_no) }}" required>
+                    </div>
+                    @error('phone_no')
+                        <span class="invalid-feedback">{{ $message }}</span>
+                    @enderror
+
+                    <div class="form-group">
+                        <label>Password <span style="color:red;">(Leave blank if you are not changing the password.)</span></label>
+                        <input type="password" class="form-control" name="password" value="" autocomplete="new-password">
+                    </div>
+                    @error('password')
+                        <span class="invalid-feedback">{{ $message }}</span>
+                    @enderror
+
+                    <div class="form-group">
+                        <label>Confirm Password</label>
+                        <input type="password" class="form-control" name="password_confirmation" value="">
+                    </div>
+
+                    <div class="form-group">
+                    <label>Profile Picture <span style="color:red;">(Leave blank if you are not uploading image.)</span></label>
+                    <input type="file" class="form-control" name="image">
+                    </div>
+                    @error('image')
+                        <span class="invalid-feedback">{{ $message }}</span>
+                    @enderror
+                    <hr>
+                    <h5>User Roles</h5>
+                    <span class="style2">Module</span> : <span class="style7">Sub-module</span>
+                    <table width="516" class="table table-bordered">
+                        <tr>
+                            <td width="31">
+                                <input type="checkbox" name="classList" id="classList" {{ $user->class_list ? 'checked' : '' }} />
+                            </td>
+                            <td width="214">
+                                <span class="style2"><i class="fas fa-list"></i> ClassList</span>
+                            </td>
+                            <td width="42">
+                                <input name="courseSetup" type="checkbox" class="style3" id="courseSetup" {{ $user->course_setup ? 'checked' : '' }} />
+                            </td>
+                            <td width="209">
+                                <span class="style2"><i class="fas fa-cogs"></i> Course Setup</span>
                             </td>
                         </tr>
                         <tr>
-                            <td width="26">&nbsp;</td>
-                            <td width="103"><span class="style1"><img 
-                                    alt="Profile Picture" 
-                                    src="{{ file_exists(public_path('profile_pictures/' . $instructorInfo->image)) ? asset('profile_pictures/' . $instructorInfo->image) : asset('uploads/blank.jpg') }}" 
-                                    class="user-img-radious-style" 
-                                    width="50" 
-                                    height="50"></span></td>
-                            <td width="322"><span class="style1"></span></td>
-                        </tr> 
-                        <tr>
-                            <td width="26">&nbsp;</td>
-                            <td width="103"><span class="style11">Instructor Name</span></td>
-                            <td width="322"><span class="style1">{{$instructorInfo->last_name . ' ' . $instructorInfo->first_name}}</span></td>
-                        </tr>  
-                        <tr>
-                            <td width="26">&nbsp;</td>
-                            <td width="103"><span class="style11">Department</span></td>
-                            <td width="322"><span class="style1">{{$instructorInfo->department}}</span></td>
-                        </tr> 
-                        <tr>
-                            <td>&nbsp;</td>
-                            <td colspan="2">
-                                <span class="style5" style="color:green;">
-                                    <i class="fas fa-book-open"></i> Course Details
-                                </span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>&nbsp;</td>
-                            <td><span class="style11">Department</span></td>
-                            <td>{{$courseInfo->department}}</td>
-                        </tr>
-                        <tr>
-                            <td>&nbsp;</td>
-                            <td><span class="style11">Programme</span></td>
-                            <td>{{$courseInfo->programme}}</td>
-                        </tr>
-                        <tr>
-                            <td>&nbsp;</td>
-                            <td><span class="style11">Level</span></td>
-                            <td>{{$courseInfo->level}}</td>
-                        </tr>
-                        <tr>
-                            <td>&nbsp;</td>
-                            <td><span class="style11">Semester</span></td>
-                            <td>{{$courseInfo->semester}}</td>
-                        </tr>
-                        <tr>
-                            <td>&nbsp;</td>
-                            <td><span class="style11">Course Title</span></td>
-                            <td>{{$courseInfo->course_title}}</td>
-                        </tr>
-                        <tr>
-                            <td>&nbsp;</td>
-                            <td><span class="style11">Course Code</span></td>
-                            <td>{{$courseInfo->course_code}}</td>
-                        </tr>
-                        <tr>
-                            <td>&nbsp;</td>
-                            <td><span class="style11">Course Unit</span></td>
-                            <td>{{$courseInfo->course_unit}}</td>
-                        </tr>
-                        <tr>
-                            <td>&nbsp;</td>
-                            <td colspan="2">&nbsp;</td>
-                        </tr>
-                        <tr>
-                            <td>&nbsp;</td>
-                            <td colspan="2">
-                                <span class="style5" style="color:green;">
-                                    <i class="fas fa-sync-alt"></i> Reassign to another Instructor
-                                </span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>&nbsp;</td>
-                            <td><span class="style11">Instructor Name:</span></td>
                             <td>
-                                <select name="instructorId" id="" class="form-control" required>
-                                    @foreach($instructors as $i)
-                                        @if($i->id !== $instructorInfo->id)
-                                            <option value="{{ $i->id }}">{{ $i->last_name . ' ' . $i->first_name }}</option>
-                                        @endif
-                                    @endforeach
-                                </select>
+                                <input type="checkbox" name="scoreSheet" id="scoreSheet" {{ $user->score_sheet ? 'checked' : '' }} />
+                            </td>
+                            <td>
+                                <span class="style2"><i class="fas fa-chart-bar"></i> Score Sheet</span>
+                            </td>
+                            <!-- <td>
+                                <input name="gradingSystem" type="checkbox" id="gradingSystem" {{ $user->grading_system ? 'checked' : '' }} />
+                            </td>
+                            <td>
+                                <span class="style2"><i class="fas fa-ruler"></i> Grading System</span>
+                            </td> -->
+                        </tr>
+                        <!-- <tr>
+                            <td>
+                                <input type="checkbox" name="transcript" id="transcript" {{ $user->transcript ? 'checked' : '' }} />
+                            </td>
+                            <td>
+                                <span class="style2"><i class="fas fa-file-signature"></i> Transcript Request</span>
+                            </td>
+                            <td>
+                                <input name="hodSetup" type="checkbox" id="hodSetup" {{ $user->hod_setup ? 'checked' : '' }} />
+                            </td>
+                            <td>
+                                <span class="style2"><i class="fas fa-user-tie"></i> Hod Setup</span>
+                            </td>
+                        </tr> -->
+                        <tr>
+                            <td>
+                                <input type="checkbox" name="result" id="result" {{ $user->result ? 'checked' : '' }} />
+                            </td>
+                            <td>
+                                <span class="style2"><i class="fas fa-file-alt"></i> Result Module</span>
+                            </td>
+                            <td>
+                                <input type="checkbox" name="accessSetup" id="accessSetup" {{ $user->access_setup ? 'checked' : '' }} />
+                            </td>
+                            <td>
+                                <span class="style2"><i class="fas fa-unlock"></i> Access Setup</span>
                             </td>
                         </tr>
                         <tr>
+                            <td>
+                                <input type="checkbox" name="resultEntry" id="resultEntry" {{ $user->result_entry ? 'checked' : '' }} />
+                            </td>
+                            <td>
+                                <span class="style7"><i class="fas fa-keyboard"></i> Result Entry</span>
+                            </td>
+                            <!-- <td>
+                                <input type="checkbox" name="admins" id="admins" {{ $user->admins ? 'checked' : '' }} />
+                            </td>
+                            <td>
+                                <span class="style7"><i class="fas fa-user-shield"></i> Admins</span>
+                            </td> -->
+                            <td>
+                                <input type="checkbox" name="instructors" id="instructors" {{ $user->instructors ? 'checked' : '' }} />
+                            </td>
+                            <td>
+                                <span class="style7"><i class="fas fa-chalkboard-teacher"></i> Instructors</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <!-- <td>
+                                <input type="checkbox" name="resultCompute" id="resultCompute" {{ $user->result_compute ? 'checked' : '' }} />
+                            </td>
+                            <td>
+                                <span class="style7"><i class="fas fa-calculator"></i> Result Compute</span>
+                            </td>
+                            <td>
+                                <input type="checkbox" name="instructors" id="instructors" {{ $user->instructors ? 'checked' : '' }} />
+                            </td>
+                            <td>
+                                <span class="style7"><i class="fas fa-chalkboard-teacher"></i> Instructors</span>
+                            </td> -->
+                        </tr>
+                        <tr>
+                            <!-- <td>
+                                <input type="checkbox" name="semesterResult" id="semesterResult" {{ $user->semester_result ? 'checked' : '' }} />
+                            </td>
+                            <td>
+                                <span class="style7"><i class="fas fa-clipboard"></i> Semester Result</span>
+                            </td>
+                            <td>
+                                <input type="checkbox" name="students" id="students" {{ $user->students ? 'checked' : '' }} />
+                            </td>
+                            <td>
+                                <span class="style7"><i class="fas fa-user-graduate"></i> Students</span>
+                            </td> -->
+                        </tr>
+                        <tr>
+                            <!-- <td>
+                                <input type="checkbox" name="semesterSummary" id="semesterSummary" {{ $user->semester_summary ? 'checked' : '' }} />
+                            </td>
+                            <td>
+                                <span class="style7"><i class="fas fa-chart-line"></i> Semester Result Summary</span>
+                            </td>
                             <td>&nbsp;</td>
-                            <td colspan="2">&nbsp;</td>
+                            <td>&nbsp;</td> -->
+                        </tr>
+                        <tr>
+                            <!-- <td>
+                                <input type="checkbox" name="cgpaSummary" id="cgpaSummary" {{ $user->cgpa_summary ? 'checked' : '' }} />
+                            </td>
+                            <td>
+                                <span class="style7"><i class="fas fa-graduation-cap"></i> CGPA Summary</span>
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td> -->
+                        </tr>
+                        <tr>
+                            <!-- <td>
+                                <input type="checkbox" name="studentTranscript" id="studentTranscript" {{ $user->student_transcript ? 'checked' : '' }} />
+                            </td>
+                            <td>
+                                <span class="style7"><i class="fas fa-file-signature"></i> Transcript</span>
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td> -->
+                        </tr>
+                        <tr>
+                            <td>
+                                <input name="student" type="checkbox" id="student" {{ $user->student ? 'checked' : '' }} />
+                            </td>
+                            <td>
+                                <span class="style2"><i class="fas fa-user-graduate"></i> Student Module</span>
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input name="studentRegistration" type="checkbox" id="studentRegistration" {{ $user->student_registration ? 'checked' : '' }} />
+                            </td>
+                            <td>
+                                <span class="style7"><i class="fas fa-user-plus"></i> Student Registration</span>
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <!-- <td>
+                                <input name="studentMigration" type="checkbox" id="studentMigration" {{ $user->student_migration ? 'checked' : '' }} />
+                            </td>
+                            <td>
+                                <span class="style7"><i class="fas fa-exchange-alt"></i> Student Migration</span>
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td> -->
                         </tr>
                     </table>
 
+                  
                     <div class="card-footer text-right">
-                        <input type="hidden" name="assignId" value="{{$courseInfo->id}}">
-                        <input class="btn btn-primary mr-1" type="submit" value="Assign" />
+                      <input type="hidden" name="email" value="{{$user->email}}">
+                        <input class="btn btn-primary mr-1" type="submit" value="Update" />
                         <!-- <input class="btn btn-secondary" type="reset" value="Reset" /> -->
                     </div>
                 </form>
@@ -333,10 +495,7 @@
               </div>
             </div>
           </div>
-          
-          
-        </section>  
-
+        </section>
         <div class="settingSidebar">
           <a href="javascript:void(0)" class="settingPanelToggle"> <i class="fa fa-spin fa-cog"></i>
           </a>
@@ -438,8 +597,8 @@
       </footer>
     </div>
   </div>
-  <!-- General JS Scripts -->
-  <script src="{{asset('dashboard/assets/js/app.min.js')}}"></script>
+   <!-- General JS Scripts -->
+   <script src="{{asset('dashboard/assets/js/app.min.js')}}"></script>
   <!-- JS Libraies -->
   <script src="{{asset('dashboard/assets/bundles/apexcharts/apexcharts.min.js')}}"></script>
   <!-- Page Specific JS File -->
@@ -451,139 +610,5 @@
 </body>
 
 
-<!-- index.html  21 Nov 2019 03:47:04 GMT -->
+<!-- basic-form.html  21 Nov 2019 03:54:41 GMT -->
 </html>
-<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
-<!-- <script src="{{asset('js/jquery-3.5.1.min.js') }}"></script> -->
-<script>
-function printAllUsers() {
-    // Get the content of the hidden table
-    var printContents = document.getElementById('printableTable').innerHTML;
-
-    // Create a hidden iframe
-    var iframe = document.createElement('iframe');
-    iframe.style.position = 'absolute';
-    iframe.style.top = '-10000px';
-    iframe.style.left = '-10000px';
-    document.body.appendChild(iframe);
-
-    // Write the content into the iframe
-    var doc = iframe.contentWindow.document;
-    doc.open();
-    doc.write(`
-        <html>
-            <head>
-                <title>Admin List</title>
-                <style>
-                    body { font-family: Arial, sans-serif; margin: 20px; }
-                    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-                    th, td { border: 1px solid black; padding: 8px; text-align: left; }
-                    th { background-color: #f2f2f2; }
-                </style>
-            </head>
-            <body>                
-                ${printContents}
-            </body>
-        </html>
-    `);
-    doc.close();
-
-    // Trigger the print dialog
-    iframe.contentWindow.focus();
-    iframe.contentWindow.print();
-
-    // Remove the iframe after printing
-    setTimeout(() => {
-        document.body.removeChild(iframe);
-    }, 1000);
-}
-</script>
-<script>
-    $(document).ready(function () {
-        // Listen for changes on the semester dropdown
-        $('select[name="semester"]').on('change', function () {
-            // Get selected values
-            let department = $('select[name="department"]').val();
-            let programme = $('select[name="programme"]').val();
-            let stdLevel = $('select[name="stdLevel"]').val();
-            let semester = $(this).val(); // Current semester selection
-
-            // Log the selected values for debugging
-            console.log("Selected Values:");
-            console.log("Department:", department);
-            console.log("Programme:", programme);
-            console.log("Student Level:", stdLevel);
-            console.log("Semester:", semester);
-
-            // Check if all fields are selected
-            if (department && programme && stdLevel && semester) {
-                console.log("All fields selected. Sending AJAX request...");
-                // Send AJAX request
-                $.ajax({
-                    url: "{{ route('get-courses') }}",
-                    method: "POST",
-                    data: {
-                        _token: "{{ csrf_token() }}",
-                        department: department,
-                        programme: programme,
-                        stdLevel: stdLevel,
-                        semester: semester,
-                    },
-                    success: function (data) {
-                        console.log("AJAX request successful. Data received:");
-                        console.log(data);
-
-                        // Clear previous options
-                        let courseDropdown = $('#courseDropdown');
-                        courseDropdown.empty();
-                        courseDropdown.append('<option value="">Select a course</option>');
-
-                        // Populate with new options
-                        $.each(data, function (key, course) {
-                            courseDropdown.append('<option value="' + course.id + '">' + course.course_title + ' - ' + course.course_code + '</option>');
-                        });
-                    },
-                    error: function (xhr) {
-                        console.error("AJAX request failed. Error:");
-                        console.error(xhr.responseText);
-                    },
-                });
-            } else {
-                console.log("Missing fields. Clearing the dropdown...");
-                // Clear the dropdown if any field is missing
-                $('#courseDropdown').empty().append('<option value="">Select a course</option>');
-            }
-        });
-    });
-</script>
-
-<script>
-    $(document).ready(function () {
-        $('#department').on('change', function () {
-            let department = $(this).val();
-
-            // Clear the programme dropdown
-            $('#programme').empty().append('<option value="">Select a programme</option>');
-
-            if (department) {
-                $.ajax({
-                    url: "{{ route('get-programmes') }}", // Define route in web.php
-                    method: "POST",
-                    data: {
-                        _token: "{{ csrf_token() }}",
-                        department: department
-                    },
-                    success: function (data) {
-                        // Populate the programme dropdown
-                        $.each(data, function (key, programme) {
-                            $('#programme').append('<option value="' + programme.dept_name + '">' + programme.dept_name + '</option>');
-                        });
-                    },
-                    error: function (xhr) {
-                        console.error(xhr.responseText);
-                    }
-                });
-            }
-        });
-    });
-</script>

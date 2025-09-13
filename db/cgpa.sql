@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.2
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Jun 21, 2025 at 04:04 PM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.2.4
+-- Host: localhost:3306
+-- Generation Time: Jul 08, 2025 at 09:14 AM
+-- Server version: 10.6.22-MariaDB
+-- PHP Version: 8.3.22
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `cgpa`
+-- Database: `oyschste_cgpa`
 --
 
 -- --------------------------------------------------------
@@ -26,7 +26,7 @@ SET time_zone = "+00:00";
 --
 -- Table structure for table `administrator_control`
 --
-
+DROP TABLE IF EXISTS `administrator_control`;
 CREATE TABLE `administrator_control` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `admin_name` varchar(100) DEFAULT NULL,
@@ -52,7 +52,7 @@ CREATE TABLE `administrator_control` (
 --
 -- Table structure for table `course`
 --
-
+DROP TABLE IF EXISTS `course`;
 CREATE TABLE `course` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `course_title` varchar(100) NOT NULL,
@@ -736,7 +736,7 @@ INSERT INTO `course` (`id`, `course_title`, `course_code`, `course_unit`, `level
 (663, 'Citizenship Education', 'GNS 111', 2, '100', 'FIRST', 'Professional Certificate in Medical Image Processing/X-ray Technician', '2023/2024', NULL, NULL),
 (664, 'Computer 1', 'COM 111', 2, '100', 'FIRST', 'Professional Certificate in Medical Image Processing/X-ray Technician', '2023/2024', NULL, NULL),
 (665, 'Entrepreneurship', 'GNS 103', 2, '100', 'FIRST', 'Professional Certificate in Medical Image Processing/X-ray Technician', '2023/2024', NULL, NULL),
-(666, 'Medical Image Processing', 'MXT 101', 2, '100', 'FIRST', 'Professional Certificate in Medical Image Processing/X-ray Technician', '2023/2024', NULL, NULL),
+(666, 'Medical Image Processing 1', 'MXT 101', 2, '100', 'FIRST', 'Professional Certificate in Medical Image Processing/X-ray Technician', '2023/2024', NULL, '2025-07-01 19:26:01'),
 (667, 'Communication in English', 'GNS 102', 2, '100', 'SECOND', 'Professional Certificate in Medical Image Processing/X-ray Technician', '2023/2024', NULL, NULL),
 (668, 'Research Method 1', 'GNS 228', 2, '100', 'SECOND', 'Professional Certificate in Medical Image Processing/X-ray Technician', '2023/2024', NULL, NULL),
 (669, 'General Physics II', 'PHY 112', 2, '100', 'SECOND', 'Professional Certificate in Medical Image Processing/X-ray Technician', '2023/2024', NULL, NULL),
@@ -749,14 +749,14 @@ INSERT INTO `course` (`id`, `course_title`, `course_code`, `course_unit`, `level
 (676, 'Research Method II', 'GNS 328', 2, '200', 'FIRST', 'Professional Certificate in Medical Image Processing/X-ray Technician', '2023/2024', NULL, NULL),
 (677, 'Atomic and Radiation Physics', 'MXT 112', 2, '200', 'FIRST', 'Professional Certificate in Medical Image Processing/X-ray Technician', '2023/2024', NULL, NULL),
 (678, 'Processing Chemicals and their Formulations', 'MXT 201', 2, '200', 'FIRST', 'Professional Certificate in Medical Image Processing/X-ray Technician', '2023/2024', NULL, NULL),
-(679, 'Manual Film Processing Equipment and Techniques', 'MXT 202', 4, '200', 'FIRST', 'Professional Certificate in Medical Image Processing/X-ray Technician', '2023/2024', NULL, NULL),
+(679, 'Manual Film Processing: Equipment and Techniques', 'MXT 202', 4, '200', 'FIRST', 'Professional Certificate in Medical Image Processing/X-ray Technician', '2023/2024', NULL, '2025-07-01 19:28:42'),
 (680, 'Practical Demonstration/viva 1', 'MXT 203', 4, '200', 'FIRST', 'Professional Certificate in Medical Image Processing/X-ray Technician', '2023/2024', NULL, NULL),
 (681, 'Introduction to Radiographic Anatomy', 'MXT 204', 2, '200', 'SECOND', 'Professional Certificate in Medical Image Processing/X-ray Technician', '2023/2024', NULL, NULL),
-(682, 'Automatic film processing Equipment and Techniques', 'MXT 205', 4, '200', 'SECOND', 'Professional Certificate in Medical Image Processing/X-ray Technician', '2023/2024', NULL, NULL),
+(682, 'Automatic film processing: Equipment and Techniques', 'MXT 205', 4, '200', 'SECOND', 'Professional Certificate in Medical Image Processing/X-ray Technician', '2023/2024', NULL, '2025-07-01 19:30:15'),
 (683, 'Dark room Health Hazard/ Quality Assurance', 'MXT 206', 2, '200', 'SECOND', 'Professional Certificate in Medical Image Processing/X-ray Technician', '2023/2024', NULL, NULL),
 (684, 'Practical Demonstration/viva II', 'MXT 207', 4, '200', 'SECOND', 'Professional Certificate in Medical Image Processing/X-ray Technician', '2023/2024', NULL, NULL),
 (685, 'Care of patient/ Health Management 1', 'MXT 208', 2, '200', 'SECOND', 'Professional Certificate in Medical Image Processing/X-ray Technician', '2023/2024', NULL, NULL),
-(686, 'Radiographic Techniques of upper limb', 'MXT 209', 2, '200', 'SECOND', 'Professional Certificate in Medical Image Processing/X-ray Technician', '2023/2024', NULL, NULL),
+(686, 'Radiographic Techniques of the upper limb', 'MXT 209', 2, '200', 'SECOND', 'Professional Certificate in Medical Image Processing/X-ray Technician', '2023/2024', NULL, '2025-07-01 19:31:00'),
 (687, 'Radiographic Techniques of the lower limb', 'MXT 301', 4, '300', 'FIRST', 'Professional Certificate in Medical Image Processing/X-ray Technician', '2023/2024', NULL, NULL),
 (688, 'Basic Radiographic Equipment', 'MXT 302', 4, '300', 'FIRST', 'Professional Certificate in Medical Image Processing/X-ray Technician', '2023/2024', NULL, NULL),
 (689, 'Practical Demonstration/viva 3', 'MXT 306', 4, '300', 'FIRST', 'Professional Certificate in Medical Image Processing/X-ray Technician', '2023/2024', NULL, NULL),
@@ -820,9 +820,9 @@ INSERT INTO `course` (`id`, `course_title`, `course_code`, `course_unit`, `level
 (747, 'ENTOMOLOGY AND PEST CONTROL', 'EHT 202', 3, 'NDII', 'FIRST', 'ND(WAHEB) in Environmental Health Technology(OKEHO)', '2023/2024', NULL, NULL),
 (748, 'ENVIRONMENTAL AND PUBLIC HEALTH PARASITOLOGY', 'EHT 203', 3, 'NDII', 'FIRST', 'ND(WAHEB) in Environmental Health Technology(OKEHO)', '2023/2024', NULL, NULL),
 (749, 'SOLID WASTE MANAGEMENT', 'EHT 204', 3, 'NDII', 'FIRST', 'ND(WAHEB) in Environmental Health Technology(OKEHO)', '2023/2024', NULL, NULL),
-(750, 'ENVIRONMENTAL APPRAISAL', 'EHT 216', 2, 'NDII', 'FIRST', 'ND(WAHEB) in Environmental Health Technology(OKEHO)', '2023/2024', NULL, NULL),
-(751, 'TECHNICAL REPORT WRITING', 'PEL 217', 1, 'NDII', 'FIRST', 'ND(WAHEB) in Environmental Health Technology(OKEHO)', '2023/2024', NULL, NULL);
+(750, 'ENVIRONMENTAL APPRAISAL', 'EHT 216', 2, 'NDII', 'FIRST', 'ND(WAHEB) in Environmental Health Technology(OKEHO)', '2023/2024', NULL, NULL);
 INSERT INTO `course` (`id`, `course_title`, `course_code`, `course_unit`, `level`, `semester`, `course`, `session1`, `created_at`, `updated_at`) VALUES
+(751, 'TECHNICAL REPORT WRITING', 'PEL 217', 1, 'NDII', 'FIRST', 'ND(WAHEB) in Environmental Health Technology(OKEHO)', '2023/2024', NULL, NULL),
 (752, 'FOOD SCIENCE AND  NUTRITION', 'NUD 223', 2, 'NDII', 'FIRST', 'ND(WAHEB) in Environmental Health Technology(OKEHO)', '2023/2024', NULL, NULL),
 (753, 'CITIZENSHIP EDUCATION', 'GNS 227', 1, 'NDII', 'FIRST', 'ND(WAHEB) in Environmental Health Technology(OKEHO)', '2023/2024', NULL, NULL),
 (754, 'INTRODUCTION TO COMPUTER SCIENCE', 'CSC 101', 2, 'NDI', 'FIRST', 'ND(WAHEB) in Environmental Health Technology(OKEHO)', '2023/2024', NULL, NULL),
@@ -861,14 +861,28 @@ INSERT INTO `course` (`id`, `course_title`, `course_code`, `course_unit`, `level
 (787, 'INTRODUCTION TO SOCIOLOGY', 'GNS 115', 2, 'NDI', 'SECOND', 'ND(WAHEB) in Environmental Health Technology(OKEHO)', '2023/2024', NULL, NULL),
 (788, 'SANITARY INSPECTION OF PREMISES', 'EHT 212', 2, 'NDII', 'SECOND', 'ND(WAHEB) in Environmental Health Technology(OKEHO)', '2023/2024', NULL, NULL),
 (830, 'Use of English', 'TEST101', 2, '100', 'FIRST', 'Diploma in Medical Social Work', '2025/2026', '2025-04-22 03:36:55', '2025-04-22 03:36:55'),
-(831, 'General Mathematics', 'TEST102', 3, '100', 'FIRST', 'Diploma in Medical Social Work', '2025/2026', '2025-04-22 03:50:33', '2025-04-22 03:50:33');
+(831, 'General Mathematics', 'TEST102', 3, '100', 'FIRST', 'Diploma in Medical Social Work', '2025/2026', '2025-04-22 03:50:33', '2025-04-22 03:50:33'),
+(832, 'INTRODUCTION TO LIBRARY', 'LIS 102', 2, '100', 'SECOND', 'Certificate for  Medical Laboratory Technicians(MLT)', '2024/2025', '2025-07-04 09:35:31', '2025-07-04 09:35:31'),
+(833, 'INTRODUCTION TO LIBRARY', 'LIS 102', 2, '100', 'SECOND', 'Certificate for  Medical Laboratory Technicians(MLT)', '2023/2024', '2025-07-04 09:36:32', '2025-07-04 09:36:32'),
+(834, 'INTRODUCTION TO LIBRARY', 'LIS 102', 2, '100', 'SECOND', 'Certificate for  Medical Laboratory Technicians(MLT)', '2018/2019', '2025-07-04 09:37:15', '2025-07-04 09:37:15'),
+(835, 'INTRODUCTION TO LIBRARY', 'LIS 102', 2, '100', 'SECOND', 'Certificate for  Medical Laboratory Technicians(MLT)', '2019/2020', '2025-07-04 09:37:30', '2025-07-04 09:37:30'),
+(836, 'INTRODUCTION TO LIBRARY', 'LIS 102', 2, '100', 'SECOND', 'Certificate for  Medical Laboratory Technicians(MLT)', '2020/2021', '2025-07-04 09:37:49', '2025-07-04 09:37:49'),
+(837, 'INTRODUCTION TO LIBRARY', 'LIS 102', 2, '100', 'SECOND', 'Certificate for  Medical Laboratory Technicians(MLT)', '2022/2023', '2025-07-04 09:38:32', '2025-07-04 09:38:32'),
+(838, 'INTRODUCTION TO PHARMACOLOGY', 'PHM 202', 2, '200', 'SECOND', 'Certificate for  Medical Laboratory Technicians(MLT)', '2018/2019', '2025-07-04 09:40:29', '2025-07-04 09:40:29'),
+(839, 'INTRODUCTION TO PHARMACOLOGY', 'PHM 202', 2, '200', 'SECOND', 'Certificate for  Medical Laboratory Technicians(MLT)', '2019/2020', '2025-07-04 09:40:47', '2025-07-04 09:40:47'),
+(840, 'INTRODUCTION TO PHARMACOLOGY', 'PHM 202', 2, '200', 'SECOND', 'Certificate for  Medical Laboratory Technicians(MLT)', '2020/2021', '2025-07-04 09:41:04', '2025-07-04 09:41:04'),
+(841, 'INTRODUCTION TO PHARMACOLOGY', 'PHM 202', 2, '200', 'SECOND', 'Certificate for  Medical Laboratory Technicians(MLT)', '2021/2022', '2025-07-04 09:41:22', '2025-07-04 09:41:22'),
+(842, 'INTRODUCTION TO PHARMACOLOGY', 'PHM 202', 2, '200', 'SECOND', 'Certificate for  Medical Laboratory Technicians(MLT)', '2022/2023', '2025-07-04 09:41:35', '2025-07-04 09:41:35'),
+(843, 'INTRODUCTION TO PHARMACOLOGY', 'PHM 202', 2, '200', 'SECOND', 'Certificate for  Medical Laboratory Technicians(MLT)', '2023/2024', '2025-07-04 09:41:49', '2025-07-04 09:41:49'),
+(844, 'INTRODUCTION TO PHARMACOLOGY', 'PHM 202', 2, '200', 'SECOND', 'Certificate for  Medical Laboratory Technicians(MLT)', '2024/2025', '2025-07-04 09:42:03', '2025-07-04 09:42:03'),
+(845, 'INTRODUCTION TO PHARMACOLOGY', 'PHM 202', 2, '200', 'SECOND', 'Certificate for  Medical Laboratory Technicians(MLT)', '2025/2026', '2025-07-04 09:42:20', '2025-07-04 09:42:20');
 
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `course_study`
 --
-
+DROP TABLE IF EXISTS `course_study`;
 CREATE TABLE `course_study` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `dept` varchar(100) NOT NULL,
@@ -920,7 +934,7 @@ INSERT INTO `course_study` (`id`, `dept`, `dept_name`, `dept_duration`, `dept_ab
 --
 -- Table structure for table `course_study_all`
 --
-
+DROP TABLE IF EXISTS `course_study_all`;
 CREATE TABLE `course_study_all` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `department` varchar(100) NOT NULL,
@@ -968,7 +982,7 @@ INSERT INTO `course_study_all` (`id`, `department`, `created_at`, `updated_at`) 
 --
 -- Table structure for table `department`
 --
-
+DROP TABLE IF EXISTS `department`;
 CREATE TABLE `department` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `dept_name` varchar(100) NOT NULL,
@@ -997,7 +1011,7 @@ INSERT INTO `department` (`id`, `dept_name`, `created_at`, `updated_at`) VALUES
 --
 -- Table structure for table `failed_jobs`
 --
-
+DROP TABLE IF EXISTS `failed_jobs`;
 CREATE TABLE `failed_jobs` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `uuid` varchar(100) NOT NULL,
@@ -1013,7 +1027,7 @@ CREATE TABLE `failed_jobs` (
 --
 -- Table structure for table `failed_logins`
 --
-
+DROP TABLE IF EXISTS `failed_logins`;
 CREATE TABLE `failed_logins` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `ip_address` varchar(100) NOT NULL,
@@ -1027,14 +1041,24 @@ CREATE TABLE `failed_logins` (
 --
 
 INSERT INTO `failed_logins` (`id`, `ip_address`, `email`, `created_at`, `updated_at`) VALUES
-(1, '127.0.0.1', 'gbolagade2001@yahoo.com', '2025-06-21 00:39:09', '2025-06-21 00:39:09');
+(1, '127.0.0.1', 'gbolagade2001@yahoo.com', '2025-06-21 00:39:09', '2025-06-21 00:39:09'),
+(2, '197.211.63.98', 'admin@gmail.com', '2025-06-25 14:27:29', '2025-06-25 14:27:29'),
+(3, '197.211.63.98', 'admin@gmail.com', '2025-06-26 08:59:11', '2025-06-26 08:59:11'),
+(4, '141.0.12.156', 'ashikabesam@gmail.com', '2025-07-01 19:21:40', '2025-07-01 19:21:40'),
+(5, '102.89.75.156', 'ashikabesam@gmail.com', '2025-07-01 19:22:00', '2025-07-01 19:22:00'),
+(6, '102.89.75.156', 'ashikabesam@gmail.com', '2025-07-01 19:22:26', '2025-07-01 19:22:26'),
+(7, '102.89.75.156', 'ashikabesam@gmail.com', '2025-07-01 19:22:33', '2025-07-01 19:22:33'),
+(8, '102.89.82.69', 'sodiqsulaimanabidemi@gmail.com', '2025-07-07 12:03:42', '2025-07-07 12:03:42'),
+(9, '102.89.82.69', 'sodiqsulaimanabidemi@gmail.com', '2025-07-07 12:04:00', '2025-07-07 12:04:00'),
+(10, '102.89.82.69', 'sodiqsulaimanabidemi@gmail.com', '2025-07-07 12:04:54', '2025-07-07 12:04:54'),
+(11, '102.89.82.69', 'sodiqsulaimanabidemi@gmail.com', '2025-07-07 12:05:57', '2025-07-07 12:05:57');
 
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `grading_system`
 --
-
+DROP TABLE IF EXISTS `grading_system`;
 CREATE TABLE `grading_system` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `grade01` varchar(100) NOT NULL,
@@ -1094,7 +1118,7 @@ INSERT INTO `grading_system` (`id`, `grade01`, `grade02`, `grade11`, `grade12`, 
 --
 -- Table structure for table `hods`
 --
-
+DROP TABLE IF EXISTS `hods`;
 CREATE TABLE `hods` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `hod_name` varchar(100) NOT NULL,
@@ -1132,7 +1156,7 @@ INSERT INTO `hods` (`id`, `hod_name`, `dept`, `course`, `sign`, `created_at`, `u
 --
 -- Table structure for table `instructors`
 --
-
+DROP TABLE IF EXISTS `instructors`;
 CREATE TABLE `instructors` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `instructor_id` bigint(20) NOT NULL,
@@ -1151,24 +1175,12 @@ CREATE TABLE `instructors` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `instructors`
---
-
-INSERT INTO `instructors` (`id`, `instructor_id`, `instructor_name`, `course_id`, `course_title`, `course_code`, `course_unit`, `department`, `programme`, `semester`, `level`, `session1`, `assign_status`, `created_at`, `updated_at`) VALUES
-(1, 2, 'Adeyinka Temiloluwa', 198, 'CITIZENSHIP EDUCATION', 'GST 101', 2, 'MEDICAL LABORATORY SCIENCE', 'Certificate for  Medical Laboratory Technicians(MLT)', 'FIRST', '100', '2024/2025', 'Active', '2025-04-08 05:06:40', '2025-04-08 05:06:40'),
-(3, 2, 'Adeyinka Temiloluwa', 3, 'ANATOMY  AND PHYSIOLOGY 1', 'CHE 212', 2, 'COMMUNITY HEALTH', 'Diploma in Community Health(CHEW)', 'FIRST', '100', '2024/2025', 'Active', '2025-04-23 20:02:35', '2025-04-23 20:02:35'),
-(4, 6, 'Gbolagade Abiodun', 193, 'INTRODUCTION TO IT I', 'CSC 101', 2, 'MEDICAL LABORATORY SCIENCE', 'Certificate for  Medical Laboratory Technicians(MLT)', 'FIRST', '100', '2024/2025', 'Active', '2025-06-19 02:57:51', '2025-06-19 02:57:51'),
-(5, 6, 'Gbolagade Abiodun', 192, 'COMMUNICATION SKILLS I', 'ELS 101', 2, 'MEDICAL LABORATORY SCIENCE', 'Certificate for  Medical Laboratory Technicians(MLT)', 'FIRST', '100', '2024/2025', 'Active', '2025-06-21 00:35:27', '2025-06-21 00:35:27'),
-(6, 6, 'Gbolagade Abiodun', 12, 'CITIZENSHIP EDUCATION', 'GNS 111', 1, 'COMMUNITY HEALTH', 'Diploma in Community Health(CHEW)', 'FIRST', '100', '2024/2025', 'Active', '2025-06-21 00:47:48', '2025-06-21 00:47:48'),
-(7, 6, 'Gbolagade Abiodun', 2, 'PROFESSIONAL ETHICS', 'CHE 211', 1, 'COMMUNITY HEALTH', 'Diploma in Community Health(CHEW)', 'FIRST', '100', '2024/2025', 'Active', '2025-06-21 20:58:17', '2025-06-21 20:58:17');
-
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `log_activities`
 --
-
+DROP TABLE IF EXISTS `log_activities`;
 CREATE TABLE `log_activities` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `user_id` int(11) NOT NULL,
@@ -1263,14 +1275,497 @@ INSERT INTO `log_activities` (`id`, `user_id`, `ip_address`, `activity`, `activi
 (77, 6, '127.0.0.1', 'MSW2024001 Student score(59) for CITIZENSHIP EDUCATION(GNS 111) updated by Gbolagade Abiodun', '2025-06-21 21:03:17', '2025-06-21 21:03:17', '2025-06-21 21:03:17'),
 (78, 6, '127.0.0.1', 'MSW2024002 Student score(65) for CITIZENSHIP EDUCATION(GNS 111) updated by Gbolagade Abiodun', '2025-06-21 21:03:19', '2025-06-21 21:03:19', '2025-06-21 21:03:19'),
 (79, 6, '127.0.0.1', 'Result entry viewed by Gbolagade Abiodun', '2025-06-21 21:03:20', '2025-06-21 21:03:20', '2025-06-21 21:03:20'),
-(80, 6, '127.0.0.1', 'Result entry viewed by Gbolagade Abiodun', '2025-06-21 21:03:24', '2025-06-21 21:03:24', '2025-06-21 21:03:24');
+(80, 6, '127.0.0.1', 'Result entry viewed by Gbolagade Abiodun', '2025-06-21 21:03:24', '2025-06-21 21:03:24', '2025-06-21 21:03:24'),
+(81, 1, '102.89.83.230', 'New login by Akinyooye Akinfemi', '2025-06-25 08:29:36', '2025-06-25 08:29:36', '2025-06-25 08:29:36'),
+(82, 1, '102.89.83.230', 'New login by Akinyooye Akinfemi', '2025-06-25 10:52:54', '2025-06-25 10:52:54', '2025-06-25 10:52:54'),
+(83, 1, '197.211.63.98', 'New login by Akinyooye Akinfemi', '2025-06-25 14:27:50', '2025-06-25 14:27:50', '2025-06-25 14:27:50'),
+(84, 1, '197.211.63.98', 'Class List viewed by Akinyooye Akinfemi', '2025-06-25 14:28:28', '2025-06-25 14:28:28', '2025-06-25 14:28:28'),
+(85, 1, '197.211.63.98', 'Class List viewed by Akinyooye Akinfemi', '2025-06-25 14:40:29', '2025-06-25 14:40:29', '2025-06-25 14:40:29'),
+(86, 14, '105.112.206.106', 'New login by Hamzat Ajibola', '2025-06-25 14:46:18', '2025-06-25 14:46:18', '2025-06-25 14:46:18'),
+(87, 11, '102.89.76.219', 'New login by Sodiq Sulaiman A', '2025-06-25 22:56:35', '2025-06-25 22:56:35', '2025-06-25 22:56:35'),
+(88, 11, '102.89.76.219', 'Class List viewed by Sodiq Sulaiman A', '2025-06-25 22:57:30', '2025-06-25 22:57:30', '2025-06-25 22:57:30'),
+(89, 11, '102.89.76.219', 'New login by Sodiq Sulaiman A', '2025-06-25 23:00:25', '2025-06-25 23:00:25', '2025-06-25 23:00:25'),
+(90, 1, '197.211.63.98', 'New login by Akinyooye Akinfemi', '2025-06-26 08:59:17', '2025-06-26 08:59:17', '2025-06-26 08:59:17'),
+(91, 1, '102.89.76.25', 'Grading System viewed by Akinyooye Akinfemi', '2025-06-26 09:47:37', '2025-06-26 09:47:37', '2025-06-26 09:47:37'),
+(92, 12, '197.211.63.103', 'New login by Akindiji Oluwayemisi D', '2025-06-26 11:04:42', '2025-06-26 11:04:42', '2025-06-26 11:04:42'),
+(93, 1, '102.89.84.111', 'New login by Akinyooye Akinfemi', '2025-06-29 12:18:10', '2025-06-29 12:18:10', '2025-06-29 12:18:10'),
+(94, 1, '102.89.69.45', 'New login by Akinyooye Akinfemi', '2025-06-30 05:10:59', '2025-06-30 05:10:59', '2025-06-30 05:10:59'),
+(95, 1, '102.89.69.45', 'Student List viewed by Akinyooye Akinfemi', '2025-06-30 05:11:23', '2025-06-30 05:11:23', '2025-06-30 05:11:23'),
+(96, 8, '105.112.176.82', 'New login by Adetutu F.J', '2025-06-30 10:26:56', '2025-06-30 10:26:56', '2025-06-30 10:26:56'),
+(97, 8, '105.112.176.82', 'New login by Adetutu F.J', '2025-06-30 11:39:51', '2025-06-30 11:39:51', '2025-06-30 11:39:51'),
+(98, 7, '141.0.12.23', 'New login by Ashikabe Sam', '2025-07-01 19:13:32', '2025-07-01 19:13:32', '2025-07-01 19:13:32'),
+(99, 7, '102.89.75.156', 'New login by Ashikabe Sam', '2025-07-01 19:22:56', '2025-07-01 19:22:56', '2025-07-01 19:22:56'),
+(100, 8, '105.112.188.1', 'New login by Adetutu F.J', '2025-07-04 08:23:11', '2025-07-04 08:23:11', '2025-07-04 08:23:11'),
+(101, 1, '102.89.83.60', 'New login by Akinyooye Akinfemi', '2025-07-07 08:52:15', '2025-07-07 08:52:15', '2025-07-07 08:52:15'),
+(102, 16, '102.89.69.181', 'New login by Olanike Mutiat Abimbola', '2025-07-07 11:24:13', '2025-07-07 11:24:13', '2025-07-07 11:24:13'),
+(103, 11, '102.89.82.69', 'New login by Sodiq Sulaiman A', '2025-07-07 12:07:15', '2025-07-07 12:07:15', '2025-07-07 12:07:15'),
+(104, 11, '102.89.82.69', 'OYSCHST/2018/DST/001 Student score(67) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:11:09', '2025-07-07 12:11:09', '2025-07-07 12:11:09'),
+(105, 11, '102.89.82.69', 'OYSCHST/2018/DST/001 Student score(56) for Human Biology 1 (Anatomy & Physiology)(HB 1 101) updated by Sodiq Sulaiman A', '2025-07-07 12:11:27', '2025-07-07 12:11:27', '2025-07-07 12:11:27'),
+(106, 11, '102.89.82.69', 'OYSCHST/2018/DST/001 Student score(50) for Physics/Chemistry(PHY & CHE 101) updated by Sodiq Sulaiman A', '2025-07-07 12:11:51', '2025-07-07 12:11:51', '2025-07-07 12:11:51'),
+(107, 11, '102.89.82.69', 'OYSCHST/2018/DST/001 Student score(69) for Behavioural Science(BHS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:12:02', '2025-07-07 12:12:02', '2025-07-07 12:12:02'),
+(108, 11, '102.89.82.69', 'OYSCHST/2018/DST/001 Student score(50) for The Use of English Languge(GNS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:12:29', '2025-07-07 12:12:29', '2025-07-07 12:12:29'),
+(109, 11, '102.89.82.69', 'OYSCHST/2018/DST/001 Student score(50) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 12:12:39', '2025-07-07 12:12:39', '2025-07-07 12:12:39'),
+(110, 11, '102.89.82.69', 'OYSCHST/2018/DST/001 Student score(50) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:12:43', '2025-07-07 12:12:43', '2025-07-07 12:12:43'),
+(111, 11, '102.89.82.69', 'OYSCHST/2018/DST/002 Student score(69) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:13:32', '2025-07-07 12:13:32', '2025-07-07 12:13:32'),
+(112, 11, '102.89.82.69', 'OYSCHST/2018/DST/002 Student score(52) for Human Biology 1 (Anatomy & Physiology)(HB 1 101) updated by Sodiq Sulaiman A', '2025-07-07 12:13:38', '2025-07-07 12:13:38', '2025-07-07 12:13:38'),
+(113, 11, '102.89.82.69', 'OYSCHST/2018/DST/002 Student score(50) for Physics/Chemistry(PHY & CHE 101) updated by Sodiq Sulaiman A', '2025-07-07 12:13:45', '2025-07-07 12:13:45', '2025-07-07 12:13:45'),
+(114, 11, '102.89.82.69', 'OYSCHST/2018/DST/002 Student score(60) for Behavioural Science(BHS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:14:45', '2025-07-07 12:14:45', '2025-07-07 12:14:45'),
+(115, 11, '102.89.82.69', 'OYSCHST/2018/DST/002 Student score(61) for The Use of English Languge(GNS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:15:05', '2025-07-07 12:15:05', '2025-07-07 12:15:05'),
+(116, 11, '102.89.82.69', 'OYSCHST/2018/DST/002 Student score(50) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 12:15:11', '2025-07-07 12:15:11', '2025-07-07 12:15:11'),
+(117, 11, '102.89.82.69', 'OYSCHST/2018/DST/002 Student score(50) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:15:40', '2025-07-07 12:15:40', '2025-07-07 12:15:40'),
+(118, 11, '102.89.82.69', 'OYSCHST/2018/DST/003 Student score(60) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:15:57', '2025-07-07 12:15:57', '2025-07-07 12:15:57'),
+(119, 11, '102.89.82.69', 'OYSCHST/2018/DST/003 Student score(70) for Human Biology 1 (Anatomy & Physiology)(HB 1 101) updated by Sodiq Sulaiman A', '2025-07-07 12:16:02', '2025-07-07 12:16:02', '2025-07-07 12:16:02'),
+(120, 11, '102.89.82.69', 'OYSCHST/2018/DST/003 Student score(74) for Physics/Chemistry(PHY & CHE 101) updated by Sodiq Sulaiman A', '2025-07-07 12:16:13', '2025-07-07 12:16:13', '2025-07-07 12:16:13'),
+(121, 11, '102.89.82.69', 'OYSCHST/2018/DST/003 Student score(75) for Behavioural Science(BHS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:16:20', '2025-07-07 12:16:20', '2025-07-07 12:16:20'),
+(122, 11, '102.89.82.69', 'OYSCHST/2018/DST/003 Student score(70) for The Use of English Languge(GNS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:16:25', '2025-07-07 12:16:25', '2025-07-07 12:16:25'),
+(123, 11, '102.89.82.69', 'OYSCHST/2018/DST/003 Student score(73) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 12:16:30', '2025-07-07 12:16:30', '2025-07-07 12:16:30'),
+(124, 11, '102.89.82.69', 'OYSCHST/2018/DST/003 Student score(71) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:18:18', '2025-07-07 12:18:18', '2025-07-07 12:18:18'),
+(125, 11, '102.89.82.69', 'OYSCHST/2018/DST/004 Student score(64) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:18:35', '2025-07-07 12:18:35', '2025-07-07 12:18:35'),
+(126, 11, '102.89.82.69', 'OYSCHST/2018/DST/004 Student score(73) for Human Biology 1 (Anatomy & Physiology)(HB 1 101) updated by Sodiq Sulaiman A', '2025-07-07 12:22:11', '2025-07-07 12:22:11', '2025-07-07 12:22:11'),
+(127, 11, '102.89.82.69', 'OYSCHST/2018/DST/004 Student score(66) for Physics/Chemistry(PHY & CHE 101) updated by Sodiq Sulaiman A', '2025-07-07 12:22:23', '2025-07-07 12:22:23', '2025-07-07 12:22:23'),
+(128, 11, '102.89.82.69', 'OYSCHST/2018/DST/004 Student score(73) for Behavioural Science(BHS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:22:34', '2025-07-07 12:22:34', '2025-07-07 12:22:34'),
+(129, 11, '102.89.82.69', 'OYSCHST/2018/DST/004 Student score(70) for The Use of English Languge(GNS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:22:44', '2025-07-07 12:22:44', '2025-07-07 12:22:44'),
+(130, 11, '102.89.82.69', 'OYSCHST/2018/DST/004 Student score(85) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 12:22:49', '2025-07-07 12:22:49', '2025-07-07 12:22:49'),
+(131, 11, '102.89.82.69', 'OYSCHST/2018/DST/004 Student score(79) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:22:56', '2025-07-07 12:22:56', '2025-07-07 12:22:56'),
+(132, 11, '102.89.82.69', 'OYSCHST/2018/DST/005 Student score(64) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:23:17', '2025-07-07 12:23:17', '2025-07-07 12:23:17'),
+(133, 11, '102.89.82.69', 'OYSCHST/2018/DST/005 Student score(50) for Human Biology 1 (Anatomy & Physiology)(HB 1 101) updated by Sodiq Sulaiman A', '2025-07-07 12:23:23', '2025-07-07 12:23:23', '2025-07-07 12:23:23'),
+(134, 11, '102.89.82.69', 'OYSCHST/2018/DST/005 Student score(64) for Physics/Chemistry(PHY & CHE 101) updated by Sodiq Sulaiman A', '2025-07-07 12:23:34', '2025-07-07 12:23:34', '2025-07-07 12:23:34'),
+(135, 11, '102.89.82.69', 'OYSCHST/2018/DST/005 Student score(61) for Behavioural Science(BHS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:23:42', '2025-07-07 12:23:42', '2025-07-07 12:23:42'),
+(136, 11, '102.89.82.69', 'OYSCHST/2018/DST/005 Student score(66) for The Use of English Languge(GNS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:23:47', '2025-07-07 12:23:47', '2025-07-07 12:23:47'),
+(137, 11, '102.89.82.69', 'OYSCHST/2018/DST/005 Student score(52) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 12:23:58', '2025-07-07 12:23:58', '2025-07-07 12:23:58'),
+(138, 11, '102.89.82.69', 'OYSCHST/2018/DST/005 Student score(71) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:24:02', '2025-07-07 12:24:02', '2025-07-07 12:24:02'),
+(139, 11, '102.89.82.69', 'OYSCHST/2018/DST/006 Student score(53) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:24:17', '2025-07-07 12:24:17', '2025-07-07 12:24:17'),
+(140, 11, '102.89.82.69', 'OYSCHST/2018/DST/006 Student score(59) for Human Biology 1 (Anatomy & Physiology)(HB 1 101) updated by Sodiq Sulaiman A', '2025-07-07 12:24:26', '2025-07-07 12:24:26', '2025-07-07 12:24:26'),
+(141, 11, '102.89.82.69', 'OYSCHST/2018/DST/006 Student score(62) for Physics/Chemistry(PHY & CHE 101) updated by Sodiq Sulaiman A', '2025-07-07 12:24:33', '2025-07-07 12:24:33', '2025-07-07 12:24:33'),
+(142, 11, '102.89.82.69', 'OYSCHST/2018/DST/006 Student score(76) for Behavioural Science(BHS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:24:44', '2025-07-07 12:24:44', '2025-07-07 12:24:44'),
+(143, 11, '102.89.82.69', 'OYSCHST/2018/DST/006 Student score(69) for The Use of English Languge(GNS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:24:50', '2025-07-07 12:24:50', '2025-07-07 12:24:50'),
+(144, 11, '102.89.82.69', 'OYSCHST/2018/DST/006 Student score(53) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 12:24:54', '2025-07-07 12:24:54', '2025-07-07 12:24:54'),
+(145, 11, '102.89.82.69', 'OYSCHST/2018/DST/006 Student score(62) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:25:01', '2025-07-07 12:25:01', '2025-07-07 12:25:01'),
+(146, 11, '102.89.82.69', 'OYSCHST/2018/DST/006 Student score(63) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:25:11', '2025-07-07 12:25:11', '2025-07-07 12:25:11'),
+(147, 11, '102.89.82.69', 'OYSCHST/2018/DST/007 Student score(54) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:25:31', '2025-07-07 12:25:31', '2025-07-07 12:25:31'),
+(148, 11, '102.89.82.69', 'OYSCHST/2018/DST/007 Student score(61) for Human Biology 1 (Anatomy & Physiology)(HB 1 101) updated by Sodiq Sulaiman A', '2025-07-07 12:25:38', '2025-07-07 12:25:38', '2025-07-07 12:25:38'),
+(149, 11, '102.89.82.69', 'OYSCHST/2018/DST/007 Student score(67) for Physics/Chemistry(PHY & CHE 101) updated by Sodiq Sulaiman A', '2025-07-07 12:25:43', '2025-07-07 12:25:43', '2025-07-07 12:25:43'),
+(150, 11, '102.89.82.69', 'OYSCHST/2018/DST/007 Student score(59) for Behavioural Science(BHS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:25:50', '2025-07-07 12:25:50', '2025-07-07 12:25:50'),
+(151, 11, '102.89.82.69', 'OYSCHST/2018/DST/007 Student score(79) for The Use of English Languge(GNS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:25:57', '2025-07-07 12:25:57', '2025-07-07 12:25:57'),
+(152, 11, '102.89.82.69', 'OYSCHST/2018/DST/007 Student score(65) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 12:26:01', '2025-07-07 12:26:01', '2025-07-07 12:26:01'),
+(153, 11, '102.89.82.69', 'OYSCHST/2018/DST/007 Student score(58) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:26:06', '2025-07-07 12:26:06', '2025-07-07 12:26:06'),
+(154, 11, '102.89.82.69', 'OYSCHST/2018/DST/008 Student score(61) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:26:18', '2025-07-07 12:26:18', '2025-07-07 12:26:18'),
+(155, 11, '102.89.82.69', 'OYSCHST/2018/DST/008 Student score(76) for Human Biology 1 (Anatomy & Physiology)(HB 1 101) updated by Sodiq Sulaiman A', '2025-07-07 12:26:21', '2025-07-07 12:26:21', '2025-07-07 12:26:21'),
+(156, 11, '102.89.82.69', 'OYSCHST/2018/DST/008 Student score(58) for Physics/Chemistry(PHY & CHE 101) updated by Sodiq Sulaiman A', '2025-07-07 12:26:26', '2025-07-07 12:26:26', '2025-07-07 12:26:26'),
+(157, 11, '102.89.82.69', 'OYSCHST/2018/DST/008 Student score(82) for Behavioural Science(BHS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:26:32', '2025-07-07 12:26:32', '2025-07-07 12:26:32'),
+(158, 11, '102.89.82.69', 'OYSCHST/2018/DST/008 Student score(72) for The Use of English Languge(GNS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:26:35', '2025-07-07 12:26:35', '2025-07-07 12:26:35'),
+(159, 11, '102.89.82.69', 'OYSCHST/2018/DST/008 Student score(67) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 12:26:39', '2025-07-07 12:26:39', '2025-07-07 12:26:39'),
+(160, 11, '102.89.82.69', 'OYSCHST/2018/DST/008 Student score(71) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:26:47', '2025-07-07 12:26:47', '2025-07-07 12:26:47'),
+(161, 11, '102.89.82.69', 'OYSCHST/2018/DST/009 Student score(63) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:26:56', '2025-07-07 12:26:56', '2025-07-07 12:26:56'),
+(162, 11, '102.89.82.69', 'OYSCHST/2018/DST/009 Student score(62) for Human Biology 1 (Anatomy & Physiology)(HB 1 101) updated by Sodiq Sulaiman A', '2025-07-07 12:26:59', '2025-07-07 12:26:59', '2025-07-07 12:26:59'),
+(163, 11, '102.89.82.69', 'OYSCHST/2018/DST/009 Student score(51) for Physics/Chemistry(PHY & CHE 101) updated by Sodiq Sulaiman A', '2025-07-07 12:27:05', '2025-07-07 12:27:05', '2025-07-07 12:27:05'),
+(164, 11, '102.89.82.69', 'OYSCHST/2018/DST/009 Student score(56) for Behavioural Science(BHS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:27:09', '2025-07-07 12:27:09', '2025-07-07 12:27:09'),
+(165, 11, '102.89.82.69', 'OYSCHST/2018/DST/009 Student score(69) for The Use of English Languge(GNS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:27:15', '2025-07-07 12:27:15', '2025-07-07 12:27:15'),
+(166, 11, '102.89.82.69', 'OYSCHST/2018/DST/009 Student score(58) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 12:27:21', '2025-07-07 12:27:21', '2025-07-07 12:27:21'),
+(167, 11, '102.89.82.69', 'OYSCHST/2018/DST/009 Student score(58) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:27:25', '2025-07-07 12:27:25', '2025-07-07 12:27:25'),
+(168, 11, '102.89.82.69', 'OYSCHST/2018/DST/010 Student score(66) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:28:49', '2025-07-07 12:28:49', '2025-07-07 12:28:49'),
+(169, 11, '102.89.82.69', 'OYSCHST/2018/DST/010 Student score(65) for Human Biology 1 (Anatomy & Physiology)(HB 1 101) updated by Sodiq Sulaiman A', '2025-07-07 12:28:52', '2025-07-07 12:28:52', '2025-07-07 12:28:52'),
+(170, 11, '102.89.82.69', 'OYSCHST/2018/DST/010 Student score(50) for Physics/Chemistry(PHY & CHE 101) updated by Sodiq Sulaiman A', '2025-07-07 12:28:59', '2025-07-07 12:28:59', '2025-07-07 12:28:59'),
+(171, 11, '102.89.82.69', 'OYSCHST/2018/DST/010 Student score(75) for Behavioural Science(BHS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:29:02', '2025-07-07 12:29:02', '2025-07-07 12:29:02'),
+(172, 11, '102.89.82.69', 'OYSCHST/2018/DST/010 Student score(73) for The Use of English Languge(GNS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:29:09', '2025-07-07 12:29:09', '2025-07-07 12:29:09'),
+(173, 11, '102.89.82.69', 'OYSCHST/2018/DST/010 Student score(65) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 12:29:12', '2025-07-07 12:29:12', '2025-07-07 12:29:12'),
+(174, 11, '102.89.82.69', 'OYSCHST/2018/DST/010 Student score(72) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:29:24', '2025-07-07 12:29:24', '2025-07-07 12:29:24'),
+(175, 11, '102.89.82.69', 'OYSCHST/2018/DST/011 Student score(56) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:29:36', '2025-07-07 12:29:36', '2025-07-07 12:29:36'),
+(176, 11, '102.89.82.69', 'OYSCHST/2018/DST/011 Student score(63) for Human Biology 1 (Anatomy & Physiology)(HB 1 101) updated by Sodiq Sulaiman A', '2025-07-07 12:29:41', '2025-07-07 12:29:41', '2025-07-07 12:29:41'),
+(177, 11, '102.89.82.69', 'OYSCHST/2018/DST/011 Student score(50) for Physics/Chemistry(PHY & CHE 101) updated by Sodiq Sulaiman A', '2025-07-07 12:29:46', '2025-07-07 12:29:46', '2025-07-07 12:29:46'),
+(178, 11, '102.89.82.69', 'OYSCHST/2018/DST/011 Student score(75) for Behavioural Science(BHS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:29:48', '2025-07-07 12:29:48', '2025-07-07 12:29:48'),
+(179, 11, '102.89.82.69', 'OYSCHST/2018/DST/011 Student score(66) for The Use of English Languge(GNS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:29:57', '2025-07-07 12:29:57', '2025-07-07 12:29:57'),
+(180, 11, '102.89.82.69', 'OYSCHST/2018/DST/011 Student score(60) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 12:30:01', '2025-07-07 12:30:01', '2025-07-07 12:30:01'),
+(181, 11, '102.89.82.69', 'OYSCHST/2018/DST/011 Student score(64) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:30:06', '2025-07-07 12:30:06', '2025-07-07 12:30:06'),
+(182, 11, '102.89.82.69', 'OYSCHST/2018/DST/012 Student score(50) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:30:23', '2025-07-07 12:30:23', '2025-07-07 12:30:23'),
+(183, 11, '102.89.82.69', 'OYSCHST/2018/DST/012 Student score(50) for Human Biology 1 (Anatomy & Physiology)(HB 1 101) updated by Sodiq Sulaiman A', '2025-07-07 12:30:26', '2025-07-07 12:30:26', '2025-07-07 12:30:26'),
+(184, 11, '102.89.82.69', 'OYSCHST/2018/DST/012 Student score(57) for Physics/Chemistry(PHY & CHE 101) updated by Sodiq Sulaiman A', '2025-07-07 12:30:31', '2025-07-07 12:30:31', '2025-07-07 12:30:31'),
+(185, 11, '102.89.82.69', 'OYSCHST/2018/DST/012 Student score(50) for Behavioural Science(BHS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:30:37', '2025-07-07 12:30:37', '2025-07-07 12:30:37'),
+(186, 11, '102.89.82.69', 'OYSCHST/2018/DST/012 Student score(65) for The Use of English Languge(GNS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:30:39', '2025-07-07 12:30:39', '2025-07-07 12:30:39'),
+(187, 11, '102.89.82.69', 'OYSCHST/2018/DST/012 Student score(50) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 12:30:52', '2025-07-07 12:30:52', '2025-07-07 12:30:52'),
+(188, 11, '102.89.82.69', 'OYSCHST/2018/DST/012 Student score(44) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:32:17', '2025-07-07 12:32:17', '2025-07-07 12:32:17'),
+(189, 11, '102.89.82.69', 'OYSCHST/2018/DST/012 Student score(33) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 12:32:20', '2025-07-07 12:32:20', '2025-07-07 12:32:20'),
+(190, 11, '102.89.82.69', 'OYSCHST/2018/DST/013 Student score(63) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:32:29', '2025-07-07 12:32:29', '2025-07-07 12:32:29'),
+(191, 11, '102.89.82.69', 'OYSCHST/2018/DST/013 Student score(61) for Human Biology 1 (Anatomy & Physiology)(HB 1 101) updated by Sodiq Sulaiman A', '2025-07-07 12:32:33', '2025-07-07 12:32:33', '2025-07-07 12:32:33'),
+(192, 11, '102.89.82.69', 'OYSCHST/2018/DST/013 Student score(50) for Physics/Chemistry(PHY & CHE 101) updated by Sodiq Sulaiman A', '2025-07-07 12:32:41', '2025-07-07 12:32:41', '2025-07-07 12:32:41'),
+(193, 11, '102.89.82.69', 'OYSCHST/2018/DST/013 Student score(50) for Behavioural Science(BHS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:32:43', '2025-07-07 12:32:43', '2025-07-07 12:32:43'),
+(194, 11, '102.89.82.69', 'OYSCHST/2018/DST/013 Student score(58) for The Use of English Languge(GNS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:32:46', '2025-07-07 12:32:46', '2025-07-07 12:32:46'),
+(195, 11, '102.89.82.69', 'OYSCHST/2018/DST/013 Student score(57) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 12:33:14', '2025-07-07 12:33:14', '2025-07-07 12:33:14'),
+(196, 11, '102.89.82.69', 'OYSCHST/2018/DST/013 Student score(63) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:33:18', '2025-07-07 12:33:18', '2025-07-07 12:33:18'),
+(197, 11, '102.89.82.69', 'OYSCHST/2018/DST/014 Student score(61) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:33:29', '2025-07-07 12:33:29', '2025-07-07 12:33:29'),
+(198, 11, '102.89.82.69', 'OYSCHST/2018/DST/014 Student score(50) for Human Biology 1 (Anatomy & Physiology)(HB 1 101) updated by Sodiq Sulaiman A', '2025-07-07 12:33:42', '2025-07-07 12:33:42', '2025-07-07 12:33:42'),
+(199, 11, '102.89.82.69', 'OYSCHST/2018/DST/014 Student score(52) for Physics/Chemistry(PHY & CHE 101) updated by Sodiq Sulaiman A', '2025-07-07 12:34:18', '2025-07-07 12:34:18', '2025-07-07 12:34:18'),
+(200, 11, '102.89.82.69', 'OYSCHST/2018/DST/014 Student score(50) for Behavioural Science(BHS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:34:23', '2025-07-07 12:34:23', '2025-07-07 12:34:23'),
+(201, 11, '102.89.82.69', 'OYSCHST/2018/DST/014 Student score(50) for The Use of English Languge(GNS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:34:35', '2025-07-07 12:34:35', '2025-07-07 12:34:35'),
+(202, 11, '102.89.82.69', 'OYSCHST/2018/DST/014 Student score(50) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 12:34:40', '2025-07-07 12:34:40', '2025-07-07 12:34:40'),
+(203, 11, '102.89.82.69', 'OYSCHST/2018/DST/014 Student score(54) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:34:47', '2025-07-07 12:34:47', '2025-07-07 12:34:47'),
+(204, 11, '102.89.82.69', 'OYSCHST/2018/DST/015 Student score(61) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:40:10', '2025-07-07 12:40:10', '2025-07-07 12:40:10'),
+(205, 11, '102.89.82.69', 'OYSCHST/2018/DST/015 Student score(66) for Human Biology 1 (Anatomy & Physiology)(HB 1 101) updated by Sodiq Sulaiman A', '2025-07-07 12:40:12', '2025-07-07 12:40:12', '2025-07-07 12:40:12'),
+(206, 11, '102.89.82.69', 'OYSCHST/2018/DST/015 Student score(69) for Physics/Chemistry(PHY & CHE 101) updated by Sodiq Sulaiman A', '2025-07-07 12:40:17', '2025-07-07 12:40:17', '2025-07-07 12:40:17'),
+(207, 11, '102.89.82.69', 'OYSCHST/2018/DST/015 Student score(70) for Behavioural Science(BHS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:40:24', '2025-07-07 12:40:24', '2025-07-07 12:40:24'),
+(208, 11, '102.89.82.69', 'OYSCHST/2018/DST/015 Student score(61) for The Use of English Languge(GNS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:40:27', '2025-07-07 12:40:27', '2025-07-07 12:40:27'),
+(209, 11, '102.89.82.69', 'OYSCHST/2018/DST/015 Student score(71) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 12:40:32', '2025-07-07 12:40:32', '2025-07-07 12:40:32'),
+(210, 11, '102.89.82.69', 'OYSCHST/2018/DST/015 Student score(56) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:40:36', '2025-07-07 12:40:36', '2025-07-07 12:40:36'),
+(211, 11, '102.89.82.69', 'OYSCHST/2018/DST/016 Student score(56) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:40:52', '2025-07-07 12:40:52', '2025-07-07 12:40:52'),
+(212, 11, '102.89.82.69', 'OYSCHST/2018/DST/016 Student score(50) for Human Biology 1 (Anatomy & Physiology)(HB 1 101) updated by Sodiq Sulaiman A', '2025-07-07 12:41:02', '2025-07-07 12:41:02', '2025-07-07 12:41:02'),
+(213, 11, '102.89.82.69', 'OYSCHST/2018/DST/016 Student score(50) for Physics/Chemistry(PHY & CHE 101) updated by Sodiq Sulaiman A', '2025-07-07 12:41:08', '2025-07-07 12:41:08', '2025-07-07 12:41:08'),
+(214, 11, '102.89.82.69', 'OYSCHST/2018/DST/016 Student score(70) for Behavioural Science(BHS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:41:10', '2025-07-07 12:41:10', '2025-07-07 12:41:10'),
+(215, 11, '102.89.82.69', 'OYSCHST/2018/DST/016 Student score(60) for The Use of English Languge(GNS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:41:16', '2025-07-07 12:41:16', '2025-07-07 12:41:16'),
+(216, 11, '102.89.82.69', 'OYSCHST/2018/DST/016 Student score(50) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 12:41:18', '2025-07-07 12:41:18', '2025-07-07 12:41:18'),
+(217, 11, '102.89.82.69', 'OYSCHST/2018/DST/016 Student score(82) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:41:22', '2025-07-07 12:41:22', '2025-07-07 12:41:22'),
+(218, 11, '102.89.82.69', 'OYSCHST/2018/DST/017 Student score(64) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:41:28', '2025-07-07 12:41:28', '2025-07-07 12:41:28'),
+(219, 11, '102.89.82.69', 'OYSCHST/2018/DST/017 Student score(75) for Human Biology 1 (Anatomy & Physiology)(HB 1 101) updated by Sodiq Sulaiman A', '2025-07-07 12:41:31', '2025-07-07 12:41:31', '2025-07-07 12:41:31'),
+(220, 11, '102.89.82.69', 'OYSCHST/2018/DST/017 Student score(52) for Physics/Chemistry(PHY & CHE 101) updated by Sodiq Sulaiman A', '2025-07-07 12:41:38', '2025-07-07 12:41:38', '2025-07-07 12:41:38'),
+(221, 11, '102.89.82.69', 'OYSCHST/2018/DST/017 Student score(80) for Behavioural Science(BHS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:41:40', '2025-07-07 12:41:40', '2025-07-07 12:41:40'),
+(222, 11, '102.89.82.69', 'OYSCHST/2018/DST/017 Student score(61) for The Use of English Languge(GNS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:41:46', '2025-07-07 12:41:46', '2025-07-07 12:41:46'),
+(223, 11, '102.89.82.69', 'OYSCHST/2018/DST/017 Student score(84) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 12:41:49', '2025-07-07 12:41:49', '2025-07-07 12:41:49'),
+(224, 11, '102.89.82.69', 'OYSCHST/2018/DST/017 Student score(75) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:41:55', '2025-07-07 12:41:55', '2025-07-07 12:41:55'),
+(225, 11, '102.89.82.69', 'OYSCHST/2018/DST/018 Student score(64) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:42:04', '2025-07-07 12:42:04', '2025-07-07 12:42:04'),
+(226, 11, '102.89.82.69', 'OYSCHST/2018/DST/018 Student score(65) for Human Biology 1 (Anatomy & Physiology)(HB 1 101) updated by Sodiq Sulaiman A', '2025-07-07 12:42:06', '2025-07-07 12:42:06', '2025-07-07 12:42:06'),
+(227, 11, '102.89.82.69', 'OYSCHST/2018/DST/018 Student score(62) for Physics/Chemistry(PHY & CHE 101) updated by Sodiq Sulaiman A', '2025-07-07 12:42:11', '2025-07-07 12:42:11', '2025-07-07 12:42:11'),
+(228, 11, '102.89.82.69', 'OYSCHST/2018/DST/018 Student score(77) for Behavioural Science(BHS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:42:14', '2025-07-07 12:42:14', '2025-07-07 12:42:14'),
+(229, 11, '102.89.82.69', 'OYSCHST/2018/DST/018 Student score(65) for The Use of English Languge(GNS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:42:19', '2025-07-07 12:42:19', '2025-07-07 12:42:19'),
+(230, 11, '102.89.82.69', 'OYSCHST/2018/DST/018 Student score(68) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 12:42:22', '2025-07-07 12:42:22', '2025-07-07 12:42:22'),
+(231, 11, '102.89.82.69', 'OYSCHST/2018/DST/018 Student score(69) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:42:24', '2025-07-07 12:42:24', '2025-07-07 12:42:24'),
+(232, 11, '102.89.82.69', 'OYSCHST/2018/DST/020 Student score(51) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:43:10', '2025-07-07 12:43:10', '2025-07-07 12:43:10'),
+(233, 11, '102.89.82.69', 'OYSCHST/2018/DST/020 Student score(50) for Human Biology 1 (Anatomy & Physiology)(HB 1 101) updated by Sodiq Sulaiman A', '2025-07-07 12:43:12', '2025-07-07 12:43:12', '2025-07-07 12:43:12'),
+(234, 11, '102.89.82.69', 'OYSCHST/2018/DST/020 Student score(62) for Physics/Chemistry(PHY & CHE 101) updated by Sodiq Sulaiman A', '2025-07-07 12:43:21', '2025-07-07 12:43:21', '2025-07-07 12:43:21'),
+(235, 11, '102.89.82.69', 'OYSCHST/2018/DST/020 Student score(50) for Behavioural Science(BHS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:43:34', '2025-07-07 12:43:34', '2025-07-07 12:43:34'),
+(236, 11, '102.89.82.69', 'OYSCHST/2018/DST/020 Student score(51) for The Use of English Languge(GNS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:43:37', '2025-07-07 12:43:37', '2025-07-07 12:43:37'),
+(237, 11, '102.89.82.69', 'OYSCHST/2018/DST/020 Student score(51) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 12:43:43', '2025-07-07 12:43:43', '2025-07-07 12:43:43'),
+(238, 11, '102.89.82.69', 'OYSCHST/2018/DST/020 Student score(50) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:43:45', '2025-07-07 12:43:45', '2025-07-07 12:43:45'),
+(239, 11, '102.89.82.69', 'OYSCHST/2018/DST/021 Student score(57) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:44:30', '2025-07-07 12:44:30', '2025-07-07 12:44:30'),
+(240, 11, '102.89.82.69', 'OYSCHST/2018/DST/021 Student score(50) for Human Biology 1 (Anatomy & Physiology)(HB 1 101) updated by Sodiq Sulaiman A', '2025-07-07 12:44:31', '2025-07-07 12:44:31', '2025-07-07 12:44:31'),
+(241, 11, '102.89.82.69', 'OYSCHST/2018/DST/021 Student score(51) for Physics/Chemistry(PHY & CHE 101) updated by Sodiq Sulaiman A', '2025-07-07 12:44:38', '2025-07-07 12:44:38', '2025-07-07 12:44:38'),
+(242, 11, '102.89.82.69', 'OYSCHST/2018/DST/021 Student score(73) for Behavioural Science(BHS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:44:41', '2025-07-07 12:44:41', '2025-07-07 12:44:41'),
+(243, 11, '102.89.82.69', 'OYSCHST/2018/DST/021 Student score(59) for The Use of English Languge(GNS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:44:43', '2025-07-07 12:44:43', '2025-07-07 12:44:43'),
+(244, 11, '102.89.82.69', 'OYSCHST/2018/DST/021 Student score(50) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 12:44:49', '2025-07-07 12:44:49', '2025-07-07 12:44:49'),
+(245, 11, '102.89.82.69', 'OYSCHST/2018/DST/021 Student score(66) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:44:51', '2025-07-07 12:44:51', '2025-07-07 12:44:51'),
+(246, 11, '102.89.82.69', 'OYSCHST/2018/DST/022 Student score(76) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:45:00', '2025-07-07 12:45:00', '2025-07-07 12:45:00'),
+(247, 11, '102.89.82.69', 'OYSCHST/2018/DST/022 Student score(66) for Human Biology 1 (Anatomy & Physiology)(HB 1 101) updated by Sodiq Sulaiman A', '2025-07-07 12:45:02', '2025-07-07 12:45:02', '2025-07-07 12:45:02'),
+(248, 11, '102.89.82.69', 'OYSCHST/2018/DST/022 Student score(62) for Physics/Chemistry(PHY & CHE 101) updated by Sodiq Sulaiman A', '2025-07-07 12:45:08', '2025-07-07 12:45:08', '2025-07-07 12:45:08'),
+(249, 11, '102.89.82.69', 'OYSCHST/2018/DST/022 Student score(75) for Behavioural Science(BHS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:45:11', '2025-07-07 12:45:11', '2025-07-07 12:45:11'),
+(250, 11, '102.89.82.69', 'OYSCHST/2018/DST/022 Student score(72) for The Use of English Languge(GNS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:45:13', '2025-07-07 12:45:13', '2025-07-07 12:45:13'),
+(251, 11, '102.89.82.69', 'OYSCHST/2018/DST/022 Student score(76) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 12:45:18', '2025-07-07 12:45:18', '2025-07-07 12:45:18'),
+(252, 11, '102.89.82.69', 'OYSCHST/2018/DST/022 Student score(73) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:45:21', '2025-07-07 12:45:21', '2025-07-07 12:45:21'),
+(253, 11, '102.89.82.69', 'OYSCHST/2018/DST/023 Student score(7) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:45:35', '2025-07-07 12:45:35', '2025-07-07 12:45:35'),
+(254, 11, '102.89.82.69', 'OYSCHST/2018/DST/023 Student score(73) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:45:45', '2025-07-07 12:45:45', '2025-07-07 12:45:45'),
+(255, 11, '102.89.82.69', 'OYSCHST/2018/DST/023 Student score(72) for Human Biology 1 (Anatomy & Physiology)(HB 1 101) updated by Sodiq Sulaiman A', '2025-07-07 12:45:48', '2025-07-07 12:45:48', '2025-07-07 12:45:48'),
+(256, 11, '102.89.82.69', 'OYSCHST/2018/DST/023 Student score(51) for Physics/Chemistry(PHY & CHE 101) updated by Sodiq Sulaiman A', '2025-07-07 12:45:51', '2025-07-07 12:45:51', '2025-07-07 12:45:51'),
+(257, 11, '102.89.82.69', 'OYSCHST/2018/DST/023 Student score(70) for Behavioural Science(BHS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:45:58', '2025-07-07 12:45:58', '2025-07-07 12:45:58'),
+(258, 11, '102.89.82.69', 'OYSCHST/2018/DST/023 Student score(63) for The Use of English Languge(GNS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:46:00', '2025-07-07 12:46:00', '2025-07-07 12:46:00'),
+(259, 11, '102.89.82.69', 'OYSCHST/2018/DST/023 Student score(76) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 12:46:03', '2025-07-07 12:46:03', '2025-07-07 12:46:03'),
+(260, 11, '102.89.82.69', 'OYSCHST/2018/DST/023 Student score(68) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:46:08', '2025-07-07 12:46:08', '2025-07-07 12:46:08'),
+(261, 11, '102.89.82.69', 'OYSCHST/2018/DST/024 Student score(67) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:46:15', '2025-07-07 12:46:15', '2025-07-07 12:46:15'),
+(262, 11, '102.89.82.69', 'OYSCHST/2018/DST/024 Student score(69) for Human Biology 1 (Anatomy & Physiology)(HB 1 101) updated by Sodiq Sulaiman A', '2025-07-07 12:46:43', '2025-07-07 12:46:43', '2025-07-07 12:46:43'),
+(263, 11, '102.89.82.69', 'OYSCHST/2018/DST/024 Student score(70) for Physics/Chemistry(PHY & CHE 101) updated by Sodiq Sulaiman A', '2025-07-07 12:46:57', '2025-07-07 12:46:57', '2025-07-07 12:46:57'),
+(264, 11, '102.89.82.69', 'OYSCHST/2018/DST/024 Student score(60) for Behavioural Science(BHS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:47:00', '2025-07-07 12:47:00', '2025-07-07 12:47:00'),
+(265, 11, '102.89.82.69', 'OYSCHST/2018/DST/024 Student score(66) for The Use of English Languge(GNS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:47:06', '2025-07-07 12:47:06', '2025-07-07 12:47:06'),
+(266, 11, '102.89.82.69', 'OYSCHST/2018/DST/024 Student score(73) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 12:47:09', '2025-07-07 12:47:09', '2025-07-07 12:47:09'),
+(267, 11, '102.89.82.69', 'OYSCHST/2018/DST/024 Student score(72) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:47:11', '2025-07-07 12:47:11', '2025-07-07 12:47:11'),
+(268, 11, '102.89.82.69', 'OYSCHST/2018/DST/025 Student score(56) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:47:35', '2025-07-07 12:47:35', '2025-07-07 12:47:35');
+INSERT INTO `log_activities` (`id`, `user_id`, `ip_address`, `activity`, `activity_date`, `created_at`, `updated_at`) VALUES
+(269, 11, '102.89.82.69', 'OYSCHST/2018/DST/025 Student score(50) for Human Biology 1 (Anatomy & Physiology)(HB 1 101) updated by Sodiq Sulaiman A', '2025-07-07 12:47:37', '2025-07-07 12:47:37', '2025-07-07 12:47:37'),
+(270, 11, '102.89.82.69', 'OYSCHST/2018/DST/025 Student score(56) for Physics/Chemistry(PHY & CHE 101) updated by Sodiq Sulaiman A', '2025-07-07 12:47:42', '2025-07-07 12:47:42', '2025-07-07 12:47:42'),
+(271, 11, '102.89.82.69', 'OYSCHST/2018/DST/025 Student score(63) for Behavioural Science(BHS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:49:24', '2025-07-07 12:49:24', '2025-07-07 12:49:24'),
+(272, 11, '102.89.82.69', 'OYSCHST/2018/DST/025 Student score(54) for The Use of English Languge(GNS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:49:26', '2025-07-07 12:49:26', '2025-07-07 12:49:26'),
+(273, 11, '102.89.82.69', 'OYSCHST/2018/DST/025 Student score(58) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 12:49:32', '2025-07-07 12:49:32', '2025-07-07 12:49:32'),
+(274, 11, '102.89.82.69', 'OYSCHST/2018/DST/025 Student score(50) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:50:40', '2025-07-07 12:50:40', '2025-07-07 12:50:40'),
+(275, 11, '102.89.82.69', 'OYSCHST/2018/DST/026 Student score(72) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:52:56', '2025-07-07 12:52:56', '2025-07-07 12:52:56'),
+(276, 11, '102.89.82.69', 'OYSCHST/2018/DST/026 Student score(76) for Human Biology 1 (Anatomy & Physiology)(HB 1 101) updated by Sodiq Sulaiman A', '2025-07-07 12:53:13', '2025-07-07 12:53:13', '2025-07-07 12:53:13'),
+(277, 11, '102.89.82.69', 'OYSCHST/2018/DST/026 Student score(61) for Physics/Chemistry(PHY & CHE 101) updated by Sodiq Sulaiman A', '2025-07-07 12:53:32', '2025-07-07 12:53:32', '2025-07-07 12:53:32'),
+(278, 11, '102.89.82.69', 'OYSCHST/2018/DST/026 Student score(77) for Behavioural Science(BHS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:53:47', '2025-07-07 12:53:47', '2025-07-07 12:53:47'),
+(279, 11, '102.89.82.69', 'OYSCHST/2018/DST/026 Student score(66) for The Use of English Languge(GNS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:53:49', '2025-07-07 12:53:50', '2025-07-07 12:53:50'),
+(280, 11, '102.89.82.69', 'OYSCHST/2018/DST/026 Student score(64) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 12:53:59', '2025-07-07 12:53:59', '2025-07-07 12:53:59'),
+(281, 11, '102.89.82.69', 'OYSCHST/2018/DST/027 Student score(81) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:54:14', '2025-07-07 12:54:14', '2025-07-07 12:54:14'),
+(282, 11, '102.89.82.69', 'OYSCHST/2018/DST/027 Student score(86) for Human Biology 1 (Anatomy & Physiology)(HB 1 101) updated by Sodiq Sulaiman A', '2025-07-07 12:54:20', '2025-07-07 12:54:20', '2025-07-07 12:54:20'),
+(283, 11, '102.89.82.69', 'OYSCHST/2018/DST/027 Student score(65) for Physics/Chemistry(PHY & CHE 101) updated by Sodiq Sulaiman A', '2025-07-07 12:54:29', '2025-07-07 12:54:29', '2025-07-07 12:54:29'),
+(284, 11, '102.89.82.69', 'OYSCHST/2018/DST/027 Student score(66) for Behavioural Science(BHS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:54:32', '2025-07-07 12:54:32', '2025-07-07 12:54:32'),
+(285, 11, '102.89.82.69', 'OYSCHST/2018/DST/027 Student score(67) for The Use of English Languge(GNS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:54:40', '2025-07-07 12:54:40', '2025-07-07 12:54:40'),
+(286, 11, '102.89.82.69', 'OYSCHST/2018/DST/027 Student score(73) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 12:54:50', '2025-07-07 12:54:50', '2025-07-07 12:54:50'),
+(287, 11, '102.89.82.69', 'OYSCHST/2018/DST/026 Student score(75) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 12:54:59', '2025-07-07 12:54:59', '2025-07-07 12:54:59'),
+(288, 11, '102.89.82.69', 'OYSCHST/2018/DST/027 Student score(70) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:01:20', '2025-07-07 13:01:20', '2025-07-07 13:01:20'),
+(289, 11, '102.89.82.69', 'OYSCHST/2018/DST/028 Student score(61) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:01:56', '2025-07-07 13:01:56', '2025-07-07 13:01:56'),
+(290, 11, '102.89.82.69', 'OYSCHST/2018/DST/028 Student score(59) for Human Biology 1 (Anatomy & Physiology)(HB 1 101) updated by Sodiq Sulaiman A', '2025-07-07 13:01:59', '2025-07-07 13:01:59', '2025-07-07 13:01:59'),
+(291, 11, '102.89.82.69', 'OYSCHST/2018/DST/028 Student score(65) for Physics/Chemistry(PHY & CHE 101) updated by Sodiq Sulaiman A', '2025-07-07 13:02:04', '2025-07-07 13:02:04', '2025-07-07 13:02:04'),
+(292, 11, '102.89.82.69', 'OYSCHST/2018/DST/028 Student score(73) for Behavioural Science(BHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:02:08', '2025-07-07 13:02:08', '2025-07-07 13:02:08'),
+(293, 11, '102.89.82.69', 'OYSCHST/2018/DST/028 Student score(63) for The Use of English Languge(GNS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:02:11', '2025-07-07 13:02:11', '2025-07-07 13:02:11'),
+(294, 11, '102.89.82.69', 'OYSCHST/2018/DST/028 Student score(59) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 13:02:16', '2025-07-07 13:02:16', '2025-07-07 13:02:16'),
+(295, 11, '102.89.82.69', 'OYSCHST/2018/DST/028 Student score(47) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:02:23', '2025-07-07 13:02:23', '2025-07-07 13:02:23'),
+(296, 11, '102.89.82.69', 'OYSCHST/2018/DST/029 Student score(76) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:02:30', '2025-07-07 13:02:30', '2025-07-07 13:02:30'),
+(297, 11, '102.89.82.69', 'OYSCHST/2018/DST/029 Student score(65) for Human Biology 1 (Anatomy & Physiology)(HB 1 101) updated by Sodiq Sulaiman A', '2025-07-07 13:02:34', '2025-07-07 13:02:34', '2025-07-07 13:02:34'),
+(298, 11, '102.89.82.69', 'OYSCHST/2018/DST/029 Student score(61) for Physics/Chemistry(PHY & CHE 101) updated by Sodiq Sulaiman A', '2025-07-07 13:02:36', '2025-07-07 13:02:36', '2025-07-07 13:02:36'),
+(299, 11, '102.89.82.69', 'OYSCHST/2018/DST/029 Student score(72) for Behavioural Science(BHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:02:39', '2025-07-07 13:02:39', '2025-07-07 13:02:39'),
+(300, 11, '102.89.82.69', 'OYSCHST/2018/DST/029 Student score(74) for The Use of English Languge(GNS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:02:43', '2025-07-07 13:02:43', '2025-07-07 13:02:43'),
+(301, 11, '102.89.82.69', 'OYSCHST/2018/DST/029 Student score(69) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 13:02:46', '2025-07-07 13:02:46', '2025-07-07 13:02:46'),
+(302, 11, '102.89.82.69', 'OYSCHST/2018/DST/029 Student score(80) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:02:50', '2025-07-07 13:02:50', '2025-07-07 13:02:50'),
+(303, 11, '102.89.82.69', 'OYSCHST/2018/DST/030 Student score(52) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:02:58', '2025-07-07 13:02:58', '2025-07-07 13:02:58'),
+(304, 11, '102.89.82.69', 'OYSCHST/2018/DST/030 Student score(69) for Human Biology 1 (Anatomy & Physiology)(HB 1 101) updated by Sodiq Sulaiman A', '2025-07-07 13:03:01', '2025-07-07 13:03:01', '2025-07-07 13:03:01'),
+(305, 11, '102.89.82.69', 'OYSCHST/2018/DST/030 Student score(54) for Physics/Chemistry(PHY & CHE 101) updated by Sodiq Sulaiman A', '2025-07-07 13:03:03', '2025-07-07 13:03:03', '2025-07-07 13:03:03'),
+(306, 11, '102.89.82.69', 'OYSCHST/2018/DST/030 Student score(56) for Behavioural Science(BHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:03:08', '2025-07-07 13:03:08', '2025-07-07 13:03:08'),
+(307, 11, '102.89.82.69', 'OYSCHST/2018/DST/030 Student score(59) for The Use of English Languge(GNS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:03:11', '2025-07-07 13:03:11', '2025-07-07 13:03:11'),
+(308, 11, '102.89.82.69', 'OYSCHST/2018/DST/030 Student score(60) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 13:03:14', '2025-07-07 13:03:14', '2025-07-07 13:03:14'),
+(309, 11, '102.89.82.69', 'OYSCHST/2018/DST/030 Student score(66) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:04:39', '2025-07-07 13:04:39', '2025-07-07 13:04:39'),
+(310, 11, '102.89.82.69', 'OYSCHST/2018/DST/031 Student score(58) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:04:42', '2025-07-07 13:04:42', '2025-07-07 13:04:42'),
+(311, 11, '102.89.82.69', 'OYSCHST/2018/DST/031 Student score(53) for Human Biology 1 (Anatomy & Physiology)(HB 1 101) updated by Sodiq Sulaiman A', '2025-07-07 13:04:45', '2025-07-07 13:04:45', '2025-07-07 13:04:45'),
+(312, 11, '102.89.82.69', 'OYSCHST/2018/DST/031 Student score(50) for Physics/Chemistry(PHY & CHE 101) updated by Sodiq Sulaiman A', '2025-07-07 13:04:49', '2025-07-07 13:04:49', '2025-07-07 13:04:49'),
+(313, 11, '102.89.82.69', 'OYSCHST/2018/DST/031 Student score(55) for Behavioural Science(BHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:04:52', '2025-07-07 13:04:52', '2025-07-07 13:04:52'),
+(314, 11, '102.89.82.69', 'OYSCHST/2018/DST/031 Student score(65) for The Use of English Languge(GNS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:04:55', '2025-07-07 13:04:55', '2025-07-07 13:04:55'),
+(315, 11, '102.89.82.69', 'OYSCHST/2018/DST/031 Student score(69) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 13:04:58', '2025-07-07 13:04:58', '2025-07-07 13:04:58'),
+(316, 11, '102.89.82.69', 'OYSCHST/2018/DST/031 Student score(54) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:05:01', '2025-07-07 13:05:01', '2025-07-07 13:05:01'),
+(317, 11, '102.89.82.69', 'OYSCHST/2018/DST/032 Student score(65) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:05:06', '2025-07-07 13:05:06', '2025-07-07 13:05:06'),
+(318, 11, '102.89.82.69', 'OYSCHST/2018/DST/032 Student score(56) for Human Biology 1 (Anatomy & Physiology)(HB 1 101) updated by Sodiq Sulaiman A', '2025-07-07 13:05:09', '2025-07-07 13:05:09', '2025-07-07 13:05:09'),
+(319, 11, '102.89.82.69', 'OYSCHST/2018/DST/032 Student score(51) for Physics/Chemistry(PHY & CHE 101) updated by Sodiq Sulaiman A', '2025-07-07 13:05:12', '2025-07-07 13:05:12', '2025-07-07 13:05:12'),
+(320, 11, '102.89.82.69', 'OYSCHST/2018/DST/032 Student score(75) for Behavioural Science(BHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:05:15', '2025-07-07 13:05:15', '2025-07-07 13:05:15'),
+(321, 11, '102.89.82.69', 'OYSCHST/2018/DST/032 Student score(60) for The Use of English Languge(GNS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:05:17', '2025-07-07 13:05:17', '2025-07-07 13:05:17'),
+(322, 11, '102.89.82.69', 'OYSCHST/2018/DST/032 Student score(50) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 13:05:21', '2025-07-07 13:05:21', '2025-07-07 13:05:21'),
+(323, 11, '102.89.82.69', 'OYSCHST/2018/DST/032 Student score(80) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:05:24', '2025-07-07 13:05:24', '2025-07-07 13:05:24'),
+(324, 11, '102.89.82.69', 'OYSCHST/2018/DST/033 Student score(54) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:05:29', '2025-07-07 13:05:29', '2025-07-07 13:05:29'),
+(325, 11, '102.89.82.69', 'OYSCHST/2018/DST/033 Student score(50) for Human Biology 1 (Anatomy & Physiology)(HB 1 101) updated by Sodiq Sulaiman A', '2025-07-07 13:05:39', '2025-07-07 13:05:39', '2025-07-07 13:05:39'),
+(326, 11, '102.89.82.69', 'OYSCHST/2018/DST/033 Student score(53) for Physics/Chemistry(PHY & CHE 101) updated by Sodiq Sulaiman A', '2025-07-07 13:05:42', '2025-07-07 13:05:42', '2025-07-07 13:05:42'),
+(327, 11, '102.89.82.69', 'OYSCHST/2018/DST/033 Student score(65) for Behavioural Science(BHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:05:44', '2025-07-07 13:05:44', '2025-07-07 13:05:44'),
+(328, 11, '102.89.82.69', 'OYSCHST/2018/DST/033 Student score(63) for The Use of English Languge(GNS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:05:47', '2025-07-07 13:05:47', '2025-07-07 13:05:47'),
+(329, 11, '102.89.82.69', 'OYSCHST/2018/DST/033 Student score(50) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 13:05:49', '2025-07-07 13:05:49', '2025-07-07 13:05:49'),
+(330, 11, '102.89.82.69', 'OYSCHST/2018/DST/033 Student score(60) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:05:53', '2025-07-07 13:05:53', '2025-07-07 13:05:53'),
+(331, 11, '102.89.82.69', 'OYSCHST/2018/DST/034 Student score(70) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:06:00', '2025-07-07 13:06:00', '2025-07-07 13:06:00'),
+(332, 11, '102.89.82.69', 'OYSCHST/2018/DST/034 Student score(50) for Human Biology 1 (Anatomy & Physiology)(HB 1 101) updated by Sodiq Sulaiman A', '2025-07-07 13:06:04', '2025-07-07 13:06:04', '2025-07-07 13:06:04'),
+(333, 11, '102.89.82.69', 'OYSCHST/2018/DST/034 Student score(59) for Physics/Chemistry(PHY & CHE 101) updated by Sodiq Sulaiman A', '2025-07-07 13:06:06', '2025-07-07 13:06:06', '2025-07-07 13:06:06'),
+(334, 11, '102.89.82.69', 'OYSCHST/2018/DST/034 Student score(63) for Behavioural Science(BHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:06:11', '2025-07-07 13:06:11', '2025-07-07 13:06:11'),
+(335, 11, '102.89.82.69', 'OYSCHST/2018/DST/034 Student score(51) for The Use of English Languge(GNS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:06:15', '2025-07-07 13:06:15', '2025-07-07 13:06:15'),
+(336, 11, '102.89.82.69', 'OYSCHST/2018/DST/034 Student score(50) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 13:06:21', '2025-07-07 13:06:21', '2025-07-07 13:06:21'),
+(337, 11, '102.89.82.69', 'OYSCHST/2018/DST/034 Student score(60) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:06:29', '2025-07-07 13:06:29', '2025-07-07 13:06:29'),
+(338, 11, '102.89.82.69', 'OYSCHST/2018/DST/035 Student score(57) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:06:33', '2025-07-07 13:06:33', '2025-07-07 13:06:33'),
+(339, 11, '102.89.82.69', 'OYSCHST/2018/DST/035 Student score(57) for Human Biology 1 (Anatomy & Physiology)(HB 1 101) updated by Sodiq Sulaiman A', '2025-07-07 13:06:35', '2025-07-07 13:06:35', '2025-07-07 13:06:35'),
+(340, 11, '102.89.82.69', 'OYSCHST/2018/DST/035 Student score(50) for Physics/Chemistry(PHY & CHE 101) updated by Sodiq Sulaiman A', '2025-07-07 13:06:38', '2025-07-07 13:06:38', '2025-07-07 13:06:38'),
+(341, 11, '102.89.82.69', 'OYSCHST/2018/DST/035 Student score(65) for Behavioural Science(BHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:06:40', '2025-07-07 13:06:40', '2025-07-07 13:06:40'),
+(342, 11, '102.89.82.69', 'OYSCHST/2018/DST/035 Student score(50) for The Use of English Languge(GNS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:06:43', '2025-07-07 13:06:43', '2025-07-07 13:06:43'),
+(343, 11, '102.89.82.69', 'OYSCHST/2018/DST/035 Student score(50) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 13:06:46', '2025-07-07 13:06:46', '2025-07-07 13:06:46'),
+(344, 11, '102.89.82.69', 'OYSCHST/2018/DST/035 Student score(61) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:06:49', '2025-07-07 13:06:49', '2025-07-07 13:06:49'),
+(345, 11, '102.89.82.69', 'OYSCHST/2018/DST/036 Student score(65) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:06:58', '2025-07-07 13:06:58', '2025-07-07 13:06:58'),
+(346, 11, '102.89.82.69', 'OYSCHST/2018/DST/036 Student score(77) for Human Biology 1 (Anatomy & Physiology)(HB 1 101) updated by Sodiq Sulaiman A', '2025-07-07 13:07:01', '2025-07-07 13:07:01', '2025-07-07 13:07:01'),
+(347, 11, '102.89.82.69', 'OYSCHST/2018/DST/036 Student score(70) for Physics/Chemistry(PHY & CHE 101) updated by Sodiq Sulaiman A', '2025-07-07 13:07:03', '2025-07-07 13:07:03', '2025-07-07 13:07:03'),
+(348, 11, '102.89.82.69', 'OYSCHST/2018/DST/036 Student score(83) for Behavioural Science(BHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:07:06', '2025-07-07 13:07:06', '2025-07-07 13:07:06'),
+(349, 11, '102.89.82.69', 'OYSCHST/2018/DST/036 Student score(76) for The Use of English Languge(GNS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:07:08', '2025-07-07 13:07:08', '2025-07-07 13:07:08'),
+(350, 11, '102.89.82.69', 'OYSCHST/2018/DST/036 Student score(85) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 13:07:12', '2025-07-07 13:07:12', '2025-07-07 13:07:12'),
+(351, 11, '102.89.82.69', 'OYSCHST/2018/DST/036 Student score(85) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:07:17', '2025-07-07 13:07:17', '2025-07-07 13:07:17'),
+(352, 11, '102.89.82.69', 'OYSCHST/2018/DST/037 Student score(54) for Human Biology 1 (Anatomy & Physiology)(HB 1 101) updated by Sodiq Sulaiman A', '2025-07-07 13:07:37', '2025-07-07 13:07:37', '2025-07-07 13:07:37'),
+(353, 11, '102.89.82.69', 'OYSCHST/2018/DST/037 Student score(76) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 13:07:44', '2025-07-07 13:07:44', '2025-07-07 13:07:44'),
+(354, 11, '102.89.82.69', 'OYSCHST/2018/DST/037 Student score(60) for Behavioural Science(BHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:08:42', '2025-07-07 13:08:42', '2025-07-07 13:08:42'),
+(355, 11, '102.89.82.69', 'OYSCHST/2018/DST/037 Student score(64) for The Use of English Languge(GNS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:08:42', '2025-07-07 13:08:42', '2025-07-07 13:08:42'),
+(356, 11, '102.89.82.69', 'OYSCHST/2018/DST/037 Student score(56) for Physics/Chemistry(PHY & CHE 101) updated by Sodiq Sulaiman A', '2025-07-07 13:08:42', '2025-07-07 13:08:42', '2025-07-07 13:08:42'),
+(357, 11, '102.89.82.69', 'OYSCHST/2018/DST/037 Student score(51) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:08:42', '2025-07-07 13:08:42', '2025-07-07 13:08:42'),
+(358, 11, '102.89.82.69', 'OYSCHST/2018/DST/037 Student score(55) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:08:46', '2025-07-07 13:08:46', '2025-07-07 13:08:46'),
+(359, 11, '102.89.82.69', 'OYSCHST/2018/DST/038 Student score(69) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:08:49', '2025-07-07 13:08:49', '2025-07-07 13:08:49'),
+(360, 11, '102.89.82.69', 'OYSCHST/2018/DST/038 Student score(66) for Human Biology 1 (Anatomy & Physiology)(HB 1 101) updated by Sodiq Sulaiman A', '2025-07-07 13:08:54', '2025-07-07 13:08:54', '2025-07-07 13:08:54'),
+(361, 11, '102.89.82.69', 'OYSCHST/2018/DST/038 Student score(50) for Physics/Chemistry(PHY & CHE 101) updated by Sodiq Sulaiman A', '2025-07-07 13:08:54', '2025-07-07 13:08:54', '2025-07-07 13:08:54'),
+(362, 11, '102.89.82.69', 'OYSCHST/2018/DST/038 Student score(75) for Behavioural Science(BHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:08:56', '2025-07-07 13:08:56', '2025-07-07 13:08:56'),
+(363, 11, '102.89.82.69', 'OYSCHST/2018/DST/038 Student score(68) for The Use of English Languge(GNS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:09:00', '2025-07-07 13:09:00', '2025-07-07 13:09:00'),
+(364, 11, '102.89.82.69', 'OYSCHST/2018/DST/038 Student score(51) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 13:09:03', '2025-07-07 13:09:03', '2025-07-07 13:09:03'),
+(365, 11, '102.89.82.69', 'OYSCHST/2018/DST/038 Student score(65) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:09:10', '2025-07-07 13:09:10', '2025-07-07 13:09:10'),
+(366, 11, '102.89.82.69', 'OYSCHST/2018/DST/039 Student score(65) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:09:22', '2025-07-07 13:09:22', '2025-07-07 13:09:22'),
+(367, 11, '102.89.82.69', 'OYSCHST/2018/DST/039 Student score(72) for Human Biology 1 (Anatomy & Physiology)(HB 1 101) updated by Sodiq Sulaiman A', '2025-07-07 13:09:26', '2025-07-07 13:09:26', '2025-07-07 13:09:26'),
+(368, 11, '102.89.82.69', 'OYSCHST/2018/DST/039 Student score(60) for Physics/Chemistry(PHY & CHE 101) updated by Sodiq Sulaiman A', '2025-07-07 13:09:28', '2025-07-07 13:09:28', '2025-07-07 13:09:28'),
+(369, 11, '102.89.82.69', 'OYSCHST/2018/DST/039 Student score(72) for Behavioural Science(BHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:09:32', '2025-07-07 13:09:32', '2025-07-07 13:09:32'),
+(370, 11, '102.89.82.69', 'OYSCHST/2018/DST/039 Student score(65) for The Use of English Languge(GNS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:09:33', '2025-07-07 13:09:33', '2025-07-07 13:09:33'),
+(371, 11, '102.89.82.69', 'OYSCHST/2018/DST/039 Student score(69) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 13:09:36', '2025-07-07 13:09:36', '2025-07-07 13:09:36'),
+(372, 11, '102.89.82.69', 'OYSCHST/2018/DST/039 Student score(75) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:09:44', '2025-07-07 13:09:44', '2025-07-07 13:09:44'),
+(373, 11, '102.89.82.69', 'OYSCHST/2018/DST/040 Student score(58) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:12:11', '2025-07-07 13:12:11', '2025-07-07 13:12:11'),
+(374, 11, '102.89.82.69', 'OYSCHST/2018/DST/040 Student score(52) for Human Biology 1 (Anatomy & Physiology)(HB 1 101) updated by Sodiq Sulaiman A', '2025-07-07 13:12:15', '2025-07-07 13:12:15', '2025-07-07 13:12:15'),
+(375, 11, '102.89.82.69', 'OYSCHST/2018/DST/040 Student score(58) for Physics/Chemistry(PHY & CHE 101) updated by Sodiq Sulaiman A', '2025-07-07 13:12:21', '2025-07-07 13:12:21', '2025-07-07 13:12:21'),
+(376, 11, '102.89.82.69', 'OYSCHST/2018/DST/040 Student score(68) for Behavioural Science(BHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:12:24', '2025-07-07 13:12:24', '2025-07-07 13:12:24'),
+(377, 11, '102.89.82.69', 'OYSCHST/2018/DST/040 Student score(51) for The Use of English Languge(GNS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:12:27', '2025-07-07 13:12:27', '2025-07-07 13:12:27'),
+(378, 11, '102.89.82.69', 'OYSCHST/2018/DST/040 Student score(50) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 13:12:29', '2025-07-07 13:12:29', '2025-07-07 13:12:29'),
+(379, 11, '102.89.82.69', 'OYSCHST/2018/DST/040 Student score(57) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:12:39', '2025-07-07 13:12:39', '2025-07-07 13:12:39'),
+(380, 11, '102.89.82.69', 'OYSCHST/2018/DST/041 Student score(61) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:12:47', '2025-07-07 13:12:47', '2025-07-07 13:12:47'),
+(381, 11, '102.89.82.69', 'OYSCHST/2018/DST/041 Student score(61) for Human Biology 1 (Anatomy & Physiology)(HB 1 101) updated by Sodiq Sulaiman A', '2025-07-07 13:12:50', '2025-07-07 13:12:50', '2025-07-07 13:12:50'),
+(382, 11, '102.89.82.69', 'OYSCHST/2018/DST/041 Student score(68) for Physics/Chemistry(PHY & CHE 101) updated by Sodiq Sulaiman A', '2025-07-07 13:12:55', '2025-07-07 13:12:55', '2025-07-07 13:12:55'),
+(383, 11, '102.89.82.69', 'OYSCHST/2018/DST/041 Student score(50) for Behavioural Science(BHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:12:57', '2025-07-07 13:12:57', '2025-07-07 13:12:57'),
+(384, 11, '102.89.82.69', 'OYSCHST/2018/DST/041 Student score(66) for The Use of English Languge(GNS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:12:59', '2025-07-07 13:12:59', '2025-07-07 13:12:59'),
+(385, 11, '102.89.82.69', 'OYSCHST/2018/DST/041 Student score(74) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 13:13:01', '2025-07-07 13:13:01', '2025-07-07 13:13:01'),
+(386, 11, '102.89.82.69', 'OYSCHST/2018/DST/041 Student score(61) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:13:05', '2025-07-07 13:13:05', '2025-07-07 13:13:05'),
+(387, 11, '102.89.82.69', 'OYSCHST/2018/DST/042 Student score(68) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:13:17', '2025-07-07 13:13:17', '2025-07-07 13:13:17'),
+(388, 11, '102.89.82.69', 'OYSCHST/2018/DST/042 Student score(76) for Human Biology 1 (Anatomy & Physiology)(HB 1 101) updated by Sodiq Sulaiman A', '2025-07-07 13:13:20', '2025-07-07 13:13:20', '2025-07-07 13:13:20'),
+(389, 11, '102.89.82.69', 'OYSCHST/2018/DST/042 Student score(65) for Physics/Chemistry(PHY & CHE 101) updated by Sodiq Sulaiman A', '2025-07-07 13:13:22', '2025-07-07 13:13:22', '2025-07-07 13:13:22'),
+(390, 11, '102.89.82.69', 'OYSCHST/2018/DST/042 Student score(58) for Behavioural Science(BHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:13:40', '2025-07-07 13:13:40', '2025-07-07 13:13:40'),
+(391, 11, '102.89.82.69', 'OYSCHST/2018/DST/042 Student score(77) for The Use of English Languge(GNS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:13:42', '2025-07-07 13:13:42', '2025-07-07 13:13:42'),
+(392, 11, '102.89.82.69', 'OYSCHST/2018/DST/042 Student score(77) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 13:13:45', '2025-07-07 13:13:45', '2025-07-07 13:13:45'),
+(393, 11, '102.89.82.69', 'OYSCHST/2018/DST/042 Student score(91) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:13:49', '2025-07-07 13:13:49', '2025-07-07 13:13:49'),
+(394, 11, '102.89.82.69', 'OYSCHST/2018/DST/043 Student score(53) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:14:09', '2025-07-07 13:14:09', '2025-07-07 13:14:09'),
+(395, 11, '102.89.82.69', 'OYSCHST/2018/DST/043 Student score(50) for Human Biology 1 (Anatomy & Physiology)(HB 1 101) updated by Sodiq Sulaiman A', '2025-07-07 13:14:12', '2025-07-07 13:14:12', '2025-07-07 13:14:12'),
+(396, 11, '102.89.82.69', 'OYSCHST/2018/DST/043 Student score(50) for Physics/Chemistry(PHY & CHE 101) updated by Sodiq Sulaiman A', '2025-07-07 13:14:14', '2025-07-07 13:14:14', '2025-07-07 13:14:14'),
+(397, 11, '102.89.82.69', 'OYSCHST/2018/DST/043 Student score(54) for Behavioural Science(BHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:14:17', '2025-07-07 13:14:17', '2025-07-07 13:14:17'),
+(398, 11, '102.89.82.69', 'OYSCHST/2018/DST/043 Student score(50) for The Use of English Languge(GNS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:14:20', '2025-07-07 13:14:20', '2025-07-07 13:14:20'),
+(399, 11, '102.89.82.69', 'OYSCHST/2018/DST/043 Student score(50) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 13:14:23', '2025-07-07 13:14:23', '2025-07-07 13:14:23'),
+(400, 11, '102.89.82.69', 'OYSCHST/2018/DST/043 Student score(50) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:14:26', '2025-07-07 13:14:26', '2025-07-07 13:14:26'),
+(401, 11, '102.89.82.69', 'OYSCHST/2018/DST/044 Student score(60) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:14:39', '2025-07-07 13:14:39', '2025-07-07 13:14:39'),
+(402, 11, '102.89.82.69', 'OYSCHST/2018/DST/044 Student score(60) for Human Biology 1 (Anatomy & Physiology)(HB 1 101) updated by Sodiq Sulaiman A', '2025-07-07 13:14:41', '2025-07-07 13:14:41', '2025-07-07 13:14:41'),
+(403, 11, '102.89.82.69', 'OYSCHST/2018/DST/044 Student score(50) for Physics/Chemistry(PHY & CHE 101) updated by Sodiq Sulaiman A', '2025-07-07 13:14:44', '2025-07-07 13:14:44', '2025-07-07 13:14:44'),
+(404, 11, '102.89.82.69', 'OYSCHST/2018/DST/044 Student score(61) for Behavioural Science(BHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:14:46', '2025-07-07 13:14:46', '2025-07-07 13:14:46'),
+(405, 11, '102.89.82.69', 'OYSCHST/2018/DST/044 Student score(65) for The Use of English Languge(GNS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:14:49', '2025-07-07 13:14:49', '2025-07-07 13:14:49'),
+(406, 11, '102.89.82.69', 'OYSCHST/2018/DST/044 Student score(75) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 13:14:55', '2025-07-07 13:14:55', '2025-07-07 13:14:55'),
+(407, 11, '102.89.82.69', 'OYSCHST/2018/DST/044 Student score(54) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:15:18', '2025-07-07 13:15:18', '2025-07-07 13:15:18'),
+(408, 11, '102.89.82.69', 'OYSCHST/2018/DST/045 Student score(66) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:15:25', '2025-07-07 13:15:25', '2025-07-07 13:15:25'),
+(409, 11, '102.89.82.69', 'OYSCHST/2018/DST/045 Student score(56) for Human Biology 1 (Anatomy & Physiology)(HB 1 101) updated by Sodiq Sulaiman A', '2025-07-07 13:15:27', '2025-07-07 13:15:27', '2025-07-07 13:15:27'),
+(410, 11, '102.89.82.69', 'OYSCHST/2018/DST/045 Student score(53) for Physics/Chemistry(PHY & CHE 101) updated by Sodiq Sulaiman A', '2025-07-07 13:15:30', '2025-07-07 13:15:30', '2025-07-07 13:15:30'),
+(411, 11, '102.89.82.69', 'OYSCHST/2018/DST/045 Student score(72) for Behavioural Science(BHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:15:33', '2025-07-07 13:15:33', '2025-07-07 13:15:33'),
+(412, 11, '102.89.82.69', 'OYSCHST/2018/DST/045 Student score(64) for The Use of English Languge(GNS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:15:36', '2025-07-07 13:15:36', '2025-07-07 13:15:36'),
+(413, 11, '102.89.82.69', 'OYSCHST/2018/DST/045 Student score(63) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 13:15:38', '2025-07-07 13:15:38', '2025-07-07 13:15:38'),
+(414, 11, '102.89.82.69', 'OYSCHST/2018/DST/045 Student score(66) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:15:41', '2025-07-07 13:15:41', '2025-07-07 13:15:41'),
+(415, 11, '102.89.82.69', 'OYSCHST/2018/DST/046 Student score(59) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:15:47', '2025-07-07 13:15:47', '2025-07-07 13:15:47'),
+(416, 11, '102.89.82.69', 'OYSCHST/2018/DST/046 Student score(56) for Human Biology 1 (Anatomy & Physiology)(HB 1 101) updated by Sodiq Sulaiman A', '2025-07-07 13:15:50', '2025-07-07 13:15:50', '2025-07-07 13:15:50'),
+(417, 11, '102.89.82.69', 'OYSCHST/2018/DST/046 Student score(50) for Physics/Chemistry(PHY & CHE 101) updated by Sodiq Sulaiman A', '2025-07-07 13:15:52', '2025-07-07 13:15:52', '2025-07-07 13:15:52'),
+(418, 11, '102.89.82.69', 'OYSCHST/2018/DST/046 Student score(61) for Behavioural Science(BHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:15:56', '2025-07-07 13:15:56', '2025-07-07 13:15:56'),
+(419, 11, '102.89.82.69', 'OYSCHST/2018/DST/046 Student score(50) for The Use of English Languge(GNS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:15:57', '2025-07-07 13:15:57', '2025-07-07 13:15:57'),
+(420, 11, '102.89.82.69', 'OYSCHST/2018/DST/046 Student score(50) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 13:16:06', '2025-07-07 13:16:06', '2025-07-07 13:16:06'),
+(421, 11, '102.89.82.69', 'OYSCHST/2018/DST/046 Student score(56) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:16:09', '2025-07-07 13:16:09', '2025-07-07 13:16:09'),
+(422, 11, '102.89.82.69', 'OYSCHST/2018/DST/047 Student score(59) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:16:12', '2025-07-07 13:16:12', '2025-07-07 13:16:12'),
+(423, 11, '102.89.82.69', 'OYSCHST/2018/DST/047 Student score(59) for Human Biology 1 (Anatomy & Physiology)(HB 1 101) updated by Sodiq Sulaiman A', '2025-07-07 13:16:14', '2025-07-07 13:16:14', '2025-07-07 13:16:14'),
+(424, 11, '102.89.82.69', 'OYSCHST/2018/DST/047 Student score(54) for Physics/Chemistry(PHY & CHE 101) updated by Sodiq Sulaiman A', '2025-07-07 13:16:16', '2025-07-07 13:16:16', '2025-07-07 13:16:16'),
+(425, 11, '102.89.82.69', 'OYSCHST/2018/DST/047 Student score(63) for Behavioural Science(BHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:16:19', '2025-07-07 13:16:19', '2025-07-07 13:16:19'),
+(426, 11, '102.89.82.69', 'OYSCHST/2018/DST/047 Student score(60) for The Use of English Languge(GNS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:16:20', '2025-07-07 13:16:20', '2025-07-07 13:16:20'),
+(427, 11, '102.89.82.69', 'OYSCHST/2018/DST/047 Student score(59) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 13:16:23', '2025-07-07 13:16:23', '2025-07-07 13:16:23'),
+(428, 11, '102.89.82.69', 'OYSCHST/2018/DST/047 Student score(70) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:16:27', '2025-07-07 13:16:27', '2025-07-07 13:16:27'),
+(429, 11, '102.89.82.69', 'OYSCHST/2018/DST/048 Student score(69) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:16:33', '2025-07-07 13:16:33', '2025-07-07 13:16:33'),
+(430, 11, '102.89.82.69', 'OYSCHST/2018/DST/048 Student score(65) for Human Biology 1 (Anatomy & Physiology)(HB 1 101) updated by Sodiq Sulaiman A', '2025-07-07 13:16:35', '2025-07-07 13:16:35', '2025-07-07 13:16:35'),
+(431, 11, '102.89.82.69', 'OYSCHST/2018/DST/048 Student score(52) for Physics/Chemistry(PHY & CHE 101) updated by Sodiq Sulaiman A', '2025-07-07 13:16:39', '2025-07-07 13:16:39', '2025-07-07 13:16:39'),
+(432, 11, '102.89.82.69', 'OYSCHST/2018/DST/048 Student score(76) for Behavioural Science(BHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:16:41', '2025-07-07 13:16:41', '2025-07-07 13:16:41'),
+(433, 11, '102.89.82.69', 'OYSCHST/2018/DST/048 Student score(54) for The Use of English Languge(GNS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:16:43', '2025-07-07 13:16:43', '2025-07-07 13:16:43'),
+(434, 11, '102.89.82.69', 'OYSCHST/2018/DST/048 Student score(64) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 13:16:48', '2025-07-07 13:16:48', '2025-07-07 13:16:48'),
+(435, 11, '102.89.82.69', 'OYSCHST/2018/DST/048 Student score(62) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:16:52', '2025-07-07 13:16:52', '2025-07-07 13:16:52'),
+(436, 11, '102.89.82.69', 'OYSCHST/2018/DST/049 Student score(59) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:16:59', '2025-07-07 13:16:59', '2025-07-07 13:16:59'),
+(437, 11, '102.89.82.69', 'OYSCHST/2018/DST/049 Student score(50) for Human Biology 1 (Anatomy & Physiology)(HB 1 101) updated by Sodiq Sulaiman A', '2025-07-07 13:17:02', '2025-07-07 13:17:02', '2025-07-07 13:17:02'),
+(438, 11, '102.89.82.69', 'OYSCHST/2018/DST/049 Student score(59) for Physics/Chemistry(PHY & CHE 101) updated by Sodiq Sulaiman A', '2025-07-07 13:17:04', '2025-07-07 13:17:04', '2025-07-07 13:17:04'),
+(439, 11, '102.89.82.69', 'OYSCHST/2018/DST/049 Student score(67) for Behavioural Science(BHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:17:07', '2025-07-07 13:17:07', '2025-07-07 13:17:07'),
+(440, 11, '102.89.82.69', 'OYSCHST/2018/DST/049 Student score(63) for The Use of English Languge(GNS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:17:09', '2025-07-07 13:17:09', '2025-07-07 13:17:09'),
+(441, 11, '102.89.82.69', 'OYSCHST/2018/DST/049 Student score(50) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 13:17:11', '2025-07-07 13:17:11', '2025-07-07 13:17:11'),
+(442, 11, '102.89.82.69', 'OYSCHST/2018/DST/049 Student score(53) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:17:25', '2025-07-07 13:17:25', '2025-07-07 13:17:25'),
+(443, 11, '102.89.82.69', 'OYSCHST/2018/DST/050 Student score(73) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:17:30', '2025-07-07 13:17:30', '2025-07-07 13:17:30'),
+(444, 11, '102.89.82.69', 'OYSCHST/2018/DST/050 Student score(76) for Human Biology 1 (Anatomy & Physiology)(HB 1 101) updated by Sodiq Sulaiman A', '2025-07-07 13:17:31', '2025-07-07 13:17:31', '2025-07-07 13:17:31'),
+(445, 11, '102.89.82.69', 'OYSCHST/2018/DST/050 Student score(62) for Physics/Chemistry(PHY & CHE 101) updated by Sodiq Sulaiman A', '2025-07-07 13:17:36', '2025-07-07 13:17:36', '2025-07-07 13:17:36'),
+(446, 11, '102.89.82.69', 'OYSCHST/2018/DST/050 Student score(82) for Behavioural Science(BHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:17:39', '2025-07-07 13:17:39', '2025-07-07 13:17:39'),
+(447, 11, '102.89.82.69', 'OYSCHST/2018/DST/050 Student score(60) for The Use of English Languge(GNS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:17:43', '2025-07-07 13:17:43', '2025-07-07 13:17:43'),
+(448, 11, '102.89.82.69', 'OYSCHST/2018/DST/050 Student score(73) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 13:17:46', '2025-07-07 13:17:46', '2025-07-07 13:17:46'),
+(449, 11, '102.89.82.69', 'OYSCHST/2018/DST/050 Student score(76) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:17:50', '2025-07-07 13:17:50', '2025-07-07 13:17:50'),
+(450, 11, '102.89.82.69', 'OYSCHST/2018/DST/051 Student score(73) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:17:55', '2025-07-07 13:17:55', '2025-07-07 13:17:55'),
+(451, 11, '102.89.82.69', 'OYSCHST/2018/DST/051 Student score(75) for Human Biology 1 (Anatomy & Physiology)(HB 1 101) updated by Sodiq Sulaiman A', '2025-07-07 13:17:58', '2025-07-07 13:17:58', '2025-07-07 13:17:58'),
+(452, 11, '102.89.82.69', 'OYSCHST/2018/DST/051 Student score(70) for Physics/Chemistry(PHY & CHE 101) updated by Sodiq Sulaiman A', '2025-07-07 13:18:01', '2025-07-07 13:18:01', '2025-07-07 13:18:01'),
+(453, 11, '102.89.82.69', 'OYSCHST/2018/DST/051 Student score(73) for Behavioural Science(BHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:18:04', '2025-07-07 13:18:04', '2025-07-07 13:18:04'),
+(454, 11, '102.89.82.69', 'OYSCHST/2018/DST/051 Student score(71) for The Use of English Languge(GNS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:18:06', '2025-07-07 13:18:06', '2025-07-07 13:18:06'),
+(455, 11, '102.89.82.69', 'OYSCHST/2018/DST/051 Student score(82) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 13:18:09', '2025-07-07 13:18:09', '2025-07-07 13:18:09'),
+(456, 11, '102.89.82.69', 'OYSCHST/2018/DST/051 Student score(83) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:18:15', '2025-07-07 13:18:15', '2025-07-07 13:18:15'),
+(457, 11, '102.89.82.69', 'OYSCHST/2018/DST/052 Student score(69) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:18:19', '2025-07-07 13:18:19', '2025-07-07 13:18:19'),
+(458, 11, '102.89.82.69', 'OYSCHST/2018/DST/052 Student score(76) for Human Biology 1 (Anatomy & Physiology)(HB 1 101) updated by Sodiq Sulaiman A', '2025-07-07 13:18:22', '2025-07-07 13:18:22', '2025-07-07 13:18:22'),
+(459, 11, '102.89.82.69', 'OYSCHST/2018/DST/052 Student score(67) for Physics/Chemistry(PHY & CHE 101) updated by Sodiq Sulaiman A', '2025-07-07 13:18:24', '2025-07-07 13:18:24', '2025-07-07 13:18:24'),
+(460, 11, '102.89.82.69', 'OYSCHST/2018/DST/052 Student score(65) for Behavioural Science(BHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:18:26', '2025-07-07 13:18:26', '2025-07-07 13:18:26'),
+(461, 11, '102.89.82.69', 'OYSCHST/2018/DST/052 Student score(69) for The Use of English Languge(GNS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:18:30', '2025-07-07 13:18:30', '2025-07-07 13:18:30'),
+(462, 11, '102.89.82.69', 'OYSCHST/2018/DST/052 Student score(76) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 13:18:30', '2025-07-07 13:18:30', '2025-07-07 13:18:30'),
+(463, 11, '102.89.82.69', 'OYSCHST/2018/DST/052 Student score(79) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:18:35', '2025-07-07 13:18:35', '2025-07-07 13:18:35'),
+(464, 11, '102.89.82.69', 'OYSCHST/2018/DST/053 Student score(65) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:18:45', '2025-07-07 13:18:45', '2025-07-07 13:18:45'),
+(465, 11, '102.89.82.69', 'OYSCHST/2018/DST/053 Student score(82) for Human Biology 1 (Anatomy & Physiology)(HB 1 101) updated by Sodiq Sulaiman A', '2025-07-07 13:18:49', '2025-07-07 13:18:49', '2025-07-07 13:18:49'),
+(466, 11, '102.89.82.69', 'OYSCHST/2018/DST/053 Student score(73) for Physics/Chemistry(PHY & CHE 101) updated by Sodiq Sulaiman A', '2025-07-07 13:18:52', '2025-07-07 13:18:52', '2025-07-07 13:18:52'),
+(467, 11, '102.89.82.69', 'OYSCHST/2018/DST/053 Student score(50) for Behavioural Science(BHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:18:54', '2025-07-07 13:18:54', '2025-07-07 13:18:54'),
+(468, 11, '102.89.82.69', 'OYSCHST/2018/DST/053 Student score(70) for The Use of English Languge(GNS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:18:56', '2025-07-07 13:18:56', '2025-07-07 13:18:56'),
+(469, 11, '102.89.82.69', 'OYSCHST/2018/DST/053 Student score(61) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 13:18:58', '2025-07-07 13:18:58', '2025-07-07 13:18:58'),
+(470, 11, '102.89.82.69', 'OYSCHST/2018/DST/053 Student score(67) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:19:04', '2025-07-07 13:19:04', '2025-07-07 13:19:04'),
+(471, 11, '102.89.82.69', 'OYSCHST/2018/DST/054 Student score(72) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:19:46', '2025-07-07 13:19:46', '2025-07-07 13:19:46'),
+(472, 11, '102.89.82.69', 'OYSCHST/2018/DST/054 Student score(76) for Human Biology 1 (Anatomy & Physiology)(HB 1 101) updated by Sodiq Sulaiman A', '2025-07-07 13:19:47', '2025-07-07 13:19:47', '2025-07-07 13:19:47'),
+(473, 11, '102.89.82.69', 'OYSCHST/2018/DST/054 Student score(69) for Physics/Chemistry(PHY & CHE 101) updated by Sodiq Sulaiman A', '2025-07-07 13:19:49', '2025-07-07 13:19:49', '2025-07-07 13:19:49'),
+(474, 11, '102.89.82.69', 'OYSCHST/2018/DST/054 Student score(86) for Behavioural Science(BHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:19:51', '2025-07-07 13:19:51', '2025-07-07 13:19:51'),
+(475, 11, '102.89.82.69', 'OYSCHST/2018/DST/054 Student score(70) for The Use of English Languge(GNS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:19:54', '2025-07-07 13:19:54', '2025-07-07 13:19:54'),
+(476, 11, '102.89.82.69', 'OYSCHST/2018/DST/054 Student score(82) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 13:19:56', '2025-07-07 13:19:56', '2025-07-07 13:19:56'),
+(477, 11, '102.89.82.69', 'OYSCHST/2018/DST/054 Student score(78) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:20:03', '2025-07-07 13:20:03', '2025-07-07 13:20:03'),
+(478, 11, '102.89.82.69', 'OYSCHST/2018/DST/055 Student score(67) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:20:07', '2025-07-07 13:20:07', '2025-07-07 13:20:07'),
+(479, 11, '102.89.82.69', 'OYSCHST/2018/DST/055 Student score(64) for Human Biology 1 (Anatomy & Physiology)(HB 1 101) updated by Sodiq Sulaiman A', '2025-07-07 13:20:09', '2025-07-07 13:20:09', '2025-07-07 13:20:09'),
+(480, 11, '102.89.82.69', 'OYSCHST/2018/DST/055 Student score(52) for Physics/Chemistry(PHY & CHE 101) updated by Sodiq Sulaiman A', '2025-07-07 13:20:12', '2025-07-07 13:20:12', '2025-07-07 13:20:12'),
+(481, 11, '102.89.82.69', 'OYSCHST/2018/DST/055 Student score(70) for Behavioural Science(BHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:20:14', '2025-07-07 13:20:14', '2025-07-07 13:20:14'),
+(482, 11, '102.89.82.69', 'OYSCHST/2018/DST/055 Student score(63) for The Use of English Languge(GNS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:20:16', '2025-07-07 13:20:16', '2025-07-07 13:20:16'),
+(483, 11, '102.89.82.69', 'OYSCHST/2018/DST/055 Student score(65) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 13:20:18', '2025-07-07 13:20:18', '2025-07-07 13:20:18'),
+(484, 11, '102.89.82.69', 'OYSCHST/2018/DST/055 Student score(55) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:20:22', '2025-07-07 13:20:22', '2025-07-07 13:20:22'),
+(485, 11, '102.89.82.69', 'OYSCHST/2018/DST/056 Student score(59) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:20:30', '2025-07-07 13:20:30', '2025-07-07 13:20:30'),
+(486, 11, '102.89.82.69', 'OYSCHST/2018/DST/056 Student score(58) for Human Biology 1 (Anatomy & Physiology)(HB 1 101) updated by Sodiq Sulaiman A', '2025-07-07 13:20:30', '2025-07-07 13:20:30', '2025-07-07 13:20:30'),
+(487, 11, '102.89.82.69', 'OYSCHST/2018/DST/056 Student score(50) for Physics/Chemistry(PHY & CHE 101) updated by Sodiq Sulaiman A', '2025-07-07 13:20:33', '2025-07-07 13:20:33', '2025-07-07 13:20:33'),
+(488, 11, '102.89.82.69', 'OYSCHST/2018/DST/056 Student score(67) for Behavioural Science(BHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:20:37', '2025-07-07 13:20:37', '2025-07-07 13:20:37'),
+(489, 11, '102.89.82.69', 'OYSCHST/2018/DST/056 Student score(50) for The Use of English Languge(GNS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:20:40', '2025-07-07 13:20:40', '2025-07-07 13:20:40'),
+(490, 11, '102.89.82.69', 'OYSCHST/2018/DST/056 Student score(50) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 13:20:42', '2025-07-07 13:20:42', '2025-07-07 13:20:42'),
+(491, 11, '102.89.82.69', 'OYSCHST/2018/DST/056 Student score(63) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:20:45', '2025-07-07 13:20:45', '2025-07-07 13:20:45'),
+(492, 11, '102.89.82.69', 'OYSCHST/2018/DST/057 Student score(51) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:20:51', '2025-07-07 13:20:51', '2025-07-07 13:20:51'),
+(493, 11, '102.89.82.69', 'OYSCHST/2018/DST/057 Student score(50) for Human Biology 1 (Anatomy & Physiology)(HB 1 101) updated by Sodiq Sulaiman A', '2025-07-07 13:20:54', '2025-07-07 13:20:54', '2025-07-07 13:20:54'),
+(494, 11, '102.89.82.69', 'OYSCHST/2018/DST/057 Student score(36) for Physics/Chemistry(PHY & CHE 101) updated by Sodiq Sulaiman A', '2025-07-07 13:20:58', '2025-07-07 13:20:58', '2025-07-07 13:20:58'),
+(495, 11, '102.89.82.69', 'OYSCHST/2018/DST/057 Student score(72) for Behavioural Science(BHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:21:01', '2025-07-07 13:21:01', '2025-07-07 13:21:01'),
+(496, 11, '102.89.82.69', 'OYSCHST/2018/DST/057 Student score(43) for The Use of English Languge(GNS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:21:05', '2025-07-07 13:21:05', '2025-07-07 13:21:05'),
+(497, 11, '102.89.82.69', 'OYSCHST/2018/DST/057 Student score(29) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 13:21:06', '2025-07-07 13:21:06', '2025-07-07 13:21:06'),
+(498, 11, '102.89.82.69', 'OYSCHST/2018/DST/057 Student score(41) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:21:10', '2025-07-07 13:21:10', '2025-07-07 13:21:10'),
+(499, 11, '102.89.82.69', 'OYSCHST/2018/DST/058 Student score(55) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:21:15', '2025-07-07 13:21:15', '2025-07-07 13:21:15'),
+(500, 11, '102.89.82.69', 'OYSCHST/2018/DST/058 Student score(50) for Human Biology 1 (Anatomy & Physiology)(HB 1 101) updated by Sodiq Sulaiman A', '2025-07-07 13:21:18', '2025-07-07 13:21:18', '2025-07-07 13:21:18'),
+(501, 11, '102.89.82.69', 'OYSCHST/2018/DST/058 Student score(50) for Physics/Chemistry(PHY & CHE 101) updated by Sodiq Sulaiman A', '2025-07-07 13:21:20', '2025-07-07 13:21:20', '2025-07-07 13:21:20'),
+(502, 11, '102.89.82.69', 'OYSCHST/2018/DST/058 Student score(54) for Behavioural Science(BHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:21:25', '2025-07-07 13:21:25', '2025-07-07 13:21:25'),
+(503, 11, '102.89.82.69', 'OYSCHST/2018/DST/058 Student score(50) for The Use of English Languge(GNS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:21:28', '2025-07-07 13:21:28', '2025-07-07 13:21:28'),
+(504, 11, '102.89.82.69', 'OYSCHST/2018/DST/058 Student score(50) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 13:21:30', '2025-07-07 13:21:30', '2025-07-07 13:21:30'),
+(505, 11, '102.89.82.69', 'OYSCHST/2018/DST/058 Student score(53) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:21:33', '2025-07-07 13:21:33', '2025-07-07 13:21:33'),
+(506, 11, '102.89.82.69', 'OYSCHST/2018/DST/059 Student score(50) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:21:37', '2025-07-07 13:21:37', '2025-07-07 13:21:37'),
+(507, 11, '102.89.82.69', 'OYSCHST/2018/DST/059 Student score(55) for Human Biology 1 (Anatomy & Physiology)(HB 1 101) updated by Sodiq Sulaiman A', '2025-07-07 13:21:39', '2025-07-07 13:21:39', '2025-07-07 13:21:39'),
+(508, 11, '102.89.82.69', 'OYSCHST/2018/DST/059 Student score(56) for Physics/Chemistry(PHY & CHE 101) updated by Sodiq Sulaiman A', '2025-07-07 13:21:41', '2025-07-07 13:21:41', '2025-07-07 13:21:41'),
+(509, 11, '102.89.82.69', 'OYSCHST/2018/DST/059 Student score(54) for Behavioural Science(BHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:21:43', '2025-07-07 13:21:43', '2025-07-07 13:21:43'),
+(510, 11, '102.89.82.69', 'OYSCHST/2018/DST/059 Student score(50) for The Use of English Languge(GNS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:21:46', '2025-07-07 13:21:46', '2025-07-07 13:21:46'),
+(511, 11, '102.89.82.69', 'OYSCHST/2018/DST/059 Student score(55) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 13:21:47', '2025-07-07 13:21:47', '2025-07-07 13:21:47'),
+(512, 11, '102.89.82.69', 'OYSCHST/2018/DST/059 Student score(53) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:21:55', '2025-07-07 13:21:55', '2025-07-07 13:21:55'),
+(513, 11, '102.89.82.69', 'OYSCHST/2018/DST/060 Student score(75) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:22:02', '2025-07-07 13:22:02', '2025-07-07 13:22:02');
+INSERT INTO `log_activities` (`id`, `user_id`, `ip_address`, `activity`, `activity_date`, `created_at`, `updated_at`) VALUES
+(514, 11, '102.89.82.69', 'OYSCHST/2018/DST/060 Student score(75) for Human Biology 1 (Anatomy & Physiology)(HB 1 101) updated by Sodiq Sulaiman A', '2025-07-07 13:22:04', '2025-07-07 13:22:04', '2025-07-07 13:22:04'),
+(515, 11, '102.89.82.69', 'OYSCHST/2018/DST/060 Student score(63) for Physics/Chemistry(PHY & CHE 101) updated by Sodiq Sulaiman A', '2025-07-07 13:22:07', '2025-07-07 13:22:07', '2025-07-07 13:22:07'),
+(516, 11, '102.89.82.69', 'OYSCHST/2018/DST/060 Student score(81) for Behavioural Science(BHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:22:09', '2025-07-07 13:22:09', '2025-07-07 13:22:09'),
+(517, 11, '102.89.82.69', 'OYSCHST/2018/DST/060 Student score(71) for The Use of English Languge(GNS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:22:12', '2025-07-07 13:22:12', '2025-07-07 13:22:12'),
+(518, 11, '102.89.82.69', 'OYSCHST/2018/DST/060 Student score(86) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 13:22:16', '2025-07-07 13:22:16', '2025-07-07 13:22:16'),
+(519, 11, '102.89.82.69', 'OYSCHST/2018/DST/060 Student score(79) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:22:19', '2025-07-07 13:22:19', '2025-07-07 13:22:19'),
+(520, 11, '102.89.82.69', 'OYSCHST/2018/DST/061 Student score(56) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:22:29', '2025-07-07 13:22:29', '2025-07-07 13:22:29'),
+(521, 11, '102.89.82.69', 'OYSCHST/2018/DST/061 Student score(50) for Human Biology 1 (Anatomy & Physiology)(HB 1 101) updated by Sodiq Sulaiman A', '2025-07-07 13:22:32', '2025-07-07 13:22:32', '2025-07-07 13:22:32'),
+(522, 11, '102.89.82.69', 'OYSCHST/2018/DST/061 Student score(58) for Physics/Chemistry(PHY & CHE 101) updated by Sodiq Sulaiman A', '2025-07-07 13:22:36', '2025-07-07 13:22:36', '2025-07-07 13:22:36'),
+(523, 11, '102.89.82.69', 'OYSCHST/2018/DST/061 Student score(58) for Behavioural Science(BHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:22:39', '2025-07-07 13:22:39', '2025-07-07 13:22:39'),
+(524, 11, '102.89.82.69', 'OYSCHST/2018/DST/061 Student score(51) for The Use of English Languge(GNS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:22:42', '2025-07-07 13:22:42', '2025-07-07 13:22:42'),
+(525, 11, '102.89.82.69', 'OYSCHST/2018/DST/061 Student score(56) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 13:22:44', '2025-07-07 13:22:44', '2025-07-07 13:22:44'),
+(526, 11, '102.89.82.69', 'OYSCHST/2018/DST/061 Student score(63) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:22:52', '2025-07-07 13:22:52', '2025-07-07 13:22:52'),
+(527, 11, '102.89.82.69', 'OYSCHST/2018/DST/062 Student score(65) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:23:00', '2025-07-07 13:23:00', '2025-07-07 13:23:00'),
+(528, 11, '102.89.82.69', 'OYSCHST/2018/DST/062 Student score(57) for Human Biology 1 (Anatomy & Physiology)(HB 1 101) updated by Sodiq Sulaiman A', '2025-07-07 13:23:04', '2025-07-07 13:23:04', '2025-07-07 13:23:04'),
+(529, 11, '102.89.82.69', 'OYSCHST/2018/DST/062 Student score(50) for Physics/Chemistry(PHY & CHE 101) updated by Sodiq Sulaiman A', '2025-07-07 13:23:06', '2025-07-07 13:23:06', '2025-07-07 13:23:06'),
+(530, 11, '102.89.82.69', 'OYSCHST/2018/DST/062 Student score(62) for Behavioural Science(BHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:23:09', '2025-07-07 13:23:09', '2025-07-07 13:23:09'),
+(531, 11, '102.89.82.69', 'OYSCHST/2018/DST/062 Student score(50) for The Use of English Languge(GNS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:23:15', '2025-07-07 13:23:15', '2025-07-07 13:23:15'),
+(532, 11, '102.89.82.69', 'OYSCHST/2018/DST/062 Student score(59) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 13:23:16', '2025-07-07 13:23:16', '2025-07-07 13:23:16'),
+(533, 11, '102.89.82.69', 'OYSCHST/2018/DST/062 Student score(59) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:23:24', '2025-07-07 13:23:24', '2025-07-07 13:23:24'),
+(534, 11, '102.89.82.69', 'OYSCHST/2018/DST/063 Student score(71) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:23:30', '2025-07-07 13:23:30', '2025-07-07 13:23:30'),
+(535, 11, '102.89.82.69', 'OYSCHST/2018/DST/063 Student score(77) for Human Biology 1 (Anatomy & Physiology)(HB 1 101) updated by Sodiq Sulaiman A', '2025-07-07 13:23:33', '2025-07-07 13:23:33', '2025-07-07 13:23:33'),
+(536, 11, '102.89.82.69', 'OYSCHST/2018/DST/063 Student score(65) for Physics/Chemistry(PHY & CHE 101) updated by Sodiq Sulaiman A', '2025-07-07 13:23:36', '2025-07-07 13:23:36', '2025-07-07 13:23:36'),
+(537, 11, '102.89.82.69', 'OYSCHST/2018/DST/063 Student score(76) for Behavioural Science(BHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:23:39', '2025-07-07 13:23:39', '2025-07-07 13:23:39'),
+(538, 11, '102.89.82.69', 'OYSCHST/2018/DST/063 Student score(64) for The Use of English Languge(GNS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:23:42', '2025-07-07 13:23:42', '2025-07-07 13:23:42'),
+(539, 11, '102.89.82.69', 'OYSCHST/2018/DST/063 Student score(73) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 13:23:44', '2025-07-07 13:23:44', '2025-07-07 13:23:44'),
+(540, 11, '102.89.82.69', 'OYSCHST/2018/DST/063 Student score(85) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:23:48', '2025-07-07 13:23:48', '2025-07-07 13:23:48'),
+(541, 11, '102.89.82.69', 'OYSCHST/2018/DST/064 Student score(68) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:23:53', '2025-07-07 13:23:53', '2025-07-07 13:23:53'),
+(542, 11, '102.89.82.69', 'OYSCHST/2018/DST/064 Student score(66) for Human Biology 1 (Anatomy & Physiology)(HB 1 101) updated by Sodiq Sulaiman A', '2025-07-07 13:23:55', '2025-07-07 13:23:55', '2025-07-07 13:23:55'),
+(543, 11, '102.89.82.69', 'OYSCHST/2018/DST/064 Student score(50) for Physics/Chemistry(PHY & CHE 101) updated by Sodiq Sulaiman A', '2025-07-07 13:23:57', '2025-07-07 13:23:57', '2025-07-07 13:23:57'),
+(544, 11, '102.89.82.69', 'OYSCHST/2018/DST/064 Student score(66) for Behavioural Science(BHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:23:59', '2025-07-07 13:23:59', '2025-07-07 13:23:59'),
+(545, 11, '102.89.82.69', 'OYSCHST/2018/DST/064 Student score(66) for The Use of English Languge(GNS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:24:03', '2025-07-07 13:24:03', '2025-07-07 13:24:03'),
+(546, 11, '102.89.82.69', 'OYSCHST/2018/DST/064 Student score(63) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 13:24:04', '2025-07-07 13:24:04', '2025-07-07 13:24:04'),
+(547, 11, '102.89.82.69', 'OYSCHST/2018/DST/064 Student score(61) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:24:11', '2025-07-07 13:24:11', '2025-07-07 13:24:11'),
+(548, 11, '102.89.82.69', 'OYSCHST/2018/DST/065 Student score(55) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:24:14', '2025-07-07 13:24:14', '2025-07-07 13:24:14'),
+(549, 11, '102.89.82.69', 'OYSCHST/2018/DST/065 Student score(65) for Human Biology 1 (Anatomy & Physiology)(HB 1 101) updated by Sodiq Sulaiman A', '2025-07-07 13:24:18', '2025-07-07 13:24:18', '2025-07-07 13:24:18'),
+(550, 11, '102.89.82.69', 'OYSCHST/2018/DST/065 Student score(58) for Physics/Chemistry(PHY & CHE 101) updated by Sodiq Sulaiman A', '2025-07-07 13:24:20', '2025-07-07 13:24:20', '2025-07-07 13:24:20'),
+(551, 11, '102.89.82.69', 'OYSCHST/2018/DST/065 Student score(83) for Behavioural Science(BHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:24:24', '2025-07-07 13:24:24', '2025-07-07 13:24:24'),
+(552, 11, '102.89.82.69', 'OYSCHST/2018/DST/065 Student score(68) for The Use of English Languge(GNS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:24:26', '2025-07-07 13:24:26', '2025-07-07 13:24:26'),
+(553, 11, '102.89.82.69', 'OYSCHST/2018/DST/065 Student score(80) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 13:24:28', '2025-07-07 13:24:28', '2025-07-07 13:24:28'),
+(554, 11, '102.89.82.69', 'OYSCHST/2018/DST/065 Student score(73) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:24:32', '2025-07-07 13:24:32', '2025-07-07 13:24:32'),
+(555, 11, '102.89.82.69', 'OYSCHST/2018/DST/066 Student score(77) for Introduction to Dental Science(IDS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:24:36', '2025-07-07 13:24:36', '2025-07-07 13:24:36'),
+(556, 11, '102.89.82.69', 'OYSCHST/2018/DST/066 Student score(80) for Human Biology 1 (Anatomy & Physiology)(HB 1 101) updated by Sodiq Sulaiman A', '2025-07-07 13:24:38', '2025-07-07 13:24:38', '2025-07-07 13:24:38'),
+(557, 11, '102.89.82.69', 'OYSCHST/2018/DST/066 Student score(67) for Physics/Chemistry(PHY & CHE 101) updated by Sodiq Sulaiman A', '2025-07-07 13:24:44', '2025-07-07 13:24:44', '2025-07-07 13:24:44'),
+(558, 11, '102.89.82.69', 'OYSCHST/2018/DST/066 Student score(80) for Behavioural Science(BHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:24:47', '2025-07-07 13:24:47', '2025-07-07 13:24:47'),
+(559, 11, '102.89.82.69', 'OYSCHST/2018/DST/066 Student score(69) for The Use of English Languge(GNS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:24:50', '2025-07-07 13:24:50', '2025-07-07 13:24:50'),
+(560, 11, '102.89.82.69', 'OYSCHST/2018/DST/066 Student score(85) for Primary Health Care(PHC 101) updated by Sodiq Sulaiman A', '2025-07-07 13:24:53', '2025-07-07 13:24:53', '2025-07-07 13:24:53'),
+(561, 11, '102.89.82.69', 'OYSCHST/2018/DST/066 Student score(93) for Oral Health Sciences(OHS 101) updated by Sodiq Sulaiman A', '2025-07-07 13:25:37', '2025-07-07 13:25:37', '2025-07-07 13:25:37');
 
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `migrations`
 --
-
+DROP TABLE IF EXISTS `migrations`;
 CREATE TABLE `migrations` (
   `id` int(10) UNSIGNED NOT NULL,
   `migration` varchar(100) NOT NULL,
@@ -1320,19 +1815,26 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 --
 -- Table structure for table `password_reset_tokens`
 --
-
+DROP TABLE IF EXISTS `password_reset_tokens`;
 CREATE TABLE `password_reset_tokens` (
   `email` varchar(100) NOT NULL,
   `token` varchar(100) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `password_reset_tokens`
+--
+
+INSERT INTO `password_reset_tokens` (`email`, `token`, `created_at`) VALUES
+('sodiqsulaimanabidemi@gmail.com', '$2y$12$BwHDv6CYMTlyoajSnBvkROaKcTan8aoaQFq8wTphjGswsR3YT3SDi', '2025-07-07 12:07:00');
+
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `payment_transactions`
 --
-
+DROP TABLE IF EXISTS `payment_transactions`;
 CREATE TABLE `payment_transactions` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `user_id` int(11) NOT NULL,
@@ -1360,7 +1862,7 @@ CREATE TABLE `payment_transactions` (
 --
 -- Table structure for table `personal_access_tokens`
 --
-
+DROP TABLE IF EXISTS `personal_access_tokens`;
 CREATE TABLE `personal_access_tokens` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `tokenable_type` varchar(100) NOT NULL,
@@ -1379,7 +1881,7 @@ CREATE TABLE `personal_access_tokens` (
 --
 -- Table structure for table `registrations`
 --
-
+DROP TABLE IF EXISTS `registrations`;
 CREATE TABLE `registrations` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `sn` int(5) DEFAULT NULL,
@@ -5173,16 +5675,14 @@ INSERT INTO `registrations` (`id`, `sn`, `admission_no`, `reg_no`, `admission_ye
 (3740, 0, 'EHTO2023007', '20231112', '2023', '2023', 'OLAWOYIN SHADIAT OLAMIDE', '', '', 'ND(WAHEB) in Environmental Health Technology(OKEHO)', 'NDI', 'STUDENT', '20231112', '', 'OLAWOYIN SHADIAT OLAMIDE', '', '', 'Female', '0000-00-00', '2023/2024', '', 0, NULL, NULL),
 (3741, 0, 'EHTO2023008', '20231108', '2023', '2023', 'OYELADE AWAWU MODUPE', '', '', 'ND(WAHEB) in Environmental Health Technology(OKEHO)', 'NDI', 'STUDENT', '20231108', '', 'OYELADE AWAWU MODUPE', '', '', 'Female', '0000-00-00', '2023/2024', '', 0, NULL, NULL),
 (3742, 0, 'EHTO2023009', '20231113', '2023', '2023', 'OJELEYE OPEYEMI OLAMIDE', '', '', 'ND(WAHEB) in Environmental Health Technology(OKEHO)', 'NDI', 'STUDENT', '20231113', '', 'OJELEYE OPEYEMI OLAMIDE', '', '', 'Female', '0000-00-00', '2023/2024', '', 0, NULL, NULL),
-(3743, 72, 'OYSCHST2016/HIM/001', 'OYSCHST201', '2003', '2003', 'HALIMAT', 'TOLANI', 'SULAIMAN', 'Professional Diploma in Health Information Management', '100', 'STUDENT', 'blank', 'female', 'HALIMAT TOLANI SULAIMAN', '', '', 'OYO', '0000-00-00', '2003/2004', '', 0, NULL, NULL),
-(3744, 1, 'MSW2024001', '2024001', '2024', '2024', 'ADEPOJU', 'MATHEW', 'KOLADE', 'Diploma in Community Health(CHEW)', '100', 'STUDENT', '2024001', 'male', 'ADEPOJU MATHEW KOLADE', '', '', 'OYO', '0000-00-00', '2024/2025', '', 0, NULL, NULL),
-(3745, 2, 'MSW2024002', '2024002', '2024', '2024', 'ALAMU', 'IFEOLUWA', 'TOPE', 'Diploma in Community Health(CHEW)', '100', 'STUDENT', '2024002', 'female', 'ALAMU IFEOLUWA TOPE', '', '', 'OYO', '0000-00-00', '2024/2025', '', 0, NULL, NULL);
+(3743, 72, 'OYSCHST2016/HIM/001', 'OYSCHST201', '2003', '2003', 'HALIMAT', 'TOLANI', 'SULAIMAN', 'Professional Diploma in Health Information Management', '100', 'STUDENT', 'blank', 'female', 'HALIMAT TOLANI SULAIMAN', '', '', 'OYO', '0000-00-00', '2003/2004', '', 0, NULL, NULL);
 
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `results`
 --
-
+DROP TABLE IF EXISTS `results`;
 CREATE TABLE `results` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `admission_no` varchar(20) NOT NULL,
@@ -8772,15 +9272,80 @@ INSERT INTO `results` (`id`, `admission_no`, `surname`, `first_name`, `other_nam
 (3439, 'DIH2020056', 'TAIWO', 'CHRISTIANA', 'MODUPEOLUWA', '100', 'First', '20200437', 'Professional Diploma in Health Information Management', 10, '2020', 0.0, 'Entrepreneurship', 0.0, 'Health Information Management 1', 0.0, 'Fundamentals of Medical Practice', 0.0, 'Communication in Health Information Management', 0.0, 'Mathematics for Health Information Management', 0.0, 'Human Anatomy and Physiology 1', 0.0, 'Descriptive Statistics 1', 0.0, 'Introduction to Computers', 0.0, 'Use of English 1', 0.0, 'Use of Library', 0.0, '', 0.0, '', 0.0, '', 0.0, '', 0.0, '', 0.0, '', 0.0, '', 0.0, '', 0.0, '', 2, 3, 2, 3, 2, 3, 2, 3, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 'EED 126', 'HIT 111', 'HIT 112', 'HIT 113', 'HIS 111', 'HIS 113', 'STA 114', 'COM 111', 'GNS 101', 'LIS 101', '', '', '', '', '', '', '', '', NULL, NULL),
 (3440, 'DIH2020057', 'TEGAN', 'RASHIDAT', 'ARINOLA', '100', 'First', '20200323', 'Professional Diploma in Health Information Management', 10, '2020', 0.0, 'Entrepreneurship', 0.0, 'Health Information Management 1', 0.0, 'Fundamentals of Medical Practice', 0.0, 'Communication in Health Information Management', 0.0, 'Mathematics for Health Information Management', 0.0, 'Human Anatomy and Physiology 1', 0.0, 'Descriptive Statistics 1', 0.0, 'Introduction to Computers', 0.0, 'Use of English 1', 0.0, 'Use of Library', 0.0, '', 0.0, '', 0.0, '', 0.0, '', 0.0, '', 0.0, '', 0.0, '', 0.0, '', 0.0, '', 2, 3, 2, 3, 2, 3, 2, 3, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 'EED 126', 'HIT 111', 'HIT 112', 'HIT 113', 'HIS 111', 'HIS 113', 'STA 114', 'COM 111', 'GNS 101', 'LIS 101', '', '', '', '', '', '', '', '', NULL, NULL),
 (3441, 'DIH2020058', 'WAHAB', 'ROFIAT', 'ADEBOLA', '100', 'First', '20200359', 'Professional Diploma in Health Information Management', 10, '2020', 0.0, 'Entrepreneurship', 0.0, 'Health Information Management 1', 0.0, 'Fundamentals of Medical Practice', 0.0, 'Communication in Health Information Management', 0.0, 'Mathematics for Health Information Management', 0.0, 'Human Anatomy and Physiology 1', 0.0, 'Descriptive Statistics 1', 0.0, 'Introduction to Computers', 0.0, 'Use of English 1', 0.0, 'Use of Library', 0.0, '', 0.0, '', 0.0, '', 0.0, '', 0.0, '', 0.0, '', 0.0, '', 0.0, '', 0.0, '', 2, 3, 2, 3, 2, 3, 2, 3, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 'EED 126', 'HIT 111', 'HIT 112', 'HIT 113', 'HIS 111', 'HIS 113', 'STA 114', 'COM 111', 'GNS 101', 'LIS 101', '', '', '', '', '', '', '', '', NULL, NULL),
-(3471, 'MSW2024001', 'ADEPOJU', 'MATHEW', 'KOLADE', '100', 'FIRST', '2024001', 'Diploma in Community Health(CHEW)', 12, '2024', 55.0, 'PROFESSIONAL ETHICS', 55.0, 'ANATOMY  AND PHYSIOLOGY 1', 67.0, 'BEHAVIOUR CHANGE COMMUNICATION', 87.0, 'HUMAN NUTRITION', 77.0, 'INTRODUCTION TO PRIMARY HEALTH CARE', 0.0, 'INTRODUCTION TO PSYCHOLOGY', 0.0, 'INTRODUCTION TO ENVIRONMETAL HEALTH', 0.0, 'INTRODUCTION TO COMPUTER', 0.0, 'INTRODUCTION TO MEDICAL SOCIOLOGY', 0.0, 'GEOGRAPHY', 59.0, 'CITIZENSHIP EDUCATION', 0.0, 'USE OF ENGLISH', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 2, 2, 2, 2, 1, 2, 2, 2, 1, 1, 2, NULL, NULL, NULL, NULL, NULL, NULL, 'CHE 211', 'CHE 212', 'CHE 213', 'CHE 214', 'CHE 215', 'GNS411', 'EHT 111', 'COM 111', 'GNS 213', 'FOT 111', 'GNS 111', 'GNS 101', NULL, NULL, NULL, NULL, NULL, NULL, '2025-06-21 03:13:18', '2025-06-21 21:03:17'),
-(3472, 'MSW2024002', 'ALAMU', 'IFEOLUWA', 'TOPE', '100', 'FIRST', '2024002', 'Diploma in Community Health(CHEW)', 12, '2024', 51.0, 'PROFESSIONAL ETHICS', 60.0, 'ANATOMY  AND PHYSIOLOGY 1', 76.0, 'BEHAVIOUR CHANGE COMMUNICATION', 56.0, 'HUMAN NUTRITION', 79.0, 'INTRODUCTION TO PRIMARY HEALTH CARE', 0.0, 'INTRODUCTION TO PSYCHOLOGY', 0.0, 'INTRODUCTION TO ENVIRONMETAL HEALTH', 0.0, 'INTRODUCTION TO COMPUTER', 0.0, 'INTRODUCTION TO MEDICAL SOCIOLOGY', 0.0, 'GEOGRAPHY', 65.0, 'CITIZENSHIP EDUCATION', 0.0, 'USE OF ENGLISH', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 2, 2, 2, 2, 1, 2, 2, 2, 1, 1, 2, NULL, NULL, NULL, NULL, NULL, NULL, 'CHE 211', 'CHE 212', 'CHE 213', 'CHE 214', 'CHE 215', 'GNS411', 'EHT 111', 'COM 111', 'GNS 213', 'FOT 111', 'GNS 111', 'GNS 101', NULL, NULL, NULL, NULL, NULL, NULL, '2025-06-21 03:13:18', '2025-06-21 21:03:19');
+(3473, 'OYSCHST/2018/DST/001', 'ABDULBAAKI MISTURAT MORENIKEJI', '', '', '100', 'FIRST', '20180424', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 67.0, 'Introduction to Dental Science', 56.0, 'Human Biology 1 (Anatomy & Physiology)', 50.0, 'Physics/Chemistry', 69.0, 'Behavioural Science', 50.0, 'The Use of English Languge', 50.0, 'Primary Health Care', 50.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 12:12:43'),
+(3474, 'OYSCHST/2018/DST/002', 'ABDULMUHMEEN AZEEZAT KIKELOMO', '', '', '100', 'FIRST', '20180554', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 69.0, 'Introduction to Dental Science', 52.0, 'Human Biology 1 (Anatomy & Physiology)', 50.0, 'Physics/Chemistry', 60.0, 'Behavioural Science', 61.0, 'The Use of English Languge', 50.0, 'Primary Health Care', 50.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 12:15:39'),
+(3475, 'OYSCHST/2018/DST/003', 'ABILAWON ADEDOYIN OMOLARA', '', '', '100', 'FIRST', '20180166', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 60.0, 'Introduction to Dental Science', 70.0, 'Human Biology 1 (Anatomy & Physiology)', 74.0, 'Physics/Chemistry', 75.0, 'Behavioural Science', 70.0, 'The Use of English Languge', 73.0, 'Primary Health Care', 71.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 12:18:18'),
+(3476, 'OYSCHST/2018/DST/004', 'ADAWA BLESSING ELIZABETH', '', '', '100', 'FIRST', '20180119', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 64.0, 'Introduction to Dental Science', 73.0, 'Human Biology 1 (Anatomy & Physiology)', 66.0, 'Physics/Chemistry', 73.0, 'Behavioural Science', 70.0, 'The Use of English Languge', 85.0, 'Primary Health Care', 79.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 12:22:56'),
+(3477, 'OYSCHST/2018/DST/005', 'ADEBAYO JANET ADESOLA', '', '', '100', 'FIRST', '20180198', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 64.0, 'Introduction to Dental Science', 50.0, 'Human Biology 1 (Anatomy & Physiology)', 64.0, 'Physics/Chemistry', 61.0, 'Behavioural Science', 66.0, 'The Use of English Languge', 52.0, 'Primary Health Care', 71.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 12:24:02'),
+(3478, 'OYSCHST/2018/DST/006', 'ADEDOYIN DAMILOLA MARY', '', '', '100', 'FIRST', '20180023', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 53.0, 'Introduction to Dental Science', 59.0, 'Human Biology 1 (Anatomy & Physiology)', 62.0, 'Physics/Chemistry', 76.0, 'Behavioural Science', 69.0, 'The Use of English Languge', 53.0, 'Primary Health Care', 63.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 12:25:11'),
+(3479, 'OYSCHST/2018/DST/007', 'ADEMOLU BABATUNDE QUADRI', '', '', '100', 'FIRST', '20180267', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 54.0, 'Introduction to Dental Science', 61.0, 'Human Biology 1 (Anatomy & Physiology)', 67.0, 'Physics/Chemistry', 59.0, 'Behavioural Science', 79.0, 'The Use of English Languge', 65.0, 'Primary Health Care', 58.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 12:26:06'),
+(3480, 'OYSCHST/2018/DST/008', 'ADEPOJU  RACHEAL  BOLUWATIFE', '', '', '100', 'FIRST', '20180707', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 61.0, 'Introduction to Dental Science', 76.0, 'Human Biology 1 (Anatomy & Physiology)', 58.0, 'Physics/Chemistry', 82.0, 'Behavioural Science', 72.0, 'The Use of English Languge', 67.0, 'Primary Health Care', 71.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 12:26:47'),
+(3481, 'OYSCHST/2018/DST/009', 'ADEPOJU DORCAS ADENIKE', '', '', '100', 'FIRST', '20180245', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 63.0, 'Introduction to Dental Science', 62.0, 'Human Biology 1 (Anatomy & Physiology)', 51.0, 'Physics/Chemistry', 56.0, 'Behavioural Science', 69.0, 'The Use of English Languge', 58.0, 'Primary Health Care', 58.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 12:27:25'),
+(3482, 'OYSCHST/2018/DST/010', 'ADERIBIGBE SHUKURAT OKIKIADE', '', '', '100', 'FIRST', '20180152', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 66.0, 'Introduction to Dental Science', 65.0, 'Human Biology 1 (Anatomy & Physiology)', 50.0, 'Physics/Chemistry', 75.0, 'Behavioural Science', 73.0, 'The Use of English Languge', 65.0, 'Primary Health Care', 72.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 12:29:24'),
+(3483, 'OYSCHST/2018/DST/011', 'ADESOYE ITUNUOLUWA GRACE', '', '', '100', 'FIRST', '20180276', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 56.0, 'Introduction to Dental Science', 63.0, 'Human Biology 1 (Anatomy & Physiology)', 50.0, 'Physics/Chemistry', 75.0, 'Behavioural Science', 66.0, 'The Use of English Languge', 60.0, 'Primary Health Care', 64.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 12:30:06'),
+(3484, 'OYSCHST/2018/DST/012', 'ADETEJU ABIGEAL DAMILOLA', '', '', '100', 'FIRST', '20180946', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 50.0, 'Introduction to Dental Science', 50.0, 'Human Biology 1 (Anatomy & Physiology)', 57.0, 'Physics/Chemistry', 50.0, 'Behavioural Science', 65.0, 'The Use of English Languge', 33.0, 'Primary Health Care', 44.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 12:32:20'),
+(3485, 'OYSCHST/2018/DST/013', 'ADETUNJI ENITAN OLAMIPOSI', '', '', '100', 'FIRST', '20180115', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 63.0, 'Introduction to Dental Science', 61.0, 'Human Biology 1 (Anatomy & Physiology)', 50.0, 'Physics/Chemistry', 50.0, 'Behavioural Science', 58.0, 'The Use of English Languge', 57.0, 'Primary Health Care', 63.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 12:33:18'),
+(3486, 'OYSCHST/2018/DST/014', 'ADETUNJI HALIMAT TEMITOPE', '', '', '100', 'FIRST', '20180668', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 61.0, 'Introduction to Dental Science', 50.0, 'Human Biology 1 (Anatomy & Physiology)', 52.0, 'Physics/Chemistry', 50.0, 'Behavioural Science', 50.0, 'The Use of English Languge', 50.0, 'Primary Health Care', 54.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 12:34:47'),
+(3487, 'OYSCHST/2018/DST/015', 'ADEWALE KARIMOT ABIODUN', '', '', '100', 'FIRST', '20180164', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 61.0, 'Introduction to Dental Science', 66.0, 'Human Biology 1 (Anatomy & Physiology)', 69.0, 'Physics/Chemistry', 70.0, 'Behavioural Science', 61.0, 'The Use of English Languge', 71.0, 'Primary Health Care', 56.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 12:40:36'),
+(3488, 'OYSCHST/2018/DST/016', 'ADEYEMI VICTORIA BOLUWATIFE', '', '', '100', 'FIRST', '20180408', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 56.0, 'Introduction to Dental Science', 50.0, 'Human Biology 1 (Anatomy & Physiology)', 50.0, 'Physics/Chemistry', 70.0, 'Behavioural Science', 60.0, 'The Use of English Languge', 50.0, 'Primary Health Care', 82.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 12:41:22'),
+(3489, 'OYSCHST/2018/DST/017', 'ADEYEMO ODUNAYO OLUWASEYI', '', '', '100', 'FIRST', '20180722', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 64.0, 'Introduction to Dental Science', 75.0, 'Human Biology 1 (Anatomy & Physiology)', 52.0, 'Physics/Chemistry', 80.0, 'Behavioural Science', 61.0, 'The Use of English Languge', 84.0, 'Primary Health Care', 75.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 12:41:55'),
+(3490, 'OYSCHST/2018/DST/018', 'ADIGUN BOLUWATIFE RUKAYAT', '', '', '100', 'FIRST', '20180519', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 64.0, 'Introduction to Dental Science', 65.0, 'Human Biology 1 (Anatomy & Physiology)', 62.0, 'Physics/Chemistry', 77.0, 'Behavioural Science', 65.0, 'The Use of English Languge', 68.0, 'Primary Health Care', 69.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 12:42:24'),
+(3491, 'OYSCHST/2018/DST/019', 'AJAGBE OLAYEMI SULIYAT', '', '', '100', 'FIRST', '20180130', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 0.0, 'Introduction to Dental Science', 0.0, 'Human Biology 1 (Anatomy & Physiology)', 0.0, 'Physics/Chemistry', 0.0, 'Behavioural Science', 0.0, 'The Use of English Languge', 0.0, 'Primary Health Care', 0.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 12:08:37'),
+(3492, 'OYSCHST/2018/DST/020', 'AJALA HAMMED ADISA', '', '', '100', 'FIRST', '20180877', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 51.0, 'Introduction to Dental Science', 50.0, 'Human Biology 1 (Anatomy & Physiology)', 62.0, 'Physics/Chemistry', 50.0, 'Behavioural Science', 51.0, 'The Use of English Languge', 51.0, 'Primary Health Care', 50.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 12:43:45'),
+(3493, 'OYSCHST/2018/DST/021', 'AJALA OLAWUMI IBIRONKE', '', '', '100', 'FIRST', '20180475', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 57.0, 'Introduction to Dental Science', 50.0, 'Human Biology 1 (Anatomy & Physiology)', 51.0, 'Physics/Chemistry', 73.0, 'Behavioural Science', 59.0, 'The Use of English Languge', 50.0, 'Primary Health Care', 66.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 12:44:51'),
+(3494, 'OYSCHST/2018/DST/022', 'AKANMU BLESSING RUTH', '', '', '100', 'FIRST', '20180933', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 76.0, 'Introduction to Dental Science', 66.0, 'Human Biology 1 (Anatomy & Physiology)', 62.0, 'Physics/Chemistry', 75.0, 'Behavioural Science', 72.0, 'The Use of English Languge', 76.0, 'Primary Health Care', 73.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 12:45:21'),
+(3495, 'OYSCHST/2018/DST/023', 'AKINADE OLOLADE OLUWAPELUMI', '', '', '100', 'FIRST', '20180565', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 73.0, 'Introduction to Dental Science', 72.0, 'Human Biology 1 (Anatomy & Physiology)', 51.0, 'Physics/Chemistry', 70.0, 'Behavioural Science', 63.0, 'The Use of English Languge', 76.0, 'Primary Health Care', 68.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 12:46:08'),
+(3496, 'OYSCHST/2018/DST/024', 'AKINBODE JANET OLAWUMI', '', '', '100', 'FIRST', '20180406', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 67.0, 'Introduction to Dental Science', 69.0, 'Human Biology 1 (Anatomy & Physiology)', 70.0, 'Physics/Chemistry', 60.0, 'Behavioural Science', 66.0, 'The Use of English Languge', 73.0, 'Primary Health Care', 72.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 12:47:11'),
+(3497, 'OYSCHST/2018/DST/025', 'AKINTOLA PONMILE ABIGEAL', '', '', '100', 'FIRST', '20180022', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 56.0, 'Introduction to Dental Science', 50.0, 'Human Biology 1 (Anatomy & Physiology)', 56.0, 'Physics/Chemistry', 63.0, 'Behavioural Science', 54.0, 'The Use of English Languge', 58.0, 'Primary Health Care', 50.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 12:50:40'),
+(3498, 'OYSCHST/2018/DST/026', 'AKINYO OLUWATOSIN DORCAS', '', '', '100', 'FIRST', '20180090', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 72.0, 'Introduction to Dental Science', 76.0, 'Human Biology 1 (Anatomy & Physiology)', 61.0, 'Physics/Chemistry', 77.0, 'Behavioural Science', 66.0, 'The Use of English Languge', 64.0, 'Primary Health Care', 75.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 12:54:59'),
+(3499, 'OYSCHST/2018/DST/027', 'ALADE FUNMILOLA EUNICE', '', '', '100', 'FIRST', '20180590', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 81.0, 'Introduction to Dental Science', 86.0, 'Human Biology 1 (Anatomy & Physiology)', 65.0, 'Physics/Chemistry', 66.0, 'Behavioural Science', 67.0, 'The Use of English Languge', 73.0, 'Primary Health Care', 70.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 13:01:20'),
+(3500, 'OYSCHST/2018/DST/028', 'AROWOSAYE SULIYAT OLAJUMOKE', '', '', '100', 'FIRST', '20180056', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 61.0, 'Introduction to Dental Science', 59.0, 'Human Biology 1 (Anatomy & Physiology)', 65.0, 'Physics/Chemistry', 73.0, 'Behavioural Science', 63.0, 'The Use of English Languge', 59.0, 'Primary Health Care', 47.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 13:02:23'),
+(3501, 'OYSCHST/2018/DST/029', 'AWOTOLA EBUNOLUWA BOLUWATIFE', '', '', '100', 'FIRST', '20180138', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 76.0, 'Introduction to Dental Science', 65.0, 'Human Biology 1 (Anatomy & Physiology)', 61.0, 'Physics/Chemistry', 72.0, 'Behavioural Science', 74.0, 'The Use of English Languge', 69.0, 'Primary Health Care', 80.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 13:02:50'),
+(3502, 'OYSCHST/2018/DST/030', 'BABAYEMI RHODA OLUWASEUN', '', '', '100', 'FIRST', '20180641', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 52.0, 'Introduction to Dental Science', 69.0, 'Human Biology 1 (Anatomy & Physiology)', 54.0, 'Physics/Chemistry', 56.0, 'Behavioural Science', 59.0, 'The Use of English Languge', 60.0, 'Primary Health Care', 66.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 13:04:39'),
+(3503, 'OYSCHST/2018/DST/031', 'BAMIDELE ADOSEDE ELIZABETH', '', '', '100', 'FIRST', '20180203', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 58.0, 'Introduction to Dental Science', 53.0, 'Human Biology 1 (Anatomy & Physiology)', 50.0, 'Physics/Chemistry', 55.0, 'Behavioural Science', 65.0, 'The Use of English Languge', 69.0, 'Primary Health Care', 54.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 13:05:01'),
+(3504, 'OYSCHST/2018/DST/032', 'BHADMUS NAIMOT OLUWASEUN', '', '', '100', 'FIRST', '20180091', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 65.0, 'Introduction to Dental Science', 56.0, 'Human Biology 1 (Anatomy & Physiology)', 51.0, 'Physics/Chemistry', 75.0, 'Behavioural Science', 60.0, 'The Use of English Languge', 50.0, 'Primary Health Care', 80.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 13:05:24'),
+(3505, 'OYSCHST/2018/DST/033', 'CALEB ADERONKE DEBORAH', '', '', '100', 'FIRST', '20180573', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 54.0, 'Introduction to Dental Science', 50.0, 'Human Biology 1 (Anatomy & Physiology)', 53.0, 'Physics/Chemistry', 65.0, 'Behavioural Science', 63.0, 'The Use of English Languge', 50.0, 'Primary Health Care', 60.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 13:05:53'),
+(3506, 'OYSCHST/2018/DST/034', 'EGUNLEYE OLUTOMI FUNMILOLA', '', '', '100', 'FIRST', '20180425', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 70.0, 'Introduction to Dental Science', 50.0, 'Human Biology 1 (Anatomy & Physiology)', 59.0, 'Physics/Chemistry', 63.0, 'Behavioural Science', 51.0, 'The Use of English Languge', 50.0, 'Primary Health Care', 60.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 13:06:29'),
+(3507, 'OYSCHST/2018/DST/035', 'ENIOLA MEMUNAT OMOSUNMIBOLA', '', '', '100', 'FIRST', '20180882', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 57.0, 'Introduction to Dental Science', 57.0, 'Human Biology 1 (Anatomy & Physiology)', 50.0, 'Physics/Chemistry', 65.0, 'Behavioural Science', 50.0, 'The Use of English Languge', 50.0, 'Primary Health Care', 61.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 13:06:49'),
+(3508, 'OYSCHST/2018/DST/036', 'GBADEGESIN  MARY  ADEDOYIN', '', '', '100', 'FIRST', '20180752', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 65.0, 'Introduction to Dental Science', 77.0, 'Human Biology 1 (Anatomy & Physiology)', 70.0, 'Physics/Chemistry', 83.0, 'Behavioural Science', 76.0, 'The Use of English Languge', 85.0, 'Primary Health Care', 85.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 13:07:17'),
+(3509, 'OYSCHST/2018/DST/037', 'GBENRO DAMILOLA FOLASHADE', '', '', '100', 'FIRST', '20180705', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 51.0, 'Introduction to Dental Science', 54.0, 'Human Biology 1 (Anatomy & Physiology)', 56.0, 'Physics/Chemistry', 60.0, 'Behavioural Science', 64.0, 'The Use of English Languge', 76.0, 'Primary Health Care', 55.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 13:08:46'),
+(3510, 'OYSCHST/2018/DST/038', 'JENRADE LATEEFAT OMOTOYOSI', '', '', '100', 'FIRST', '20180182', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 69.0, 'Introduction to Dental Science', 66.0, 'Human Biology 1 (Anatomy & Physiology)', 50.0, 'Physics/Chemistry', 75.0, 'Behavioural Science', 68.0, 'The Use of English Languge', 51.0, 'Primary Health Care', 65.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 13:09:10');
+INSERT INTO `results` (`id`, `admission_no`, `surname`, `first_name`, `other_name`, `class`, `semester`, `picture_dir`, `course`, `no_of_course`, `session1`, `score1`, `subject1`, `score2`, `subject2`, `score3`, `subject3`, `score4`, `subject4`, `score5`, `subject5`, `score6`, `subject6`, `score7`, `subject7`, `score8`, `subject8`, `score9`, `subject9`, `score10`, `subject10`, `score11`, `subject11`, `score12`, `subject12`, `score13`, `subject13`, `score14`, `subject14`, `score15`, `subject15`, `score16`, `subject16`, `score17`, `subject17`, `score18`, `subject18`, `score19`, `subject19`, `unit1`, `unit2`, `unit3`, `unit4`, `unit5`, `unit6`, `unit7`, `unit8`, `unit9`, `unit10`, `unit11`, `unit12`, `unit13`, `unit14`, `unit15`, `unit16`, `unit17`, `unit18`, `ctitle1`, `ctitle2`, `ctitle3`, `ctitle4`, `ctitle5`, `ctitle6`, `ctitle7`, `ctitle8`, `ctitle9`, `ctitle10`, `ctitle11`, `ctitle12`, `ctitle13`, `ctitle14`, `ctitle15`, `ctitle16`, `ctitle17`, `remark`, `created_at`, `updated_at`) VALUES
+(3511, 'OYSCHST/2018/DST/039', 'KILANI KAOSARAT ABIODUN', '', '', '100', 'FIRST', '20180876', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 65.0, 'Introduction to Dental Science', 72.0, 'Human Biology 1 (Anatomy & Physiology)', 60.0, 'Physics/Chemistry', 72.0, 'Behavioural Science', 65.0, 'The Use of English Languge', 69.0, 'Primary Health Care', 75.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 13:09:44'),
+(3512, 'OYSCHST/2018/DST/040', 'MARUFF RUKAYAT AFOLASADE', '', '', '100', 'FIRST', '20180140', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 58.0, 'Introduction to Dental Science', 52.0, 'Human Biology 1 (Anatomy & Physiology)', 58.0, 'Physics/Chemistry', 68.0, 'Behavioural Science', 51.0, 'The Use of English Languge', 50.0, 'Primary Health Care', 57.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 13:12:39'),
+(3513, 'OYSCHST/2018/DST/041', 'MUFUTAU ABIBAT ABAYOMI', '', '', '100', 'FIRST', '20180477', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 61.0, 'Introduction to Dental Science', 61.0, 'Human Biology 1 (Anatomy & Physiology)', 68.0, 'Physics/Chemistry', 50.0, 'Behavioural Science', 66.0, 'The Use of English Languge', 74.0, 'Primary Health Care', 61.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 13:13:05'),
+(3514, 'OYSCHST/2018/DST/042', 'MUSTAPHA MUJEEBAH OLAITAN', '', '', '100', 'FIRST', '20180390', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 68.0, 'Introduction to Dental Science', 76.0, 'Human Biology 1 (Anatomy & Physiology)', 65.0, 'Physics/Chemistry', 58.0, 'Behavioural Science', 77.0, 'The Use of English Languge', 77.0, 'Primary Health Care', 91.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 13:13:49'),
+(3515, 'OYSCHST/2018/DST/043', 'OGUNBODE BOSE OMOLARA', '', '', '100', 'FIRST', '20180601', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 53.0, 'Introduction to Dental Science', 50.0, 'Human Biology 1 (Anatomy & Physiology)', 50.0, 'Physics/Chemistry', 54.0, 'Behavioural Science', 50.0, 'The Use of English Languge', 50.0, 'Primary Health Care', 50.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 13:14:26'),
+(3516, 'OYSCHST/2018/DST/044', 'OGUNMODEDE BLESSED', '', '', '100', 'FIRST', '20180392', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 60.0, 'Introduction to Dental Science', 60.0, 'Human Biology 1 (Anatomy & Physiology)', 50.0, 'Physics/Chemistry', 61.0, 'Behavioural Science', 65.0, 'The Use of English Languge', 75.0, 'Primary Health Care', 54.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 13:15:18'),
+(3517, 'OYSCHST/2018/DST/045', 'OJEBISI ELIZABETH ADEWUNMI', '', '', '100', 'FIRST', '20180638', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 66.0, 'Introduction to Dental Science', 56.0, 'Human Biology 1 (Anatomy & Physiology)', 53.0, 'Physics/Chemistry', 72.0, 'Behavioural Science', 64.0, 'The Use of English Languge', 63.0, 'Primary Health Care', 66.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 13:15:41'),
+(3518, 'OYSCHST/2018/DST/046', 'OKE RITA AYOMIDE', '', '', '100', 'FIRST', '20180069', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 59.0, 'Introduction to Dental Science', 56.0, 'Human Biology 1 (Anatomy & Physiology)', 50.0, 'Physics/Chemistry', 61.0, 'Behavioural Science', 50.0, 'The Use of English Languge', 50.0, 'Primary Health Care', 56.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 13:16:09'),
+(3519, 'OYSCHST/2018/DST/047', 'OKEWOLE OLAJUMOKE MERCY', '', '', '100', 'FIRST', '20180013', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 59.0, 'Introduction to Dental Science', 59.0, 'Human Biology 1 (Anatomy & Physiology)', 54.0, 'Physics/Chemistry', 63.0, 'Behavioural Science', 60.0, 'The Use of English Languge', 59.0, 'Primary Health Care', 70.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 13:16:27'),
+(3520, 'OYSCHST/2018/DST/048', 'OKUNOYE OYINKANSOLA SANDRA', '', '', '100', 'FIRST', '20180943', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 69.0, 'Introduction to Dental Science', 65.0, 'Human Biology 1 (Anatomy & Physiology)', 52.0, 'Physics/Chemistry', 76.0, 'Behavioural Science', 54.0, 'The Use of English Languge', 64.0, 'Primary Health Care', 62.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 13:16:52'),
+(3521, 'OYSCHST/2018/DST/049', 'OLABISI NAFISAT ABIOLA', '', '', '100', 'FIRST', '20180186', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 59.0, 'Introduction to Dental Science', 50.0, 'Human Biology 1 (Anatomy & Physiology)', 59.0, 'Physics/Chemistry', 67.0, 'Behavioural Science', 63.0, 'The Use of English Languge', 50.0, 'Primary Health Care', 53.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 13:17:25'),
+(3522, 'OYSCHST/2018/DST/050', 'OLABODE YETUNDE GRACE', '', '', '100', 'FIRST', '20180210', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 73.0, 'Introduction to Dental Science', 76.0, 'Human Biology 1 (Anatomy & Physiology)', 62.0, 'Physics/Chemistry', 82.0, 'Behavioural Science', 60.0, 'The Use of English Languge', 73.0, 'Primary Health Care', 76.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 13:17:50'),
+(3523, 'OYSCHST/2018/DST/051', 'OLANIYAN OLUBISI ABIDEMI', '', '', '100', 'FIRST', '20180177', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 73.0, 'Introduction to Dental Science', 75.0, 'Human Biology 1 (Anatomy & Physiology)', 70.0, 'Physics/Chemistry', 73.0, 'Behavioural Science', 71.0, 'The Use of English Languge', 82.0, 'Primary Health Care', 83.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 13:18:15'),
+(3524, 'OYSCHST/2018/DST/052', 'OLANREWAJU SUBUOLA FLORENCE', '', '', '100', 'FIRST', '20180014', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 69.0, 'Introduction to Dental Science', 76.0, 'Human Biology 1 (Anatomy & Physiology)', 67.0, 'Physics/Chemistry', 65.0, 'Behavioural Science', 69.0, 'The Use of English Languge', 76.0, 'Primary Health Care', 79.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 13:18:35'),
+(3525, 'OYSCHST/2018/DST/053', 'OLAPADE OLAYINKA OPEYEMI', '', '', '100', 'FIRST', '20180942', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 65.0, 'Introduction to Dental Science', 82.0, 'Human Biology 1 (Anatomy & Physiology)', 73.0, 'Physics/Chemistry', 50.0, 'Behavioural Science', 70.0, 'The Use of English Languge', 61.0, 'Primary Health Care', 67.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 13:19:04'),
+(3526, 'OYSCHST/2018/DST/054', 'OLAWOORE TOLULOPE REBECCA', '', '', '100', 'FIRST', '20180178', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 72.0, 'Introduction to Dental Science', 76.0, 'Human Biology 1 (Anatomy & Physiology)', 69.0, 'Physics/Chemistry', 86.0, 'Behavioural Science', 70.0, 'The Use of English Languge', 82.0, 'Primary Health Care', 78.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 13:20:03'),
+(3527, 'OYSCHST/2018/DST/055', 'OLAWUMI ESTHER BUKOLA', '', '', '100', 'FIRST', '20180233', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 67.0, 'Introduction to Dental Science', 64.0, 'Human Biology 1 (Anatomy & Physiology)', 52.0, 'Physics/Chemistry', 70.0, 'Behavioural Science', 63.0, 'The Use of English Languge', 65.0, 'Primary Health Care', 55.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 13:20:22'),
+(3528, 'OYSCHST/2018/DST/056', 'OLAYIWOLA ISRAEL OLUMAKINWA', '', '', '100', 'FIRST', '20180294', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 59.0, 'Introduction to Dental Science', 58.0, 'Human Biology 1 (Anatomy & Physiology)', 50.0, 'Physics/Chemistry', 67.0, 'Behavioural Science', 50.0, 'The Use of English Languge', 50.0, 'Primary Health Care', 63.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 13:20:45'),
+(3529, 'OYSCHST/2018/DST/057', 'OLAYIWOLA MARIAM ABIMBOLA', '', '', '100', 'FIRST', '20180815', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 51.0, 'Introduction to Dental Science', 50.0, 'Human Biology 1 (Anatomy & Physiology)', 36.0, 'Physics/Chemistry', 72.0, 'Behavioural Science', 43.0, 'The Use of English Languge', 29.0, 'Primary Health Care', 41.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 13:21:10'),
+(3530, 'OYSCHST/2018/DST/058', 'OLOWOOKERE DEBORAH AYOBAMI', '', '', '100', 'FIRST', '20180136', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 55.0, 'Introduction to Dental Science', 50.0, 'Human Biology 1 (Anatomy & Physiology)', 50.0, 'Physics/Chemistry', 54.0, 'Behavioural Science', 50.0, 'The Use of English Languge', 50.0, 'Primary Health Care', 53.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 13:21:33'),
+(3531, 'OYSCHST/2018/DST/059', 'OLOYEDE KAFILAT ADENIKE', '', '', '100', 'FIRST', '20180580', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 50.0, 'Introduction to Dental Science', 55.0, 'Human Biology 1 (Anatomy & Physiology)', 56.0, 'Physics/Chemistry', 54.0, 'Behavioural Science', 50.0, 'The Use of English Languge', 55.0, 'Primary Health Care', 53.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 13:21:55'),
+(3532, 'OYSCHST/2018/DST/060', 'OPEOLA FAITH IFEOLUWA', '', '', '100', 'FIRST', '20180097', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 75.0, 'Introduction to Dental Science', 75.0, 'Human Biology 1 (Anatomy & Physiology)', 63.0, 'Physics/Chemistry', 81.0, 'Behavioural Science', 71.0, 'The Use of English Languge', 86.0, 'Primary Health Care', 79.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 13:22:19'),
+(3533, 'OYSCHST/2018/DST/061', 'OREOLUWA IBRAHIM OLAMIDE', '', '', '100', 'FIRST', '20180801', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 56.0, 'Introduction to Dental Science', 50.0, 'Human Biology 1 (Anatomy & Physiology)', 58.0, 'Physics/Chemistry', 58.0, 'Behavioural Science', 51.0, 'The Use of English Languge', 56.0, 'Primary Health Care', 63.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 13:22:52'),
+(3534, 'OYSCHST/2018/DST/062', 'ORIADE ANUOLUWAPO GRACE', '', '', '100', 'FIRST', '20180617', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 65.0, 'Introduction to Dental Science', 57.0, 'Human Biology 1 (Anatomy & Physiology)', 50.0, 'Physics/Chemistry', 62.0, 'Behavioural Science', 50.0, 'The Use of English Languge', 59.0, 'Primary Health Care', 59.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 13:23:24'),
+(3535, 'OYSCHST/2018/DST/063', 'OWOADE  TESLIMOT  ADENIKE', '', '', '100', 'FIRST', '20180905', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 71.0, 'Introduction to Dental Science', 77.0, 'Human Biology 1 (Anatomy & Physiology)', 65.0, 'Physics/Chemistry', 76.0, 'Behavioural Science', 64.0, 'The Use of English Languge', 73.0, 'Primary Health Care', 85.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 13:23:48'),
+(3536, 'OYSCHST/2018/DST/064', 'RAJI KABIRAT OMOSALEWA', '', '', '100', 'FIRST', '20180916', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 68.0, 'Introduction to Dental Science', 66.0, 'Human Biology 1 (Anatomy & Physiology)', 50.0, 'Physics/Chemistry', 66.0, 'Behavioural Science', 66.0, 'The Use of English Languge', 63.0, 'Primary Health Care', 61.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 13:24:11'),
+(3537, 'OYSCHST/2018/DST/065', 'SULAIMAN NAFISAT ADENIKE', '', '', '100', 'FIRST', '20180940', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 55.0, 'Introduction to Dental Science', 65.0, 'Human Biology 1 (Anatomy & Physiology)', 58.0, 'Physics/Chemistry', 83.0, 'Behavioural Science', 68.0, 'The Use of English Languge', 80.0, 'Primary Health Care', 73.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 13:24:32'),
+(3538, 'OYSCHST/2018/DST/066', 'TAOFEEQ BALIQIS AGBEKE', '', '', '100', 'FIRST', '20180941', 'Professional Diploma for Dental Surgery Technicians', 7, '2018', 77.0, 'Introduction to Dental Science', 80.0, 'Human Biology 1 (Anatomy & Physiology)', 67.0, 'Physics/Chemistry', 80.0, 'Behavioural Science', 69.0, 'The Use of English Languge', 85.0, 'Primary Health Care', 93.0, 'Oral Health Sciences', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 5, 1, 3, 2, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IDS 101', 'HB 1 101', 'PHY & CHE 101', 'BHS 101', 'GNS 101', 'PHC 101', 'OHS 101', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-07-07 12:08:37', '2025-07-07 13:25:37');
 
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `result_computes`
 --
-
+DROP TABLE IF EXISTS `result_computes`;
 CREATE TABLE `result_computes` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `admission_no` varchar(20) NOT NULL,
@@ -8953,7 +9518,7 @@ CREATE TABLE `result_computes` (
 --
 -- Table structure for table `student_acad_sessions`
 --
-
+DROP TABLE IF EXISTS `student_acad_sessions`;
 CREATE TABLE `student_acad_sessions` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `session1` varchar(100) NOT NULL,
@@ -8966,7 +9531,7 @@ CREATE TABLE `student_acad_sessions` (
 --
 -- Table structure for table `student_levels`
 --
-
+DROP TABLE IF EXISTS `student_levels`;
 CREATE TABLE `student_levels` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `level` varchar(100) NOT NULL,
@@ -8992,7 +9557,7 @@ INSERT INTO `student_levels` (`id`, `level`, `created_at`, `updated_at`) VALUES
 --
 -- Table structure for table `transcript_fees`
 --
-
+DROP TABLE IF EXISTS `transcript_fees`;
 CREATE TABLE `transcript_fees` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `fee_amount` double NOT NULL,
@@ -9005,7 +9570,7 @@ CREATE TABLE `transcript_fees` (
 --
 -- Table structure for table `transcript_uploads`
 --
-
+DROP TABLE IF EXISTS `transcript_uploads`;
 CREATE TABLE `transcript_uploads` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `user_id` int(11) NOT NULL,
@@ -9023,7 +9588,7 @@ CREATE TABLE `transcript_uploads` (
 --
 -- Table structure for table `users`
 --
-
+DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `department` varchar(100) DEFAULT NULL,
@@ -9069,17 +9634,24 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `department`, `last_name`, `first_name`, `email`, `email_verified_at`, `password`, `phone_no`, `user_type`, `user_status`, `user_type_status`, `email_verified_status`, `login_attempts`, `remember_token`, `class_list`, `result`, `result_entry`, `result_compute`, `semester_result`, `semester_summary`, `cgpa_summary`, `student_transcript`, `course_setup`, `score_sheet`, `access_setup`, `admins`, `instructors`, `students`, `student`, `student_registration`, `student_migration`, `hod_setup`, `grading_system`, `transcript`, `image`, `created_at`, `updated_at`) VALUES
-(1, NULL, 'Akinyooye', 'Akinfemi', 'admin@gmail.com', '2024-12-21 19:44:24', '$2y$12$x5zAbUJ8ncVsTOEa/zK2hetsVWi5qpjJtEImD/I0eDMwHg/paZ5De', '23409073829919', 'Superadmin', 'Active', '1', 1, 0, NULL, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, '67f40b760277e.jpg', NULL, '2025-04-08 00:29:26'),
-(2, 'PUBLIC HEALTH NURSING', 'Adeyinka', 'Temiloluwa', 'instructor@gmail.com', NULL, '$2y$12$30IXqKdCKpnzdvvHsZLJVOEM40h28OANUiDxriwwsqB.JqKFIgeLq', '23408123456789', 'Instructor', 'Active', '3', NULL, NULL, NULL, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, '67f40bdb7f366.jpg', NULL, '2025-04-08 00:31:07'),
-(5, NULL, 'Peter', 'Miracle', 'miracle.kingsbranding@gmail.com', NULL, '$2y$12$bSAUoAaykZIgcdv.irBxie8y.adbpsQEFbWvctvOHTa8ieW7.bkJu', NULL, 'Admin', 'Active', '2', 1, 0, NULL, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, '67f40b8b6e593.jpg', '2024-12-27 23:15:13', '2025-04-08 00:29:47'),
-(6, 'MEDICAL LABORATORY SCIENCE', 'Gbolagade', 'Abiodun', 'gbolagade2001@yahoo.com', NULL, '$2y$12$PrA3iQmAkHSTSAR3r3D0T.virmhP8zKNGhG/b3IYavjHiEVHe8p9S', NULL, 'Instructor', 'Active', '3', 1, 0, NULL, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 'blank.jpg', '2025-06-19 02:57:13', '2025-06-21 00:39:27');
+(1, NULL, 'Akinyooye', 'Akinfemi', 'admin@gmail.com', '2024-12-21 19:44:24', '$2y$12$GozFIKbu43OuTO7mjJNy1eZc9WGTAI7epdFAjoSe7tuhrw/3nRBpi', '07032689329', 'Superadmin', 'Active', '1', 1, 0, NULL, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, '67f40b760277e.jpg', NULL, '2025-06-26 08:59:17'),
+(7, 'PUBLIC HEALTH NURSING', 'Ashikabe', 'Sam', 'ashikabesam@gmail.com', NULL, '$2y$12$VUB5rgSDSs7RXDMG/n1COeLGRoRbuNuR9H7TMV29BfyTg.2oVVPbu', '08065192466', 'Admin', 'Active', '2', 1, 0, NULL, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 0, 0, 0, 0, '1751397423_IMG_20250413_102232_570~3.jpg', '2025-06-25 12:21:50', '2025-07-01 19:22:56'),
+(8, 'PUBLIC HEALTH NURSING', 'Adetutu', 'F.J', 'adetutumofoluwake@gmail.com', NULL, '$2y$12$i6lto2Cf5hIV4KvaJNiUpugc3BpCvw7x9XVb88vxYCBpZkWNHLSSq', '08105019825', 'Admin', 'Active', '2', 1, 0, NULL, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 0, 0, 0, 0, 'blank.jpg', '2025-06-25 12:25:58', '2025-06-25 12:25:58'),
+(9, 'PUBLIC HEALTH NURSING', 'Egbejimi', 'I.B', 'johnblessing400@gmail.com', NULL, '$2y$12$iVlCwQKq0puNhWQhiMG68uc2TOZWxXacovZcwf6dU/ytF3p/.DCqm', '07063260170', 'Admin', 'Active', '2', 1, 0, NULL, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 0, 0, 0, 0, 'blank.jpg', '2025-06-25 13:17:34', '2025-06-25 13:17:34'),
+(10, 'PUBLIC HEALTH NURSING', 'Opone', 'Caleb O', 'calebcr7.co@gmail.com', NULL, '$2y$12$jRTY42hoQwxXooYcQfqb0..2fF91sswF9nmF2XfXdvK1L4G8T4qIu', '08027619621', 'Admin', 'Active', '2', 1, 0, NULL, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 0, 0, 0, 0, 'blank.jpg', '2025-06-25 13:20:06', '2025-06-25 13:20:06'),
+(11, 'PUBLIC HEALTH NURSING', 'Sodiq', 'Sulaiman A', 'sodiqsulaimanabidemi@gmail.com', NULL, '$2y$12$MmASd9t1MDT5Ean2Gox.zeYT6I7s.UDKF5rn6nhTz7vDfuXGO31o6', '08050862679', 'Admin', 'Active', '2', 1, 0, NULL, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 0, 0, 0, 0, 'blank.jpg', '2025-06-25 13:22:14', '2025-07-07 12:07:15'),
+(12, 'PUBLIC HEALTH NURSING', 'Akindiji', 'Oluwayemisi D', 'akindijioluwayemisi@gmail.com', NULL, '$2y$12$FPhKM27nLHvUxoukdMCfnOaR78Q6J9m.6yASLy30izWHDWvW9cmL.', '08075487925', 'Admin', 'Active', '2', 1, 0, NULL, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 0, 0, 0, 0, 'blank.jpg', '2025-06-25 13:23:36', '2025-06-25 13:23:36'),
+(13, 'PUBLIC HEALTH NURSING', 'Gbolagade', 'Abiodun', 'gbolagade2001@gmail.com', NULL, '$2y$12$ckWE2s5wq9xHvZlUqx8TMuK7F9AOmwmfrRYkT08qhtV3vwomBYTlC', '08066701280', 'Admin', 'Active', '2', 1, 0, NULL, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 'blank.jpg', '2025-06-25 13:29:56', '2025-06-25 13:29:56'),
+(14, 'PUBLIC HEALTH NURSING', 'Hamzat', 'Ajibola', 'ajibolahamzat8@gmail.com', NULL, '$2y$12$vwkI7r2czulIdLotdh9L0uE4elKEd1ac/rzVHu3nhlUy8TJ89r5lG', '08080306385', 'Admin', 'Active', '2', 1, 0, NULL, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 'blank.jpg', '2025-06-25 14:24:21', '2025-06-25 14:24:21'),
+(15, 'PUBLIC HEALTH NURSING', 'Oyeniyi-Lamidi', 'A.R', 'lamidiadenike08@gmail.com', NULL, '$2y$12$rEry/a8fLWSfsO2OWbqXge8ucgprIoEJgy8nxwfzTYzI2SE0mViGq', '07030273525', 'Admin', 'Active', '2', 1, 0, NULL, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 1, 1, 0, 0, 0, 0, 'blank.jpg', '2025-06-29 12:20:14', '2025-06-29 12:20:14'),
+(16, 'PUBLIC HEALTH NURSING', 'Olanike', 'Mutiat Abimbola', 'olanikeabimbola@oyschst.edu.ng', NULL, '$2y$12$NoaRb31WKZFWdF6Y8hr30./hFdjajN3zeLmx.Fu9vjWtH5hf8B2bu', '07030747742', 'Admin', 'Active', '2', 1, 0, NULL, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 1, 1, 0, 0, 0, 0, 'blank.jpg', '2025-07-07 09:21:50', '2025-07-07 09:21:50');
 
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `user_clearances`
 --
-
+DROP TABLE IF EXISTS `user_clearances`;
 CREATE TABLE `user_clearances` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `clearance_no` varchar(100) NOT NULL,
@@ -9093,7 +9665,7 @@ CREATE TABLE `user_clearances` (
 --
 -- Table structure for table `user_programmes`
 --
-
+DROP TABLE IF EXISTS `user_programmes`;
 CREATE TABLE `user_programmes` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `programme` varchar(100) NOT NULL,
@@ -9107,7 +9679,7 @@ CREATE TABLE `user_programmes` (
 --
 -- Table structure for table `user_requests`
 --
-
+DROP TABLE IF EXISTS `user_requests`;
 CREATE TABLE `user_requests` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `user_id` int(11) NOT NULL,
@@ -9130,7 +9702,7 @@ CREATE TABLE `user_requests` (
 --
 -- Table structure for table `user_tracks`
 --
-
+DROP TABLE IF EXISTS `user_tracks`;
 CREATE TABLE `user_tracks` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `user_id` int(11) NOT NULL,
@@ -9147,7 +9719,7 @@ CREATE TABLE `user_tracks` (
 --
 -- Table structure for table `user_years`
 --
-
+DROP TABLE IF EXISTS `user_years`;
 CREATE TABLE `user_years` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `user_year` varchar(100) NOT NULL,
@@ -9346,7 +9918,7 @@ ALTER TABLE `administrator_control`
 -- AUTO_INCREMENT for table `course`
 --
 ALTER TABLE `course`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=832;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=846;
 
 --
 -- AUTO_INCREMENT for table `course_study`
@@ -9376,7 +9948,7 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT for table `failed_logins`
 --
 ALTER TABLE `failed_logins`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `grading_system`
@@ -9394,13 +9966,13 @@ ALTER TABLE `hods`
 -- AUTO_INCREMENT for table `instructors`
 --
 ALTER TABLE `instructors`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `log_activities`
 --
 ALTER TABLE `log_activities`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=81;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=562;
 
 --
 -- AUTO_INCREMENT for table `migrations`
@@ -9430,7 +10002,7 @@ ALTER TABLE `registrations`
 -- AUTO_INCREMENT for table `results`
 --
 ALTER TABLE `results`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3473;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3539;
 
 --
 -- AUTO_INCREMENT for table `result_computes`
@@ -9466,7 +10038,7 @@ ALTER TABLE `transcript_uploads`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `user_clearances`
