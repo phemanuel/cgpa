@@ -627,7 +627,7 @@
 <!-- index.html  21 Nov 2019 03:47:04 GMT -->
 </html>
 <!-- Include jQuery -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
 <script>
     // JavaScript for filtering the table
     function filterTable() {

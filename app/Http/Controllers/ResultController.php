@@ -34,7 +34,7 @@ class ResultController extends Controller
             return redirect()->back()->with('error', 'You do not have permission to this module.');
         }
 
-        $grading = GradingSystem::first();
+        $grading = GradingSystem::first(); 
         //---Log Activity------
                 if (auth()->check()) {
                     \App\Models\LogActivity::create([
@@ -195,11 +195,21 @@ class ResultController extends Controller
         if($rolePermission != 1) {
             return redirect()->back()->with('error', 'You do not have permission to this module.');
         }
-        
-        $programmes = CourseStudyAll::orderBy('department', 'asc')->get();
-        $allLevel = StudentLevel::all();        
 
-        return view('layout.result-entry-admin', compact('programmes','allLevel'));
+        if ($user->user_type_status == 1 || $user->department == "ICT") {
+            // Superadmin or ICT department → see all programmes
+            $programmes = CourseStudyAll::orderBy('department', 'asc')->get();
+        } else {
+            // Other users → only see their department’s programmes
+            $programmes = CourseStudyAll::where('dept', $user->department)
+                ->orderBy('department', 'asc')
+                ->get();
+        }
+
+        $allLevel = StudentLevel::all();
+
+        return view('layout.result-entry-admin', compact('programmes', 'allLevel'));
+
     }    
 
     public function resultEntryView($id)
@@ -574,7 +584,16 @@ class ResultController extends Controller
             return redirect()->back()->with('error', 'You do not have permission to this module.');
         }
         
-        $programmes = CourseStudyAll::orderBy('department', 'asc')->get();
+        if ($user->user_type_status == 1 || $user->department == "ICT") {
+            // Superadmin or ICT department → see all programmes
+            $programmes = CourseStudyAll::orderBy('department', 'asc')->get();
+        } else {
+            // Other users → only see their department’s programmes
+            $programmes = CourseStudyAll::where('dept', $user->department)
+                ->orderBy('department', 'asc')
+                ->get();
+        }
+
         $allLevel = StudentLevel::all();
 
         return view('layout.result-compute', compact('programmes','allLevel'));
@@ -2734,7 +2753,15 @@ class ResultController extends Controller
             return redirect()->back()->with('error', 'You do not have permission to this module.');
         }
         
-        $programmes = CourseStudyAll::orderBy('department', 'asc')->get();
+        if ($user->user_type_status == 1 || $user->department == "ICT") {
+            // Superadmin or ICT department → see all programmes
+            $programmes = CourseStudyAll::orderBy('department', 'asc')->get();
+        } else {
+            // Other users → only see their department’s programmes
+            $programmes = CourseStudyAll::where('dept', $user->department)
+                ->orderBy('department', 'asc')
+                ->get();
+        }
         $allLevel = StudentLevel::all();
 
         return view('layout.semester-result', compact('programmes','allLevel'));
@@ -2782,7 +2809,15 @@ class ResultController extends Controller
             return redirect()->back()->with('error', 'You do not have permission to this module.');
         }
         
-        $programmes = CourseStudyAll::orderBy('department', 'asc')->get();
+        if ($user->user_type_status == 1 || $user->department == "ICT") {
+            // Superadmin or ICT department → see all programmes
+            $programmes = CourseStudyAll::orderBy('department', 'asc')->get();
+        } else {
+            // Other users → only see their department’s programmes
+            $programmes = CourseStudyAll::where('dept', $user->department)
+                ->orderBy('department', 'asc')
+                ->get();
+        }
         $allLevel = StudentLevel::all();
 
         return view('layout.semester-result-summary', compact('programmes','allLevel'));
@@ -2829,7 +2864,15 @@ class ResultController extends Controller
             return redirect()->back()->with('error', 'You do not have permission to this module.');
         }
         
-        $programmes = CourseStudyAll::orderBy('department', 'asc')->get();
+         if ($user->user_type_status == 1 || $user->department == "ICT") {
+            // Superadmin or ICT department → see all programmes
+            $programmes = CourseStudyAll::orderBy('department', 'asc')->get();
+        } else {
+            // Other users → only see their department’s programmes
+            $programmes = CourseStudyAll::where('dept', $user->department)
+                ->orderBy('department', 'asc')
+                ->get();
+        }
         $allLevel = StudentLevel::all();        
 
         return view('results.student_transcript', compact('programmes','allLevel'));

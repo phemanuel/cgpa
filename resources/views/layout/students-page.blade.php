@@ -293,9 +293,9 @@
                     <li class="nav-item">
                         <a class="nav-link active" id="single-tab" data-toggle="tab" href="#single" role="tab">Register One</a>
                     </li>
-                    <li class="nav-item">
+                    <!-- <li class="nav-item">
                         <a class="nav-link" id="bulk-tab" data-toggle="tab" href="#bulk" role="tab">Import Bulk</a>
-                    </li>
+                    </li> -->
                     </ul>
 
                     <div class="tab-content" id="studentTabContent">

@@ -24,7 +24,7 @@ class StudentController extends Controller
                 return redirect()->back()->with('error', 'You do not have permission to this module.');
             }
         
-            $users = Registration::paginate(10);
+            $users = Registration::paginate(10); 
             $userCount = Registration::count();
             return view('layout.students', compact('users','userCount'));
         } catch (\Exception $e) {
