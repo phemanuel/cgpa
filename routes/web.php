@@ -161,6 +161,8 @@ Route::post('/reset-password', [CustomForgotPasswordController::class, 'resetPas
         ->name('semester-summary-action');
         Route::get('result/cgpa', [ResultController::class, 'cgpaSummary'])
         ->name('cgpa-summary');
+        Route::post('result/cgpa', [ResultController::class, 'cgpaSummaryAction'])
+        ->name('cgpa-summary-action');
         Route::get('result/transcript', [ResultController::class, 'studentTranscript'])
         ->name('student-transcript');
         Route::post('result/transcript', [ResultController::class, 'studentTranscriptAction'])

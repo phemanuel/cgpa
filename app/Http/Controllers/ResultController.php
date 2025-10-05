@@ -664,6 +664,12 @@ class ResultController extends Controller
             return redirect()->back()->with('error', 'The result has been computed already. You can either preview, or delete and recompute.');
         }
 
+        //----Get total course unit--------
+        $courseUnitTotal = Course::where('course', $programme)
+        ->where('semester', $semester)
+        ->where('level', $level)
+        ->sum('course_unit');  
+
         // Retrieve student results
         $results = Result::where('semester', $semester)
             ->where('class', $level)
@@ -722,7 +728,7 @@ class ResultController extends Controller
                 $subjectField = 'subject'. ($i + 1);
 
                 $examScore = $result->$scoreField ?? 0;
-                $courseUnit = (int) $result->$unitField ?? 0;
+                $courseUnit = (int) $result->$unitField ?? 0;                
                 $courseTitle = trim($result->$titleField ?? '');
                 $subjectTitle = trim($result->$subjectField ?? '');
 
@@ -739,7 +745,8 @@ class ResultController extends Controller
                     continue;
                 }
 
-                $totalCourseUnits += $courseUnit;
+                // $totalCourseUnits += $courseUnit;
+                $totalCourseUnits = $courseUnitTotal;
 
                 // Grade computation
                 $gradeUnit = 0;
@@ -897,6 +904,12 @@ class ResultController extends Controller
             return redirect()->back()->with('error', 'The result has been computed already. You can either preview, or delete and recompute.');
         }
 
+        //----Get total course unit--------
+        $courseUnitTotal = Course::where('course', $programme)
+        ->where('semester', $semester)
+        ->where('level', $level)
+        ->sum('course_unit');
+
         //--Get the GPA for the first semester------
         $stdGpaFirst = ResultCompute::where('semester', 'First')
         ->where('class', $level)
@@ -993,7 +1006,8 @@ class ResultController extends Controller
                     continue;
                 }
 
-                $totalCourseUnits += $courseUnit;
+                //$totalCourseUnits += $courseUnit;
+                $totalCourseUnits = $courseUnitTotal;
 
                 // Grade computation
                 $gradeUnit = 0;
@@ -1181,6 +1195,12 @@ class ResultController extends Controller
             return redirect()->back()->with('error', 'The result has been computed already. You can either preview, or delete and recompute.');
         }
 
+        //----Get total course unit--------
+        $courseUnitTotal = Course::where('course', $programme)
+        ->where('semester', $semester)
+        ->where('level', $level)
+        ->sum('course_unit');
+
         // Retrieve student results
         $results = Result::where('semester', $semester)
             ->where('class', $level)
@@ -1256,8 +1276,8 @@ class ResultController extends Controller
                     continue;
                 }
 
-                $totalCourseUnits += $courseUnit;
-
+                // $totalCourseUnits += $courseUnit;
+                $totalCourseUnits = $courseUnitTotal;
                 // Grade computation
                 $gradeUnit = 0;
                 $letter = 'F';
@@ -1415,6 +1435,12 @@ class ResultController extends Controller
             return redirect()->back()->with('error', 'The result has been computed already. You can either preview, or delete and recompute.');
         }
 
+        //----Get total course unit--------
+        $courseUnitTotal = Course::where('course', $programme)
+        ->where('semester', $semester)
+        ->where('level', $level)
+        ->sum('course_unit');
+
         //--Get the GPA for the first semester------
         $stdGpaFirst = ResultCompute::where('semester', 'First')
         ->where('class', $level)
@@ -1511,7 +1537,8 @@ class ResultController extends Controller
                     continue;
                 }
 
-                $totalCourseUnits += $courseUnit;
+                // $totalCourseUnits += $courseUnit;
+                $totalCourseUnits = $courseUnitTotal;
 
                 // Grade computation
                 $gradeUnit = 0;
@@ -1698,6 +1725,12 @@ class ResultController extends Controller
             return redirect()->back()->with('error', 'The result has been computed already. You can either preview, or delete and recompute.');
         }
 
+        //----Get total course unit--------
+        $courseUnitTotal = Course::where('course', $programme)
+        ->where('semester', $semester)
+        ->where('level', $level)
+        ->sum('course_unit');
+
         // Retrieve student results
         $results = Result::where('semester', $semester)
             ->where('class', $level)
@@ -1773,7 +1806,8 @@ class ResultController extends Controller
                     continue;
                 }
 
-                $totalCourseUnits += $courseUnit;
+                // $totalCourseUnits += $courseUnit;
+                $totalCourseUnits = $courseUnitTotal;
 
                 // Grade computation
                 $gradeUnit = 0;
@@ -1934,6 +1968,12 @@ class ResultController extends Controller
             return redirect()->back()->with('error', 'The result has been computed already. You can either preview, or delete and recompute.');
         }
 
+        //----Get total course unit--------
+        $courseUnitTotal = Course::where('course', $programme)
+        ->where('semester', $semester)
+        ->where('level', $level)
+        ->sum('course_unit');
+
         //--Get the GPA for the first semester------
         $stdGpaFirst = ResultCompute::where('semester', 'First')
         ->where('class', $level)
@@ -2030,7 +2070,8 @@ class ResultController extends Controller
                     continue;
                 }
 
-                $totalCourseUnits += $courseUnit;
+                // $totalCourseUnits += $courseUnit;
+                $totalCourseUnits = $courseUnitTotal;
 
                 // Grade computation
                 $gradeUnit = 0;
@@ -3015,8 +3056,146 @@ class ResultController extends Controller
 
     public function cgpaSummary()
     {
-        return redirect()->route('page-development'); 
+        // return redirect()->route('page-development'); 
+        $user = auth()->user();
+        $rolePermission = $user->result_compute;
+
+        if($rolePermission != 1) {
+            return redirect()->back()->with('error', 'You do not have permission to this module.');
+        }
+        
+        if ($user->user_type_status == 1 || $user->department == "ICT") {
+            // Superadmin or ICT department → see all programmes
+            $programmes = CourseStudyAll::orderBy('department', 'asc')->get();
+        } else {
+            // Other users → only see their department’s programmes
+            $programmes = CourseStudyAll::where('dept', $user->department)
+                ->orderBy('department', 'asc')
+                ->get();
+        }
+        $allLevel = StudentLevel::all();
+
+        return view('layout.cgpa-summary', compact('programmes','allLevel'));
     }
+
+    public function cgpaSummaryAction(Request $request)
+    {
+        $validated = $request->validate([
+            'programme'     => 'required|string',
+            'acad_session'  => 'required|string',
+        ]);
+
+        // Find programme details
+        $programmeInfo = CourseStudyAll::where('department', $validated['programme'])->first();
+        if (!$programmeInfo) {
+            return back()->with('error', 'Programme not found.');
+        }
+
+        $startLevel  = strtoupper($programmeInfo->start_level); 
+        $duration    = (int) $programmeInfo->duration;
+        $programme   = $validated['programme'];
+        $acadsession = $validated['acad_session'];
+
+        $allSequences = [
+            '100'  => ['100', '200', '300', '400'],
+            'NDI'  => ['NDI', 'NDII'],
+            'HNDI' => ['HNDI', 'HNDII'],
+        ];
+
+        $levels = array_slice($allSequences[$startLevel] ?? [], 0, $duration);
+        $semesters = ['First', 'Second'];
+        $cgpaData = [];
+
+        // Fetch distinct students
+        $students = ResultCompute::where('course', $programme)
+            ->where('session1', $acadsession)
+            ->select('admission_no', 'student_full_name')
+            ->distinct()
+            ->get();
+
+        foreach ($students as $student) {
+            $studentCgpaData = [];
+            $studentYearly   = [];
+
+            // --- New accumulators for weighted CGPA ---
+            $totalGradePoints = 0;
+            $totalUnits       = 0;
+
+            foreach ($levels as $level) {
+                $semesterGpas = [];
+
+                foreach ($semesters as $semester) {
+                    $result = ResultCompute::where('course', $programme)
+                        ->where('session1', $acadsession)
+                        ->where('class', $level)
+                        ->where('semester', $semester)
+                        ->where('admission_no', $student->admission_no)
+                        ->first();
+
+                    $gpa = $result->gpa ?? null;
+
+                    $studentCgpaData[] = [
+                        'level'     => $level,
+                        'semester'  => $semester,
+                        'gpa'       => $gpa,
+                        'cgpa'      => $result->cgpa ?? null,
+                        'available' => $result ? true : false,
+                    ];
+
+                    if ($gpa !== null) {
+                        $semesterGpas[] = $gpa;
+                    }
+
+                    // --- Add grade points and units for final CGPA calc ---
+                    if ($result && $result->total_grade_point && $result->total_course_unit) {
+                        $totalGradePoints += $result->total_grade_point;
+                        $totalUnits       += $result->total_course_unit;
+                    }
+                }
+
+                // Yearly CGPA (average of available semester GPAs)
+                if (count($semesterGpas) === 2) {
+                    $studentYearly[$level] = array_sum($semesterGpas) / 2;
+                } elseif (count($semesterGpas) === 1) {
+                    $studentYearly[$level] = $semesterGpas[0];
+                } else {
+                    $studentYearly[$level] = null;
+                }
+            }
+
+            // --- Final CGPA (weighted average) ---
+            $studentFinalCgpa = $totalUnits > 0 ? $totalGradePoints / $totalUnits : null;
+
+            $cgpaData[$student->admission_no] = [
+                'student'             => $student,
+                'semesters'           => $studentCgpaData,
+                'yearly'              => $studentYearly,
+                'final'               => $studentFinalCgpa,
+                'total_grade_points'  => $totalGradePoints,
+                'total_course_units'  => $totalUnits,
+            ];
+        }
+
+        // Log Activity
+        if (auth()->check()) {
+            \App\Models\LogActivity::create([
+                'user_id'       => auth()->id(),
+                'ip_address'    => request()->ip(),
+                'activity'      => "CGPA results summary for {$acadsession} {$programme} viewed by "
+                                    . auth()->user()->last_name . ' ' . auth()->user()->first_name,
+                'activity_date' => now(),
+            ]);
+        }
+
+        return view('layout.cgpa-summary-view', compact(
+            'cgpaData',
+            'programme',
+            'acadsession',
+            'levels',
+            'semesters'
+        ));
+    }
+
 
     public function resultResit(Request $request)
     {
