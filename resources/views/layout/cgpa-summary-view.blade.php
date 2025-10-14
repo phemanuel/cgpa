@@ -223,11 +223,11 @@
               <div class="card">
                 <div class="card-header"> 
                   <h4>
-                  <a href="{{route('semester-summary')}}"  class="btn btn-outline-primary">
+                  <a href="{{route('cgpa-summary')}}"  class="btn btn-outline-primary">
                   <i class="fas fa-arrow-left"></i> Back to Semester Summary Page
                   </a>                 
                   <button class="btn btn-success"
-                      onclick="exportTableToCSV('{{ $programme . '-' . '-' . str_replace('/', '-', $acadsession) . '-' . date('Y-m-d') }}.csv')">
+                      onclick="exportTableToCSV('{{ $programme . '-' . str_replace('/', '-', $acadsession) . '-' . date('Y-m-d') }}.csv')">
                       <i class="fas fa-file-csv"></i> Export CSV Report
                   </button>
                     <button class="btn btn-primary" onclick="printTable()">
