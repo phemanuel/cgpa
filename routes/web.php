@@ -44,6 +44,9 @@ Route::post('/reset-password', [CustomForgotPasswordController::class, 'resetPas
     // Login and signup routes
     Route::get('user-login', [AuthController::class, 'login'])->name('login');
     Route::post('user-login', [AuthController::class, 'loginAction'])->name('login.action');
+    //----------------------------
+    Route::get('student', [AuthController::class, 'studentLogin'])->name('student-login');
+    Route::post('student', [AuthController::class, 'studentLoginAction'])->name('student-login.action');
     
     Route::get('signup', [AuthController::class, 'signup'])->name('signup');
     Route::post('signup', [AuthController::class, 'signupAction'])->name('signup.action');
@@ -260,29 +263,41 @@ Route::post('/reset-password', [CustomForgotPasswordController::class, 'resetPas
             ->name('change-password');  
     });
 
-    //---Student Routes
-    Route::middleware('auth')->prefix('student')->group(function () {  
-        Route::get('dashboard', [DashboardController::class, 'index'])
-        ->name('dashboard');        
-        Route::get('request', [DashboardController::class, 'userRequest'])
-        ->name('user-request');
-        Route::post('request', [DashboardController::class, 'userRequestAction'])
-        ->name('user-request.action'); 
-        //--Payment routes--
-        Route::get('payment', [DashboardController::class, 'userPayment'])
-        ->name('user-payment');
-        Route::get('payment-check', [DashboardController::class, 'paymentCheck'])
-        ->name('payment-check');
-        Route::get('payment-error', [DashboardController::class, 'paymentError'])
-        ->name('payment-error');
-        Route::get('payment-report', [DashboardController::class, 'paymentReport'])
-        ->name('payment-report');    
-        Route::get('payment-status', [DashboardController::class, 'paymentStatus'])
-        ->name('payment-status'); 
-        Route::get('contact-us', [DashboardController::class, 'contactUs'])
-        ->name('contact-us');
+    // --- Student Routes---
+    Route::get('student/setup-password', [AuthController::class, 'showSetupPasswordForm'])
+        ->name('student-setup-password');
+    Route::post('student/setup-password', [AuthController::class, 'saveSetupPassword'])
+        ->name('student-setup-password.save');
 
+    // --- Student protected routes ---
+    Route::middleware(['auth:student'])->group(function () {
+        Route::get('/student/dashboard', [StudentController::class, 'index'])
+            ->name('dashboard');
+        
+        Route::get('/student/result', [StudentController::class, 'studentResult'])
+            ->name('student-result');
+
+        Route::get('request', [StudentController::class, 'userRequest'])
+            ->name('user-request');
+        Route::post('request', [StudentController::class, 'userRequestAction'])
+            ->name('user-request.action');
+
+        //-- Payment routes --
+        Route::get('payment', [StudentController::class, 'userPayment'])
+            ->name('user-payment');
+        Route::get('payment-check', [StudentController::class, 'paymentCheck'])
+            ->name('payment-check');
+        Route::get('payment-error', [StudentController::class, 'paymentError'])
+            ->name('payment-error');
+        Route::get('payment-report', [StudentController::class, 'paymentReport'])
+            ->name('payment-report');
+        Route::get('payment-status', [StudentController::class, 'paymentStatus'])
+            ->name('payment-status');
+        Route::get('contact-us', [StudentController::class, 'contactUs'])
+            ->name('contact-us');
     });
+
+   
     
     Route::get('test-file', [DashboardController::class, 'testFile'])
     ->name('test-file');

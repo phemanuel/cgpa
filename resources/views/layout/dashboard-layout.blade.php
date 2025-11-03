@@ -75,7 +75,7 @@
                 class="logo-name">E-Result</span>
             </a>
           </div>
-          @include('partials.sidebar')
+          @include('partials.student-sidebar')
         </aside>
       </div>
       <!-- Main Content -->

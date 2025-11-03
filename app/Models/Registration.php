@@ -4,12 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Registration extends Model
+class Registration extends Authenticatable
 {
     use HasFactory;
 
-    protected $table = 'registrations';    
+    protected $table = 'registrations';  
+
+    protected $primaryKey = 'id';  
 
     protected $fillable = [
         'admission_no',
@@ -33,5 +36,9 @@ class Registration extends Model
         'acad_session',
         'lga',
         'migrate_status',
+    ];
+
+    protected $hidden = [
+        'password',
     ];
 }

@@ -5,6 +5,13 @@ use App\Models\Registration;
 use App\Models\StudentLevel;
 use App\Models\CourseStudy;
 use App\Models\CourseStudyAll;
+use App\Models\UserTrack;
+use App\Models\UserRequests;
+use App\Models\UserProgramme;
+use App\Models\UserClearance;
+use App\Models\TranscriptFee;
+use App\Models\PaymentTransaction;
+use App\Models\TranscriptUpload;
 use Illuminate\Support\Facades\DB;
 use Validator;
 
@@ -13,6 +20,45 @@ use Illuminate\Http\Request;
 class StudentController extends Controller
 {
     //
+    public function index()
+    {
+        try {
+            // Get the currently authenticated student
+            $student = auth('student')->user();
+
+            // Example: get their ID or matricNo
+            $student_id = $student->id; 
+            $matric_no  = $student->matricNo;
+
+            // Use $student_id or $matric_no as needed in your queries
+            $user_track = UserTrack::where('user_id', $student_id)
+                ->orderBy('created_at', 'desc')
+                ->paginate(3);
+
+            $user_request = UserRequests::where('user_id', $student_id)
+                ->orderBy('created_at', 'desc')
+                ->paginate(3);
+
+            $user_payment = PaymentTransaction::where('user_id', $student_id)
+                ->orderBy('created_at', 'desc')
+                ->paginate(5);
+
+            $user_transcript = TranscriptUpload::where('user_id', $student_id)
+                ->get();
+            
+            return view('dashboard.dashboard', compact(
+                'user_track',
+                'user_request',
+                'user_payment',
+                'user_transcript'
+            ));        
+
+        } catch (Exception $e) {
+            Log::error('Error in index method: ' . $e->getMessage());
+
+            return redirect()->back()->with('error', 'An error occurred while loading the dashboard. Please try again.');
+        }       
+    }
 
     public function students()
     {

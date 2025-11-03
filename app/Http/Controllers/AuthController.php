@@ -3,11 +3,8 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
-use App\Models\UserSkill;
-use App\Models\UserEducation;
-use App\Models\UserExperience;
-use App\Models\UserService;
-use App\Models\UserPortfolio;
+use App\Models\Registration;
+
 use App\Models\FailedLogins;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -33,6 +30,11 @@ class AuthController extends Controller
     public function login()
     {
         return view('auth.user-login');
+    }
+
+    public function studentLogin()
+    {
+        return view('auth.student-login');
     }
 
     public function signup()
@@ -165,6 +167,79 @@ class AuthController extends Controller
             Log::error('Error during login: ' . $e->getMessage());
             return redirect()->route('login');
         }    
+    }    
+
+    public function studentLoginAction(Request $request)
+    {
+        $request->validate([
+            'matricNo' => 'required|string',
+            'password' => 'required|string',
+        ]);        
+
+        $student = Registration::where('admission_no', $request->matricNo)->first();       
+
+        if (!$student) {
+            return back()->with('error', 'Matric number not found.');
+        }
+        
+        // If student has no password, prompt to set up
+        if (empty($student->password)) {
+            session(['setup_matric' => $student->admission_no]);
+            session()->save(); 
+            return redirect()->route('student-setup-password')
+                ->with('info', 'Please set up your password to continue.');
+        }
+
+        // Validate password
+        if (!Hash::check($request->password, $student->password)) {
+            return back()->with('error', 'Invalid password.');
+        }
+
+        // ✅ Log in using the custom guard
+        Auth::guard('student')->login($student);
+
+        return redirect()->route('dashboard')->with('success', 'Login successful.');
+    }
+
+    public function showSetupPasswordForm()
+    {
+        // dd(session('setup_matric'));
+        // If no session matric, block direct access
+        if (!session()->has('setup_matric')) {
+            return redirect()->route('student-login')->with('error', 'Unauthorized access.');
+        }
+
+        $matricNo = session('setup_matric');
+        return view('layout.student-password', compact('matricNo'));
+    }
+
+
+    public function saveSetupPassword(Request $request)
+    {
+        $request->validate([
+            'password' => 'required|string|min:6|confirmed',
+        ]);
+
+        if (!session()->has('setup_matric')) {
+            return redirect()->route('student-login')->with('error', 'Session expired, please log in again.');
+        }
+
+        $matricNo = session('setup_matric');
+        $student = Registration::where('admission_no', $matricNo)->first();
+
+        if (!$student) {
+            return redirect()->route('student-login')->with('error', 'Student record not found.');
+        }
+
+        // Save hashed password
+        $student->password = Hash::make($request->password);
+        $student->save();
+
+        // Clear session
+        session()->forget('setup_matric');
+
+        return redirect()->route('student-login')
+            ->with('success', 'You have successfully set up your password. You can now log in.');
     }
 
     
@@ -309,54 +384,7 @@ class AuthController extends Controller
             return redirect()->route('profile-picture')->with('error', 'An error occurred while updating profile pictures. Please try again.');
         }  
 
-    }
-
-    public function userPortfolio($username)
-    {
-        // Fetch the user based on the provided username
-        $user = User::where('user_name_link', $username)->first();
-
-        if (!$user) {
-            // Handle the case where the user is not found
-            // You can return a custom error message, redirect, or take other actions here
-            return response()->json([
-                'status' => 'error',
-                'message' => 'User not found',
-            ]);
-        }
-
-        // Fetch user skills
-        $userSkills = UserSkill::where('user_id', $user->id)
-        ->paginate(5);
-        // Fetch user education
-        $userEducation = userEducation::where('user_id', $user->id)
-        ->orderBy('college_year', 'desc') 
-        ->get();
-        // Fetch user work experience
-        $userExperience = UserExperience::where('user_id', $user->id)
-        ->orderBy('company_year', 'desc') 
-        ->get();
-        // Fetch user services
-        $userService = UserService::where('user_id', $user->id)
-        ->orderBy('user_service', 'asc') 
-        ->get();
-        // Fetch user projects by image
-        $userPortfolioImage = UserPortfolio::where('user_id', $user->id)
-        ->where('file_type','Image')
-        ->orderBy('file_name', 'asc') 
-        ->get();
-        // Fetch user projects by document
-        $userPortfolioDocument = UserPortfolio::where('user_id', $user->id)
-        ->where('file_type','Document')
-        ->orderBy('file_name', 'asc') 
-        ->get();
-
-        return view('portfolio.user-page', 
-        compact('userSkills', 'userEducation', 'userExperience', 'user','userService'
-        ,'userPortfolioImage','userPortfolioDocument'));
-    }
-
-    
+    }    
 
     public function changePassword(Request $request)
     {
@@ -376,6 +404,15 @@ class AuthController extends Controller
         return redirect('/');
 
 
+    }
+
+    public function studentLogout(Request $request)
+    {
+        Auth::guard('student')->logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('student-login')->with('success', 'You have been logged out.');
     }
     
     public function userLocked()

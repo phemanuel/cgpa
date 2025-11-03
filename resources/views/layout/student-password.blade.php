@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>@yield('pageTitle')</title>
+	<title>E-Result :: Password Setup</title>
 	<!-- Mobile Specific Metas -->
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 	<!-- Font-->
@@ -56,9 +56,9 @@
 				<img src="{{asset('login/images/form-v7.jpg')}}" alt="form">
 				<p class="text-1 style1">&nbsp;</p>		
 			</div>
-			<form class="form-detail" action="{{route('login.action')}}" method="post" id="myform">
+			<form class="form-detail" action="{{ route('student-setup-password.save') }}" method="post" id="myform">
         @csrf
-            <h2><strong><u>Log In</u></strong></h2>
+            <h2><strong><u>Password Setup</u></strong></h2>
             
             <br>	
             @if(session('success'))
@@ -70,13 +70,12 @@
 							{{ session('error') }}
 						</div>
 						@endif			
-				<div class="form-row">
-					<label for="your_email">Email Address</label>
-					<input type="text" name="email" id="email" class="input-text" required pattern="[^@]+@[^@]+.[a-zA-Z]{2,6}">
-				</div>
-        @error('email')
-									<span class="invalid-feedback">{{ $message }}</span>
-				@enderror
+				
+                        <div class="form-row">
+                        <label>Matric Number</label>
+                        <input type="text" class="form-control" value="{{ $matricNo }}" readonly>
+                        </div>
+
 				<div class="form-row">
                             <label>Password </label>
                             <div class="input-group">
@@ -91,9 +90,23 @@
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
-        <p><a href="{{ route('password.request') }}">Forgot Password?</a> </p>			
+                        <div class="form-row">
+                            <label>Confirm Password </label>
+                            <div class="input-group">
+                                <input type="password" id="password_confirmation" name="password_confirmation" class="form-control">
+                                <div class="input-group-append">
+                                    <span class="input-group-text" onclick="togglePassword('password', this)" style="cursor:pointer;">
+                                        👁️
+                                    </span>
+                                </div>
+                            </div>
+                            @error('passwordConfirmation')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+        <!-- <p><a href="{{ route('password.request') }}">Forgot Password?</a> </p>			 -->
 				<div class="form-row-last">
-					<input type="submit" name="Login" class="register" value="Login">					
+					<input type="submit"  class="register" value="Save Password">					
 			  </div>
               <div class="form-row-last">
               <!-- <p><span class="style3">Don't have an account,<a href="{{route('signup')}}" class="style2">Sign Up</a></span></p> -->

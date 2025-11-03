@@ -70,6 +70,7 @@ class DashboardController extends Controller
             return redirect()->back()->with('error', 'An error occurred while loading the dashboard. Please try again.');
         }       
     }
+    
     public function indexAdmin()
     {
         try {
