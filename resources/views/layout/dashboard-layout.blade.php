@@ -45,23 +45,17 @@
           </ul>
         </div>
         <ul class="navbar-nav navbar-right">        
-          @php
-				$userImage = auth()->user()->image;
-				$imageFile = public_path('profile-pictures/' . $userImage);
-				$finalImage = (!empty($userImage) && file_exists($imageFile))
-					? 'profile-pictures/' . $userImage
-					: 'profile-pictures/blank.jpg';
-			@endphp
+         
 		  <li class="dropdown"><a href="#" data-toggle="dropdown"
-              class="nav-link dropdown-toggle nav-link-lg nav-link-user"> <img alt="image" src="{{ asset($finalImage) }}"  alt="Profile Picture"
+              class="nav-link dropdown-toggle nav-link-lg nav-link-user"> <img alt="image" src="{{ asset('profile_pictures/'. 'blank.jpg') }}"  alt="Profile Picture"
                 class="user-img-radious-style"> <span class="d-sm-none d-lg-inline-block"></span></a>
             <div class="dropdown-menu dropdown-menu-right pullDown">
-              <div class="dropdown-title">Hello {{auth()->user()->first_name}}</div> 
-              <a href="{{ route('account-setting', ['id' => auth()->user()->id]) }}" class="dropdown-item has-icon"> <i class="fas fa-cog"></i>
+              <div class="dropdown-title">Hello {{Auth::guard('student')->user()->student_full_name}}</div> 
+              <a href="{{ route('student-account-setting', ['id' => Auth::guard('student')->user()->id]) }}" class="dropdown-item has-icon"> <i class="fas fa-cog"></i>
                 Account Settings
               </a>
               <div class="dropdown-divider"></div>
-              <a href="{{route('logout')}}" class="dropdown-item has-icon text-danger"> <i class="fas fa-sign-out-alt"></i>
+              <a href="{{route('student-logout')}}" class="dropdown-item has-icon text-danger"> <i class="fas fa-sign-out-alt"></i>
                 Logout
               </a>
             </div>
@@ -85,91 +79,7 @@
                     <div class="col-12">
                       <nav aria-label="breadcrumb">
                         <ol class="breadcrumb bg-dark text-white-all d-flex justify-content-between overflow-auto" style="white-space: nowrap;">
-                  @if(auth()->user()->user_type_status == 1)
-                  <li class="breadcrumb-item active">
-                    <a href="{{route('admin-dashboard')}}"><i class="fas fa-home"></i> Dashboard</a>
-                  </li>
-                  <li class="breadcrumb-item">
-                    <a href="{{route('class-list')}}"><i class="fas fa-chalkboard-teacher"></i> Class List</a>
-                  </li>
-                  <li class="breadcrumb-item dropdown" aria-current="page">
-                    <a href="{{route('student-menu')}}"><i class="fas fa-user-graduate"></i> Student</a>         
-                  </li>
-                  <li class="breadcrumb-item" aria-current="page">
-                    <a href="{{route('result-menu')}}"><i class="fas fa-poll"></i> Result</a>                   
-                  </li>
-                  <li class="breadcrumb-item">
-                    <a href="{{route('course-setup')}}"><i class="fas fa-book"></i> Course</a>
-                  </li>
-                  <li class="breadcrumb-item">
-                    <a href="{{route('hod-setup')}}"><i class="fas fa-user-tie"></i> HOD</a>
-                  </li>        
-                  <li class="breadcrumb-item">
-                    <a href="{{route('grading')}}"><i class="fas fa-clipboard-list"></i> Grading System</a>
-                  </li>
-                  <li class="breadcrumb-item">
-                    <a href="{{route('score-sheet')}}"><i class="fas fa-file-alt"></i> Score Sheet</a>
-                  </li>     
-                  <li class="breadcrumb-item">
-                    <a href="{{route('transcript-request')}}"><i class="fas fa-file-signature"></i> Transcript Request</a>
-                  </li>
-                  <li class="breadcrumb-item">
-                    <a href="{{ route('admin-account-setting', ['id' => auth()->user()->id]) }}"><i class="fas fa-cogs"></i> Account Setting</a>
-                  </li>   
-                  <li class="breadcrumb-item">
-                    <a href="{{route('user-menu')}}"><i class="fas fa-users"></i> Users</a>
-                  </li> 
-                  @elseif(auth()->user()->user_type_status == 2)
-                  <li class="breadcrumb-item active">
-                    <a href="{{route('admin-dashboard')}}"><i class="fas fa-home"></i> Dashboard</a>
-                  </li>
-                  <li class="breadcrumb-item">
-                    <a href="{{route('class-list')}}"><i class="fas fa-chalkboard-teacher"></i> Class List</a>
-                  </li>
-                  <li class="breadcrumb-item" aria-current="page">
-                    <a href="{{route('student-menu')}}"><i class="fas fa-user-graduate"></i> Student</a>         
-                  </li>
-                  <li class="breadcrumb-item" aria-current="page">
-                    <a href="{{route('result-menu')}}"><i class="fas fa-poll"></i> Result</a>                   
-                  </li>
-                  <li class="breadcrumb-item">
-                    <a href="{{route('course-setup')}}"><i class="fas fa-book"></i> Course</a>
-                  </li>
-                  <li class="breadcrumb-item">
-                    <a href="{{route('hod-setup')}}"><i class="fas fa-user-tie"></i> HOD</a>
-                  </li>        
-                  <li class="breadcrumb-item">
-                    <a href="{{route('grading')}}"><i class="fas fa-clipboard-list"></i> Grading System</a>
-                  </li>
-                  <li class="breadcrumb-item">
-                    <a href="{{route('score-sheet')}}"><i class="fas fa-file-alt"></i> Score Sheet</a>
-                  </li>     
-                  <li class="breadcrumb-item">
-                    <a href="{{route('transcript-request')}}"><i class="fas fa-file-signature"></i> Transcript Request</a>
-                  </li>
-                  <li class="breadcrumb-item">
-                    <a href="{{ route('admin-account-setting', ['id' => auth()->user()->id]) }}"><i class="fas fa-cogs"></i> Account Setting</a>
-                  </li>   
-                  <li class="breadcrumb-item">
-                    <a href="{{route('user-menu')}}"><i class="fas fa-users"></i> Users</a>
-                  </li> 
-                  @elseif(auth()->user()->user_type_status == 3)
-                  <li class="breadcrumb-item active">
-                    <a href="{{route('admin-dashboard')}}"><i class="fas fa-home"></i> Dashboard</a>
-                  </li>
-                  <li class="breadcrumb-item">
-                    <a href="{{route('class-list')}}"><i class="fas fa-chalkboard-teacher"></i> Class List</a>
-                  </li>                  
-                  <li class="breadcrumb-item" aria-current="page">
-                    <a href="{{route('result-menu')}}"><i class="fas fa-poll"></i> Result</a>                   
-                  </li>
-                  <li class="breadcrumb-item">
-                    <a href="{{route('course-setup')}}"><i class="fas fa-book"></i> Course</a>
-                  </li> 
-                  <li class="breadcrumb-item">
-                    <a href="{{ route('admin-account-setting', ['id' => auth()->user()->id]) }}"><i class="fas fa-cogs"></i> Account Setting</a>
-                  </li>
-                  @elseif(auth()->user()->user_type_status == 4)
+                  
                   <li class="breadcrumb-item active">
                     <a href="{{route('admin-dashboard')}}"><i class="fas fa-home"></i> Dashboard</a>
                   </li>                  
@@ -180,16 +90,18 @@
                     <a href="{{route('user-request')}}"><i class="fas fa-file-signature"></i> Request Transcript</a>
                   </li>
                   <li class="breadcrumb-item">
-                    <a href="{{ route('account-setting', ['id' => auth()->user()->id]) }}"><i class="fas fa-cogs"></i> Account Setting</a>
+                    <a href="{{ route('student-account-setting', ['id' => Auth::guard('student')->user()->id]) }}"><i class="fas fa-cogs"></i> Account Setting</a>
                   </li>   
                   <li class="breadcrumb-item">
                     <a href="{{route('contact-us')}}"><i class="fas fa-mail"></i> Contact Us</a>
                   </li> 
-                  @endif
+                  
                         </ol>
                       </nav>
                     </div>
                   </div>
+
+
         @if(session('success'))
                     <div class="alert alert-success">
                       {{ session('success') }}
@@ -200,6 +112,38 @@
                     </div>
                     @endif	
         <div class="row ">
+              <div class="col-xl-3 col-lg-6">
+                <div class="card l-bg-purple shadow-sm border-0 rounded-3">
+                  <div class="card-statistic-3">
+                    <div class="card-icon card-icon-large">
+                      <i class="fa fa-award"></i>
+                    </div>
+                    <div class="card-content">
+                      <h4 class="card-title mb-3 text-white">Basic Information</h4>
+
+                      @php
+                          $student = Auth::guard('student')->user();
+                      @endphp
+
+                      <ul class="list-unstyled text-white small mb-3">
+                        <li><strong>Matric No:</strong> {{ $student->admission_no }}</li>
+                        <li><strong>Name:</strong> {{ strtoupper($student->student_full_name) }}</li>
+                        <li><strong>Programme:</strong> {{ $student->course }}</li>
+                        <li><strong>Current-Level:</strong> {{ $student->current_level }}</li>                        
+                        <li><strong>Admission Year:</strong> {{ $student->admission_year }}</li>
+                      </ul>
+
+                      <div class="progress mt-2" style="height: 8px;">
+                        <div class="progress-bar l-bg-purple" role="progressbar" style="width: 100%;" aria-valuenow="100"
+                          aria-valuemin="0" aria-valuemax="100">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
               <div class="col-xl-3 col-lg-6">
                 <div class="card l-bg-green">
                   <div class="card-statistic-3">
@@ -215,7 +159,7 @@
                     </div>
                   </div>
                 </div>
-              </div>    
+              </div>  
               
               <div class="col-xl-3 col-lg-6">
                 <div class="card l-bg-cyan">
@@ -254,7 +198,7 @@
             </div>
            
 
-          <div class="row ">
+          <!-- <div class="row ">
             <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
               <div class="card">
                 <div class="card-statistic-4">
@@ -334,7 +278,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
           
           
           

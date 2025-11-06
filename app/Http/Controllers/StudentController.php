@@ -12,8 +12,12 @@ use App\Models\UserClearance;
 use App\Models\TranscriptFee;
 use App\Models\PaymentTransaction;
 use App\Models\TranscriptUpload;
+use App\Models\ResultCompute;
+use App\Models\hod;
+use App\Models\GradingSystem;
 use Illuminate\Support\Facades\DB;
 use Validator;
+use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Http\Request;
 
@@ -285,4 +289,324 @@ class StudentController extends Controller
     {
         return view('layout.student-menu');
     }
+
+    public function studentResult()
+    {
+       
+        $programmes = CourseStudyAll::orderBy('department', 'asc')->get();        
+        $allLevel = StudentLevel::all();
+
+        return view('layout.student-result', compact('programmes', 'allLevel'));
+    }
+
+    public function studentResultPreview(Request $request)
+    { 
+        // Validate the incoming request data
+        $validatedData = $request->validate([
+            'stdLevel'     => 'required|string',
+            'semester'     => 'required|string',
+            'acad_session' => 'required|string',
+            'programme'    => 'required|string',
+        ]);
+
+        // Retrieve validated input
+        $level       = $validatedData['stdLevel'];
+        $semester    = ucfirst(strtolower($validatedData['semester'])); 
+        $acadSession = $validatedData['acad_session'];
+        $programme   = $validatedData['programme'];
+
+        $student = Auth::guard('student')->user();
+        $admissionNo = $student->admission_no;
+
+            // Query single student's result
+            $results = ResultCompute::where('course', $programme)
+                ->where('session1', $acadSession)
+                ->where('class', $level)
+                ->where('semester', $semester)
+                ->where('admission_no', $admissionNo)
+                ->first();
+        if (!$results) {
+                // \Log::info("No results found for student {$admissionNo} ({$acadSession} {$programme} {$level} {$semester})");
+                return redirect()->back()->with('error', 'Result unavailable.');
+            }
+
+        $courseStudy = CourseStudy::where('dept_name', $validatedData['programme'])->first();
+        $courseDuration = $courseStudy->dept_duration;
+
+        if($courseDuration == 2){
+            // Define the mapping of level and semester combinations to methods
+            $methodMap = [
+                '100'  => ['First' => 'preview100First',  'Second' => 'preview100Second'],
+                '200'  => ['First' => 'preview100First',  'Second' => 'preview300Second'],                
+                'NDI'  => ['First' => 'preview100First',  'Second' => 'preview100Second'],
+                'NDII' => ['First' => 'preview100First',  'Second' => 'preview300Second'],
+				'HNDI'  => ['First' => 'preview100First',  'Second' => 'preview100Second'],
+                'HNDII' => ['First' => 'preview100First',  'Second' => 'preview300Second'],
+            ];
+        }
+        elseif($courseDuration == 3){
+                // Define the mapping of level and semester combinations to methods
+                $methodMap = [
+                    '100'  => ['First' => 'preview100First',  'Second' => 'preview100Second'],
+                    '200'  => ['First' => 'preview100First',  'Second' => 'preview100Second'],
+                    '300'  => ['First' => 'preview100First',  'Second' => 'preview300Second'],                    
+                ];
+        }
+
+        // Check if the provided level and semester have a corresponding method
+        if (isset($methodMap[$level][$semester])) {
+            $method = $methodMap[$level][$semester];
+            return $this->$method($acadSession, $programme, $level, $semester, $request);
+        }        
+
+        // Handle other cases or return a default response
+        return redirect()->back()->with('error', 'Invalid selection made.');     
+
+        
+    }
+
+    public function preview100First($acadSession, $programme, $level, $semester, Request $request)
+    {
+        try {
+            $student = Auth::guard('student')->user();
+            $admissionNo = $student->admission_no;
+
+            // Query single student's result
+            $results = ResultCompute::where('course', $programme)
+                ->where('session1', $acadSession)
+                ->where('class', $level)
+                ->where('semester', $semester)
+                ->where('admission_no', $admissionNo)
+                ->first();
+
+            // Handle no result found
+            if (!$results) {
+                \Log::info("No results found for student {$admissionNo} ({$acadSession} {$programme} {$level} {$semester})");
+                return redirect()->route('student-result-preview')->with('error', 'No results found.');
+            }
+
+            // Format data for the view
+            $studentData = [
+                'stusurname'       => $results->student_full_name ?? 'No Name',
+                'stuno'            => $results->admission_no ?? 'No Matric No',
+                'class'            => $results->class ?? 'No Level',
+                'coursekeep'       => $results->course ?? 'No Programme',
+                'studpicture'      => $results->picture_dir ?? 'No Picture',
+                'totalGradePoints' => $results->total_grade_point ?? 0,
+                'totalUnits'       => $results->total_course_unit ?? 0,
+                'totalGPA'         => $results->gpa ?? 0.0,
+                'letterGrade'      => $results->subjectgrade1 ?? 'No Grade',
+                'remarks'          => $results->remark ?? 'No Remarks',
+                'failedRemarks'    => $results->failed_course ?? 'No failed course',
+                'ctitles'          => array_map(fn($i) => $results->{"ctitle{$i}"} ?? null, range(1, 17)),
+                'subjects'         => array_map(fn($i) => $results->{"subject{$i}"} ?? null, range(1, 16)),
+                'subjectGrades'    => array_map(fn($i) => $results->{"subjectgrade{$i}"} ?? null, range(1, 17)),
+                'units'            => array_map(fn($i) => $results->{"unit{$i}"} ?? null, range(1, 18)),
+                'scores'           => array_map(fn($i) => $results->{"score{$i}"} ?? null, range(1, 19)),
+            ];
+
+            // Fetch HOD info and grading system
+            $hod = Hod::where('course', $programme)->first();
+            $grading = GradingSystem::first();
+
+            $grades = [
+                ['min' => $grading->grade01, 'max' => $grading->grade02, 'unit' => $grading->unit01, 'letter_grade' => $grading->lgrade1],
+                ['min' => $grading->grade11, 'max' => $grading->grade12, 'unit' => $grading->unit02, 'letter_grade' => $grading->lgrade2],
+                ['min' => $grading->grade21, 'max' => $grading->grade22, 'unit' => $grading->unit03, 'letter_grade' => $grading->lgrade3],
+                ['min' => $grading->grade31, 'max' => $grading->grade32, 'unit' => $grading->unit04, 'letter_grade' => $grading->lgrade4],
+                ['min' => $grading->grade41, 'max' => $grading->grade42, 'unit' => $grading->unit05, 'letter_grade' => $grading->lgrade5],
+                ['min' => $grading->grade51, 'max' => $grading->grade52, 'unit' => $grading->unit06, 'letter_grade' => $grading->lgrade6],
+            ];
+
+            // Log student activity
+            if (Auth::guard('student')->check()) {
+                \App\Models\LogActivity::create([
+                    'user_id'      => $student->id ?? null,
+                    'ip_address'   => $request->ip(),
+                    'activity'     => "Viewed student result for {$acadSession} {$programme} {$level} {$semester} ({$admissionNo})",
+                    'activity_date'=> now(),
+                ]);
+            }
+
+            // Return view
+            return view('results.student_result_page_1', [
+                'results'     => $results,
+                'studentData' => $studentData,
+                'semester'    => $semester,
+                'grades'      => $grades,
+                'hod'         => $hod,
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Error in preview100First: ' . $e->getMessage(), ['trace' => $e->getTraceAsString()]);
+            return redirect()->back()->with('error', 'An unexpected error occurred. Please try again later.');
+        }
+    }
+
+    public function preview100Second($acadSession, $programme, $level, $semester, Request $request)
+    {
+        try {
+            $student = Auth::guard('student')->user();
+            $admissionNo = $student->admission_no;
+
+            // Query single student's result
+            $results = ResultCompute::where('course', $programme)
+                ->where('session1', $acadSession)
+                ->where('class', $level)
+                ->where('semester', $semester)
+                ->where('admission_no', $admissionNo)
+                ->first();
+
+            // Handle no result found
+            if (!$results) {
+                \Log::info("No results found for student {$admissionNo} ({$acadSession} {$programme} {$level} {$semester})");
+                return redirect()->route('student-result-preview')->with('error', 'No results found.');
+            }
+
+            // Format data for the view
+            $studentData = [
+                    'stusurname' => $results->student_full_name ?? 'No Name',
+                    'stuno' => $results->admission_no ?? 'No Matric No',
+                    'class' => $results->class ?? 'No Level',
+                    'coursekeep' => $results->course ?? 'No Programme',
+                    'studpicture' => $results->picture_dir ?? 'No Picture',
+                    'totalGradePoints' => $results->total_grade_point ?? 0,
+                    'totalUnits' => $results->total_course_unit ?? 0,
+                    'totalGPA' => $results->gpa1 ?? 0.0,
+                    'totalGPA2' => $results->gpa2 ?? 0.0,
+                    'totalCGPA' => $results->cgpa ?? 0.0,
+                    'letterGrade' => $results->subjectgrade1 ?? 'No Grade',
+                    'remarks' => $results->remark ?? 'No Remarks',
+                    'failedRemarks' => $results->failed_course ?? 'No failed course',
+                    // Safely map course titles, grades, units, and scores
+                    'ctitles' => array_map(fn($i) => $results->{"ctitle{$i}"} ?? null, range(1, 17)),
+                    'subjects' => array_map(fn($i) => $results->{"subject{$i}"} ?? null, range(1, 16)),
+                    'subjectGrades' => array_map(fn($i) => $results->{"subjectgrade{$i}"} ?? null, range(1, 17)),
+                    'units' => array_map(fn($i) => $results->{"unit{$i}"} ?? null, range(1, 18)),
+                    'scores' => array_map(fn($i) => $results->{"score{$i}"} ?? null, range(1, 19)),
+            ];
+
+            // Fetch HOD info and grading system
+            $hod = Hod::where('course', $programme)->first();
+            $grading = GradingSystem::first();
+
+            $grades = [
+                ['min' => $grading->grade01, 'max' => $grading->grade02, 'unit' => $grading->unit01, 'letter_grade' => $grading->lgrade1],
+                ['min' => $grading->grade11, 'max' => $grading->grade12, 'unit' => $grading->unit02, 'letter_grade' => $grading->lgrade2],
+                ['min' => $grading->grade21, 'max' => $grading->grade22, 'unit' => $grading->unit03, 'letter_grade' => $grading->lgrade3],
+                ['min' => $grading->grade31, 'max' => $grading->grade32, 'unit' => $grading->unit04, 'letter_grade' => $grading->lgrade4],
+                ['min' => $grading->grade41, 'max' => $grading->grade42, 'unit' => $grading->unit05, 'letter_grade' => $grading->lgrade5],
+                ['min' => $grading->grade51, 'max' => $grading->grade52, 'unit' => $grading->unit06, 'letter_grade' => $grading->lgrade6],
+            ];
+
+            // Log student activity
+            if (Auth::guard('student')->check()) {
+                \App\Models\LogActivity::create([
+                    'user_id'      => $student->id ?? null,
+                    'ip_address'   => $request->ip(),
+                    'activity'     => "Viewed student result for {$acadSession} {$programme} {$level} {$semester} ({$admissionNo})",
+                    'activity_date'=> now(),
+                ]);
+            }
+
+            // Return view
+            return view('results.student_result_page_2', [
+                'results'     => $results,
+                'studentData' => $studentData,
+                'semester'    => $semester,
+                'grades'      => $grades,
+                'hod'         => $hod,
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Error in preview100Second: ' . $e->getMessage(), ['trace' => $e->getTraceAsString()]);
+            return redirect()->back()->with('error', 'An unexpected error occurred. Please try again later.');
+        }
+    }
+
+    public function preview300Second($acadSession, $programme, $level, $semester, Request $request)
+    {
+        try {
+            $student = Auth::guard('student')->user();
+            $admissionNo = $student->admission_no;
+
+            // Query single student's result
+            $results = ResultCompute::where('course', $programme)
+                ->where('session1', $acadSession)
+                ->where('class', $level)
+                ->where('semester', $semester)
+                ->where('admission_no', $admissionNo)
+                ->first();
+
+            // Handle no result found
+            if (!$results) {
+                \Log::info("No results found for student {$admissionNo} ({$acadSession} {$programme} {$level} {$semester})");
+                return redirect()->route('student-result-preview')->with('error', 'No results found.');
+            }
+
+            // Format data for the view
+            $studentData = [
+                    'stusurname' => $results->student_full_name ?? 'No Name',
+                    'stuno' => $results->admission_no ?? 'No Matric No',
+                    'class' => $results->class ?? 'No Level',
+                    'coursekeep' => $results->course ?? 'No Programme',
+                    'studpicture' => $results->picture_dir ?? 'No Picture',
+                    'totalGradePoints' => $results->total_grade_point ?? 0,
+                    'totalUnits' => $results->total_course_unit ?? 0,
+                    'totalGPA' => $results->gpa1 ?? 0.0,
+                    'totalGPA2' => $results->gpa2 ?? 0.0,
+                    'totalCGPA' => $results->cgpa ?? 0.0,
+                    'letterGrade' => $results->subjectgrade1 ?? 'No Grade',
+                    'remarks' => $results->remark ?? 'No Remarks',
+                    'failedRemarks' => $results->failed_course ?? 'No failed course',
+                    'cgpa1' => $results->cgpa1 ?? 0.0,
+                    'cgpa2' => $results->cgpa2 ?? 0.0,
+                    'cgpa3' => $results->cgpa3 ?? 0.0,
+                    'totalCGPANEW' => $results->total_cgpa ?? 0.0,
+                    'total_grade_point_new' => $results->total_grade_point_new,
+                    'total_course_unit_new' => $results->total_course_unit_new,
+                    // Safely map course titles, grades, units, and scores
+                    'ctitles' => array_map(fn($i) => $results->{"ctitle{$i}"} ?? null, range(1, 17)),
+                    'subjects' => array_map(fn($i) => $results->{"subject{$i}"} ?? null, range(1, 16)),
+                    'subjectGrades' => array_map(fn($i) => $results->{"subjectgrade{$i}"} ?? null, range(1, 17)),
+                    'units' => array_map(fn($i) => $results->{"unit{$i}"} ?? null, range(1, 18)),
+                    'scores' => array_map(fn($i) => $results->{"score{$i}"} ?? null, range(1, 19)),
+            ];
+
+            // Fetch HOD info and grading system
+            $hod = Hod::where('course', $programme)->first();
+            $grading = GradingSystem::first();
+
+            $grades = [
+                ['min' => $grading->grade01, 'max' => $grading->grade02, 'unit' => $grading->unit01, 'letter_grade' => $grading->lgrade1],
+                ['min' => $grading->grade11, 'max' => $grading->grade12, 'unit' => $grading->unit02, 'letter_grade' => $grading->lgrade2],
+                ['min' => $grading->grade21, 'max' => $grading->grade22, 'unit' => $grading->unit03, 'letter_grade' => $grading->lgrade3],
+                ['min' => $grading->grade31, 'max' => $grading->grade32, 'unit' => $grading->unit04, 'letter_grade' => $grading->lgrade4],
+                ['min' => $grading->grade41, 'max' => $grading->grade42, 'unit' => $grading->unit05, 'letter_grade' => $grading->lgrade5],
+                ['min' => $grading->grade51, 'max' => $grading->grade52, 'unit' => $grading->unit06, 'letter_grade' => $grading->lgrade6],
+            ];
+
+            // Log student activity
+            if (Auth::guard('student')->check()) {
+                \App\Models\LogActivity::create([
+                    'user_id'      => $student->id ?? null,
+                    'ip_address'   => $request->ip(),
+                    'activity'     => "Viewed student result for {$acadSession} {$programme} {$level} {$semester} ({$admissionNo})",
+                    'activity_date'=> now(),
+                ]);
+            }
+
+            // Return view
+            return view('results.student_result_page_3', [
+                'results'     => $results,
+                'studentData' => $studentData,
+                'semester'    => $semester,
+                'grades'      => $grades,
+                'hod'         => $hod,
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Error in preview300Second: ' . $e->getMessage(), ['trace' => $e->getTraceAsString()]);
+            return redirect()->back()->with('error', 'An unexpected error occurred. Please try again later.');
+        }
+    }
+
+
 }

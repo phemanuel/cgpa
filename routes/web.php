@@ -273,28 +273,37 @@ Route::post('/reset-password', [CustomForgotPasswordController::class, 'resetPas
     Route::middleware(['auth:student'])->group(function () {
         Route::get('/student/dashboard', [StudentController::class, 'index'])
             ->name('dashboard');
+
+        Route::get('/student/account-setting/{id}', [AuthController::class, 'studentProfileUpdate'])
+        ->name('student-account-setting');
+        Route::post('/student/account-setting/update', [AuthController::class, 'studentProfileUpdateAction'])
+        ->name('student-account-setting.action');
         
         Route::get('/student/result', [StudentController::class, 'studentResult'])
             ->name('student-result');
+        Route::get('/student/result/preview', [StudentController::class, 'studentResultPreview'])
+            ->name('student-result-preview');
 
-        Route::get('request', [StudentController::class, 'userRequest'])
+        Route::get('/student/request', [StudentController::class, 'userRequest'])
             ->name('user-request');
-        Route::post('request', [StudentController::class, 'userRequestAction'])
+        Route::post('/student/request', [StudentController::class, 'userRequestAction'])
             ->name('user-request.action');
 
         //-- Payment routes --
-        Route::get('payment', [StudentController::class, 'userPayment'])
+        Route::get('/student/payment', [StudentController::class, 'userPayment'])
             ->name('user-payment');
-        Route::get('payment-check', [StudentController::class, 'paymentCheck'])
+        Route::get('/student/payment-check', [StudentController::class, 'paymentCheck'])
             ->name('payment-check');
-        Route::get('payment-error', [StudentController::class, 'paymentError'])
+        Route::get('/student/payment-error', [StudentController::class, 'paymentError'])
             ->name('payment-error');
-        Route::get('payment-report', [StudentController::class, 'paymentReport'])
+        Route::get('/student/payment-report', [StudentController::class, 'paymentReport'])
             ->name('payment-report');
-        Route::get('payment-status', [StudentController::class, 'paymentStatus'])
+        Route::get('/student/payment-status', [StudentController::class, 'paymentStatus'])
             ->name('payment-status');
-        Route::get('contact-us', [StudentController::class, 'contactUs'])
+        Route::get('/student/contact-us', [StudentController::class, 'contactUs'])
             ->name('contact-us');
+        Route::get('student/logout', [AuthController::class, 'studentLogOut'])
+        ->name('student-logout');
     });
 
    

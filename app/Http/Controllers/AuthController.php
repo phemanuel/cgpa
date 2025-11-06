@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Session;
 use Intervention\Image\ImageManagerStatic as Image;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 //use Image;
 
 class AuthController extends Controller
@@ -174,18 +175,18 @@ class AuthController extends Controller
         $request->validate([
             'matricNo' => 'required|string',
             'password' => 'required|string',
-        ]);        
+        ]);
 
-        $student = Registration::where('admission_no', $request->matricNo)->first();       
+        $student = Registration::where('admission_no', $request->matricNo)->first();
 
         if (!$student) {
             return back()->with('error', 'Matric number not found.');
         }
-        
+
         // If student has no password, prompt to set up
         if (empty($student->password)) {
             session(['setup_matric' => $student->admission_no]);
-            session()->save(); 
+            session()->save();
             return redirect()->route('student-setup-password')
                 ->with('info', 'Please set up your password to continue.');
         }
@@ -195,11 +196,59 @@ class AuthController extends Controller
             return back()->with('error', 'Invalid password.');
         }
 
-        // ✅ Log in using the custom guard
+        // ✅ Fetch course info to determine level
+        $courseInfo = DB::table('course_study_all')
+            ->where('department', $student->course)
+            ->select('duration', 'start_level')
+            ->first();
+
+        $currentLevel = null;
+
+        if ($courseInfo) {
+            $admissionYear = (int) $student->admission_year;
+            $currentYear = (int) date('Y');
+            $yearsSpent = $currentYear - $admissionYear + 1; // include current year
+            $yearsSpent = min($yearsSpent, $courseInfo->duration); // cap at program duration
+
+            // Handle numeric levels (e.g., 100, 200, 300, 400)
+            if (is_numeric($courseInfo->start_level)) {
+                $currentLevel = ($courseInfo->start_level + (($yearsSpent - 1) * 100));
+
+                // If numeric level exceeds 300 (for 3-year programs) or 400 (for 4-year)
+                if ($currentLevel > 300) {
+                    $currentLevel = 'GRAD';
+                } else {
+                    $currentLevel = $currentLevel;
+                }
+            } 
+            // Handle textual levels (e.g., NDI, NDII, HNDI, HNDII)
+            else {
+                $map = ['NDI', 'NDII', 'HNDI', 'HNDII'];
+                $startIndex = array_search(strtoupper($courseInfo->start_level), $map);
+                if ($startIndex !== false) {
+                    $calculatedIndex = $startIndex + $yearsSpent - 1;
+                    if ($calculatedIndex >= count($map)) {
+                        $currentLevel = 'GRAD';
+                    } else {
+                        $currentLevel = $map[$calculatedIndex];
+                    }
+                } else {
+                    $currentLevel = $courseInfo->start_level;
+                }
+            }
+        }
+
+        // ✅ Save computed level in the registration table
+        $student->current_level = $currentLevel ?? 'N/A';
+        $student->save();
+
+        // ✅ Log in using custom guard
         Auth::guard('student')->login($student);
 
+        // Redirect to dashboard
         return redirect()->route('dashboard')->with('success', 'Login successful.');
     }
+
 
     public function showSetupPasswordForm()
     {
@@ -406,7 +455,7 @@ class AuthController extends Controller
 
     }
 
-    public function studentLogout(Request $request)
+    public function studentLogOut(Request $request)
     {
         Auth::guard('student')->logout();
         $request->session()->invalidate();

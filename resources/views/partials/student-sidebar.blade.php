@@ -11,7 +11,7 @@
               <a href="{{ route('user-request') }}" class="nav-link"><i data-feather="archive"></i><span>Request Transcript</span></a>
             </li>
             <li class="dropdown">
-              <a href="{{ route('account-setting', ['id' => auth()->user()->id]) }}" class="nav-link"><i data-feather="settings"></i><span>Account Settings</span></a>
+              <a href="{{ route('student-account-setting', ['id' => Auth::guard('student')->user()->id]) }}" class="nav-link"><i data-feather="settings"></i><span>Account Settings</span></a>
             </li>
             <li class="dropdown">
               <a href="{{ route('contact-us') }}" class="nav-link"><i data-feather="mail"></i><span>Contact Us</span></a>
