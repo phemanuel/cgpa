@@ -51,23 +51,16 @@
           </ul>
         </div>
         <ul class="navbar-nav navbar-right">        
-          @php
-				$userImage = auth()->user()->image;
-				$imageFile = public_path('profile-pictures/' . $userImage);
-				$finalImage = (!empty($userImage) && file_exists($imageFile))
-					? 'profile-pictures/' . $userImage
-					: 'profile-pictures/blank.jpg';
-			@endphp
-		  <li class="dropdown"><a href="#" data-toggle="dropdown"
-              class="nav-link dropdown-toggle nav-link-lg nav-link-user"> <img alt="image" src="{{ asset($finalImage) }}"  alt="Profile Picture"
+          <li class="dropdown"><a href="#" data-toggle="dropdown"
+              class="nav-link dropdown-toggle nav-link-lg nav-link-user"> <img alt="image" src="{{ asset('profile_pictures/'. 'blank.jpg') }}"  alt="Profile Picture"
                 class="user-img-radious-style"> <span class="d-sm-none d-lg-inline-block"></span></a>
             <div class="dropdown-menu dropdown-menu-right pullDown">
-              <div class="dropdown-title">Hello {{auth()->user()->first_name}}</div> 
-              <a href="{{ route('account-setting', ['id' => auth()->user()->id]) }}" class="dropdown-item has-icon"> <i class="fas fa-cog"></i>
+              <div class="dropdown-title">Hello {{Auth::guard('student')->user()->student_full_name}}</div> 
+              <a href="{{ route('account-setting', ['id' => Auth::guard('student')->user()->id]) }}" class="dropdown-item has-icon"> <i class="fas fa-cog"></i>
                 Account Settings
               </a>
               <div class="dropdown-divider"></div>
-              <a href="{{route('logout')}}" class="dropdown-item has-icon text-danger"> <i class="fas fa-sign-out-alt"></i>
+              <a href="{{route('student-logout')}}" class="dropdown-item has-icon text-danger"> <i class="fas fa-sign-out-alt"></i>
                 Logout
               </a>
             </div>
@@ -81,152 +74,7 @@
                 class="logo-name">E-Result</span>
             </a>
           </div>
-          <ul class="sidebar-menu">
-            <li class="menu-header">Main</li>
-            @if(auth()->user()->user_type_status == 1)
-            <li class="dropdown">
-              <a href="{{ route('admin-dashboard') }}" class="nav-link"><i data-feather="home"></i><span>Dashboard</span></a>
-            </li>
-            <li class="dropdown">
-              <a href="{{route('class-list')}}" class="nav-link"><i data-feather="list"></i><span>Class List</span></a>
-            </li>
-            <li class="dropdown">
-              <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="user"></i><span>Student</span></a>
-              <ul class="dropdown-menu">
-                <li><a class="nav-link" href="{{route('student-registration')}}">Student Registration</a></li>
-                <li><a class="nav-link" href="{{route('student-migration')}}">Student Migration</a></li>                
-              </ul>
-            </li>
-            <li class="dropdown">
-              <a href="#" class="nav-link menu-toggle nav-link has-dropdown"><i data-feather="clipboard"></i><span>Result</span></a>
-              <ul class="dropdown-menu">
-                <li><a class="nav-link" href="{{route('result-entry')}}">Result Entry</a></li>
-                <li><a class="nav-link" href="{{route('result-compute')}}">Result Computation</a></li>
-                <li><a class="nav-link" href="{{route('semester-result')}}">Semester Result</a></li>
-                <li><a class="nav-link" href="{{route('semester-summary')}}">Semester Result Summary</a></li>
-                <li><a class="nav-link" href="{{route('cgpa-summary')}}">CGPA Summary</a></li>
-                <li><a class="nav-link" href="{{route('student-transcript')}}">Student Transcript</a></li>
-              </ul>
-            </li>
-            <li class="dropdown">
-              <a href="{{route('course-setup')}}" class="nav-link"><i data-feather="book"></i><span>Course</span></a>
-            </li>
-            <li class="dropdown">
-              <a href="{{route('hod-setup')}}" class="nav-link"><i data-feather="briefcase"></i><span>HOD</span></a>
-            </li>
-            <li class="dropdown">
-              <a href="{{route('grading')}}" class="nav-link"><i data-feather="slack"></i><span>Grading System</span></a>
-            </li>
-            <li class="dropdown">
-              <a href="{{route('score-sheet')}}" class="nav-link"><i data-feather="file-text"></i><span>Score Sheet</span></a>
-            </li>
-            <li class="dropdown">
-              <a href="{{ route('transcript-request') }}" class="nav-link"><i data-feather="archive"></i><span>Transcript Requests</span></a>
-            </li>
-            <li class="dropdown">
-              <a href="{{ route('admin-account-setting', ['id' => auth()->user()->id]) }}" class="nav-link"><i data-feather="settings"></i><span>Account Settings</span></a>
-            </li>
-            <li class="dropdown">
-              <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="users"></i><span>Users</span></a>
-              <ul class="dropdown-menu">
-                <li><a class="nav-link" href="{{route('users')}}">Admins</a></li>
-                <li><a class="nav-link" href="{{route('instructors')}}">Instructors</a></li> 
-                <li><a class="nav-link" href="{{route('student')}}">Students</a></li>                
-              </ul>
-            </li>           
-            @elseif(auth()->user()->user_type_status == 2)
-            <li class="dropdown">
-              <a href="{{ route('admin-dashboard') }}" class="nav-link"><i data-feather="home"></i><span>Dashboard</span></a>
-            </li>
-            <li class="dropdown">
-              <a href="{{route('class-list')}}" class="nav-link"><i data-feather="list"></i><span>Class List</span></a>
-            </li>
-            <li class="dropdown">
-              <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="user"></i><span>Student</span></a>
-              <ul class="dropdown-menu">
-                <li><a class="nav-link" href="{{route('student-registration')}}">Student Registration</a></li>
-                <li><a class="nav-link" href="{{route('student-migration')}}">Student Migration</a></li>                
-              </ul>
-            </li>
-            <li class="dropdown">
-              <a href="#" class="nav-link menu-toggle nav-link has-dropdown"><i data-feather="clipboard"></i><span>Result</span></a>
-              <ul class="dropdown-menu">
-                <li><a class="nav-link" href="{{route('result-entry')}}">Result Entry</a></li>
-                <li><a class="nav-link" href="{{route('result-compute')}}">Result Computation</a></li>
-                <li><a class="nav-link" href="{{route('semester-result')}}">Semester Result</a></li>
-                <li><a class="nav-link" href="{{route('semester-summary')}}">Semester Result Summary</a></li>
-                <li><a class="nav-link" href="{{route('cgpa-summary')}}">CGPA Summary</a></li>
-                <li><a class="nav-link" href="{{route('student-transcript')}}">Student Transcript</a></li>
-              </ul>
-            </li>
-            <li class="dropdown">
-              <a href="{{route('course-setup')}}" class="nav-link"><i data-feather="book"></i><span>Course</span></a>
-            </li>
-            <li class="dropdown">
-              <a href="{{route('hod-setup')}}" class="nav-link"><i data-feather="briefcase"></i><span>HOD</span></a>
-            </li>
-            <li class="dropdown">
-              <a href="{{route('grading')}}" class="nav-link"><i data-feather="slack"></i><span>Grading System</span></a>
-            </li>
-            <li class="dropdown">
-              <a href="{{route('score-sheet')}}" class="nav-link"><i data-feather="file-text"></i><span>Score Sheet</span></a>
-            </li>
-            <li class="dropdown">
-              <a href="{{ route('transcript-request') }}" class="nav-link"><i data-feather="archive"></i><span>Transcript Requests</span></a>
-            </li>
-            <li class="dropdown">
-              <a href="{{ route('admin-account-setting', ['id' => auth()->user()->id]) }}" class="nav-link"><i data-feather="settings"></i><span>Account Settings</span></a>
-            </li>
-            <li class="dropdown">
-              <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="users"></i><span>Users</span></a>
-              <ul class="dropdown-menu">
-                <li><a class="nav-link" href="{{route('users')}}">Admins</a></li>
-                <li><a class="nav-link" href="{{route('instructors')}}">Instructors</a></li> 
-                <li><a class="nav-link" href="{{route('student')}}">Students</a></li>                
-              </ul>
-            </li> 
-            @elseif(auth()->user()->user_type_status == 3)  
-            <li class="dropdown">
-              <a href="{{ route('admin-dashboard') }}" class="nav-link"><i data-feather="home"></i><span>Dashboard</span></a>
-            </li>
-            <li class="dropdown">
-              <a href="{{route('class-list')}}" class="nav-link"><i data-feather="list"></i><span>Class List</span></a>
-            </li>            
-            <li class="dropdown">
-              <a href="#" class="nav-link menu-toggle nav-link has-dropdown"><i data-feather="clipboard"></i><span>Result</span></a>
-              <ul class="dropdown-menu">
-                <li><a class="nav-link" href="{{route('result-entry')}}">Result Entry</a></li>
-                <li><a class="nav-link" href="{{route('result-compute')}}">Result Computation</a></li>
-                <li><a class="nav-link" href="{{route('semester-result')}}">Semester Result</a></li>
-                <li><a class="nav-link" href="{{route('semester-summary')}}">Semester Result Summary</a></li>
-                <li><a class="nav-link" href="{{route('cgpa-summary')}}">CGPA Summary</a></li>                
-              </ul>
-            </li>
-            <li class="dropdown">
-              <a href="{{route('course-setup')}}" class="nav-link"><i data-feather="book"></i><span>Course Setup</span></a>
-            </li>
-            <li class="dropdown">
-              <a href="{{ route('admin-account-setting', ['id' => auth()->user()->id]) }}" class="nav-link"><i data-feather="settings"></i><span>Account Settings</span></a>
-            </li>                 
-            @elseif(auth()->user()->user_type_status == 4)            
-            <li class="dropdown">
-              <a href="{{ route('dashboard') }}" class="nav-link"><i data-feather="home"></i><span>Dashboard</span></a>
-            </li>
-            <li class="dropdown">
-              <a href="{{route('student-result')}}" class="nav-link"><i data-feather="clipboard"></i><span>Result</span></a>
-            </li>
-            <li class="dropdown active">
-              <a href="{{ route('user-request') }}" class="nav-link"><i data-feather="archive"></i><span>Request Transcript</span></a>
-            </li>
-            <li class="dropdown">
-              <a href="{{ route('account-setting', ['id' => auth()->user()->id]) }}" class="nav-link"><i data-feather="settings"></i><span>Account Settings</span></a>
-            </li>
-            <li class="dropdown">
-              <a href="{{ route('contact-us') }}" class="nav-link"><i data-feather="mail"></i><span>Contact Us</span></a>
-            </li>
-            @endif
-          </ul>
-    
+          @include('partials.student-sidebar')
         </aside>
       </div>
       <!-- Main Content -->
@@ -237,91 +85,6 @@
                     <div class="col-12">
                       <nav aria-label="breadcrumb">
                         <ol class="breadcrumb bg-dark text-white-all d-flex justify-content-between overflow-auto" style="white-space: nowrap;">
-                  @if(auth()->user()->user_type_status == 1)
-                  <li class="breadcrumb-item active">
-                    <a href="{{route('admin-dashboard')}}"><i class="fas fa-home"></i> Dashboard</a>
-                  </li>
-                  <li class="breadcrumb-item">
-                    <a href="{{route('class-list')}}"><i class="fas fa-chalkboard-teacher"></i> Class List</a>
-                  </li>
-                  <li class="breadcrumb-item dropdown" aria-current="page">
-                    <a href="{{route('student-menu')}}"><i class="fas fa-user-graduate"></i> Student</a>         
-                  </li>
-                  <li class="breadcrumb-item" aria-current="page">
-                    <a href="{{route('result-menu')}}"><i class="fas fa-poll"></i> Result</a>                   
-                  </li>
-                  <li class="breadcrumb-item">
-                    <a href="{{route('course-setup')}}"><i class="fas fa-book"></i> Course</a>
-                  </li>
-                  <li class="breadcrumb-item">
-                    <a href="{{route('hod-setup')}}"><i class="fas fa-user-tie"></i> HOD</a>
-                  </li>        
-                  <li class="breadcrumb-item">
-                    <a href="{{route('grading')}}"><i class="fas fa-clipboard-list"></i> Grading System</a>
-                  </li>
-                  <li class="breadcrumb-item">
-                    <a href="{{route('score-sheet')}}"><i class="fas fa-file-alt"></i> Score Sheet</a>
-                  </li>     
-                  <li class="breadcrumb-item">
-                    <a href="{{route('transcript-request')}}"><i class="fas fa-file-signature"></i> Transcript Request</a>
-                  </li>
-                  <li class="breadcrumb-item">
-                    <a href="{{ route('admin-account-setting', ['id' => auth()->user()->id]) }}"><i class="fas fa-cogs"></i> Account Setting</a>
-                  </li>   
-                  <li class="breadcrumb-item">
-                    <a href="{{route('user-menu')}}"><i class="fas fa-users"></i> Users</a>
-                  </li> 
-                  @elseif(auth()->user()->user_type_status == 2)
-                  <li class="breadcrumb-item active">
-                    <a href="{{route('admin-dashboard')}}"><i class="fas fa-home"></i> Dashboard</a>
-                  </li>
-                  <li class="breadcrumb-item">
-                    <a href="{{route('class-list')}}"><i class="fas fa-chalkboard-teacher"></i> Class List</a>
-                  </li>
-                  <li class="breadcrumb-item" aria-current="page">
-                    <a href="{{route('student-menu')}}"><i class="fas fa-user-graduate"></i> Student</a>         
-                  </li>
-                  <li class="breadcrumb-item" aria-current="page">
-                    <a href="{{route('result-menu')}}"><i class="fas fa-poll"></i> Result</a>                   
-                  </li>
-                  <li class="breadcrumb-item">
-                    <a href="{{route('course-setup')}}"><i class="fas fa-book"></i> Course</a>
-                  </li>
-                  <li class="breadcrumb-item">
-                    <a href="{{route('hod-setup')}}"><i class="fas fa-user-tie"></i> HOD</a>
-                  </li>        
-                  <li class="breadcrumb-item">
-                    <a href="{{route('grading')}}"><i class="fas fa-clipboard-list"></i> Grading System</a>
-                  </li>
-                  <li class="breadcrumb-item">
-                    <a href="{{route('score-sheet')}}"><i class="fas fa-file-alt"></i> Score Sheet</a>
-                  </li>     
-                  <li class="breadcrumb-item">
-                    <a href="{{route('transcript-request')}}"><i class="fas fa-file-signature"></i> Transcript Request</a>
-                  </li>
-                  <li class="breadcrumb-item">
-                    <a href="{{ route('admin-account-setting', ['id' => auth()->user()->id]) }}"><i class="fas fa-cogs"></i> Account Setting</a>
-                  </li>   
-                  <li class="breadcrumb-item">
-                    <a href="{{route('user-menu')}}"><i class="fas fa-users"></i> Users</a>
-                  </li> 
-                  @elseif(auth()->user()->user_type_status == 3)
-                  <li class="breadcrumb-item active">
-                    <a href="{{route('admin-dashboard')}}"><i class="fas fa-home"></i> Dashboard</a>
-                  </li>
-                  <li class="breadcrumb-item">
-                    <a href="{{route('class-list')}}"><i class="fas fa-chalkboard-teacher"></i> Class List</a>
-                  </li>                  
-                  <li class="breadcrumb-item" aria-current="page">
-                    <a href="{{route('result-menu')}}"><i class="fas fa-poll"></i> Result</a>                   
-                  </li>
-                  <li class="breadcrumb-item">
-                    <a href="{{route('course-setup')}}"><i class="fas fa-book"></i> Course</a>
-                  </li> 
-                  <li class="breadcrumb-item">
-                    <a href="{{ route('admin-account-setting', ['id' => auth()->user()->id]) }}"><i class="fas fa-cogs"></i> Account Setting</a>
-                  </li>
-                  @elseif(auth()->user()->user_type_status == 4)
                   <li class="breadcrumb-item active">
                     <a href="{{route('admin-dashboard')}}"><i class="fas fa-home"></i> Dashboard</a>
                   </li>                  
@@ -332,12 +95,11 @@
                     <a href="{{route('user-request')}}"><i class="fas fa-file-signature"></i> Request Transcript</a>
                   </li>
                   <li class="breadcrumb-item">
-                    <a href="{{ route('account-setting', ['id' => auth()->user()->id]) }}"><i class="fas fa-cogs"></i> Account Setting</a>
+                    <a href="{{ route('student-account-setting', ['id' => Auth::guard('student')->user()->id]) }}"><i class="fas fa-cogs"></i> Account Setting</a>
                   </li>   
                   <li class="breadcrumb-item">
                     <a href="{{route('contact-us')}}"><i class="fas fa-mail"></i> Contact Us</a>
                   </li> 
-                  @endif
                         </ol>
                       </nav>
                     </div>
@@ -366,11 +128,11 @@
                     </div>
                     <div class="form-group">
                       <label>Email Address</label>
-                      <p>{{ auth()->user()->email }}</p>
+                      <input type="text" class="form-control" name="emailAddy" value="{{ old('emailAddy')}}" required>
                     </div>
                     <div class="form-group">
                     <label>Matric No</label>
-                    <input type="text" class="form-control" name="matric_no" value="{{ old('matric_no') }}" required>
+                    <input type="text" class="form-control" name="matric_no" value="{{ old('matric_no', Auth::guard('student')->user()->admission_no) }}" required disabled>
                 </div>
                 @error('matric_no')
                     <span class="invalid-feedback">{{ $message }}</span>
@@ -381,8 +143,8 @@
                     <select name="programme" class="form-control" required>
                         <option value="">Select Programme</option>
                         @foreach ($programmes as $programme)
-                            <option value="{{ $programme->programme }}" {{ old('programme') == $programme->programme ? 'selected' : '' }}>
-                                {{ $programme->programme }}
+                            <option value="{{ $programme->department }}" {{ old('programme') == $programme->department ? 'selected' : '' }}>
+                                {{ $programme->department }}
                             </option>
                         @endforeach
                     </select>
@@ -402,14 +164,14 @@
 
                 <div class="form-group">
                     <label>Graduation Year</label>
-                    <select name="grad_year" class="form-control" required>
-                        <option value="">Select Year</option>
-                        @foreach ($years as $year)
-                            <option value="{{ $year->user_year }}" {{ old('grad_year') == $year->user_year ? 'selected' : '' }}>
-                                {{ $year->user_year }}
-                            </option>
-                        @endforeach
-                    </select>
+                    <select name="grad_year" id="grad_year" class="form-control">
+                            @php
+                                $currentYear = date('Y');
+                            @endphp
+                            @for ($year = 2018; $year <= $currentYear; $year++)
+                                <option value="{{ $year }}">{{ $year }}</option>
+                            @endfor
+                        </select>                    
                 </div>   
                 @error('grad_year')
                     <span class="invalid-feedback">{{ $message }}</span>

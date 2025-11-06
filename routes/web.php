@@ -274,10 +274,13 @@ Route::post('/reset-password', [CustomForgotPasswordController::class, 'resetPas
         Route::get('/student/dashboard', [StudentController::class, 'index'])
             ->name('dashboard');
 
-        Route::get('/student/account-setting/{id}', [AuthController::class, 'studentProfileUpdate'])
+        Route::get('/student/account-setting/{id}', [StudentController::class, 'studentProfileUpdate'])
         ->name('student-account-setting');
-        Route::post('/student/account-setting/update', [AuthController::class, 'studentProfileUpdateAction'])
+        Route::post('/student/account-setting/update', [StudentController::class, 'studentProfileUpdateAction'])
         ->name('student-account-setting.action');
+
+        Route::get('page/development', [StudentController::class, 'pageDevelopment'])
+        ->name('page-development');
         
         Route::get('/student/result', [StudentController::class, 'studentResult'])
             ->name('student-result');
