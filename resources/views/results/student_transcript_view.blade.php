@@ -393,7 +393,7 @@
                         <td>
                             @php
                                 $picture = public_path('uploads/' . $student->picture_dir . '.jpg');
-                                $pictureUrl = file_exists($picture) ? asset('uploads/' . $student->picture_dir . '.jpg') : asset('uploads/blank.jpg');
+                                $pictureUrl = file_exists($picture) ? asset('public/uploads/' . $student->picture_dir . '.jpg') : asset('public/uploads/blank.jpg');
                             @endphp
                             <img src="{{ $pictureUrl }}" 
                                 alt="Student Picture" 

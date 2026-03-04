@@ -66,6 +66,7 @@ class CourseController extends Controller
                 $courses = Course::where('semester', $semester)
                 ->where('course', $programme)
                 ->where('level', $stdLevel)
+                // ->where('session1', '2024/2025')
                 ->with('instructor') // Eager load instructor relationship
                 ->orderBy('course_title', 'asc')
                 ->get();           
@@ -163,7 +164,7 @@ class CourseController extends Controller
     public function courseDelete($id)
     {
         // Fetch the course by ID
-        $course = Course::find($id);
+        $course = Course::findOrFail($id);
 
         // Check if the course exists
         if (!$course) {
@@ -179,7 +180,9 @@ class CourseController extends Controller
         $course->delete();
 
         $instructorCourse = Instructor::where('course_id', $id)->first();
-        $instructorCourse->delete();
+        if($instructorCourse){
+             $instructorCourse->delete();
+        }
 
         // Redirect back to the course list with success message and parameters
         return redirect()->route('course-list', [

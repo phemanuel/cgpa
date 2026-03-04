@@ -8,6 +8,13 @@
             <i class="fa fa-print"></i> Print
         </button>
     </div>
+    <style>
+@media print {
+    @page {
+        size: landscape;
+    }
+}
+</style>
 
     <div id="printArea">
         <table class="table table-bordered table-sm">

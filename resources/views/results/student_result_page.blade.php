@@ -417,18 +417,8 @@
                                 <table class="table table-bordered align-middle">
                                     <tr>
                                         <td rowspan="4" style="width: 150px; text-align: center;">
-                                        @php
-                                            $imagePath = public_path('uploads/' . $student['studpicture'] . '.jpg');
-                                            $imageUrl = file_exists($imagePath) 
-                                                ? asset('uploads/' . $student['studpicture'] . '.jpg') 
-                                                : asset('uploads/blank.jpg');
-                                        @endphp
-
-                                        <img 
-                                            src="{{ $imageUrl }}" 
-                                            alt="Student Picture" 
-                                            class="img-thumbnail" 
-                                            style="max-width: 130px;">
+                                        
+                                       
                                         </td>
                                         <th>Full Name:</th>
                                         <td>{{ $student['stusurname'] }}</td>
@@ -465,29 +455,42 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {{-- Check if subjects, grades, units, and scores are set and not null --}}
-                                                @if(isset($student['subjects']) && is_array($student['subjects']) && count($student['subjects']) > 0)
-                                                    @foreach ($student['subjects'] as $index => $subject)
-                                                        @if(!empty($subject) && !is_null($subject) && !empty($student['subjectGrades'][$index]) && !is_null($student['subjectGrades'][$index]) && !empty($student['units'][$index]) && !is_null($student['units'][$index]) && !empty($student['scores'][$index]) && !is_null($student['scores'][$index]))
-                                                        <tr>
-                                                            <td style="font-size: 13px;">{{ $student['ctitles'][$index] }}</td>
-                                                            <td style="text-align: left; font-size: 13px;">{{ $subject }}</td>
-                                                            <td style="font-size: 13px;">{{ $student['units'][$index] }}</td>
-                                                            <td style="font-size: 13px;">
-                                                                @if (floor($student['scores'][$index]) == $student['scores'][$index])
-                                                                    {{ (int) $student['scores'][$index] }}
-                                                                @else
-                                                                    {{ $student['scores'][$index] }}
-                                                                @endif
-                                                            </td>
-                                                            <td style="font-size: 13px;">{{ $student['subjectGrades'][$index] }}</td>
-                                                        </tr>
-                                                        @endif
-                                                    @endforeach
-                                                @else
-                                                    <tr><td colspan="4">No subjects available</td></tr>
-                                                @endif
-                                            </tbody>
+    {{-- Check if subjects, grades, units, and scores are set and not null --}}
+    @if(isset($student['subjects']) && is_array($student['subjects']) && count($student['subjects']) > 0)
+        @foreach ($student['subjects'] as $index => $subject)
+            @php
+                $score = $student['scores'][$index] ?? null;
+                $grade = $student['subjectGrades'][$index] ?? null;
+                $unit  = $student['units'][$index] ?? null;
+                $ctitle = $student['ctitles'][$index] ?? null;
+            @endphp
+
+            {{-- Only display if all fields are not null/empty and score is not 0 --}}
+            @if(!empty($subject) && !is_null($subject) 
+                && !empty($grade) && !is_null($grade)
+                && !empty($unit) && !is_null($unit)
+                && !is_null($score) && $score != 0)
+
+                <tr>
+                    <td style="font-size: 13px;">{{ $ctitle }}</td>
+                    <td style="text-align: left; font-size: 13px;">{{ $subject }}</td>
+                    <td style="font-size: 13px;">{{ $unit }}</td>
+                    <td style="font-size: 13px;">
+                        @if (floor($score) == $score)
+                            {{ (int) $score }}
+                        @else
+                            {{ $score }}
+                        @endif
+                    </td>
+                    <td style="font-size: 13px;">{{ $grade }}</td>
+                </tr>
+            @endif
+        @endforeach
+    @else
+        <tr><td colspan="5">No subjects available</td></tr>
+    @endif
+</tbody>
+
                                         </table>
 
                                         {{-- GPA Summary --}}
@@ -516,7 +519,10 @@
                                                             <span class="{{ $student['remarks'] === 'PASSED ALL' ? 'text-success' : 'text-danger' }}">
                                                                 {{ $student['remarks'] }}                                                            </span>                                                        </td>
                                                         <td>&nbsp;</td>
-                                                        <td style="text-align: center; font-size: 13px;">{{ $hod->hod_name }}</td>
+                                                        <td style="text-align: center; font-size: 13px;">
+                                                        <p>{{ $hod->hod_name }}</p> 
+                                                        <p><strong>HOD</strong> </p>
+                                                        </td>
                                                     </tr>
                                                     
                                                     @if (!empty($student['failedRemarks']))
@@ -632,18 +638,7 @@
                                 <table class="table table-bordered align-middle">
                                     <tr>
                                         <td rowspan="4" style="width: 150px; text-align: center;">
-                                        @php
-                        $imagePath = public_path('uploads/' . $student['studpicture'] . '.jpg');
-                        $imageUrl = file_exists($imagePath) 
-                            ? asset('uploads/' . $student['studpicture'] . '.jpg') 
-                            : asset('uploads/blank.jpg');
-                    @endphp
-
-                                        <img 
-                                            src="{{ $imageUrl }}" 
-                                            alt="Student Picture" 
-                                            class="img-thumbnail" 
-                                            style="max-width: 130px;">
+                  
                                         </td>
                                         <th>Full Name:</th>
                                         <td>{{ $student['stusurname'] }}</td>
@@ -680,29 +675,42 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {{-- Check if subjects, grades, units, and scores are set and not null --}}
-                                                @if(isset($student['subjects']) && is_array($student['subjects']) && count($student['subjects']) > 0)
-                                                    @foreach ($student['subjects'] as $index => $subject)
-                                                        @if(!empty($subject) && !is_null($subject) && !empty($student['subjectGrades'][$index]) && !is_null($student['subjectGrades'][$index]) && !empty($student['units'][$index]) && !is_null($student['units'][$index]) && !empty($student['scores'][$index]) && !is_null($student['scores'][$index]))
-                                                        <tr>
-                                                            <td style="font-size: 13px;">{{ $student['ctitles'][$index] }}</td>
-                                                            <td style="text-align: left; font-size: 13px;">{{ $subject }}</td>
-                                                            <td style="font-size: 13px;">{{ $student['units'][$index] }}</td>
-                                                            <td style="font-size: 13px;">
-                                                                @if (floor($student['scores'][$index]) == $student['scores'][$index])
-                                                                    {{ (int) $student['scores'][$index] }}
-                                                                @else
-                                                                    {{ $student['scores'][$index] }}
-                                                                @endif
-                                                            </td>
-                                                            <td style="font-size: 13px;">{{ $student['subjectGrades'][$index] }}</td>
-                                                        </tr>
-                                                        @endif
-                                                    @endforeach
-                                                @else
-                                                    <tr><td colspan="4">No subjects available</td></tr>
-                                                @endif
-                                            </tbody>
+    {{-- Check if subjects, grades, units, and scores are set and not null --}}
+    @if(isset($student['subjects']) && is_array($student['subjects']) && count($student['subjects']) > 0)
+        @foreach ($student['subjects'] as $index => $subject)
+            @php
+                $score = $student['scores'][$index] ?? null;
+                $grade = $student['subjectGrades'][$index] ?? null;
+                $unit  = $student['units'][$index] ?? null;
+                $ctitle = $student['ctitles'][$index] ?? null;
+            @endphp
+
+            {{-- Only display if all fields are not null/empty and score is not 0 --}}
+            @if(!empty($subject) && !is_null($subject) 
+                && !empty($grade) && !is_null($grade)
+                && !empty($unit) && !is_null($unit)
+                && !is_null($score) && $score != 0)
+
+                <tr>
+                    <td style="font-size: 13px;">{{ $ctitle }}</td>
+                    <td style="text-align: left; font-size: 13px;">{{ $subject }}</td>
+                    <td style="font-size: 13px;">{{ $unit }}</td>
+                    <td style="font-size: 13px;">
+                        @if (floor($score) == $score)
+                            {{ (int) $score }}
+                        @else
+                            {{ $score }}
+                        @endif
+                    </td>
+                    <td style="font-size: 13px;">{{ $grade }}</td>
+                </tr>
+            @endif
+        @endforeach
+    @else
+        <tr><td colspan="5">No subjects available</td></tr>
+    @endif
+</tbody>
+
                                         </table>
 
                                         {{-- GPA Summary --}}
@@ -731,7 +739,10 @@
                                                             <span class="{{ $student['remarks'] === 'PASSED ALL' ? 'text-success' : 'text-danger' }}">
                                                                 {{ $student['remarks'] }}                                                            </span>                                                        </td>
                                                         <td>&nbsp;</td>
-                                                        <td style="text-align: center; font-size: 13px;">{{ $hod->hod_name }}</td>
+                                                        <td style="text-align: center; font-size: 13px;">
+                                                        <p>{{ $hod->hod_name }}</p> 
+                                                        <p><strong>HOD</strong> </p>
+                                                        </td>
                                                     </tr>
                                                     
                                                     @if (!empty($student['failedRemarks']))

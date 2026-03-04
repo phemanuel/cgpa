@@ -6,6 +6,7 @@
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>E-result :: Grading System</title>
   <!-- General CSS Files -->
   <link rel="stylesheet" href="{{asset('dashboard/assets/css/app.min.css')}}">
@@ -214,19 +215,30 @@
             <div class="col-12">
               <div class="card">
                 <div class="card-header">
-                  <h4>Grading System  |
-                    <a href="javascript:void(0)" onclick="printAllStudents()" class="btn btn-outline-primary">
-        <i class="fas fa-print"></i> Print
-    </a>
-</h4>
+                  <h4>
+                      Grading System  |
+
+                      <span class="ml-2">
+                          Pass Mark:
+                          <span class="ml-2">
+                              Pass Mark:
+                              <span id="currentPassMark" class="badge badge-success">
+                                  {{ $passMark->pass_mark ?? 0 }}%
+                              </span>
+                          </span>
+                      </span>
+
+                      <a href="javascript:void(0)" onclick="printAllStudents()" class="btn btn-outline-primary ml-3">
+                          <i class="fas fa-print"></i> Print
+                      </a>
+                  </h4>
                   <div class="card-header-form">
                     <form>                    
                       <div class="input-group">
                       <a href="{{route('grading-edit')}}" class="btn btn-primary"><i class="fas fa-edit"></i> Edit</a>
-                        <!-- <input type="text" class="form-control" placeholder="Search"> -->
-                        <!-- <div class="input-group-btn">
-                          <button class="btn btn-primary"><i class="fas fa-search"></i></button>
-                        </div> -->
+                     <button type="button" id="setPassMarkBtn" class="btn btn-info">
+                          <i class="fas fa-graduation-cap"></i> Set Pass-Mark
+                      </button>                   
                       </div>
                     </form>
                   </div>
@@ -593,6 +605,49 @@
       </footer>
     </div>
   </div>
+
+ <div class="modal fade" id="passMarkModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header bg-warning text-white">
+                <h5 class="modal-title">
+                    <i class="fas fa-bullseye"></i> Set Pass Mark
+                </h5>
+                <button type="button" class="close text-white" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+
+                <div class="form-group">
+                    <label for="pass_mark">Pass Mark</label>
+                    <input type="number"
+                           id="pass_mark"
+                           class="form-control"
+                           min="0"
+                           step="0.01"
+                           placeholder="Enter pass mark">
+                    <small class="text-danger d-none" id="passMarkError"></small>
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    Cancel
+                </button>
+                <button type="button" id="savePassMark" class="btn btn-warning">
+                    <i class="fas fa-save"></i> Save
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <!-- General JS Scripts -->
   <script src="{{asset('dashboard/assets/js/app.min.js')}}"></script>
   <!-- JS Libraies -->
@@ -603,6 +658,8 @@
   <script src="{{asset('dashboard/assets/js/scripts.js')}}"></script>
   <!-- Custom JS File -->
   <script src="{{asset('dashboard/assets/js/custom.js')}}"></script>
+
+  
 </body>
 
 
@@ -651,4 +708,155 @@ function printAllStudents() {
     }, 1000);
 }
 </script>
+<script>
+$(document).ready(function () {
 
+    const getUrl  = "{{ route('passmark.get') }}";
+    const saveUrl = "{{ route('passmark.save') }}";
+
+    const passMarkBadge = $('#currentPassMark');
+    const modal         = $('#passMarkModal');
+    const input         = $('#pass_mark');
+    const errorBox      = $('#passMarkError');
+    const openBtn       = $('#setPassMarkBtn');
+    const saveBtn       = $('#savePassMark');
+
+    // =========================================
+    // CSRF SETUP
+    // =========================================
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    // =========================================
+    // HELPER: UPDATE BADGE
+    // =========================================
+    function updateBadge(value) {
+        value = parseFloat(value) || 0;
+
+        passMarkBadge.text(value + '%');
+
+        if (value <= 0) {
+            passMarkBadge
+                .removeClass('badge-success')
+                .addClass('badge-danger');
+        } else {
+            passMarkBadge
+                .removeClass('badge-danger')
+                .addClass('badge-success');
+        }
+    }
+
+    // =========================================
+    // LOAD PASS MARK (Reusable)
+    // =========================================
+    function loadPassMark(showModal = false) {
+
+        $.get(getUrl)
+            .done(function (response) {
+
+                let value = response.pass_mark ?? 0;
+
+                input.val(value);
+                updateBadge(value);
+
+                if (showModal) {
+                    modal.modal('show');
+                }
+
+            })
+            .fail(function () {
+                alert('Failed to load pass mark.');
+            });
+    }
+
+    // =========================================
+    // LOAD ON PAGE READY
+    // =========================================
+    if (passMarkBadge.length) {
+        loadPassMark(false);
+    }
+
+    // =========================================
+    // OPEN MODAL
+    // =========================================
+    openBtn.on('click', function () {
+
+        errorBox.addClass('d-none').text('');
+        openBtn.prop('disabled', true);
+
+        loadPassMark(true);
+
+        setTimeout(function () {
+            openBtn.prop('disabled', false);
+        }, 500);
+    });
+
+    // =========================================
+    // SAVE PASS MARK
+    // =========================================
+    saveBtn.on('click', function () {
+
+        let passMark = input.val();
+
+        errorBox.addClass('d-none').text('');
+        saveBtn.prop('disabled', true)
+               .html('<i class="fas fa-spinner fa-spin"></i> Saving...');
+
+        $.post(saveUrl, {
+            pass_mark: passMark
+        })
+        .done(function (response) {
+
+            modal.modal('hide');
+            updateBadge(passMark);
+
+            if (typeof Swal !== 'undefined') {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: response.message,
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+            } else {
+                alert(response.message);
+            }
+
+        })
+        .fail(function (xhr) {
+
+            if (xhr.responseJSON && xhr.responseJSON.errors) {
+
+                let errors = xhr.responseJSON.errors;
+
+                if (errors.pass_mark) {
+                    errorBox
+                        .removeClass('d-none')
+                        .text(errors.pass_mark[0]);
+                }
+
+            } else {
+                alert('Something went wrong.');
+            }
+
+        })
+        .always(function () {
+
+            saveBtn.prop('disabled', false)
+                   .html('<i class="fas fa-save"></i> Save');
+
+        });
+    });
+
+    // =========================================
+    // AUTO FOCUS INPUT
+    // =========================================
+    modal.on('shown.bs.modal', function () {
+        input.focus();
+    });
+
+});
+</script>

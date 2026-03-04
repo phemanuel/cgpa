@@ -128,8 +128,11 @@
                     </div>
                     <div class="form-group">
                       <label>Email Address</label>
-                      <input type="text" class="form-control" name="emailAddy" value="{{ old('emailAddy')}}" required>
+                      <input type="text" class="form-control" name="email" value="{{ old('email')}}" required>
                     </div>
+                    @error('email')
+                    <span class="invalid-feedback">{{ $message }}</span>
+                @enderror
                     <div class="form-group">
                     <label>Matric No</label>
                     <input type="text" class="form-control" name="matric_no" value="{{ old('matric_no', Auth::guard('student')->user()->admission_no) }}" required disabled>
@@ -140,13 +143,10 @@
 
                 <div class="form-group">
                     <label>Programme of Study</label>
-                    <select name="programme" class="form-control" required>
-                        <option value="">Select Programme</option>
-                        @foreach ($programmes as $programme)
-                            <option value="{{ $programme->department }}" {{ old('programme') == $programme->department ? 'selected' : '' }}>
-                                {{ $programme->department }}
-                            </option>
-                        @endforeach
+                    <select name="programme" class="form-control" required>                                           
+                            <option value="{{ Auth::guard('student')->user()->course}}" {{ old('programme') == Auth::guard('student')->user()->course ? 'selected' : '' }}>
+                                {{ Auth::guard('student')->user()->course }}
+                            </option>                      
                     </select>
                 </div> 
                 @error('programme')
@@ -164,13 +164,9 @@
 
                 <div class="form-group">
                     <label>Graduation Year</label>
-                    <select name="grad_year" id="grad_year" class="form-control">
-                            @php
-                                $currentYear = date('Y');
-                            @endphp
-                            @for ($year = 2018; $year <= $currentYear; $year++)
-                                <option value="{{ $year }}">{{ $year }}</option>
-                            @endfor
+                    <select name="grad_year" id="grad_year" class="form-control">                           
+                                <option value="{{ $gradYear }}">{{ $gradYear  }}</option>
+                          
                         </select>                    
                 </div>   
                 @error('grad_year')

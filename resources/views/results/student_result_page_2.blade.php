@@ -187,19 +187,18 @@
                                 <table class="table table-bordered align-middle">
                                     <tr>
                                         <td rowspan="4" style="width: 150px; text-align: center;">
-                                            @php
-                                                $imagePath = public_path('uploads/' . $studentData['studpicture'] . '.jpg');
-                                                $imageUrl = file_exists($imagePath)
-                                                    ? asset('uploads/' . $studentData['studpicture'] . '.jpg')
-                                                    : asset('uploads/blank.jpg');
-                                            @endphp
+    @php
+        $imagePath = public_path('uploads/' . $studentData['studpicture'] . '.jpg');
+    @endphp
 
-                                            <img 
-                                                src="{{ $imageUrl }}" 
-                                                alt="Student Picture" 
-                                                class="img-thumbnail" 
-                                                style="max-width: 130px;">
-                                        </td>
+    @if(!empty($studentData['studpicture']) && file_exists($imagePath))
+        <img 
+            src="{{ asset('public/uploads/' . $studentData['studpicture'] . '.jpg') }}" 
+            alt="Student Picture" 
+            class="img-thumbnail" 
+            style="max-width: 130px;">
+    @endif
+</td>
                                         <th>Full Name:</th>
                                         <td>{{ $studentData['stusurname'] }}</td>
                                     </tr>
@@ -317,7 +316,10 @@
                                                         <td style="font-size: 13px;"><strong>CGPA:</strong></td>
                                                         <td style="font-size: 13px;">{{ $studentData['totalCGPA'] ?? 'N/A' }}</td>
                                                         <td>&nbsp;</td>
-                                                        <td style="text-align: center; font-size: 13px;">{{ $hod->hod_name }}</td>
+                                                        <td style="text-align: center; font-size: 13px;">
+                                                        <p>{{ $hod->hod_name }}</p> 
+                                                        <p><strong>HOD</strong> </p>
+                                                        </td>
                                                     </tr>
                                                     
                                                     @if (!empty($studentData['failedRemarks']))
@@ -432,19 +434,18 @@
                                 <table class="table table-bordered align-middle">
                                     <tr>
                                         <td rowspan="4" style="width: 150px; text-align: center;">
-                                            @php
-                                                $imagePath = public_path('uploads/' . $studentData['studpicture'] . '.jpg');
-                                                $imageUrl = file_exists($imagePath)
-                                                    ? asset('uploads/' . $studentData['studpicture'] . '.jpg')
-                                                    : asset('uploads/blank.jpg');
-                                            @endphp
+    @php
+        $imagePath = public_path('uploads/' . $studentData['studpicture'] . '.jpg');
+    @endphp
 
-                                            <img 
-                                                src="{{ $imageUrl }}" 
-                                                alt="Student Picture" 
-                                                class="img-thumbnail" 
-                                                style="max-width: 130px;">
-                                        </td>
+    @if(!empty($studentData['studpicture']) && file_exists($imagePath))
+        <img 
+            src="{{ asset('public/uploads/' . $studentData['studpicture'] . '.jpg') }}" 
+            alt="Student Picture" 
+            class="img-thumbnail" 
+            style="max-width: 130px;">
+    @endif
+</td>
                                         <th>Full Name:</th>
                                         <td>{{ $studentData['stusurname'] }}</td>
                                     </tr>
@@ -562,7 +563,10 @@
                                                         <td style="font-size: 13px;"><strong>CGPA:</strong></td>
                                                         <td style="font-size: 13px;">{{ $studentData['totalCGPA'] ?? 'N/A' }}</td>
                                                         <td>&nbsp;</td>
-                                                        <td style="text-align: center; font-size: 13px;">{{ $hod->hod_name }}</td>
+                                                        <td style="text-align: center; font-size: 13px;">
+                                                        <p>{{ $hod->hod_name }}</p> 
+                                                        <p><strong>HOD</strong> </p>
+                                                        </td>
                                                     </tr>
                                                     
                                                     @if (!empty($studentData['failedRemarks']))
